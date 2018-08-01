@@ -19,6 +19,7 @@
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<spring.version>5.0.5.RELEASE</spring.version>
+		<hibernate.version>5.3.2.Final</hibernate.version>
 	</properties>
 
 	<dependencies>
@@ -63,9 +64,8 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- ThymeLeaf -->
+		<!-- Thymeleaf -->
 
-		<!-- https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf-spring5 -->
 		<dependency>
 			<groupId>org.thymeleaf</groupId>
 			<artifactId>thymeleaf-spring5</artifactId>
@@ -80,7 +80,46 @@
 			<version>3.0.2.RELEASE</version>
 		</dependency>
 
+		<!-- Database -->
 
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>6.0.6</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-dbcp</artifactId>
+			<version>7.0.55</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-commons</artifactId>
+			<version>2.0.8.RELEASE</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>2.0.8.RELEASE</version>
+		</dependency>
 
 	</dependencies>
 
