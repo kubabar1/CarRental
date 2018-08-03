@@ -18,13 +18,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "Vehicles")
 public class Vehicle implements Serializable {
 
 	@Id
 	@Column(name = "ID")
-	private Long ID;
+	private Long id;
 
 	@Column(name = "registration")
 	private String registration;
@@ -38,37 +40,37 @@ public class Vehicle implements Serializable {
 	@Column(name = "dailyFee")
 	private BigDecimal dailyFee;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "locationID")
 	@Column(name = "locationID")
-	private Location locationId;
+	private String locationId;
 
 	@Column(name = "vehicleStatus")
-	@OneToOne(mappedBy = "vehicleStatusCode")
-	private VehicleStatus vehicleStatus;
+	private String vehicleStatus;
 
+	@Column(name = "bestOffer")
+	private Boolean bestOffer;
+
+	@JsonIgnore
 	@OneToMany(mappedBy = "vehicleID")
 	private List<Stars> starsList = new ArrayList<Stars>();
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "vehicleID")
-	private List<Comments> commentsList = new ArrayList<Comments>();
+	private List<Comment> commentsList = new ArrayList<Comment>();
 
+	@JsonIgnore
 	@ManyToMany(mappedBy = "carList")
 	private List<Equipment> equipmentList = new ArrayList<Equipment>();
 
-	@OneToMany(mappedBy = "vehicleID")
-	private List<Vehicle> bookingList = new ArrayList<Vehicle>();
-
-	@OneToOne(mappedBy = "vehicleID")
+	@OneToOne(mappedBy = "vehicle")
 	private VehicleParameters vehicleParameters;
 
 	public Vehicle() {
 		super();
 	}
 
-	public Vehicle(String registration, String brand, String model, BigDecimal dailyFee, Location locationId,
-			VehicleStatus vehicleStatus, List<Stars> starsList, List<Comments> commentsList,
-			List<Equipment> equipmentList, List<Vehicle> bookingList, VehicleParameters vehicleParameters) {
+	public Vehicle(String registration, String brand, String model, BigDecimal dailyFee, String locationId,
+			String vehicleStatus, List<Stars> starsList, List<Comment> commentsList, List<Equipment> equipmentList,
+			VehicleParameters vehicleParameters) {
 		super();
 		this.registration = registration;
 		this.brand = brand;
@@ -79,24 +81,15 @@ public class Vehicle implements Serializable {
 		this.starsList = starsList;
 		this.commentsList = commentsList;
 		this.equipmentList = equipmentList;
-		this.bookingList = bookingList;
 		this.vehicleParameters = vehicleParameters;
 	}
 
-	public List<Vehicle> getBookingList() {
-		return bookingList;
+	public Long getId() {
+		return id;
 	}
 
-	public void setBookingList(List<Vehicle> bookingList) {
-		this.bookingList = bookingList;
-	}
-
-	public Long getID() {
-		return ID;
-	}
-
-	public void setID(Long iD) {
-		ID = iD;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getRegistration() {
@@ -131,11 +124,11 @@ public class Vehicle implements Serializable {
 		this.dailyFee = dailyFee;
 	}
 
-	public VehicleStatus getVehicleStatus() {
+	public String getVehicleStatus() {
 		return vehicleStatus;
 	}
 
-	public void setVehicleStatus(VehicleStatus vehicleStatus) {
+	public void setVehicleStatus(String vehicleStatus) {
 		this.vehicleStatus = vehicleStatus;
 	}
 
@@ -147,11 +140,11 @@ public class Vehicle implements Serializable {
 		this.equipmentList = equipmentList;
 	}
 
-	public Location getLocationId() {
+	public String getLocationId() {
 		return locationId;
 	}
 
-	public void setLocationId(Location locationId) {
+	public void setLocationId(String locationId) {
 		this.locationId = locationId;
 	}
 
@@ -171,17 +164,25 @@ public class Vehicle implements Serializable {
 		this.starsList = starsList;
 	}
 
-	public List<Comments> getCommentsList() {
+	public List<Comment> getCommentsList() {
 		return commentsList;
 	}
 
-	public void setCommentsList(List<Comments> commentsList) {
+	public void setCommentsList(List<Comment> commentsList) {
 		this.commentsList = commentsList;
+	}
+
+	public Boolean getBestOffer() {
+		return bestOffer;
+	}
+
+	public void setBestOffer(Boolean bestOffer) {
+		this.bestOffer = bestOffer;
 	}
 
 	@Override
 	public String toString() {
-		return "Vehicle [ID=" + ID + ", registration=" + registration + ", brand=" + brand + ", model=" + model
+		return "Vehicle [ID=" + id + ", registration=" + registration + ", brand=" + brand + ", model=" + model
 				+ ", dailyFee=" + dailyFee + ", locationId=" + locationId + ", vehicleStatus=" + vehicleStatus + "]";
 	}
 

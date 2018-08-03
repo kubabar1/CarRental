@@ -2,6 +2,7 @@ package com.carrental.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
 @Entity
 @Table(name = "Stars")
 public class Stars implements Serializable {
@@ -19,27 +24,27 @@ public class Stars implements Serializable {
 	@Column(name = "ID")
 	private Long ID;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "vehicleID")
-	@Column(name = "vehicleID")
 	private Vehicle vehicleID;
 
 	@Column(name = "starsCount")
 	private String starsCount;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "authorID")
-	@Column(name = "authorID")
 	private User authorID;
 
 	@Column(name = "creationDate")
-	private Date creationDate;
+	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
+	private LocalDateTime creationDate;
 
 	public Stars() {
 		super();
 	}
 
-	public Stars(Vehicle vehicleID, String starsCount, User authorID, Date creationDate) {
+	public Stars(Vehicle vehicleID, String starsCount, User authorID, LocalDateTime creationDate) {
 		super();
 		this.vehicleID = vehicleID;
 		this.starsCount = starsCount;
@@ -79,11 +84,11 @@ public class Stars implements Serializable {
 		this.authorID = authorID;
 	}
 
-	public Date getCreationDate() {
+	public LocalDateTime getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(Date creationDate) {
+	public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = creationDate;
 	}
 

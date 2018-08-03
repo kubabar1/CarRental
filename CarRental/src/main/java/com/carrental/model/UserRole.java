@@ -7,10 +7,14 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.JoinColumn;
 
 @Entity
@@ -24,7 +28,8 @@ public class UserRole implements Serializable {
 	@Column(name = "type")
 	private String type;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "AppUsersRoles", joinColumns = @JoinColumn(name = "userRoleID"), inverseJoinColumns = @JoinColumn(name = "userID"))
 	private List<User> userList = new ArrayList<User>();
 

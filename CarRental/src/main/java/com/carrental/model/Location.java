@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -33,24 +34,17 @@ public class Location implements Serializable {
 	@Column(name = "phone")
 	private String phone;
 
-	@OneToMany(mappedBy = "locationId")
-	private List<Vehicle> vehicles = new ArrayList<Vehicle>();
-
-	@OneToMany(mappedBy = "locationId")
-	private List<Booking> bookingList = new ArrayList<Booking>();
-
 	public Location() {
 		super();
 	}
 
-	public Location(String country, String city, String addres, String email, String phone, List<Vehicle> vehicles) {
+	public Location(String country, String city, String addres, String email, String phone) {
 		super();
 		this.country = country;
 		this.city = city;
 		this.addres = addres;
 		this.email = email;
 		this.phone = phone;
-		this.vehicles = vehicles;
 	}
 
 	public Long getID() {
@@ -99,14 +93,6 @@ public class Location implements Serializable {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-	public List<Vehicle> getVehicles() {
-		return vehicles;
-	}
-
-	public void setVehicles(List<Vehicle> vehicles) {
-		this.vehicles = vehicles;
 	}
 
 	@Override

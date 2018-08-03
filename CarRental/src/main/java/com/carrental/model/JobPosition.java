@@ -1,6 +1,7 @@
 package com.carrental.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Currency;
 
@@ -12,28 +13,30 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name = "JobPosition")
 public class JobPosition implements Serializable {
 
 	@Id
 	@Column(name = "ID")
-	private Long ID;
+	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "UserID")
 	@Column(name = "UserID")
-	private User userID;
+	private Long userId;
 
 	@Column(name = "position")
 	private String position;
 
 	@Column(name = "salary")
-	private Currency salary;
+	private BigDecimal salary;
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "beginWorkDate")
 	private Date beginWorkDate;
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "endWorkDate")
 	private Date endWorkDate;
 
@@ -41,29 +44,29 @@ public class JobPosition implements Serializable {
 		super();
 	}
 
-	public JobPosition(User userID, String position, Currency salary, Date beginWorkDate, Date endWorkDate) {
+	public JobPosition(Long userId, String position, BigDecimal salary, Date beginWorkDate, Date endWorkDate) {
 		super();
-		this.userID = userID;
+		this.userId = userId;
 		this.position = position;
 		this.salary = salary;
 		this.beginWorkDate = beginWorkDate;
 		this.endWorkDate = endWorkDate;
 	}
 
-	public Long getID() {
-		return ID;
+	public Long getId() {
+		return id;
 	}
 
-	public void setID(Long iD) {
-		ID = iD;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public User getUserID() {
-		return userID;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUserID(User userID) {
-		this.userID = userID;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public String getPosition() {
@@ -74,11 +77,11 @@ public class JobPosition implements Serializable {
 		this.position = position;
 	}
 
-	public Currency getSalary() {
+	public BigDecimal getSalary() {
 		return salary;
 	}
 
-	public void setSalary(Currency salary) {
+	public void setSalary(BigDecimal salary) {
 		this.salary = salary;
 	}
 
@@ -100,8 +103,8 @@ public class JobPosition implements Serializable {
 
 	@Override
 	public String toString() {
-		return "JobPosition [ID=" + ID + ", UserID=" + userID + ", position=" + position + ", salary=" + salary
-				+ ", beginWorkDate=" + beginWorkDate + ", endWorkDate=" + endWorkDate + "]";
+		return "JobPosition [id=" + id + ", UserID=" + userId + ", position=" + position + ", salary="
+				+ salary.doubleValue() + ", beginWorkDate=" + beginWorkDate + ", endWorkDate=" + endWorkDate + "]";
 	}
 
 }

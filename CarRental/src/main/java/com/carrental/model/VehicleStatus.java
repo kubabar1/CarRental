@@ -15,10 +15,8 @@ import javax.persistence.Table;
 public class VehicleStatus implements Serializable {
 
 	@Id
-	@Column(name = "vehicleStatusCode")
-	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "vehicleStatusCode")
-	private String vehicleStatusCode;
+	private String vehicleStatCode;
 
 	@Column(name = "description")
 	private String description;
@@ -27,18 +25,18 @@ public class VehicleStatus implements Serializable {
 		super();
 	}
 
-	public VehicleStatus(String vehicleStatusCode, String description) {
+	public VehicleStatus(String vehicleStatCode, String description) {
 		super();
-		this.vehicleStatusCode = vehicleStatusCode;
+		this.vehicleStatCode = vehicleStatCode;
 		this.description = description;
 	}
 
-	public String getVehicleStatusCode() {
-		return vehicleStatusCode;
+	public String getVehicleStatCode() {
+		return vehicleStatCode;
 	}
 
-	public void setVehicleStatusCode(String vehicleStatusCode) {
-		this.vehicleStatusCode = vehicleStatusCode;
+	public void setVehicleStatCode(String vehicleStatCode) {
+		this.vehicleStatCode = vehicleStatCode;
 	}
 
 	public String getDescription() {
@@ -51,7 +49,7 @@ public class VehicleStatus implements Serializable {
 
 	@Override
 	public String toString() {
-		return "VehicleStatus [vehicleStatusCode=" + vehicleStatusCode + ", description=" + description + "]";
+		return "VehicleStatus [vehicleStatusCode=" + vehicleStatCode + ", description=" + description + "]";
 	}
 
 }

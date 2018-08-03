@@ -11,18 +11,22 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "VehicleParameters")
 public class VehicleParameters implements Serializable {
 
 	@Id
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "vehicleID")
-	private Vehicle vehicleID;
+	@JsonIgnore
+	@Column(name = "vehicleID")
+	private Long vehicleID;
 
 	@Column(name = "bodytype")
 	private String bodytype;
 
+	@JsonFormat(pattern="yyyy")
 	@Column(name = "productionYear")
 	private Date productionYear;
 
@@ -53,11 +57,15 @@ public class VehicleParameters implements Serializable {
 	@Column(name = "photoName")
 	private String photoName;
 
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "vehicleID")
+	private Vehicle vehicle;
+
 	public VehicleParameters() {
 		super();
 	}
 
-	public VehicleParameters(Vehicle vehicleID, String bodytype, Date productionYear, String fuelType, Integer power,
+	public VehicleParameters(Long vehicleID, String bodytype, Date productionYear, String fuelType, Integer power,
 			String gearbox, Integer frontWheelDrive, Integer doorsNumber, Integer seatsNumber, String color,
 			Integer metallic, String photoName) {
 		super();
@@ -75,11 +83,11 @@ public class VehicleParameters implements Serializable {
 		this.photoName = photoName;
 	}
 
-	public Vehicle getVehicleID() {
+	public Long getVehicleID() {
 		return vehicleID;
 	}
 
-	public void setVehicleID(Vehicle vehicleID) {
+	public void setVehicleID(Long vehicleID) {
 		this.vehicleID = vehicleID;
 	}
 

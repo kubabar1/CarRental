@@ -16,8 +16,6 @@ public class BookingStateCode implements Serializable {
 
 	@Id
 	@Column(name = "bookingCode")
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "bookingCode")
 	private String bookingCode;
 
 	@Column(name = "description")

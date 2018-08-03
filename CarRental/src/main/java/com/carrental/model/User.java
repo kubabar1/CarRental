@@ -5,12 +5,18 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "Users")
@@ -18,7 +24,7 @@ public class User implements Serializable {
 
 	@Id
 	@Column(name = "ID")
-	private Long ID;
+	private Long id;
 
 	@Column(name = "name")
 	private String name;
@@ -38,25 +44,23 @@ public class User implements Serializable {
 	@Column(name = "phone")
 	private String phone;
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "birthDate")
 	private Date birthDate;
 
 	@Column(name = "pesel")
 	private String pesel;
 
-	@OneToMany(mappedBy = "userID")
-	private List<JobPosition> jobPositionList = new ArrayList<JobPosition>();
-
-	@OneToMany(mappedBy = "authorID")
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "authorID")
 	private List<Stars> starsList = new ArrayList<Stars>();
 
-	@OneToMany(mappedBy = "authorID")
-	private List<Comments> commentList = new ArrayList<Comments>();
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "authorID")
+	private List<Comment> commentList = new ArrayList<Comment>();
 
-	@OneToMany(mappedBy = "userID")
-	private List<Booking> bookingList = new ArrayList<Booking>();
-
-	@ManyToMany(mappedBy = "userList")
+	@JsonIgnore
+	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "userList")
 	private List<UserRole> userRolesList = new ArrayList<UserRole>();
 
 	public User() {
@@ -76,12 +80,12 @@ public class User implements Serializable {
 		this.pesel = pesel;
 	}
 
-	public Long getID() {
-		return ID;
+	public Long getId() {
+		return id;
 	}
 
-	public void setID(Long iD) {
-		ID = iD;
+	public void setId(Long id) {
+		id = id;
 	}
 
 	public String getName() {
@@ -148,28 +152,12 @@ public class User implements Serializable {
 		this.pesel = pesel;
 	}
 
-	public List<JobPosition> getItems() {
-		return jobPositionList;
-	}
-
-	public void setItems(List<JobPosition> jobPositionList) {
-		this.jobPositionList = jobPositionList;
-	}
-
 	public List<UserRole> getUserRolesList() {
 		return userRolesList;
 	}
 
 	public void setUserRolesList(List<UserRole> userRolesList) {
 		this.userRolesList = userRolesList;
-	}
-
-	public List<JobPosition> getJobPositionList() {
-		return jobPositionList;
-	}
-
-	public void setJobPositionList(List<JobPosition> jobPositionList) {
-		this.jobPositionList = jobPositionList;
 	}
 
 	public List<Stars> getStarsList() {
@@ -180,17 +168,17 @@ public class User implements Serializable {
 		this.starsList = starsList;
 	}
 
-	public List<Comments> getCommentList() {
+	public List<Comment> getCommentList() {
 		return commentList;
 	}
 
-	public void setCommentList(List<Comments> commentList) {
+	public void setCommentList(List<Comment> commentList) {
 		this.commentList = commentList;
 	}
 
 	@Override
 	public String toString() {
-		return "User [ID=" + ID + ", name=" + name + ", surname=" + surname + ", login=" + login + ", password="
+		return "User [id=" + id + ", name=" + name + ", surname=" + surname + ", login=" + login + ", password="
 				+ password + ", email=" + email + ", phone=" + phone + ", birthDate=" + birthDate + ", pesel=" + pesel
 				+ "]";
 	}

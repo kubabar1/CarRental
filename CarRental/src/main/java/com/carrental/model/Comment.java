@@ -2,6 +2,7 @@ package com.carrental.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,35 +12,39 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
 @Entity
 @Table(name = "Comments")
-public class Comments implements Serializable {
+public class Comment implements Serializable {
 
 	@Id
 	@Column(name = "")
 	private Long ID;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "vehicleID")
-	@Column(name = "vehicleID")
 	private Vehicle vehicleID;
 
 	@Column(name = "commentContent")
 	private String commentContent;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "authorID")
-	@Column(name = "authorID")
 	private User authorID;
 
+	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@Column(name = "creationDate")
-	private Date creationDate;
+	private LocalDateTime creationDate;
 
-	public Comments() {
+	public Comment() {
 		super();
 	}
 
-	public Comments(Vehicle vehicleID, String commentContent, User authorID, Date creationDate) {
+	public Comment(Vehicle vehicleID, String commentContent, User authorID, LocalDateTime creationDate) {
 		super();
 		this.vehicleID = vehicleID;
 		this.commentContent = commentContent;
@@ -79,11 +84,11 @@ public class Comments implements Serializable {
 		this.authorID = authorID;
 	}
 
-	public Date getCreationDate() {
+	public LocalDateTime getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(Date creationDate) {
+	public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = creationDate;
 	}
 
