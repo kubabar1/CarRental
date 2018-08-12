@@ -13,8 +13,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "Equipment")
+@JsonIgnoreProperties(value= {"equipmentList"})
 public class Equipment implements Serializable {
 
 	@Id

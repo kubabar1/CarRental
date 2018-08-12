@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -45,6 +46,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
 		viewResolver.setTemplateEngine(templateEngine);
 		return viewResolver;
+	}
+	
+	
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/static/**").addResourceLocations("/static/");
+		registry.addResourceHandler("/vehicles-img/**").addResourceLocations("file:///C:/carrental/img/vehicles_img/");
+		registry.addResourceHandler("/etc-img/**").addResourceLocations("file:///C:/carrental/img/etc_img/");
 	}
 
 }

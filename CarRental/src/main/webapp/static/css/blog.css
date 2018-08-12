@@ -1,0 +1,20 @@
+#recent-articles ul{
+  list-style-type: none;
+}
+
+#recent-articles ul li::before{
+  list-style-type: none;
+  content: ">";
+  padding-right:4px;
+}
+
+#recent-articles ul li{
+  padding:2px;
+}
+
+#recent-articles h3{
+}
+
+#recent-articles ul li a{
+  color: #000000;
+}

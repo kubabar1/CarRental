@@ -26,7 +26,7 @@ public class VehicleParameters implements Serializable {
 	@Column(name = "bodytype")
 	private String bodytype;
 
-	@JsonFormat(pattern="yyyy")
+	@JsonFormat(pattern = "yyyy")
 	@Column(name = "productionYear")
 	private Date productionYear;
 
@@ -57,6 +57,11 @@ public class VehicleParameters implements Serializable {
 	@Column(name = "photoName")
 	private String photoName;
 
+	@Column(name = "description")
+	private String description;
+
+
+	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "vehicleID")
 	private Vehicle vehicle;
@@ -67,7 +72,7 @@ public class VehicleParameters implements Serializable {
 
 	public VehicleParameters(Long vehicleID, String bodytype, Date productionYear, String fuelType, Integer power,
 			String gearbox, Integer frontWheelDrive, Integer doorsNumber, Integer seatsNumber, String color,
-			Integer metallic, String photoName) {
+			Integer metallic, String photoName, String description) {
 		super();
 		this.vehicleID = vehicleID;
 		this.bodytype = bodytype;
@@ -81,6 +86,7 @@ public class VehicleParameters implements Serializable {
 		this.color = color;
 		this.metallic = metallic;
 		this.photoName = photoName;
+		this.description = description;
 	}
 
 	public Long getVehicleID() {
@@ -177,6 +183,22 @@ public class VehicleParameters implements Serializable {
 
 	public void setPhotoName(String photoName) {
 		this.photoName = photoName;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Vehicle getVehicle() {
+		return vehicle;
+	}
+
+	public void setVehicle(Vehicle vehicle) {
+		this.vehicle = vehicle;
 	}
 
 	@Override

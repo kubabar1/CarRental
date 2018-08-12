@@ -1,0 +1,56 @@
+#car-rental-description{
+  text-align:center;
+
+  background: url(../img/road_img3.jpg);
+  min-height: 450px;
+
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  color:#ffffff;
+  font-size:20px;
+  padding-bottom: 10px;
+
+  text-shadow: 1px 1px 2px black, 0 0 25px black, 0 0 5px black;
+}
+
+#car-rental-logo-desc{
+  max-width: 100%;
+  height: auto;
+}
+
+#about-car-rental div img{
+  max-height: 300px;
+}
+
+#about-car-rental h1{
+  text-align: center;
+  font-weight: bold;
+}
+
+#best-rental{
+  text-align:center;
+
+  background: url(../img/road_img.jpg);
+  min-height: 450px;
+
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  color:#ffffff;
+  padding-bottom: 10px;
+}
+
+#best-rental div h1{
+  font-size: 70px;
+  padding-top: 50px;
+}
+
+#best-rental div p{
+  margin-top:60px;
+  font-size: 20px;
+}

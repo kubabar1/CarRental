@@ -19,6 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "Vehicles")
@@ -57,7 +58,6 @@ public class Vehicle implements Serializable {
 	@OneToMany(mappedBy = "vehicleID")
 	private List<Comment> commentsList = new ArrayList<Comment>();
 
-	@JsonIgnore
 	@ManyToMany(mappedBy = "carList")
 	private List<Equipment> equipmentList = new ArrayList<Equipment>();
 
@@ -180,6 +180,9 @@ public class Vehicle implements Serializable {
 		this.bestOffer = bestOffer;
 	}
 
+	
+	
+	
 	@Override
 	public String toString() {
 		return "Vehicle [ID=" + id + ", registration=" + registration + ", brand=" + brand + ", model=" + model

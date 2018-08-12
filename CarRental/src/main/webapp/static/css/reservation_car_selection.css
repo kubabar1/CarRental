@@ -1,0 +1,13 @@
+.car-img-container{
+  min-height: 180px;
+}
+
+.car-single-item h2{
+  text-align: center;
+}
+
+#car-item-container{
+  height:600px;
+  overflow-y: scroll;
+
+}
