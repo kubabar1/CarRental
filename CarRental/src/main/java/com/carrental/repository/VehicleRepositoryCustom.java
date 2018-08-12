@@ -9,4 +9,6 @@ public interface VehicleRepositoryCustom {
 	public List<Vehicle> getCarListForPage(int page, int nb);
 
 	public List<Vehicle> getBestOfferCars(int page, int nb);
+
+	public Vehicle getVehicleUsingId(Long id);
 }

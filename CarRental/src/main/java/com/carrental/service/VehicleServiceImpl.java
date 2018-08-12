@@ -34,7 +34,7 @@ public class VehicleServiceImpl implements VehicleService {
 
 	@Override
 	public Vehicle getVehicleById(Long id) {
-		return vehicleRepository.getVehicleById(id);
+		return vehicleRepository.getVehicleUsingId(id);
 	}
 
 }

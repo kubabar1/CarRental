@@ -13,6 +13,4 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long>, Vehicle
 	@Query("select v from Vehicle v")
 	public List<Vehicle> getAllVehicles();
 
-	public Vehicle getVehicleById(Long id);
-
 }
