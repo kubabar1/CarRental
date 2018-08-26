@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
 import '../../static/css/main.css';
 import '../../static/css/contact.css';
+import { Link } from 'react-router-dom'
 
 
 export class PageLocation extends React.Component {

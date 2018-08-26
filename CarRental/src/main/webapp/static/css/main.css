@@ -1,9 +1,25 @@
 a{
-	style:none;
+	text-decoration:none;
 	color:#000000;
 }
 
-#collapsibleNavbar li:hover{
+.linkstyle{
+	text-decoration:none;
+	color:#ffffff;
+}
+
+.navlinkstyle{
+	text-decoration:none;
+	color:#000000;
+}
+
+.navlinkstyle:hover{
+  text-decoration:none;
+  color: #ffffff;
+  transition: 0.3s;
+}
+
+#main-nav>div>ul>li:hover{
   background-color: #cd3737;
   color: #ffffff;
   transition: 0.3s;
@@ -12,10 +28,6 @@ a{
 #main-nav {
   border-bottom: 1px solid black;
   background-color:#ffffff;
-}
-
-#main-nav div ul li a{
-  color: #363a40;
 }
 
 .navbar-default .navbar-toggle .icon-bar {

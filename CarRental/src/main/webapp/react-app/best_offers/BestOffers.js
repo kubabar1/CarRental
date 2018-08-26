@@ -35,7 +35,7 @@ export class BestOffers extends React.Component {
 		return (
       <div>
         <PageLocation/>
-        <div id="best-offers-car-container" className="container">
+        <div id="best-offers-car-container" className="container text-center">
         	{bestoffer ? <ItemContainer bestoffer={bestoffer}/> : <i className="fa fa-spinner fa-pulse fa-3x fa-fw "></i>}
         </div>
       </div>

@@ -9,9 +9,9 @@ export class MainNav extends React.Component {
 	render () {
 		return (
 				<nav id="main-nav" className="navbar navbar-expand-lg navbar-light  sticky-top">
-			    <a className="navbar-brand pl-5" href="index.html">
+			    <Link to={"/CarRental/"} className="navbar-brand pl-5 linkstyle">
 			      <img src={require("../static/img/car_logo.png")} alt="Logo" style={{width:200}}/>
-			    </a>
+			    </Link>
 
 			    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
 			        <span className="navbar-toggler-icon"></span>
@@ -20,22 +20,22 @@ export class MainNav extends React.Component {
 
 							<ul className="navbar-nav pr-3 ml-auto">
 								<li className="nav-item p-2 ">
-									<Link to='/CarRental/'><h4>Home</h4></Link>
+									<Link to='/CarRental/' className="navlinkstyle"><h4>Home</h4></Link>
 								</li>
 								<li className="nav-item p-2">
-									<Link to='/CarRental/carlist'><h4>Car list</h4></Link>
+									<Link to='/CarRental/listcar' className="navlinkstyle"><h4>Car list</h4></Link>
 								</li>
 								<li className="nav-item p-2">
-									<Link to='/CarRental/bestoffers'><h4>Best offers</h4></Link>
+									<Link to='/CarRental/bestoffers' className="navlinkstyle"><h4>Best offers</h4></Link>
 								</li>
 								<li className="nav-item p-2">
-									<Link to='/CarRental/blog'><h4>Blog</h4></Link>
+									<Link to='/CarRental/blog' className="navlinkstyle"><h4>Blog</h4></Link>
 								</li>
 								<li className="nav-item p-2">
-									<Link to='/CarRental/aboutus'><h4>About us</h4></Link>
+									<Link to='/CarRental/aboutus' className="navlinkstyle"><h4>About us</h4></Link>
 								</li>
 								<li className="nav-item p-2">
-									<Link to='/CarRental/contact'><h4>Contact</h4></Link>
+									<Link to='/CarRental/contact' className="navlinkstyle"><h4>Contact</h4></Link>
 								</li>
 							</ul>
 

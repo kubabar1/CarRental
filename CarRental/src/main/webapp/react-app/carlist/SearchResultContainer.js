@@ -5,7 +5,6 @@ import 'bootstrap/dist/js/bootstrap.js';
 import '../../static/css/main.css';
 import '../../static/css/car_list.css';
 import {CarSearchItem} from './CarSearchItem.js';
-import {Pagination} from './Pagination.js';
 
 
 export class SearchResultContainer extends React.Component {
@@ -25,7 +24,6 @@ export class SearchResultContainer extends React.Component {
 		return (
       <div>
 				{this.props.vehicles.map(this.vehiclesToTableRow)}
-				<Pagination/>
       </div>
 		)
 	}

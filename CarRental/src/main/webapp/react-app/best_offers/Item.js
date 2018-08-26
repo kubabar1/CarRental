@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
 import '../../static/css/main.css';
 import '../../static/css/best_offers.css';
+import { Link } from 'react-router-dom'
 
 export class Item extends React.Component {
 
@@ -14,13 +15,13 @@ export class Item extends React.Component {
 		return (
       <div className="car-single-item container col-lg-3 col-md-5 col-sm-7 card card-body shadow mx-4 my-3">
         <div className="text-center">
-          <h4>{this.props.brand} {this.props.model}</h4><span className="badge badge-success">Best offer</span>
+          <h5>{this.props.brand} {this.props.model}</h5><span className="badge badge-success">Best offer</span>
         </div>
         <div className="car-img-container mb-3" style={{ backgroundImage : `url(${image_url})`,  backgroundPosition: "center",  backgroundRepeat: "no-repeat", backgroundSize: "cover" }}>
         </div>
         <div className="row mt-2">
           <h2 className="ml-3">${this.props.dailyFee}</h2>
-          <a href={"car_properties/"+this.props.id} className="btn btn-info mr-auto ml-3">Properties</a>
+					<Link to={"/CarRental/cardetails/"+this.props.id} className="ml-auto linkstyle btn btn-info mr-auto ml-3">Properties</Link>
         </div>
       </div>
 		)

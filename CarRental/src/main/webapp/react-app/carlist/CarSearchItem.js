@@ -45,7 +45,7 @@ export class CarSearchItem extends React.Component {
                 <p>{this.props.description}</p>
               </div>
               <div className="properties button-container col-md-3 ml-auto">
-								<button type="button" className="btn btn-info"><Link to={"/CarRental/cardetails/"+this.props.id}>Properties</Link></button>
+								<Link to={"/CarRental/cardetails/"+this.props.id} className="linkstyle btn btn-info mr-auto ml-3">Properties</Link>
               </div>
             </div>
           </div>

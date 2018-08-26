@@ -17,7 +17,7 @@ public class Location implements Serializable {
 
 	@Id
 	@Column(name = "ID")
-	private Long ID;
+	private Long id;
 
 	@Column(name = "country")
 	private String country;
@@ -47,12 +47,12 @@ public class Location implements Serializable {
 		this.phone = phone;
 	}
 
-	public Long getID() {
-		return ID;
+	public Long getId() {
+		return id;
 	}
 
-	public void setID(Long iD) {
-		ID = iD;
+	public void setId(Long id) {
+		id = id;
 	}
 
 	public String getCountry() {
@@ -97,7 +97,7 @@ public class Location implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Location [ID=" + ID + ", country=" + country + ", city=" + city + ", addres=" + addres + ", email="
+		return "Location [id=" + id + ", country=" + country + ", city=" + city + ", addres=" + addres + ", email="
 				+ email + ", phone=" + phone + "]";
 	}
 

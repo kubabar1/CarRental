@@ -11,7 +11,7 @@ export class PageLocation extends React.Component {
 		return (
 			<div id="location-page">
     		<div className="container mt-3">
-      		<p><Link to={"/CarRental/"}>Home</Link> > <Link to={"/CarRental/carlist"}>Vehicle list</Link> > Properties</p>
+      		<p><Link to={"/CarRental/"}>Home</Link> > <Link to={"/CarRental/listcar"}>Vehicle list</Link> > Properties</p>
     		</div>
   		</div>
 		)

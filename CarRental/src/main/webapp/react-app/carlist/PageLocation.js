@@ -12,7 +12,7 @@ export class PageLocation extends React.Component {
 		return (
 			<div id="location-page">
     		<div className="container mt-3">
-      		<p><Link to={"/CarRental/"}>Home</Link> > Search result</p>
+      		<p><Link to={"/CarRental/"}>Home</Link> > Vehicle list</p>
     		</div>
   		</div>
 		)
