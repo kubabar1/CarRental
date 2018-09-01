@@ -53,10 +53,6 @@ public class User implements Serializable {
 
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "authorID")
-	private List<Stars> starsList = new ArrayList<Stars>();
-
-	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "authorID")
 	private List<Comment> commentList = new ArrayList<Comment>();
 
 	@JsonIgnore
@@ -158,14 +154,6 @@ public class User implements Serializable {
 
 	public void setUserRolesList(List<UserRole> userRolesList) {
 		this.userRolesList = userRolesList;
-	}
-
-	public List<Stars> getStarsList() {
-		return starsList;
-	}
-
-	public void setStarsList(List<Stars> starsList) {
-		this.starsList = starsList;
 	}
 
 	public List<Comment> getCommentList() {

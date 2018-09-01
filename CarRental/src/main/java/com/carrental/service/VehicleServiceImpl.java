@@ -33,8 +33,8 @@ public class VehicleServiceImpl implements VehicleService {
 	}
 
 	@Override
-	public List<Vehicle> getFiltredCarListForPage(VehicleFilterWrapper vehicleFilter, int page, int nb) {
-		return vehicleRepository.getFiltredCarListForPage(vehicleFilter, page, nb);
+	public Page<Vehicle> getFiltredCarListForPage(VehicleFilterWrapper vehicleFilter, Pageable pageable) {
+		return vehicleRepository.getFiltredCarListForPage(vehicleFilter, pageable);
 	}
 
 	@Override
@@ -63,36 +63,18 @@ public class VehicleServiceImpl implements VehicleService {
 	}
 
 	@Override
-	public BigDecimal getMaxCost() {
-		return vehicleRepository.getMaxCost();
+	public Page<Vehicle> getVehiclesForPage(Pageable pageable) {
+		return vehicleRepository.getVehiclesForPage(pageable);
 	}
 
 	@Override
-	public Integer getMaxSeatsNumber() {
-		return vehicleRepository.getMaxSeatsNumber();
+	public List<Vehicle> getAllVehicles() {
+		return vehicleRepository.getAllVehicles();
 	}
 
 	@Override
-	public Integer getMaxDoorsNumber() {
-		return vehicleRepository.getMaxDoorsNumber();
-	}
-
-	@Override
-	public Integer getMaxProductionYear() {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(vehicleRepository.getMaxProductionYear());
-
-		return cal.get(Calendar.YEAR);
-	}
-
-	@Override
-	public Long getVehiclesCount() {
-		return vehicleRepository.getVehiclesCount();
-	}
-
-	@Override
-	public Page<Vehicle> getAllVehicles(Pageable pageable) {
-		return vehicleRepository.getAllVehicles(pageable);
+	public List<Vehicle> getVehicleListForCity(String city) {
+		return vehicleRepository.getVehicleListForCity(city);
 	}
 
 }

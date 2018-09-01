@@ -4,15 +4,13 @@ import {MainNav} from './MainNav.js';
 import {AsideNav} from './AsideNav.js';
 import {Main} from './Main.js';
 import {Footer} from './Footer.js';
+import {Content} from './Content.js';
 
 export class App extends React.Component {
 	render () {
 		return (
       <div>
-        <AsideNav/>
-        <MainNav/>
-        <Main/>
-        <Footer/>
+				<Content/>
       </div>
 		)
 	}

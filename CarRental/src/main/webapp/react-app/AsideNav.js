@@ -2,6 +2,7 @@ import * as React from "react";
 import 'jquery/src/jquery.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
+import { Link } from 'react-router-dom'
 
 export class AsideNav extends React.Component {
 	render () {
@@ -19,10 +20,10 @@ export class AsideNav extends React.Component {
 
         <ul className="navbar-nav pr-3 ml-auto">
           <li className="nav-item p-2 ">
-            <a className="nav-link" href="login.html" ><small>Logowanie</small></a>
+						<Link to={"/CarRental/login"} className="linkstyle nav-link"><small>Log in</small></Link>
           </li>
           <li className="nav-item p-2 ">
-            <a className="nav-link" href="register.html" ><small>Rejestracja</small></a>
+						<Link to={"/CarRental/register"} className="linkstyle nav-link"><small>Sign up</small></Link>
           </li>
         </ul>
       </nav>

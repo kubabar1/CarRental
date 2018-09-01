@@ -9,5 +9,11 @@
 #car-item-container{
   height:600px;
   overflow-y: scroll;
-
 }
+
+.car-single-item-reservation:hover {
+    border: 4px solid green;
+    cursor: pointer;
+}
+
+

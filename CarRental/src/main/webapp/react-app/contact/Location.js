@@ -1,34 +1,35 @@
 import * as React from "react";
-import {PropTypes} from "react"
 import 'jquery/src/jquery.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
 import '../../static/css/main.css';
 import '../../static/css/contact.css';
-import GoogleMap from "react-google-map"
+import GoogleMapReact from 'google-map-react';
+import {Map} from './Map.js';
 
 export class Location extends React.Component {
+  static defaultProps = {
+    center: {
+      lat: 52.23,
+      lng: 21.01
+    },
+    zoom: 11
+  };
 
   render() {
-
-    const Map = (googleMaps) => (
-      <div>
-        <GoogleMap
-          zoom={8}
-          center={{lat: 52.226126, lng:21.0110623}}
-        />
+    return (
+      <div style={{ height: '500px', width: '100%' }}>
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: "" }}
+          defaultCenter={this.props.center}
+          defaultZoom={this.props.zoom}
+        >
+          <Map
+            lat={52.230774}
+            lng={21.006348}
+          />
+        </GoogleMapReact>
       </div>
-    )
-
-    Map.propTypes = {
-      googleMaps: PropTypes.object.isRequired,
-    }
-
-     return(
-      <div>
-        <Map/>
-      </div>
-     );
+    );
   }
-
 }

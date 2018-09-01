@@ -68,9 +68,8 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 	 * return vehicleList; }
 	 */
 
-	@Override
+	/*@Override
 	@Transactional
-	@Query(countQuery = "SELECT count(v) FROM Vehicle v WHERE v.bestOffer = 1 ORDER BY v.id DESC")
 	public Page<Vehicle> getBestOfferCars(Pageable pageable) {
 
 		int pageSize = pageable.getPageSize();
@@ -79,10 +78,6 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 		if (pageable.getPageSize() < 0 || pageable.getPageNumber() < 0) {
 			throw new IllegalArgumentException();
 		}
-
-		System.out.println("pageSize=" + pageSize);
-		System.out.println("pageNumber=" + pageable.getPageNumber());
-		System.out.println("numberOfFirstElement=" + numberOfFirstElement);
 
 		List<Vehicle> vehicleList = (List<Vehicle>) entityManager
 				.createQuery("SELECT v FROM Vehicle v WHERE v.bestOffer = 1 ORDER BY v.id DESC")
@@ -99,7 +94,7 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 		Page<Vehicle> page = new PageImpl<>(vehicleList, pageable, elementNumber);
 
 		return page;
-	}
+	}*/
 
 	@Override
 	@Transactional
@@ -115,8 +110,7 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 
 	@Override
 	@Transactional
-	public List<Vehicle> getFiltredCarListForPage(VehicleFilterWrapper vehicleFilter, int page, int nb) {
-		int idk = ((page - 1) * nb);
+	public Page<Vehicle> getFiltredCarListForPage(VehicleFilterWrapper vehicleFilter, Pageable pageable) {
 		java.sql.Date productionYearFrom = null;
 		java.sql.Date productionYearTo = null;
 
@@ -140,9 +134,37 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 				e.printStackTrace();
 			}
 		}
+		
+		int pageSize = pageable.getPageSize();
+		int numberOfFirstElement = (pageable.getPageNumber()) * pageSize;
+
+		if (pageable.getPageSize() < 0 || pageable.getPageNumber() < 0) {
+			throw new IllegalArgumentException();
+		}
 
 		List<Vehicle> vehicleList = (List<Vehicle>) entityManager.createQuery(
 				"SELECT v FROM Vehicle v JOIN VehicleParameters vp ON (v.id=vp.vehicleID) JOIN Location l ON (l.id=v.locationId) WHERE "
+						+ "(:brand IS NULL OR v.brand=:brand) AND " + "(:model IS NULL OR v.model=:model) AND "
+						+ "(:city IS NULL OR l.city=:city) AND " + "(:bodytype IS NULL OR vp.bodytype=:bodytype) AND "
+						+ "((:priceFrom IS NULL OR v.dailyFee > :priceFrom) AND (:priceTo IS NULL OR v.dailyFee < :priceTo)) AND "
+						+ "((:placesNumberFrom IS NULL OR vp.seatsNumber > :placesNumberFrom) AND (:placesNumberTo IS NULL OR vp.seatsNumber < :placesNumberTo)) AND "
+						+ "((:doorsNumberFrom IS NULL OR vp.doorsNumber > :doorsNumberFrom) AND (:doorsNumberTo IS NULL OR vp.doorsNumber < :doorsNumberTo)) AND "
+						+ "((:productionYearFrom IS NULL OR vp.productionYear > :productionYearFrom) AND (:productionYearTo IS NULL OR vp.productionYear < :productionYearTo)) AND "
+						+ "(:color IS NULL OR vp.color=:color) " + " ORDER BY v.id ")
+				.setParameter("brand", vehicleFilter.getBrand()).setParameter("model", vehicleFilter.getModel())
+				.setParameter("city", vehicleFilter.getCity()).setParameter("bodytype", vehicleFilter.getBodytype())
+				.setParameter("priceFrom", vehicleFilter.getPriceFrom())
+				.setParameter("priceTo", vehicleFilter.getPriceTo())
+				.setParameter("placesNumberFrom", vehicleFilter.getPlacesNumberFrom())
+				.setParameter("placesNumberTo", vehicleFilter.getPlacesNumberTo())
+				.setParameter("doorsNumberFrom", vehicleFilter.getDoorsNumberFrom())
+				.setParameter("doorsNumberTo", vehicleFilter.getDoorsNumberTo())
+				.setParameter("productionYearFrom", productionYearFrom)
+				.setParameter("productionYearTo", productionYearTo).setParameter("color", vehicleFilter.getColor())
+				.setFirstResult(numberOfFirstElement).setMaxResults(pageSize).getResultList();
+		
+		long elementNumber = (long) entityManager.createQuery(
+				"SELECT COUNT(v) FROM Vehicle v JOIN VehicleParameters vp ON (v.id=vp.vehicleID) JOIN Location l ON (l.id=v.locationId) WHERE "
 						+ "(:brand IS NULL OR v.brand=:brand) AND " + "(:model IS NULL OR v.model=:model) AND "
 						+ "(:city IS NULL OR l.city=:city) AND " + "(:bodytype IS NULL OR vp.bodytype=:bodytype) AND "
 						+ "((:priceFrom IS NULL OR v.dailyFee > :priceFrom) AND (:priceTo IS NULL OR v.dailyFee < :priceTo)) AND "
@@ -160,15 +182,16 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 				.setParameter("doorsNumberTo", vehicleFilter.getDoorsNumberTo())
 				.setParameter("productionYearFrom", productionYearFrom)
 				.setParameter("productionYearTo", productionYearTo).setParameter("color", vehicleFilter.getColor())
-				.setFirstResult(idk).setMaxResults(nb).getResultList();
+				.getSingleResult();
 
 		for (int i = 0; i < vehicleList.size(); i++) {
 			Hibernate.initialize(vehicleList.get(i).getEquipmentList());
 		}
 
-		System.out.println(vehicleList.toString());
+		
+		Page<Vehicle> page = new PageImpl<>(vehicleList, pageable, elementNumber);
 
-		return vehicleList;
+		return page;
 	}
 
 	@Override
@@ -208,36 +231,10 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 	}
 
 	@Override
-	public BigDecimal getMaxCost() {
-		return (BigDecimal) entityManager.createQuery("SELECT MAX(v.dailyFee) FROM Vehicle v").getSingleResult();
-	}
-
-	@Override
-	public Integer getMaxSeatsNumber() {
-		return (Integer) entityManager
-				.createQuery(
-						"SELECT MAX(vp.seatsNumber) FROM Vehicle v JOIN VehicleParameters vp ON (v.id=vp.vehicleID)")
-				.getSingleResult();
-	}
-
-	@Override
-	public Integer getMaxDoorsNumber() {
-		return (Integer) entityManager
-				.createQuery(
-						"SELECT MAX(vp.doorsNumber) FROM Vehicle v JOIN VehicleParameters vp ON (v.id=vp.vehicleID)")
-				.getSingleResult();
-	}
-
-	@Override
-	public Date getMaxProductionYear() {
-		return (Date) entityManager
-				.createQuery(
-						"SELECT MAX(vp.productionYear) FROM Vehicle v JOIN VehicleParameters vp ON (v.id=vp.vehicleID)")
-				.getSingleResult();
-	}
-
-	@Override
-	public Long getVehiclesCount() {
-		return (Long) entityManager.createQuery("SELECT COUNT(v) FROM Vehicle v").getSingleResult();
+	public List<Vehicle> getVehicleListForCity(String city) {
+		return (List<Vehicle>) entityManager
+				.createQuery("SELECT DISTINCT v FROM Vehicle v JOIN Location l ON(v.locationId=l.id) LEFT JOIN FETCH v.equipmentList  WHERE l.city=:ct")
+				.setParameter("ct", city)
+				.getResultList();
 	}
 }

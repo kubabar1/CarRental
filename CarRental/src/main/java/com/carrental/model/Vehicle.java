@@ -44,27 +44,22 @@ public class Vehicle implements Serializable {
 	@Column(name = "bestOffer")
 	private Boolean bestOffer;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "vehicleID")
-	private List<Stars> starsList = new ArrayList<Stars>();
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "vehicleID")
-	private List<Comment> commentsList = new ArrayList<Comment>();
-
 	@ManyToMany(mappedBy = "carList")
 	private List<Equipment> equipmentList = new ArrayList<Equipment>();
 
 	@OneToOne(mappedBy = "vehicle")
 	private VehicleParameters vehicleParameters;
 
+	@OneToOne(mappedBy = "vehicle")
+	private Stars stars;
+
 	public Vehicle() {
 		super();
 	}
 
 	public Vehicle(String registration, String brand, String model, BigDecimal dailyFee, String locationId,
-			String vehicleStatus, List<Stars> starsList, List<Comment> commentsList, List<Equipment> equipmentList,
-			VehicleParameters vehicleParameters) {
+			String vehicleStatus, Boolean bestOffer, List<Equipment> equipmentList, VehicleParameters vehicleParameters,
+			Stars stars) {
 		super();
 		this.registration = registration;
 		this.brand = brand;
@@ -72,10 +67,10 @@ public class Vehicle implements Serializable {
 		this.dailyFee = dailyFee;
 		this.locationId = locationId;
 		this.vehicleStatus = vehicleStatus;
-		this.starsList = starsList;
-		this.commentsList = commentsList;
+		this.bestOffer = bestOffer;
 		this.equipmentList = equipmentList;
 		this.vehicleParameters = vehicleParameters;
+		this.stars = stars;
 	}
 
 	public Long getId() {
@@ -118,22 +113,6 @@ public class Vehicle implements Serializable {
 		this.dailyFee = dailyFee;
 	}
 
-	public String getVehicleStatus() {
-		return vehicleStatus;
-	}
-
-	public void setVehicleStatus(String vehicleStatus) {
-		this.vehicleStatus = vehicleStatus;
-	}
-
-	public List<Equipment> getEquipmentList() {
-		return equipmentList;
-	}
-
-	public void setEquipmentList(List<Equipment> equipmentList) {
-		this.equipmentList = equipmentList;
-	}
-
 	public String getLocationId() {
 		return locationId;
 	}
@@ -142,28 +121,12 @@ public class Vehicle implements Serializable {
 		this.locationId = locationId;
 	}
 
-	public VehicleParameters getVehicleParameters() {
-		return vehicleParameters;
+	public String getVehicleStatus() {
+		return vehicleStatus;
 	}
 
-	public void setVehicleParameters(VehicleParameters vehicleParameters) {
-		this.vehicleParameters = vehicleParameters;
-	}
-
-	public List<Stars> getStarsList() {
-		return starsList;
-	}
-
-	public void setStarsList(List<Stars> starsList) {
-		this.starsList = starsList;
-	}
-
-	public List<Comment> getCommentsList() {
-		return commentsList;
-	}
-
-	public void setCommentsList(List<Comment> commentsList) {
-		this.commentsList = commentsList;
+	public void setVehicleStatus(String vehicleStatus) {
+		this.vehicleStatus = vehicleStatus;
 	}
 
 	public Boolean getBestOffer() {
@@ -174,13 +137,36 @@ public class Vehicle implements Serializable {
 		this.bestOffer = bestOffer;
 	}
 
-	
-	
-	
+	public List<Equipment> getEquipmentList() {
+		return equipmentList;
+	}
+
+	public void setEquipmentList(List<Equipment> equipmentList) {
+		this.equipmentList = equipmentList;
+	}
+
+	public VehicleParameters getVehicleParameters() {
+		return vehicleParameters;
+	}
+
+	public void setVehicleParameters(VehicleParameters vehicleParameters) {
+		this.vehicleParameters = vehicleParameters;
+	}
+
+	public Stars getStars() {
+		return stars;
+	}
+
+	public void setStars(Stars stars) {
+		this.stars = stars;
+	}
+
 	@Override
 	public String toString() {
-		return "Vehicle [ID=" + id + ", registration=" + registration + ", brand=" + brand + ", model=" + model
-				+ ", dailyFee=" + dailyFee + ", locationId=" + locationId + ", vehicleStatus=" + vehicleStatus + "]";
+		return "Vehicle [id=" + id + ", registration=" + registration + ", brand=" + brand + ", model=" + model
+				+ ", dailyFee=" + dailyFee + ", locationId=" + locationId + ", vehicleStatus=" + vehicleStatus
+				+ ", bestOffer=" + bestOffer + ", equipmentList=" + equipmentList + ", vehicleParameters="
+				+ vehicleParameters + ", stars=" + stars + "]";
 	}
 
 }

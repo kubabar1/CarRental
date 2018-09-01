@@ -1,11 +1,7 @@
-html,
-body {
-  height: 100%;
-}
-
-body {
-  display: flex;
-  align-items: center;
+.full_body_login {
+    flex: 1;
+    justifyContent: 'center';
+    alignItems: 'center';
 }
 
 .login_link a{

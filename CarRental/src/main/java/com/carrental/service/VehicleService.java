@@ -12,13 +12,17 @@ import com.carrental.model.VehicleParameters;
 
 public interface VehicleService {
 	
-	public Page<Vehicle> getAllVehicles(Pageable pageable);
+	public List<Vehicle> getAllVehicles();
+	
+	public Page<Vehicle> getVehiclesForPage(Pageable pageable);
 
 	public Page<Vehicle> getBestOfferCars(Pageable pageable);
+	
+	public List<Vehicle> getVehicleListForCity(String city);
 
 	public Vehicle getVehicleById(Long id);
 
-	public List<Vehicle> getFiltredCarListForPage(VehicleFilterWrapper vehicleFilter, int page, int nb);
+	public Page<Vehicle> getFiltredCarListForPage(VehicleFilterWrapper vehicleFilter, Pageable pageable);
 
 	public List<String> getBrandList();
 
@@ -29,16 +33,6 @@ public interface VehicleService {
 	public List<String> getCityList();
 
 	public List<String> getColorList();
-
-	public BigDecimal getMaxCost();
-
-	public Integer getMaxSeatsNumber();
-
-	public Integer getMaxDoorsNumber();
-
-	public Integer getMaxProductionYear();
-	
-	public Long getVehiclesCount();
 
 
 }

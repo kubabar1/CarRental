@@ -26,74 +26,21 @@ public class VehicleListController {
 
 	@Autowired
 	VehicleServiceImpl vehicleService;
+
+	@RequestMapping(method = RequestMethod.GET, params = { "page", "number" })
+	public Page<Vehicle> getVehicleList(@RequestParam(value = "page") int page,
+			@RequestParam(value = "number") int number) {
+		return vehicleService.getVehiclesForPage(new PageRequest(page, number));
+	}
+
+	@RequestMapping(value = "/allcars", method = RequestMethod.GET)
+	public List<Vehicle> getAllVehicles() {
+		return vehicleService.getAllVehicles();
+	}
 	
-	@RequestMapping(method=RequestMethod.GET, params = {"page","number"})
-	public Page<Vehicle> getVehicleList(@RequestParam(value = "page") int page, @RequestParam(value = "number") int number) {
-		return vehicleService.getAllVehicles(new PageRequest(page, number));
-	}
-
-	
-
-	@RequestMapping(method = RequestMethod.POST)
-	public List<Vehicle> getFiltredCarListForFirstPage(@RequestBody VehicleFilterWrapper carFilter) {
-
-		int number = 20;
-		int page = 1;
-
-		System.out.println("filter test");
-		System.out.println(carFilter.toString());
-		System.out.println("filter test");
-
-		return vehicleService.getFiltredCarListForPage(carFilter, page, number);
-	}
-
-	@RequestMapping(method = RequestMethod.POST, params = "page")
-	public List<Vehicle> getFiltredCarListForPageNumber(@RequestParam(value = "page", required = true) int page,
-			@RequestBody VehicleFilterWrapper carFilter) {
-
-		int number = 20;
-
-		return vehicleService.getFiltredCarListForPage(carFilter, page, number);
-	}
-
-	@RequestMapping(value = "/search/brandlist", method = RequestMethod.GET)
-	public List<String> vehicleSearchGetBrandList() {
-
-		return vehicleService.getBrandList();
-	}
-
-	@RequestMapping(value = "/search/modellist", method = RequestMethod.GET)
-	public List<String> vehicleSearchGetModelListForBrand(@RequestBody String brand) {
-
-		return vehicleService.getModelListForBrand(brand);
-	}
-
-	@RequestMapping(value = "/search/bodytypelist", method = RequestMethod.GET)
-	public List<String> vehicleSearchGetBodTypeList() {
-
-		return vehicleService.getBodTypeList();
-	}
-
-	@RequestMapping(value = "/search/citylist", method = RequestMethod.GET)
-	public List<String> vehicleSearchGetCityList() {
-
-		return vehicleService.getCityList();
-	}
-
-	@RequestMapping(value = "/search/colorlist", method = RequestMethod.GET)
-	public List<String> vehicleSearchGetColorList() {
-
-		return vehicleService.getColorList();
-	}
-
-	@RequestMapping(value = "/search/modelsforbrand", method = RequestMethod.POST)
-	public List<String> getModelsForBrand(@RequestBody String brand) {
-		return vehicleService.getModelListForBrand(brand);
-	}
-
-	@RequestMapping(value = "/vehiclescount", method = RequestMethod.GET)
-	public Long getVehiclesCount() {
-		return vehicleService.getVehiclesCount();
+	@RequestMapping(method = RequestMethod.GET, params = { "city" })
+	public List<Vehicle> getVehicleListForCity(@RequestParam(value = "city") String city){
+		return vehicleService.getVehicleListForCity(city);
 	}
 	/*
 	 * @RequestMapping(value = "/search/maxcost", method = RequestMethod.GET) public

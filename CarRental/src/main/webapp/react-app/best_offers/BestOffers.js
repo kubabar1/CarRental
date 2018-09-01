@@ -12,31 +12,30 @@ export class BestOffers extends React.Component {
 
 	constructor() {
 		super();
-
 		this.state = {
-			bestoffer:null
+			activePageNumber:0
 		};
 	}
 
 	componentDidMount(){
-		fetch("http://localhost:8080/CarRental/bestoffer")
-		.then(response=>{
-			response.json().then(json=>{
-				this.setState({bestoffer:json});
-			});
-	});
-	};
+
+			var page;
+			if(typeof(this.props.match.params.page) === 'undefined' || this.props.match.params.page==null){
+				page=0;
+			}else{
+				page=this.props.match.params.page;
+			}
+
+			this.setState({activePageNumber:page});
+	}
 
 
 	render () {
-
-    const bestoffer=this.state.bestoffer;
-
 		return (
       <div>
         <PageLocation/>
         <div id="best-offers-car-container" className="container text-center">
-        	{bestoffer ? <ItemContainer bestoffer={bestoffer}/> : <i className="fa fa-spinner fa-pulse fa-3x fa-fw "></i>}
+        	 <ItemContainer activePageNumber={this.state.activePageNumber}/>
         </div>
       </div>
 		)

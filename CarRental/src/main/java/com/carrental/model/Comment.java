@@ -21,19 +21,17 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 public class Comment implements Serializable {
 
 	@Id
-	@Column(name = "")
-	private Long ID;
+	@Column(name = "ID")
+	private Long id;
 
-	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "vehicleID")
-	private Vehicle vehicleID;
+	private Long vehicleID;
 
 	@Column(name = "commentContent")
 	private String commentContent;
 
-	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "authorID")
-	private User authorID;
+	private Long authorID;
 
 	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -44,7 +42,7 @@ public class Comment implements Serializable {
 		super();
 	}
 
-	public Comment(Vehicle vehicleID, String commentContent, User authorID, LocalDateTime creationDate) {
+	public Comment(Long vehicleID, String commentContent, Long authorID, LocalDateTime creationDate) {
 		super();
 		this.vehicleID = vehicleID;
 		this.commentContent = commentContent;
@@ -52,12 +50,12 @@ public class Comment implements Serializable {
 		this.creationDate = creationDate;
 	}
 
-	public Long getID() {
-		return ID;
+	public Long getId() {
+		return id;
 	}
 
-	public void setID(Long iD) {
-		ID = iD;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getCommentContent() {
@@ -68,19 +66,19 @@ public class Comment implements Serializable {
 		this.commentContent = commentContent;
 	}
 
-	public Vehicle getVehicleID() {
+	public Long getVehicleID() {
 		return vehicleID;
 	}
 
-	public void setVehicleID(Vehicle vehicleID) {
+	public void setVehicleID(Long vehicleID) {
 		this.vehicleID = vehicleID;
 	}
 
-	public User getAuthorID() {
+	public Long getAuthorID() {
 		return authorID;
 	}
 
-	public void setAuthorID(User authorID) {
+	public void setAuthorID(Long authorID) {
 		this.authorID = authorID;
 	}
 
@@ -94,7 +92,7 @@ public class Comment implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Comments [ID=" + ID + ", vehicleID=" + vehicleID + ", commentContent=" + commentContent + ", authorID="
+		return "Comments [id=" + id + ", vehicleID=" + vehicleID + ", commentContent=" + commentContent + ", authorID="
 				+ authorID + ", creationDate=" + creationDate + "]";
 	}
 

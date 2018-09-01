@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
 import '../../static/css/main.css';
 import '../../static/css/car_list.css';
-import {Redirect} from 'react-router-dom';
+import {Redirect} from 'react-router';
 import {Brand} from './search_item/Brand.js';
 import {Model} from './search_item/Model.js';
 import {City} from './search_item/City.js';
@@ -14,6 +14,7 @@ import {Price} from './search_item/Price.js';
 import {Seatsnumber} from './search_item/Seatsnumber.js';
 import {Doorsnumber} from './search_item/Doorsnumber.js';
 import {Productionyear} from './search_item/Productionyear.js';
+import { Link } from 'react-router-dom'
 
 
 export class CarSearchFilters extends React.Component {
@@ -34,7 +35,8 @@ export class CarSearchFilters extends React.Component {
 				productionYearFrom:null,
 				productionYearTo:null,
 				color:null,
-				filterWrapperObject:null
+				filterWrapperObject:null,
+				redirect:false
 			};
 	}
 
@@ -59,15 +61,9 @@ export class CarSearchFilters extends React.Component {
 
 	handleSubmit = (event) => {
 			event.preventDefault();
-
 			const item = this.createFilterWrapperObject();
-
 			const data = JSON.stringify(item);
-
 			this.setState({filterWrapperObject:data});
-
-			console.log(data);
-
 			this.props.setFilterWrapper(data);
 	}
 
@@ -77,7 +73,7 @@ export class CarSearchFilters extends React.Component {
 		const value = target.value;
 		const brand = value;
 
-		fetch('http://localhost:8080/CarRental/carlist/search/modelsforbrand', {
+		fetch('http://localhost:8080/CarRental/carlistsearch/modelsforbrand', {
 			method: 'POST',
 			headers: {
 				'Accept': 'application/json',
@@ -106,7 +102,6 @@ export class CarSearchFilters extends React.Component {
 	}
 
 	render () {
-
 		return (
 			<div className="card shadow">
 				<div id="search-filter-container" className="card-body">

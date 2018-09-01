@@ -11,7 +11,7 @@ export class ContactInfoContainer extends React.Component {
 
   render () {
     return (
-      <div id="contacts-info-container" className="container mb-5">
+      <div id="contacts-info-container" className="container mb-5 mt-4">
         <div className="row">
           <ContactData/>
           <SendMesage/>
