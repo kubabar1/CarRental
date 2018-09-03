@@ -32,4 +32,9 @@ public class UserServiceImpl implements UserService {
 		return userRepository.getUserById(id);
 	}
 
+	@Override
+	public User getUserByLogin(String login) {
+		return userRepository.getUserByLogin(login);
+	}
+
 }

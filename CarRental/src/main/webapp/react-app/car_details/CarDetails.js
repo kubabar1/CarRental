@@ -6,7 +6,7 @@ import '../../static/css/main.css';
 import '../../static/css/car_details.css';
 import {PageLocation} from './PageLocation.js';
 import {CarDetailsHeader} from './CarDetailsHeader.js';
-import {ReserveButton} from './ReserveButton.js';
+import ReserveButton from './ReserveButton.js';
 import {CarProperties} from './CarProperties.js';
 import {CarFeatures} from './CarFeatures.js';
 import {CarState} from './CarState.js';
@@ -40,7 +40,7 @@ export class CarDetails extends React.Component {
 
 	 		<hr className="mt-5"></hr>
 
-	 		<ReserveButton/>
+			<CarState carprops={vehicleProperties}/>
 
 	 		<hr className="mt-5"></hr>
 
@@ -52,7 +52,7 @@ export class CarDetails extends React.Component {
 
 	 		<hr className="my-3"></hr>
 
-	 		<CarState carprops={vehicleProperties}/>
+			<ReserveButton vehicleProperties={vehicleProperties}/>
 
 	 		<hr className="my-3"></hr>
 

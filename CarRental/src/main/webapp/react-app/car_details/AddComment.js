@@ -7,7 +7,33 @@ import '../../static/css/car_details.css';
 
 export class AddComment extends React.Component {
 
+	constructor(){
+		super();
+
+		this.state = {
+			starsNumber:0
+		};
+
+	}
+
+	renderStars = (number) => {
+		console.log("renderStars")
+		const objs = [];
+
+		for(let i=0; i < 5 ; i++){
+			objs.push(<span key={"star_"+i} className={i<number ? "fa fa-star checked" : "fa fa-star"} onClick={()=>this.setStarsNumber(i+1)}></span>);
+		}
+
+		return objs;
+	}
+
+	setStarsNumber = (i) => {
+		console.log("setStarsNumber")
+		this.setState({starsNumber:i});
+	}
+
 	render () {
+		const starsNumber = this.state.starsNumber;
 
 		return (
       <div className="card text-left">
@@ -17,11 +43,7 @@ export class AddComment extends React.Component {
         <div className="card-body">
           <form>
             <div className="car-rank mb-3 ml-q">
-              <span className="fa fa-star "></span>
-              <span className="fa fa-star "></span>
-              <span className="fa fa-star "></span>
-              <span className="fa fa-star"></span>
-              <span className="fa fa-star"></span>
+              {starsNumber ? this.renderStars(starsNumber) : this.renderStars(0)}
             </div>
             <div className="form-group">
               <textarea className="form-control" rows="5" id="comment-content" placeholder="Comment"></textarea>

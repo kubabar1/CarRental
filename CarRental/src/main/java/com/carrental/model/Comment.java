@@ -24,13 +24,13 @@ public class Comment implements Serializable {
 	@Column(name = "ID")
 	private Long id;
 
-	@JoinColumn(name = "vehicleID")
+	@Column(name = "vehicleID")
 	private Long vehicleID;
 
 	@Column(name = "commentContent")
 	private String commentContent;
 
-	@JoinColumn(name = "authorID")
+	@Column(name = "authorID")
 	private Long authorID;
 
 	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")

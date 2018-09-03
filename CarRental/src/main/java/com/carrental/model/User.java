@@ -52,10 +52,6 @@ public class User implements Serializable {
 	private String pesel;
 
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "authorID")
-	private List<Comment> commentList = new ArrayList<Comment>();
-
-	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "userList")
 	private List<UserRole> userRolesList = new ArrayList<UserRole>();
 
@@ -154,14 +150,6 @@ public class User implements Serializable {
 
 	public void setUserRolesList(List<UserRole> userRolesList) {
 		this.userRolesList = userRolesList;
-	}
-
-	public List<Comment> getCommentList() {
-		return commentList;
-	}
-
-	public void setCommentList(List<Comment> commentList) {
-		this.commentList = commentList;
 	}
 
 	@Override

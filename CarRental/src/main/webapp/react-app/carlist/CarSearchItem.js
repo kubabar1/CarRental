@@ -9,8 +9,25 @@ import { Link } from 'react-router-dom'
 
 export class CarSearchItem extends React.Component {
 
+
+	renderStars = (number) => {
+		const objs = [];
+
+		for(var i=0; i < number ; i++){
+			objs.push(<span key={"star_"+i} className={"fa fa-star checked"}></span>);
+		}
+
+		for(var i=number; i < 5 ; i++){
+			objs.push(<span key={"star_"+i} className={"fa fa-star"}></span>);
+		}
+
+		return objs;
+	}
+
 	render () {
     const image_url = '/CarRental/vehicles-img/'+this.props.photoName;
+		const starsNumber = this.props.starsNumber ? this.props.starsNumber : 0;
+
 		return (
 
       <div className="item">
@@ -27,11 +44,7 @@ export class CarSearchItem extends React.Component {
                       <h3>{this.props.brand} {this.props.model}</h3>
                     </div>
                     <div className="car-rank text-left">
-                      <span className="fa fa-star checked"></span>
-                      <span className="fa fa-star checked"></span>
-                      <span className="fa fa-star checked"></span>
-                      <span className="fa fa-star"></span>
-                      <span className="fa fa-star"></span>
+                      {this.renderStars(starsNumber)}
                     </div>
                   </div>
                   <div className="second-tile ml-auto">

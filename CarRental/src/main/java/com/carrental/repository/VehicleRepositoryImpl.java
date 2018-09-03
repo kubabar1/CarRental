@@ -232,6 +232,8 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 
 	@Override
 	public List<Vehicle> getVehicleListForCity(String city) {
+		System.out.println(city);
+		
 		return (List<Vehicle>) entityManager
 				.createQuery("SELECT DISTINCT v FROM Vehicle v JOIN Location l ON(v.locationId=l.id) LEFT JOIN FETCH v.equipmentList  WHERE l.city=:ct")
 				.setParameter("ct", city)
