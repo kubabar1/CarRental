@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.carrental.model.VehicleFilterWrapper;
+import com.carrental.dto.VehicleFilterDto;
 import com.carrental.model.User;
 import com.carrental.model.Vehicle;
 import com.carrental.service.VehicleServiceImpl;

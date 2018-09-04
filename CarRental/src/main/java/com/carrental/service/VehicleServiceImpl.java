@@ -10,8 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.carrental.dto.VehicleFilterDto;
 import com.carrental.model.Vehicle;
-import com.carrental.model.VehicleFilterWrapper;
 import com.carrental.model.VehicleParameters;
 import com.carrental.repository.VehicleRepository;
 
@@ -33,7 +33,7 @@ public class VehicleServiceImpl implements VehicleService {
 	}
 
 	@Override
-	public Page<Vehicle> getFiltredCarListForPage(VehicleFilterWrapper vehicleFilter, Pageable pageable) {
+	public Page<Vehicle> getFiltredCarListForPage(VehicleFilterDto vehicleFilter, Pageable pageable) {
 		return vehicleRepository.getFiltredCarListForPage(vehicleFilter, pageable);
 	}
 

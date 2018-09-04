@@ -17,8 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.carrental.dto.VehicleFilterDto;
 import com.carrental.model.Vehicle;
-import com.carrental.model.VehicleFilterWrapper;
 
 @Repository
 public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
@@ -110,7 +110,7 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 
 	@Override
 	@Transactional
-	public Page<Vehicle> getFiltredCarListForPage(VehicleFilterWrapper vehicleFilter, Pageable pageable) {
+	public Page<Vehicle> getFiltredCarListForPage(VehicleFilterDto vehicleFilter, Pageable pageable) {
 		java.sql.Date productionYearFrom = null;
 		java.sql.Date productionYearTo = null;
 

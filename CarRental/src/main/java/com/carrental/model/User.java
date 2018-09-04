@@ -3,13 +3,19 @@ package com.carrental.model;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -23,6 +29,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class User implements Serializable {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private Long id;
 
@@ -52,8 +59,9 @@ public class User implements Serializable {
 	private String pesel;
 
 	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "userList")
-	private List<UserRole> userRolesList = new ArrayList<UserRole>();
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "AppUsersRoles", joinColumns = @JoinColumn(name = "userID"), inverseJoinColumns = @JoinColumn(name = "userRoleID"))
+	private Set<UserRole> userRolesList = new HashSet<UserRole>();
 
 	public User() {
 		super();
@@ -144,11 +152,11 @@ public class User implements Serializable {
 		this.pesel = pesel;
 	}
 
-	public List<UserRole> getUserRolesList() {
+	public Set<UserRole> getUserRolesList() {
 		return userRolesList;
 	}
 
-	public void setUserRolesList(List<UserRole> userRolesList) {
+	public void setUserRolesList(Set<UserRole> userRolesList) {
 		this.userRolesList = userRolesList;
 	}
 

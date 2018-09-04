@@ -7,14 +7,14 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.carrental.dto.VehicleFilterDto;
 import com.carrental.model.Vehicle;
-import com.carrental.model.VehicleFilterWrapper;
 
 public interface VehicleRepositoryCustom {
 
 	public Vehicle getVehicleUsingId(Long id);
 
-	public Page<Vehicle> getFiltredCarListForPage(VehicleFilterWrapper vehicleFilter, Pageable pageable);
+	public Page<Vehicle> getFiltredCarListForPage(VehicleFilterDto vehicleFilter, Pageable pageable);
 	
 	public List<Vehicle> getVehicleListForCity(String city);
 

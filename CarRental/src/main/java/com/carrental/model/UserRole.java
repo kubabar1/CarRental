@@ -2,7 +2,9 @@ package com.carrental.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,22 +25,27 @@ public class UserRole implements Serializable {
 
 	@Id
 	@Column(name = "ID")
-	private Long ID;
+	private Long id;
 
 	@Column(name = "type")
 	private String type;
 
-	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "AppUsersRoles", joinColumns = @JoinColumn(name = "userRoleID"), inverseJoinColumns = @JoinColumn(name = "userID"))
-	private List<User> userList = new ArrayList<User>();
-
-	public Long getID() {
-		return ID;
+	public UserRole() {
+		super();
 	}
 
-	public void setID(Long iD) {
-		ID = iD;
+	public UserRole(Long id, String type) {
+		super();
+		this.id = id;
+		this.type = type;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getType() {
@@ -49,17 +56,9 @@ public class UserRole implements Serializable {
 		this.type = type;
 	}
 
-	public List<User> getUserList() {
-		return userList;
-	}
-
-	public void setUserList(List<User> userList) {
-		this.userList = userList;
-	}
-
 	@Override
 	public String toString() {
-		return "UserRole [ID=" + ID + ", type=" + type + ", userList=" + userList + "]";
+		return "UserRole [id=" + id + ", type=" + type + "]";
 	}
 
 }
