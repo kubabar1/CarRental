@@ -5,10 +5,13 @@ const PATHS = {
 	build : path.join(__dirname, 'src', 'main', 'webapp', 'static', 'js')
 };
 module.exports = {
-	entry : path.resolve('./src/main/webapp/react-app/index.js'),
+	entry : {
+		car_rental_main:'./src/main/webapp/react-app/car_rental_main/index.js',
+		car_rental_profile:'./src/main/webapp/react-app/car_rental_profile/index.js'
+	},
 	output : {
 		path : PATHS.build,
-		filename : 'bundle.js'
+		filename : '[name].js'
 	},
 	resolve : {
 		modules : [ path.join(__dirname, "js/helpers"), "node_modules" ]

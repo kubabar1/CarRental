@@ -1,5 +1,7 @@
 package com.carrental.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,9 +17,14 @@ public class LocationController {
 
 	@Autowired
 	LocationServiceImpl locationService;
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public List<Location> getLocationList(){
+		return locationService.getLocationList();
+	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public Location getVehicleProperties(@PathVariable Long id) {
+	public Location getLocationById(@PathVariable Long id) {
 
 		return locationService.getLocationById(id);
 	}

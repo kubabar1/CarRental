@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -22,6 +24,7 @@ public class Equipment implements Serializable {
 
 	@Id
 	@Column(name = "equipmentCode")
+	@Size(max = 3)
 	private String equipmentCode;
 
 	@Column(name = "description")

@@ -58,7 +58,6 @@ public class User implements Serializable {
 	@Column(name = "pesel")
 	private String pesel;
 
-	@JsonIgnore
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "AppUsersRoles", joinColumns = @JoinColumn(name = "userID"), inverseJoinColumns = @JoinColumn(name = "userRoleID"))
 	private Set<UserRole> userRolesList = new HashSet<UserRole>();
@@ -85,7 +84,7 @@ public class User implements Serializable {
 	}
 
 	public void setId(Long id) {
-		id = id;
+		this.id = id;
 	}
 
 	public String getName() {

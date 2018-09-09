@@ -7,12 +7,14 @@ import com.carrental.model.User;
 
 public interface UserRepositoryCustom {
 
-	public List<User> getUserListForPage(int page, int nb);
-
 	public User getUserByLogin(String login);
 
 	public User getUserByEmail(String email);
 	
 	public User addUser(UserRegistrationDto user);
+	
+	public int updateUser(User userUpdate);
+	
+	public void addRoleToUser(Long userId, Long roleId);
 
 }

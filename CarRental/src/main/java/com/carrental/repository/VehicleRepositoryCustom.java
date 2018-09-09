@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.carrental.dto.VehicleAddDto;
 import com.carrental.dto.VehicleFilterDto;
 import com.carrental.model.Vehicle;
 
@@ -27,5 +28,9 @@ public interface VehicleRepositoryCustom {
 	public List<String> getCityList();
 
 	public List<String> getColorList();
+	
+	public int updateVehicle(VehicleAddDto vehicleAddDto);
+
+	public void addVehicle(VehicleAddDto vehicleAddDto);
 
 }

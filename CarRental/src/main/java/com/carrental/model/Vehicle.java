@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -20,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Vehicle implements Serializable {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private Long id;
 
@@ -36,7 +39,7 @@ public class Vehicle implements Serializable {
 	private BigDecimal dailyFee;
 
 	@Column(name = "locationID")
-	private String locationId;
+	private Long locationId;
 
 	@Column(name = "vehicleStatus")
 	private String vehicleStatus;
@@ -57,9 +60,8 @@ public class Vehicle implements Serializable {
 		super();
 	}
 
-	public Vehicle(String registration, String brand, String model, BigDecimal dailyFee, String locationId,
-			String vehicleStatus, Boolean bestOffer, List<Equipment> equipmentList, VehicleParameters vehicleParameters,
-			Stars stars) {
+	public Vehicle(String registration, String brand, String model, BigDecimal dailyFee, Long locationId,
+			String vehicleStatus, Boolean bestOffer) {
 		super();
 		this.registration = registration;
 		this.brand = brand;
@@ -68,9 +70,6 @@ public class Vehicle implements Serializable {
 		this.locationId = locationId;
 		this.vehicleStatus = vehicleStatus;
 		this.bestOffer = bestOffer;
-		this.equipmentList = equipmentList;
-		this.vehicleParameters = vehicleParameters;
-		this.stars = stars;
 	}
 
 	public Long getId() {
@@ -113,11 +112,11 @@ public class Vehicle implements Serializable {
 		this.dailyFee = dailyFee;
 	}
 
-	public String getLocationId() {
+	public Long getLocationId() {
 		return locationId;
 	}
 
-	public void setLocationId(String locationId) {
+	public void setLocationId(Long locationId) {
 		this.locationId = locationId;
 	}
 

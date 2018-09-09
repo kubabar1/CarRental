@@ -8,6 +8,11 @@ a{
 	color:#ffffff;
 }
 
+.linkstyle_black{
+	text-decoration:none;
+	color:#000000;
+}
+
 .navlinkstyle{
 	text-decoration:none;
 	color:#000000;

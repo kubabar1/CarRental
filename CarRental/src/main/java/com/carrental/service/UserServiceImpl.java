@@ -3,6 +3,8 @@ package com.carrental.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,11 +28,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> getUserListForPage(int page, int nb) {
-		return userRepository.getUserListForPage(page, nb);
-	}
-
-	@Override
 	public User getUserById(Long id) {
 		return userRepository.getUserById(id);
 	}
@@ -48,8 +45,23 @@ public class UserServiceImpl implements UserService {
 		if (checkEmailExists(user.getEmail())) {
 			throw new EmailExistsException("There is an account with that email adress: " + user.getEmail());
 		}
-		
+
 		return userRepository.addUser(user);
+	}
+
+	@Override
+	public Page<User> getUsersForPage(Pageable pageable) {
+		return userRepository.getUsersForPage(pageable);
+	}
+
+	@Override
+	public int updateUser(User userUpdate) {
+		return userRepository.updateUser(userUpdate);
+	}
+	
+	@Override
+	public void addRoleToUser(Long userId, Long roleId) {
+		userRepository.addRoleToUser(userId, roleId);
 	}
 
 	public boolean checkLoginExists(String login) {

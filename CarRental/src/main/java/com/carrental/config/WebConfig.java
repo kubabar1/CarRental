@@ -1,10 +1,15 @@
 package com.carrental.config;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -54,6 +59,15 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		registry.addResourceHandler("/static/**").addResourceLocations("/static/");
 		registry.addResourceHandler("/vehicles-img/**").addResourceLocations("file:///C:/carrental/img/vehicles_img/");
 		registry.addResourceHandler("/etc-img/**").addResourceLocations("file:///C:/carrental/img/etc_img/");
+	}
+	
+	@Bean
+	public MultipartResolver multipartResolver() throws IOException{
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+		multipartResolver.setUploadTempDir(new FileSystemResource("/tmp/carrental/uploads"));
+		multipartResolver.setMaxUploadSize(10485760);
+		multipartResolver.setMaxInMemorySize(0);
+		return multipartResolver;
 	}
 
 }

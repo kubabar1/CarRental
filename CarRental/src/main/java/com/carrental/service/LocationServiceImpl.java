@@ -1,5 +1,7 @@
 package com.carrental.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,11 @@ public class LocationServiceImpl implements LocationService {
 	@Override
 	public Location getLocationById(Long id) {
 		return locationRepository.getLocationById(id);
+	}
+	
+	@Override
+	public List<Location> getLocationList(){
+		return locationRepository.getLocationList();
 	}
 
 }

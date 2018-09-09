@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +29,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 	@Autowired
 	private UserRoleRepository userRoleRepository;
 
-	@Override
-	public List<User> getUserListForPage(int page, int nb) {
-		int idk = ((page - 1) * nb);
-
-		return (List<User>) entityManager.createQuery("SELECT u FROM User u ORDER BY u.id ASC").setFirstResult(idk)
-				.setMaxResults(nb).getResultList();
-	}
+	@Autowired
+	private UserRepository userRepository;
 
 	@Override
 	public User getUserByLogin(String login) {
@@ -77,6 +73,38 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
 		entityManager.persist(userToPersist);
 		return userToPersist;
+	}
+
+	@Override
+	@Transactional
+	public void addRoleToUser(Long userId, Long roleId) {
+		User userToAddRole = userRepository.getUserById(userId);
+
+		userToAddRole.getUserRolesList().add(userRoleRepository.getUserRoleById(roleId));
+
+		entityManager.merge(userToAddRole);
+	}
+
+	@Override
+	@Transactional
+	public int updateUser(User userUpdate) {
+
+		int number = entityManager
+				.createQuery("UPDATE User u SET " + "u.name=COALESCE(:name,u.name), "
+						+ "u.surname=COALESCE(:surname,u.surname), " + "u.login=COALESCE(:login,u.login), "
+						+ "u.password=COALESCE(:password,u.password), " + "u.email=COALESCE(:email,u.email), "
+						+ "u.phone=COALESCE(:phone,u.phone), " + "u.birthDate=COALESCE(:birthDate,u.birthDate), "
+						+ "u.pesel=COALESCE(:pesel,u.pesel) " + "WHERE u.id=:id")
+				.setParameter("name", userUpdate.getName()).setParameter("surname", userUpdate.getSurname())
+				.setParameter("login", userUpdate.getLogin())
+				.setParameter("password",
+						(userUpdate.getPassword() != null ? passwordEncoder.encode(userUpdate.getPassword())
+								: userUpdate.getPassword()))
+				.setParameter("email", userUpdate.getEmail()).setParameter("phone", userUpdate.getPhone())
+				.setParameter("birthDate", userUpdate.getBirthDate()).setParameter("pesel", userUpdate.getPesel())
+				.setParameter("id", userUpdate.getId()).executeUpdate();
+
+		return number;
 	}
 
 }

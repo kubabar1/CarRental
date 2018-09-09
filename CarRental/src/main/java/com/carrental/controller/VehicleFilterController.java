@@ -17,7 +17,7 @@ import com.carrental.service.VehicleServiceImpl;
 
 @RestController
 @RequestMapping(value = { "/carlistsearch" })
-public class VehicleListFilterController {
+public class VehicleFilterController {
 
 	@Autowired
 	VehicleServiceImpl vehicleService;

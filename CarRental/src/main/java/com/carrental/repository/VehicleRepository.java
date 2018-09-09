@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.carrental.dto.VehicleAddDto;
 import com.carrental.model.User;
 import com.carrental.model.Vehicle;
 

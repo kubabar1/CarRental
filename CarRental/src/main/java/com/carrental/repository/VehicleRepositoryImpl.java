@@ -1,12 +1,13 @@
 package com.carrental.repository;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
@@ -17,8 +18,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.carrental.dto.VehicleAddDto;
 import com.carrental.dto.VehicleFilterDto;
+import com.carrental.model.User;
 import com.carrental.model.Vehicle;
+import com.carrental.model.VehicleParameters;
 
 @Repository
 public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
@@ -68,42 +72,49 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 	 * return vehicleList; }
 	 */
 
-	/*@Override
-	@Transactional
-	public Page<Vehicle> getBestOfferCars(Pageable pageable) {
-
-		int pageSize = pageable.getPageSize();
-		int numberOfFirstElement = (pageable.getPageNumber()) * pageSize;
-
-		if (pageable.getPageSize() < 0 || pageable.getPageNumber() < 0) {
-			throw new IllegalArgumentException();
-		}
-
-		List<Vehicle> vehicleList = (List<Vehicle>) entityManager
-				.createQuery("SELECT v FROM Vehicle v WHERE v.bestOffer = 1 ORDER BY v.id DESC")
-				.setFirstResult(numberOfFirstElement).setMaxResults(pageSize).getResultList();
-
-		long elementNumber = (long) entityManager
-				.createQuery("SELECT COUNT(v) FROM Vehicle v WHERE v.bestOffer = 1 ORDER BY v.id DESC")
-				.getSingleResult();
-
-		for (int i = 0; i < vehicleList.size(); i++) {
-			Hibernate.initialize(vehicleList.get(i).getEquipmentList());
-		}
-
-		Page<Vehicle> page = new PageImpl<>(vehicleList, pageable, elementNumber);
-
-		return page;
-	}*/
+	/*
+	 * @Override
+	 * 
+	 * @Transactional public Page<Vehicle> getBestOfferCars(Pageable pageable) {
+	 * 
+	 * int pageSize = pageable.getPageSize(); int numberOfFirstElement =
+	 * (pageable.getPageNumber()) * pageSize;
+	 * 
+	 * if (pageable.getPageSize() < 0 || pageable.getPageNumber() < 0) { throw new
+	 * IllegalArgumentException(); }
+	 * 
+	 * List<Vehicle> vehicleList = (List<Vehicle>) entityManager
+	 * .createQuery("SELECT v FROM Vehicle v WHERE v.bestOffer = 1 ORDER BY v.id DESC"
+	 * )
+	 * .setFirstResult(numberOfFirstElement).setMaxResults(pageSize).getResultList()
+	 * ;
+	 * 
+	 * long elementNumber = (long) entityManager
+	 * .createQuery("SELECT COUNT(v) FROM Vehicle v WHERE v.bestOffer = 1 ORDER BY v.id DESC"
+	 * ) .getSingleResult();
+	 * 
+	 * for (int i = 0; i < vehicleList.size(); i++) {
+	 * Hibernate.initialize(vehicleList.get(i).getEquipmentList()); }
+	 * 
+	 * Page<Vehicle> page = new PageImpl<>(vehicleList, pageable, elementNumber);
+	 * 
+	 * return page; }
+	 */
 
 	@Override
 	@Transactional
 	public Vehicle getVehicleUsingId(Long id) {
 
-		Vehicle vehicle = (Vehicle) entityManager.createQuery("SELECT v FROM Vehicle v WHERE v.id = :vehicle_id")
-				.setParameter("vehicle_id", id).getSingleResult();
+		Vehicle vehicle = null;
 
-		Hibernate.initialize(vehicle.getEquipmentList());
+		try {
+			vehicle = (Vehicle) entityManager.createQuery("SELECT v FROM Vehicle v WHERE v.id = :vehicle_id")
+					.setParameter("vehicle_id", id).getSingleResult();
+
+			Hibernate.initialize(vehicle.getEquipmentList());
+		} catch (NoResultException e) {
+
+		}
 
 		return vehicle;
 	}
@@ -113,8 +124,6 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 	public Page<Vehicle> getFiltredCarListForPage(VehicleFilterDto vehicleFilter, Pageable pageable) {
 		java.sql.Date productionYearFrom = null;
 		java.sql.Date productionYearTo = null;
-
-		System.out.println(vehicleFilter.toString());
 
 		SimpleDateFormat format = new SimpleDateFormat("yyyy");
 		if (vehicleFilter.getProductionYearFrom() != null) {
@@ -134,7 +143,7 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 				e.printStackTrace();
 			}
 		}
-		
+
 		int pageSize = pageable.getPageSize();
 		int numberOfFirstElement = (pageable.getPageNumber()) * pageSize;
 
@@ -162,7 +171,7 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 				.setParameter("productionYearFrom", productionYearFrom)
 				.setParameter("productionYearTo", productionYearTo).setParameter("color", vehicleFilter.getColor())
 				.setFirstResult(numberOfFirstElement).setMaxResults(pageSize).getResultList();
-		
+
 		long elementNumber = (long) entityManager.createQuery(
 				"SELECT COUNT(v) FROM Vehicle v JOIN VehicleParameters vp ON (v.id=vp.vehicleID) JOIN Location l ON (l.id=v.locationId) WHERE "
 						+ "(:brand IS NULL OR v.brand=:brand) AND " + "(:model IS NULL OR v.model=:model) AND "
@@ -188,7 +197,6 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 			Hibernate.initialize(vehicleList.get(i).getEquipmentList());
 		}
 
-		
 		Page<Vehicle> page = new PageImpl<>(vehicleList, pageable, elementNumber);
 
 		return page;
@@ -233,10 +241,91 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 	@Override
 	public List<Vehicle> getVehicleListForCity(String city) {
 		System.out.println(city);
-		
-		return (List<Vehicle>) entityManager
-				.createQuery("SELECT DISTINCT v FROM Vehicle v JOIN Location l ON(v.locationId=l.id) LEFT JOIN FETCH v.equipmentList  WHERE l.city=:ct")
-				.setParameter("ct", city)
-				.getResultList();
+
+		return (List<Vehicle>) entityManager.createQuery(
+				"SELECT DISTINCT v FROM Vehicle v JOIN Location l ON(v.locationId=l.id) LEFT JOIN FETCH v.equipmentList  WHERE l.city=:ct")
+				.setParameter("ct", city).getResultList();
+	}
+
+	@Override
+	@Transactional
+	public int updateVehicle(VehicleAddDto vehicleAddDto) {
+
+		int number = entityManager
+				.createQuery("UPDATE Vehicle v SET " + "v.brand=COALESCE(:brand,v.brand), "
+						+ "v.model=COALESCE(:model,v.model), " + "v.dailyFee=COALESCE(:dailyFee,v.dailyFee), "
+						+ "v.registration=COALESCE(:registration,v.registration), "
+						+ "v.locationId=COALESCE(:locationId,v.locationId), "
+						+ "v.vehicleStatus=COALESCE(:vehicleStatus,v.vehicleStatus), "
+						+ "v.bestOffer=COALESCE(:bestOffer,v.bestOffer) " + "WHERE v.id=:id")
+				.setParameter("brand", vehicleAddDto.getBrand()).setParameter("model", vehicleAddDto.getModel())
+				.setParameter("dailyFee", vehicleAddDto.getDailyFee())
+				.setParameter("registration", vehicleAddDto.getRegistration())
+				.setParameter("locationId", vehicleAddDto.getLocation())
+				.setParameter("vehicleStatus", vehicleAddDto.getVehicleStatus())
+				.setParameter("bestOffer", vehicleAddDto.getBestOffer()).setParameter("id", vehicleAddDto.getId())
+				.executeUpdate();
+
+		entityManager
+				.createQuery("UPDATE VehicleParameters vp SET " + "vp.bodytype=COALESCE(:bodytype,vp.bodytype), "
+						+ "vp.fuelType=COALESCE(:fuelType,vp.fuelType), " + "vp.power=COALESCE(:power,vp.power), "
+						+ "vp.gearbox=COALESCE(:gearbox,vp.gearbox), "
+						+ "vp.frontWheelDrive=COALESCE(:frontWheelDrive,vp.frontWheelDrive), "
+						+ "vp.doorsNumber=COALESCE(:doorsNumber,vp.doorsNumber), "
+						+ "vp.seatsNumber=COALESCE(:seatsNumber,vp.seatsNumber), "
+						+ "vp.color=COALESCE(:color,vp.color), " + "vp.metallic=COALESCE(:metallic,vp.metallic), "
+						+ "vp.description=COALESCE(:description,vp.description), "
+						+ "vp.productionYear=COALESCE(:productionYear,vp.productionYear), "
+						+ "vp.photoName=COALESCE(:photoName,vp.photoName) " + "WHERE vp.vehicleID=:id")
+				.setParameter("bodytype", vehicleAddDto.getBodytype())
+				.setParameter("fuelType", vehicleAddDto.getFuelType()).setParameter("power", vehicleAddDto.getPower())
+				.setParameter("gearbox", vehicleAddDto.getGearbox())
+				.setParameter("frontWheelDrive", vehicleAddDto.getFrontWheelDrive())
+				.setParameter("doorsNumber", vehicleAddDto.getDoorsNumber())
+				.setParameter("seatsNumber", vehicleAddDto.getSeatsNumber())
+				.setParameter("color", vehicleAddDto.getColor()).setParameter("metallic", vehicleAddDto.getMetallic())
+				.setParameter("description", vehicleAddDto.getDescription())
+				.setParameter("productionYear", vehicleAddDto.getProductionYear())
+				.setParameter("photoName", vehicleAddDto.getFileName()).setParameter("id", vehicleAddDto.getId())
+				.executeUpdate();
+
+		return number;
+	}
+
+	@Override
+	@Transactional
+	public void addVehicle(VehicleAddDto vehicleAddDto) {
+		Vehicle vehicle = new Vehicle(vehicleAddDto.getRegistration(), vehicleAddDto.getBrand(),
+				vehicleAddDto.getModel(), vehicleAddDto.getDailyFee(), vehicleAddDto.getLocation(),
+				vehicleAddDto.getVehicleStatus(), (vehicleAddDto.getBestOffer() != 0 ? true : false));
+
+		entityManager.persist(vehicle);
+
+		entityManager.flush();
+		Long vehicleId = vehicle.getId();
+
+		VehicleParameters vehicleParameters = null;
+
+		Integer value = vehicleAddDto.getProductionYear();
+		SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy");
+		Date productionYear = null;
+
+		try {
+			productionYear = originalFormat.parse(value.toString());
+			java.sql.Date sqlDate = new java.sql.Date(productionYear.getTime());
+
+			vehicleParameters = new VehicleParameters(vehicleId, vehicleAddDto.getBodytype(), sqlDate,
+					vehicleAddDto.getFuelType(), vehicleAddDto.getPower(), vehicleAddDto.getGearbox(),
+					vehicleAddDto.getFrontWheelDrive(), vehicleAddDto.getDoorsNumber(), vehicleAddDto.getSeatsNumber(),
+					vehicleAddDto.getColor(), vehicleAddDto.getMetallic(), vehicleAddDto.getFileName(),
+					vehicleAddDto.getDescription());
+
+			System.out.println(sqlDate.toString());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		entityManager.persist(vehicleParameters);
+
 	}
 }
