@@ -136,7 +136,6 @@ export class EditCar extends React.Component {
 
   sendForm = () => {
     const carWrapper = this.createCarWrapper();
-    console.log(carWrapper);
 
     var formData = new FormData()
 
@@ -161,7 +160,6 @@ export class EditCar extends React.Component {
     formData.append('productionYear',carWrapper["productionYear"]);
     formData.append('photoName',carWrapper["photoName"]);
 
-    console.log(carWrapper);
 
     if(this.state.image!=null){
       formData.append('image',this.state.image);

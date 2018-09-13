@@ -8,4 +8,8 @@ public interface EquipmentRepositoryCustom {
 
 	public List<Equipment> getUnexistingDistinctEquipmentListForVehicle(Long id);
 	
+	public void addEquipment(Equipment equipment);
+
+	public void deleteEquipmentById(String eqpCode);
+	
 }

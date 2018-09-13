@@ -41,7 +41,9 @@ export class AddCar extends React.Component {
 
         loaded:false,
 
-        errorPhoto:false
+        errorPhoto:false,
+
+        errorEmpty:false
       };
     }
 
@@ -100,9 +102,33 @@ export class AddCar extends React.Component {
       return item;
     }
 
+    validate = () =>{
+      if( this.state.car_brand=="" || this.state.car_brand==null ||
+          this.state.car_model=="" || this.state.car_model==null ||
+          this.state.car_daily_fee=="" || this.state.car_daily_fee==null ||
+          this.state.car_registration=="" || this.state.car_registration==null ||
+          this.state.car_location=="" || this.state.car_location==null ||
+          this.state.car_vehicle_status=="" || this.state.car_vehicle_status==null ||
+
+          this.state.car_body=="" || this.state.car_body==null ||
+          this.state.car_fuel_type=="" || this.state.car_fuel_type==null ||
+          this.state.car_power=="" || this.state.car_power==null ||
+          this.state.car_gearbox=="" || this.state.car_gearbox==null ||
+          this.state.car_doors_number=="" || this.state.car_model==null ||
+          this.state.car_seats_number=="" || this.state.car_seats_number==null ||
+          this.state.car_color=="" || this.state.car_color==null ||
+          this.state.car_description=="" || this.state.car_description==null ||
+          this.state.car_production_year=="" || this.state.car_production_year==null ||
+          this.state.car_image_name=="" || this.state.car_image_name==null){
+            this.setState({errorEmpty:true});
+      }else{
+        this.setState({errorEmpty:false});
+      }
+    }
+
     sendForm = () => {
       const carWrapper = this.createCarWrapper();
-      console.log(carWrapper);
+      const errorEmpty = this.state.errorEmpty;
 
       var formData = new FormData()
 
@@ -128,16 +154,20 @@ export class AddCar extends React.Component {
 
       const url = 'http://localhost:8080/CarRental/carlist';
 
-      if(this.state.image!=null){
+      if(this.state.image!=null && errorEmpty==false){
         this.setState({errorPhoto:false});
         formData.append('image',this.state.image);
         fetch(url, {
           method: 'POST',
           body: formData
         });
-        this.props.history.push({pathname: '/CarRental/profile/carslist'});
+        this.props.history.push({pathname: '/CarRental/profile'});
       }else{
         this.setState({errorPhoto:true});
+      }
+
+      if(this.state.image!=null){
+        this.setState({errorPhoto:false});
       }
 
 
@@ -145,6 +175,13 @@ export class AddCar extends React.Component {
 
     handleSubmit = (event) => {
   			event.preventDefault();
+        this.validate();
+        if(this.state.image==null){
+          this.setState({errorPhoto:true});
+        }else{
+          this.setState({errorPhoto:false});
+        }
+
         this.sendForm();
 
   	}
@@ -162,6 +199,7 @@ export class AddCar extends React.Component {
     renderForm = () => {
       const citylist = this.state.citylist;
       const errorPhoto = this.state.errorPhoto;
+      const errorEmpty = this.state.errorEmpty;
 
       return(
           <div className="card-body">
@@ -207,6 +245,7 @@ export class AddCar extends React.Component {
                   <label className="ml-5 mt-4 col-md-2">Location:</label>
                   <div className="ml-4 mt-3 col-md-3">
                     <select name="car_location" className="form-control " required value={this.state.car_location} onChange={this.handleInputChange}>
+                      <option key="dispabled_role" name="disabled_role" value="" disabled="disabled">Choose car location</option>
                       {citylist ? citylist.map(this.listOptionsCity) : ""}
                     </select>
                   </div>
@@ -226,7 +265,7 @@ export class AddCar extends React.Component {
                 <div className="row">
                   <label className="ml-5 mt-4 col-md-2">Fuel type:</label>
                   <div className="ml-4 mt-3 col-md-3">
-                    <select name="car_vehicle_status" className="form-control" required value={this.state.car_vehicle_status} onChange={this.handleInputChange}>
+                    <select name="car_vehicle_status" className="form-control" required value={this.state.car_vehicle_status} onChange={this.handleInputChange} >
                       <option value={"AVI"}>AVI</option>
                       <option value={"UAV"}>UAV</option>
                     </select>
@@ -240,6 +279,7 @@ export class AddCar extends React.Component {
                   <label className="ml-5 mt-4 col-md-2">Car body type:</label>
                   <div className="ml-4 mt-3 col-md-3">
                     <select name="car_body" className="form-control " required value={this.state.car_body} onChange={this.handleInputChange}>
+                      <option key="dispabled_role" name="disabled_role" value="" disabled="disabled">Choose body type</option>
                       <option value={"Coupe"}>Coupe</option>
                       <option value={"SUV"}>SUV</option>
                       <option value={"Sedan"}>Sedan</option>
@@ -266,6 +306,7 @@ export class AddCar extends React.Component {
                   <label className="ml-5 mt-4 col-md-2">Fuel type:</label>
                   <div className="ml-4 mt-3 col-md-3">
                     <select name="car_fuel_type" className="form-control" required value={this.state.car_fuel_type} onChange={this.handleInputChange}>
+                      <option key="dispabled_role" name="disabled_role" value="" disabled="disabled">Choose fuel type</option>
                       <option value={"Petrol"}>Petrol</option>
                       <option value={"LPG"}>LPG</option>
                     </select>
@@ -287,6 +328,7 @@ export class AddCar extends React.Component {
                   <label className="ml-5 mt-4 col-md-2">Gearbox:</label>
                   <div className="ml-4 mt-3 col-md-3">
                     <select name="car_gearbox" className="form-control" required value={this.state.car_gearbox} onChange={this.handleInputChange}>
+                      <option key="dispabled_role" name="disabled_role" value="" disabled="disabled">Choose car gearbox</option>
                       <option value="auto" >auto</option>
                       <option value="man">man</option>
                     </select>
@@ -326,6 +368,7 @@ export class AddCar extends React.Component {
                   <label className="ml-5 mt-4 col-md-2">Color:</label>
                   <div className="ml-4 mt-3 col-md-3">
                     <select name="car_color" className="form-control" required value={this.state.car_color} onChange={this.handleInputChange}>
+                      <option key="dispabled_role" name="disabled_role" value="" disabled="disabled">Choose car color</option>
                       <option value="Red" >Red</option>
                       <option value="White">White</option>
                       <option value="Black">Black</option>
@@ -379,6 +422,7 @@ export class AddCar extends React.Component {
                 <input type="submit" value="Add" required className="btn btn-primary"/>
               </div>
             </form>
+            {errorEmpty ? this.showError("Fill all fields.") : ""}
           </div>
       );
     }

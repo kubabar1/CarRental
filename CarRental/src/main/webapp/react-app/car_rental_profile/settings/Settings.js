@@ -11,15 +11,14 @@ export class Settings extends React.Component {
     super();
 
     this.state={
-      user_id:null,
-      user_login:null,
-      user_name:null,
-      user_surname:null,
-      user_email:null,
-      user_phone:null,
-      user_pesel:null,
-      user_birth_date:null,
-      user_password:null,
+      user_login:"",
+      user_name:"",
+      user_surname:"",
+      user_email:"",
+      user_phone:"",
+      user_pesel:"",
+      user_birth_date:"",
+      user_password:"",
       loaded:false
     };
   }
@@ -30,36 +29,15 @@ export class Settings extends React.Component {
     .then(response=>{
       response.json().then(json=>{
         this.setState({
-          user_login:json.username
-        });
-        console.log(json.username);
-        this.getUserByLogin(json.username);
-      });
-    });
-  }
-
-
-
-
-  getUserByLogin = (login) => {
-    const url="http://localhost:8080/CarRental/userlist?login="+login;
-    fetch(url)
-    .then(response=>{
-      response.json().then(json=>{
-        this.setState({
-          user_id:json.id,
-          user_name:json.name,
-          user_surname:json.surname,
-          user_email:json.email,
-          user_phone:json.phone,
-          user_pesel:json.pesel,
-          user_birth_date:json.birthDate,
-          user_password:null,
+          user_login:json.username,
           loaded:true
         });
       });
     });
   }
+
+
+
 
   createUserWrapper = () => {
     var item = {};
@@ -79,8 +57,8 @@ export class Settings extends React.Component {
   handleSubmit = (event) => {
 			event.preventDefault();
       const userWrapper = this.createUserWrapper();
-      const user_id = this.state.user_id;
-      const url = 'http://localhost:8080/CarRental/userlist/'+user_id;
+      const user_login = this.state.user_login;
+      const url = 'http://localhost:8080/CarRental/userlist/'+user_login;
 
       fetch(url, {
         method: 'PUT',
@@ -91,7 +69,7 @@ export class Settings extends React.Component {
         body:JSON.stringify(userWrapper),
       });
 
-      this.props.history.push({pathname: '/CarRental/profile/userlist'});
+      this.props.history.push({pathname: '/CarRental/profile'});
 	}
 
   getMaxDate = () => {
@@ -123,7 +101,7 @@ export class Settings extends React.Component {
               <div className="row">
                 <label className="ml-5 mt-4 col-md-2">Login:</label>
                 <div className="ml-4 mt-3 col-md-3">
-                  <input type="text" className="form-control" required name="user_login" value={this.state.user_login} onChange={this.handleInputChange}/>
+                  <input type="text" className="form-control"  name="user_login" value={this.state.user_login} onChange={this.handleInputChange}/>
                 </div>
               </div>
             </div>
@@ -132,7 +110,7 @@ export class Settings extends React.Component {
               <div className="row">
                 <label className="ml-5 mt-4 col-md-2">Name:</label>
                 <div className="ml-4 mt-3 col-md-3">
-                  <input type="text" className="form-control" required name="user_name" value={this.state.user_name} onChange={this.handleInputChange}/>
+                  <input type="text" className="form-control"  name="user_name" value={this.state.user_name} onChange={this.handleInputChange}/>
                 </div>
               </div>
             </div>
@@ -141,7 +119,7 @@ export class Settings extends React.Component {
               <div className="row">
                 <label className="ml-5 mt-4 col-md-2">Surname:</label>
                 <div className="ml-4 mt-3 col-md-3">
-                  <input type="text" className="form-control" required name="user_surname" value={this.state.user_surname} onChange={this.handleInputChange}/>
+                  <input type="text" className="form-control"  name="user_surname" value={this.state.user_surname} onChange={this.handleInputChange}/>
                 </div>
               </div>
             </div>
@@ -150,7 +128,7 @@ export class Settings extends React.Component {
               <div className="row">
                 <label className="ml-5 mt-4 col-md-2">E-mail:</label>
                 <div className="ml-4 mt-3 col-md-3">
-                  <input type="email" className="form-control" required name="user_email" value={this.state.user_email} onChange={this.handleInputChange}/>
+                  <input type="email" className="form-control"  name="user_email" value={this.state.user_email} onChange={this.handleInputChange}/>
                 </div>
               </div>
             </div>
@@ -159,7 +137,7 @@ export class Settings extends React.Component {
               <div className="row">
                 <label className="ml-5 mt-4 col-md-2">Phone:</label>
                 <div className="ml-4 mt-3 col-md-3">
-                  <input type="text" className="form-control" required name="user_phone" value={this.state.user_phone} onChange={this.handleInputChange}/>
+                  <input type="text" className="form-control"  name="user_phone" value={this.state.user_phone} onChange={this.handleInputChange}/>
                 </div>
               </div>
             </div>
@@ -168,7 +146,7 @@ export class Settings extends React.Component {
               <div className="row">
                 <label className="ml-5 mt-4 col-md-2">Pesel:</label>
                 <div className="ml-4 mt-3 col-md-3">
-                  <input type="number" className="form-control" required name="user_pesel" value={this.state.user_pesel} onChange={this.handleInputChange}/>
+                  <input type="number" className="form-control"  name="user_pesel" value={this.state.user_pesel} onChange={this.handleInputChange}/>
                 </div>
               </div>
             </div>
@@ -177,7 +155,7 @@ export class Settings extends React.Component {
               <div className="row">
                 <label className="ml-5 mt-4 col-md-2">Birth date:</label>
                 <div className="ml-4 mt-3 col-md-3">
-                  <input type="date" name="user_birth_date" required max={this.getMaxDate()} className="form-control" value={this.state.user_birth_date} onChange={this.handleInputChange} />
+                  <input type="date" name="user_birth_date"  max={this.getMaxDate()} className="form-control" value={this.state.user_birth_date} onChange={this.handleInputChange} />
                 </div>
               </div>
             </div>

@@ -2,17 +2,22 @@ package com.carrental.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
@@ -21,32 +26,40 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 public class Comment implements Serializable {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private Long id;
 
 	@Column(name = "vehicleID")
-	private Long vehicleID;
+	private Long vehicleId;
 
 	@Column(name = "commentContent")
 	private String commentContent;
 
-	@Column(name = "authorID")
-	private Long authorID;
+	@Column(name = "login")
+	private String login;
 
-	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-	@JsonSerialize(using = LocalDateTimeSerializer.class)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@Column(name = "creationDate")
-	private LocalDateTime creationDate;
+	private Timestamp creationDate;
+
+	@Column(name = "rating")
+	private Integer rating;
+
+	@JsonIgnore
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "vehicleId", referencedColumnName = "ID", insertable = false, updatable = false)
+	private Vehicle vehicle;
 
 	public Comment() {
 		super();
 	}
 
-	public Comment(Long vehicleID, String commentContent, Long authorID, LocalDateTime creationDate) {
+	public Comment(Vehicle vehicle, String commentContent, String login, Timestamp creationDate) {
 		super();
-		this.vehicleID = vehicleID;
+		this.vehicle = vehicle;
 		this.commentContent = commentContent;
-		this.authorID = authorID;
+		this.login = login;
 		this.creationDate = creationDate;
 	}
 
@@ -66,34 +79,50 @@ public class Comment implements Serializable {
 		this.commentContent = commentContent;
 	}
 
-	public Long getVehicleID() {
-		return vehicleID;
+	public String getLogin() {
+		return login;
 	}
 
-	public void setVehicleID(Long vehicleID) {
-		this.vehicleID = vehicleID;
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
-	public Long getAuthorID() {
-		return authorID;
-	}
-
-	public void setAuthorID(Long authorID) {
-		this.authorID = authorID;
-	}
-
-	public LocalDateTime getCreationDate() {
+	public Timestamp getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(LocalDateTime creationDate) {
+	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	public Vehicle getVehicle() {
+		return vehicle;
+	}
+
+	public void setVehicle(Vehicle vehicle) {
+		this.vehicle = vehicle;
+	}
+
+	public Long getVehicleId() {
+		return vehicleId;
+	}
+
+	public void setVehicleId(Long vehicleId) {
+		this.vehicleId = vehicleId;
+	}
+
+	public Integer getRating() {
+		return rating;
+	}
+
+	public void setRating(Integer rating) {
+		this.rating = rating;
 	}
 
 	@Override
 	public String toString() {
-		return "Comments [id=" + id + ", vehicleID=" + vehicleID + ", commentContent=" + commentContent + ", authorID="
-				+ authorID + ", creationDate=" + creationDate + "]";
+		return "Comment [id=" + id + ", vehicleId=" + vehicleId + ", commentContent=" + commentContent + ", login="
+				+ login + ", creationDate=" + creationDate + ", rating=" + rating + ", vehicle=" + vehicle + "]";
 	}
 
 }

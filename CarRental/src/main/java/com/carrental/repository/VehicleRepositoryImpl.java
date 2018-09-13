@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Repository;
 
 import com.carrental.dto.VehicleAddDto;
 import com.carrental.dto.VehicleFilterDto;
+import com.carrental.model.Equipment;
 import com.carrental.model.User;
 import com.carrental.model.Vehicle;
 import com.carrental.model.VehicleParameters;
@@ -29,6 +31,9 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+	@Autowired
+	private EquipmentRepository equipmentRepository;
 
 	/*
 	 * @Override
@@ -122,27 +127,6 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 	@Override
 	@Transactional
 	public Page<Vehicle> getFiltredCarListForPage(VehicleFilterDto vehicleFilter, Pageable pageable) {
-		java.sql.Date productionYearFrom = null;
-		java.sql.Date productionYearTo = null;
-
-		SimpleDateFormat format = new SimpleDateFormat("yyyy");
-		if (vehicleFilter.getProductionYearFrom() != null) {
-			try {
-				java.util.Date parsed1 = format.parse(vehicleFilter.getProductionYearFrom().toString());
-				productionYearFrom = new java.sql.Date(parsed1.getTime());
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-		}
-
-		if (vehicleFilter.getProductionYearTo() != null) {
-			try {
-				java.util.Date parsed2 = format.parse(vehicleFilter.getProductionYearTo().toString());
-				productionYearTo = new java.sql.Date(parsed2.getTime());
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-		}
 
 		int pageSize = pageable.getPageSize();
 		int numberOfFirstElement = (pageable.getPageNumber()) * pageSize;
@@ -168,9 +152,10 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 				.setParameter("placesNumberTo", vehicleFilter.getPlacesNumberTo())
 				.setParameter("doorsNumberFrom", vehicleFilter.getDoorsNumberFrom())
 				.setParameter("doorsNumberTo", vehicleFilter.getDoorsNumberTo())
-				.setParameter("productionYearFrom", productionYearFrom)
-				.setParameter("productionYearTo", productionYearTo).setParameter("color", vehicleFilter.getColor())
-				.setFirstResult(numberOfFirstElement).setMaxResults(pageSize).getResultList();
+				.setParameter("productionYearFrom", vehicleFilter.getProductionYearFrom())
+				.setParameter("productionYearTo", vehicleFilter.getProductionYearTo())
+				.setParameter("color", vehicleFilter.getColor()).setFirstResult(numberOfFirstElement)
+				.setMaxResults(pageSize).getResultList();
 
 		long elementNumber = (long) entityManager.createQuery(
 				"SELECT COUNT(v) FROM Vehicle v JOIN VehicleParameters vp ON (v.id=vp.vehicleID) JOIN Location l ON (l.id=v.locationId) WHERE "
@@ -189,9 +174,9 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 				.setParameter("placesNumberTo", vehicleFilter.getPlacesNumberTo())
 				.setParameter("doorsNumberFrom", vehicleFilter.getDoorsNumberFrom())
 				.setParameter("doorsNumberTo", vehicleFilter.getDoorsNumberTo())
-				.setParameter("productionYearFrom", productionYearFrom)
-				.setParameter("productionYearTo", productionYearTo).setParameter("color", vehicleFilter.getColor())
-				.getSingleResult();
+				.setParameter("productionYearFrom", vehicleFilter.getProductionYearFrom())
+				.setParameter("productionYearTo", vehicleFilter.getProductionYearTo())
+				.setParameter("color", vehicleFilter.getColor()).getSingleResult();
 
 		for (int i = 0; i < vehicleList.size(); i++) {
 			Hibernate.initialize(vehicleList.get(i).getEquipmentList());
@@ -239,12 +224,12 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 	}
 
 	@Override
-	public List<Vehicle> getVehicleListForCity(String city) {
-		System.out.println(city);
+	public List<Vehicle> getAvailableVehicleListForLocation(Long cityId) {
+		System.out.println(cityId);
 
 		return (List<Vehicle>) entityManager.createQuery(
-				"SELECT DISTINCT v FROM Vehicle v JOIN Location l ON(v.locationId=l.id) LEFT JOIN FETCH v.equipmentList  WHERE l.city=:ct")
-				.setParameter("ct", city).getResultList();
+				"SELECT DISTINCT v FROM Vehicle v JOIN Location l ON(v.locationId=l.id) LEFT JOIN FETCH v.equipmentList  WHERE l.id=:ct AND v.vehicleStatus='AVI'")
+				.setParameter("ct", cityId).getResultList();
 	}
 
 	@Override
@@ -306,26 +291,31 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 
 		VehicleParameters vehicleParameters = null;
 
-		Integer value = vehicleAddDto.getProductionYear();
-		SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy");
-		Date productionYear = null;
-
-		try {
-			productionYear = originalFormat.parse(value.toString());
-			java.sql.Date sqlDate = new java.sql.Date(productionYear.getTime());
-
-			vehicleParameters = new VehicleParameters(vehicleId, vehicleAddDto.getBodytype(), sqlDate,
-					vehicleAddDto.getFuelType(), vehicleAddDto.getPower(), vehicleAddDto.getGearbox(),
-					vehicleAddDto.getFrontWheelDrive(), vehicleAddDto.getDoorsNumber(), vehicleAddDto.getSeatsNumber(),
-					vehicleAddDto.getColor(), vehicleAddDto.getMetallic(), vehicleAddDto.getFileName(),
-					vehicleAddDto.getDescription());
-
-			System.out.println(sqlDate.toString());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		vehicleParameters = new VehicleParameters(vehicleId, vehicleAddDto.getBodytype(),
+				vehicleAddDto.getProductionYear(), vehicleAddDto.getFuelType(), vehicleAddDto.getPower(),
+				vehicleAddDto.getGearbox(), vehicleAddDto.getFrontWheelDrive(), vehicleAddDto.getDoorsNumber(),
+				vehicleAddDto.getSeatsNumber(), vehicleAddDto.getColor(), vehicleAddDto.getMetallic(),
+				vehicleAddDto.getFileName(), vehicleAddDto.getDescription());
 
 		entityManager.persist(vehicleParameters);
 
+	}
+
+	@Override
+	@Transactional
+	public void addEquipment(Equipment equipment, Long vehicleId) {
+		Vehicle vehicle = getVehicleUsingId(vehicleId);
+		vehicle.getEquipmentList().add(equipment);
+		entityManager.merge(vehicle);
+	}
+	
+
+	@Override
+	@Transactional
+	public void removeEquipment(String eqpCode, Long vehicleId) {
+		Equipment eq = equipmentRepository.getEquipmentByCode(eqpCode);
+		Vehicle vehicle = getVehicleUsingId(vehicleId);
+		vehicle.getEquipmentList().remove(eq);
+		entityManager.merge(eq);
 	}
 }

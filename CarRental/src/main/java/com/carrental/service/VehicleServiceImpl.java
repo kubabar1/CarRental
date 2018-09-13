@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.carrental.dto.VehicleAddDto;
 import com.carrental.dto.VehicleFilterDto;
+import com.carrental.model.Equipment;
 import com.carrental.model.User;
 import com.carrental.model.Vehicle;
 import com.carrental.model.VehicleParameters;
@@ -75,8 +76,8 @@ public class VehicleServiceImpl implements VehicleService {
 	}
 
 	@Override
-	public List<Vehicle> getVehicleListForCity(String city) {
-		return vehicleRepository.getVehicleListForCity(city);
+	public List<Vehicle> getAvailableVehicleListForLocation(Long cityId) {
+		return vehicleRepository.getAvailableVehicleListForLocation(cityId);
 	}
 
 	@Override
@@ -87,6 +88,16 @@ public class VehicleServiceImpl implements VehicleService {
 	@Override
 	public void addVehicle(VehicleAddDto vehicleAddDto) {
 		vehicleRepository.addVehicle(vehicleAddDto);
+	}
+
+	@Override
+	public void addEquipment(Equipment equipment, Long vehicleId) {
+		vehicleRepository.addEquipment(equipment, vehicleId);
+	}
+
+	@Override
+	public void removeEquipment(String eqpCode, Long vehicleId) {
+		vehicleRepository.removeEquipment(eqpCode, vehicleId);
 	}
 
 }

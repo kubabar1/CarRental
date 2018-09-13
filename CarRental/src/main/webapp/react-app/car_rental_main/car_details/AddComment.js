@@ -11,13 +11,23 @@ export class AddComment extends React.Component {
 		super();
 
 		this.state = {
-			starsNumber:0
+			starsNumber:0,
+			userLogin:null,
+			userSurname:null,
+			commentContent:"",
+			commentError:false,
+			starsError:false
 		};
 
 	}
 
+	componentDidMount(){
+		this.setState({
+			userLogin:this.props.login
+		});
+	}
+
 	renderStars = (number) => {
-		console.log("renderStars")
 		const objs = [];
 
 		for(let i=0; i < 5 ; i++){
@@ -28,12 +38,108 @@ export class AddComment extends React.Component {
 	}
 
 	setStarsNumber = (i) => {
-		console.log("setStarsNumber")
 		this.setState({starsNumber:i});
+	}
+
+	getTimestamp = () => {
+	    var today = new Date();
+	    var MM = today.getMonth() + 1;
+	    var dd = today.getDate();
+
+	    var hh = today.getHours();
+	    var mm = today.getMinutes();
+	    var ss = today.getSeconds();
+
+	    var part1 = [today.getFullYear(), (MM>9 ? '' : '0') + MM, (dd>9 ? '' : '0') + dd].join('-');
+
+	    var part2 = [hh,mm,ss].join(':');
+
+	    return(part1+" "+part2);
+	}
+
+	createCommentItem = () => {
+		const item = {};
+
+		item["vehicleId"] = this.props.carid;
+		item["commentContent"] = this.state.commentContent;
+		item["login"] = this.props.login;
+		item["creationDate"] = this.getTimestamp();
+		item["rating"] = this.state.starsNumber;
+
+		return item;
+	}
+
+	handleAddComment = (event) => {
+		const commentContent = this.state.commentContent;
+		const starsNumber = this.state.starsNumber;
+				event.preventDefault();
+
+		if(commentContent==""){
+			this.setState({commentError:true});
+		}else{
+			this.setState({commentError:false});
+		}
+
+		if(starsNumber<=0){
+			this.setState({starsError:true});
+		}else{
+			this.setState({starsError:false});
+		}
+
+		if(commentContent!="" && starsNumber>0){
+
+			const commentItem = this.createCommentItem();
+
+			const url="http://localhost:8080/CarRental/comments/"+this.props.carid;
+
+			fetch(url, {
+				method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+				body: JSON.stringify(commentItem)
+			}).then(response => {
+				this.setState({commentContent:"",starsNumber:0});
+				this.props.loadCommentsForPage(0);
+			}).catch(error => {});
+
+
+			this.props.loadCommentsForPage(0);
+		}
+
+
+		this.props.loadCommentsForPage(0);
+
+		event.preventDefault();
+	}
+
+	createStarsItem = () => {
+		const item = {};
+
+		item["vehicleId"] = this.props.carid;
+		item["starsAvgCount"] = this.state.starsNumber;
+
+		return item;
+	}
+
+
+
+	handleInputChange = (event) => {
+		const target = event.target;
+		const value = target.type === 'checkbox' ? target.checked : target.value;
+		const name = target.name;
+
+		this.setState({
+			[name]: value
+		});
 	}
 
 	render () {
 		const starsNumber = this.state.starsNumber;
+		const commentContent = this.state.commentContent;
+		const starsError = this.state.starsError;
+		const commentError = this.state.commentError;
 
 		return (
       <div className="card text-left">
@@ -41,13 +147,21 @@ export class AddComment extends React.Component {
           Leave a comment
         </div>
         <div className="card-body">
-          <form>
+          <form onSubmit={this.handleAddComment}>
             <div className="car-rank mb-3 ml-q">
               {starsNumber ? this.renderStars(starsNumber) : this.renderStars(0)}
             </div>
+						{starsError ?
+							[<div className="alert alert-danger" role="alert" key="alert_stars">
+  							Select stars number.
+							</div>] : ""}
             <div className="form-group">
-              <textarea className="form-control" rows="5" id="comment-content" placeholder="Comment"></textarea>
+              <textarea id="commentContent" name="commentContent" className="form-control" rows="5" value={this.state.commentContent} onChange={this.handleInputChange} placeholder="Comment" required ></textarea>
             </div>
+						{commentError ?
+							[<div className="alert alert-danger" role="alert" key="alert_comment">
+  							Insert comment.
+							</div>] : ""}
             <input type="submit" value="Submit" className="btn btn-primary" name="leave-comment-button"/>
           </form>
         </div>

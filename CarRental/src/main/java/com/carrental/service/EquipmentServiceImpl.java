@@ -25,5 +25,20 @@ public class EquipmentServiceImpl implements EquipmentService{
 	public List<Equipment> getUnexistingDistinctEquipmentListForVehicle(Long id) {
 		return equipmentRepository.getUnexistingDistinctEquipmentListForVehicle(id);
 	}
+	
+	@Override
+	public void addEquipment(Equipment equipment) {
+		equipmentRepository.addEquipment(equipment);
+	}
+
+	@Override
+	public void deleteEquipmentById(String id) {
+		equipmentRepository.deleteEquipmentById(id);
+	}
+
+	@Override
+	public Equipment getEquipmentByCode(String equipmentCode) {
+		return equipmentRepository.getEquipmentByCode(equipmentCode);
+	}
 
 }

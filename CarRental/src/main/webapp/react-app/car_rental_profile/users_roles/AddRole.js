@@ -15,6 +15,7 @@ export class AddRole extends React.Component {
       user_id:null,
       rolesList:null,
       selected_users_role:null,
+      errorSelect:false,
       loaded:false
     };
   }
@@ -41,8 +42,6 @@ export class AddRole extends React.Component {
 
     item["id"]=selected_users_role;
 
-    console.log(item);
-    console.log(JSON.stringify(item));
 
     if(selected_users_role!=null){
       fetch(url, {
@@ -53,6 +52,10 @@ export class AddRole extends React.Component {
         },
         body:JSON.stringify(item),
       });
+      this.setState({errorSelect:true});
+      this.props.history.push({pathname: '/CarRental/profile'});
+    }else{
+      this.setState({errorSelect:true});
     }
   }
 
@@ -61,10 +64,7 @@ export class AddRole extends React.Component {
     const target = event.target;
     const value = target.value;
 
-    console.log(value);
-
     this.setState({selected_users_role:value});
-
   }
 
   renderAllOptions = (rolesList) =>{
@@ -86,6 +86,7 @@ export class AddRole extends React.Component {
 	render () {
     const loaded = this.state.loaded;
     const rolesList = this.state.rolesList;
+    const errorSelect = this.state.errorSelect;
 
 		return (
       <div className="col-md-9 pl-0 pr-3">
@@ -97,6 +98,12 @@ export class AddRole extends React.Component {
               <div className="mt-3 ml-3 col-md-5 mx-auto">
                 {rolesList ? this.renderAllOptions(rolesList) : ""}
               </div>
+
+
+              { errorSelect ? [<div className="alert alert-danger my-3" role="alert" key="submiterrormessage">
+                Select role!
+              </div>] : ""}
+
               <div className="mt-3 mx-auto">
                 <input type="submit" value="Add" className="btn btn-primary"/>
               </div>

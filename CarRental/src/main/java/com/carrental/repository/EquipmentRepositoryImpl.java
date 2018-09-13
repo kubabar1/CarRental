@@ -2,6 +2,7 @@ package com.carrental.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -25,6 +26,9 @@ public class EquipmentRepositoryImpl implements EquipmentRepositoryCustom{
 	@Autowired
 	private VehicleRepository vehicleRepository;
 	
+	@Autowired
+	private EquipmentRepository equipmentRepository;
+	
 	@Override
 	@Transactional
 	public List<Equipment> getUnexistingDistinctEquipmentListForVehicle(Long id) {
@@ -33,19 +37,19 @@ public class EquipmentRepositoryImpl implements EquipmentRepositoryCustom{
 
 		try {
 			vehicle = vehicleRepository.getVehicleUsingId(id);
-			List<Equipment> eqList = null;
+			List<Equipment> eqSet = null;
 			
 			if(vehicle!=null) {
-				eqList = vehicle.getEquipmentList();
+				eqSet = vehicle.getEquipmentList();
 			}
 		
-			if(eqList==null) {
+			if(eqSet==null) {
 				newEqList  = entityManager.createQuery("SELECT e FROM Equipment e").getResultList();
 			}else {
 				List<String> eqCodesList = new ArrayList<>();
-				for(int i=0;i<eqList.size();i++) {
-					System.out.println(eqList.get(i).getEquipmentCode());
-					eqCodesList.add(eqList.get(i).getEquipmentCode());
+				for(Equipment e : eqSet) {
+					System.out.println(e.getEquipmentCode());
+					eqCodesList.add(e.getEquipmentCode());
 				}
 				
 				newEqList  = entityManager.createQuery("SELECT e FROM Equipment e WHERE e.equipmentCode NOT IN (:vehicleEquipment)")
@@ -56,6 +60,24 @@ public class EquipmentRepositoryImpl implements EquipmentRepositoryCustom{
 		}
 		
 		return newEqList;
+	}
+
+	@Override
+	@Transactional
+	public void addEquipment(Equipment equipment) {
+
+		entityManager.persist(equipment);
+		
+	}
+
+	@Override
+	@Transactional
+	public void deleteEquipmentById(String eqpCode) {
+		
+		Equipment eq = equipmentRepository.getEquipmentByCode(eqpCode);
+		
+		entityManager.remove(eq);
+		
 	}
 
 }

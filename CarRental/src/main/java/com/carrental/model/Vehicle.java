@@ -4,12 +4,16 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -47,7 +51,8 @@ public class Vehicle implements Serializable {
 	@Column(name = "bestOffer")
 	private Boolean bestOffer;
 
-	@ManyToMany(mappedBy = "carList")
+	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH })
+	@JoinTable(name = "Eqp", joinColumns = @JoinColumn(name = "vehicleID"), inverseJoinColumns = @JoinColumn(name = "equipmentID"))
 	private List<Equipment> equipmentList = new ArrayList<Equipment>();
 
 	@OneToOne(mappedBy = "vehicle")
@@ -55,6 +60,10 @@ public class Vehicle implements Serializable {
 
 	@OneToOne(mappedBy = "vehicle")
 	private Stars stars;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "vehicle")
+	private Set<Comment> comments;
 
 	public Vehicle() {
 		super();
@@ -158,6 +167,14 @@ public class Vehicle implements Serializable {
 
 	public void setStars(Stars stars) {
 		this.stars = stars;
+	}
+
+	public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
 	}
 
 	@Override

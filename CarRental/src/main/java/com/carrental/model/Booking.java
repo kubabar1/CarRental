@@ -1,7 +1,9 @@
 package com.carrental.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,61 +30,51 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 public class Booking implements Serializable {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private Long id;
 
 	@Column(name = "userID")
-	private Long userID;
+	private Long userId;
 
 	@Column(name = "vehicleID")
-	private Long vehicleID;
+	private Long vehicleId;
 
 	@Column(name = "locationID")
-	private Long locationID;
+	private Long locationId;
 
-	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-	@JsonSerialize(using = LocalDateTimeSerializer.class)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@Column(name = "receiptDate")
-	private LocalDateTime receiptDate;
+	private Timestamp receiptDate;
 
-	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-	@JsonSerialize(using = LocalDateTimeSerializer.class)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@Column(name = "returnDate")
-	private LocalDateTime returnDate;
+	private Timestamp returnDate;
 
 	@Column(name = "bookingStateCode")
-	private BookingStateCode bookingStateCode;
-
-	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-	@JsonSerialize(using = LocalDateTimeSerializer.class)
-	@Column(name = "rentDate")
-	private LocalDateTime rentDate;
-
-	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-	@JsonSerialize(using = LocalDateTimeSerializer.class)
-	@Column(name = "returnRentedVehicleDate")
-	private LocalDateTime returnRentedVehicleDate;
+	private String bookingStateCode;
 
 	@Column(name = "rentingEmployee")
 	private Long rentingEmployee;
+
+	@Column(name = "totalCost")
+	private BigDecimal totalCost;
 
 	public Booking() {
 		super();
 	}
 
-	public Booking(Long userID, Long vehicleID, Long locationID, LocalDateTime receiptDate, LocalDateTime returnDate,
-			BookingStateCode bookingStateCode, LocalDateTime rentDate, LocalDateTime returnRentedVehicleDate,
-			Long rentingEmployee) {
+	public Booking(Long userId, Long vehicleId, Long locationId, Timestamp receiptDate, Timestamp returnDate,
+			String bookingStateCode, Long rentingEmployee, BigDecimal totalCost) {
 		super();
-		this.userID = userID;
-		this.vehicleID = vehicleID;
-		this.locationID = locationID;
+		this.userId = userId;
+		this.vehicleId = vehicleId;
+		this.locationId = locationId;
 		this.receiptDate = receiptDate;
 		this.returnDate = returnDate;
 		this.bookingStateCode = bookingStateCode;
-		this.rentDate = rentDate;
-		this.returnRentedVehicleDate = returnRentedVehicleDate;
 		this.rentingEmployee = rentingEmployee;
+		this.totalCost = totalCost;
 	}
 
 	public Long getId() {
@@ -91,68 +85,52 @@ public class Booking implements Serializable {
 		this.id = id;
 	}
 
-	public Long getUserID() {
-		return userID;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUserID(Long userID) {
-		this.userID = userID;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
-	public Long getVehicleID() {
-		return vehicleID;
+	public Long getVehicleId() {
+		return vehicleId;
 	}
 
-	public void setVehicleID(Long vehicleID) {
-		this.vehicleID = vehicleID;
+	public void setVehicleId(Long vehicleId) {
+		this.vehicleId = vehicleId;
 	}
 
-	public Long getLocationID() {
-		return locationID;
+	public Long getLocationId() {
+		return locationId;
 	}
 
-	public void setLocationID(Long locationID) {
-		this.locationID = locationID;
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
 	}
 
-	public LocalDateTime getReceiptDate() {
+	public Timestamp getReceiptDate() {
 		return receiptDate;
 	}
 
-	public void setReceiptDate(LocalDateTime receiptDate) {
+	public void setReceiptDate(Timestamp receiptDate) {
 		this.receiptDate = receiptDate;
 	}
 
-	public LocalDateTime getReturnDate() {
+	public Timestamp getReturnDate() {
 		return returnDate;
 	}
 
-	public void setReturnDate(LocalDateTime returnDate) {
+	public void setReturnDate(Timestamp returnDate) {
 		this.returnDate = returnDate;
 	}
 
-	public BookingStateCode getBookingStateCode() {
+	public String getBookingStateCode() {
 		return bookingStateCode;
 	}
 
-	public void setBookingStateCode(BookingStateCode bookingStateCode) {
+	public void setBookingStateCode(String bookingStateCode) {
 		this.bookingStateCode = bookingStateCode;
-	}
-
-	public LocalDateTime getRentDate() {
-		return rentDate;
-	}
-
-	public void setRentDate(LocalDateTime rentDate) {
-		this.rentDate = rentDate;
-	}
-
-	public LocalDateTime getReturnRentedVehicleDate() {
-		return returnRentedVehicleDate;
-	}
-
-	public void setReturnRentedVehicleDate(LocalDateTime returnRentedVehicleDate) {
-		this.returnRentedVehicleDate = returnRentedVehicleDate;
 	}
 
 	public Long getRentingEmployee() {
@@ -163,12 +141,19 @@ public class Booking implements Serializable {
 		this.rentingEmployee = rentingEmployee;
 	}
 
+	public BigDecimal getTotalCost() {
+		return totalCost;
+	}
+
+	public void setTotalCost(BigDecimal totalCost) {
+		this.totalCost = totalCost;
+	}
+
 	@Override
 	public String toString() {
-		return "Booking [id=" + id + ", userID=" + userID + ", vehicleID=" + vehicleID + ", locationID=" + locationID
+		return "Booking [id=" + id + ", userId=" + userId + ", vehicleId=" + vehicleId + ", locationId=" + locationId
 				+ ", receiptDate=" + receiptDate + ", returnDate=" + returnDate + ", bookingStateCode="
-				+ bookingStateCode + ", rentDate=" + rentDate + ", returnRentedVehicleDate=" + returnRentedVehicleDate
-				+ ", rentingEmployee=" + rentingEmployee + "]";
+				+ bookingStateCode + ", rentingEmployee=" + rentingEmployee + ", totalCost=" + totalCost + "]";
 	}
 
 }

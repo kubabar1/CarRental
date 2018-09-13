@@ -6,6 +6,7 @@ import {ReservationData} from './reservation/reservation_data/ReservationData.js
 import {ReservationCarSelection} from './reservation/reservation_select_car/ReservationCarSelection.js';
 import {ReservationConfirm} from './reservation/reservation_confirm/ReservationConfirm.js';
 import {ReservationSucceed} from './reservation/reservation_succeed/ReservationSucceed.js';
+import {SearchResults} from './carlist/search_results/SearchResults.js';
 
 export class Content extends React.Component {
 	render () {
@@ -20,6 +21,8 @@ export class Content extends React.Component {
 					<Route path="/CarRental/aboutus" component={MainWebsiteContent} />
 					<Route path="/CarRental/contact" component={MainWebsiteContent} />
 					<Route path="/CarRental/cardetails/:car_id" component={MainWebsiteContent} />
+					<Route path="/CarRental/searchresult" component={MainWebsiteContent} />
+					<Route path="/CarRental/searchresult?page=:page" component={MainWebsiteContent} />
 
 					<Route path="/CarRental/reservation/data" component={ReservationData} />
 					<Route path="/CarRental/reservation/selectcar" component={ReservationCarSelection} />

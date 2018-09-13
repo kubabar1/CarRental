@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -25,7 +27,7 @@ public class Stars implements Serializable {
 	@Id
 	@JsonIgnore
 	@Column(name = "vehicleID")
-	private Long vehicleID;
+	private Long vehicleId;
 
 	@Column(name = "starsAvgCount")
 	private Double starsAvgCount;
@@ -39,18 +41,18 @@ public class Stars implements Serializable {
 		super();
 	}
 
-	public Stars(Long vehicleID, Double starsAvgCount) {
+	public Stars(Long vehicleId, Double starsAvgCount) {
 		super();
-		this.vehicleID = vehicleID;
+		this.vehicleId = vehicleId;
 		this.starsAvgCount = starsAvgCount;
 	}
 
-	public Long getVehicleID() {
-		return vehicleID;
+	public Long getVehicleId() {
+		return vehicleId;
 	}
 
-	public void setVehicleID(Long vehicleID) {
-		this.vehicleID = vehicleID;
+	public void setVehicleId(Long vehicleId) {
+		this.vehicleId = vehicleId;
 	}
 
 	public Double getStarsAvgCount() {
@@ -71,7 +73,7 @@ public class Stars implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Stars [vehicleID=" + vehicleID + ", starsAvgCount=" + starsAvgCount + ", vehicle=" + vehicle + "]";
+		return "Stars [vehicleId=" + vehicleId + ", starsAvgCount=" + starsAvgCount + ", vehicle=" + vehicle + "]";
 	}
 
 }

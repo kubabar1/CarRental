@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.carrental.dto.VehicleAddDto;
 import com.carrental.dto.VehicleFilterDto;
+import com.carrental.model.Equipment;
 import com.carrental.model.User;
 import com.carrental.model.Vehicle;
 import com.carrental.model.VehicleParameters;
@@ -20,7 +21,7 @@ public interface VehicleService {
 
 	public Page<Vehicle> getBestOfferCars(Pageable pageable);
 
-	public List<Vehicle> getVehicleListForCity(String city);
+	public List<Vehicle> getAvailableVehicleListForLocation(Long cityId);
 
 	public Vehicle getVehicleById(Long id);
 
@@ -39,5 +40,9 @@ public interface VehicleService {
 	public int updateVehicle(VehicleAddDto vehicleAddDto);
 	
 	public void addVehicle(VehicleAddDto vehicleAddDto);
+	
+	public void addEquipment(Equipment equipment, Long vehicleId);
+	
+	public void removeEquipment(String eqpCode, Long vehicleId);
 
 }

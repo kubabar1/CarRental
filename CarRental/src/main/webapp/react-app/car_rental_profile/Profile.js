@@ -1,6 +1,6 @@
 import * as React from "react";
 import ReactDOM from 'react-dom';
-import {Switch, Route} from 'react-router-dom'
+import {Switch, Route, Redirect, withRouter} from 'react-router-dom'
 import 'jquery/src/jquery.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
@@ -19,6 +19,9 @@ import {AddRole} from './users_roles/AddRole.js';
 import {SendEmail} from './send_email/SendEmail.js';
 import {UserEmailContainer} from './send_email/UserEmailContainer.js';
 import {Settings} from './settings/Settings.js';
+import {AllBookings} from './booking/AllBookings.js';
+import {AllRentedVehicles} from './booking/AllRentedVehicles.js';
+import {AllReservedVehicles} from './booking/AllReservedVehicles.js';
 
 export class Profile extends React.Component {
 
@@ -29,6 +32,9 @@ export class Profile extends React.Component {
           <NavContainer/>
 					<Switch>
 						<Route exact path="/CarRental/profile" component={MainContent} />
+						<Route path="/CarRental/profile/allbookings" component={AllBookings} />
+						<Route path="/CarRental/profile/allreservedvehicles" component={AllReservedVehicles} />
+						<Route path="/CarRental/profile/allrentedvehicles" component={AllRentedVehicles} />
 						<Route path="/CarRental/profile/userlist" component={Users} />
 						<Route path="/CarRental/profile/edituser/:user_id" component={EditUser} />
 						<Route path="/CarRental/profile/carslist" component={CarList} />

@@ -26,9 +26,8 @@ public class VehicleParameters implements Serializable {
 	@Column(name = "bodytype")
 	private String bodytype;
 
-	@JsonFormat(pattern = "yyyy")
 	@Column(name = "productionYear")
-	private Date productionYear;
+	private Integer productionYear;
 
 	@Column(name = "fuelType")
 	private String fuelType;
@@ -70,7 +69,7 @@ public class VehicleParameters implements Serializable {
 		super();
 	}
 
-	public VehicleParameters(Long vehicleID, String bodytype, Date productionYear, String fuelType, Integer power,
+	public VehicleParameters(Long vehicleID, String bodytype, Integer productionYear, String fuelType, Integer power,
 			String gearbox, Integer frontWheelDrive, Integer doorsNumber, Integer seatsNumber, String color,
 			Integer metallic, String photoName, String description) {
 		super();
@@ -105,11 +104,11 @@ public class VehicleParameters implements Serializable {
 		this.bodytype = bodytype;
 	}
 
-	public Date getProductionYear() {
+	public Integer getProductionYear() {
 		return productionYear;
 	}
 
-	public void setProductionYear(Date productionYear) {
+	public void setProductionYear(Integer productionYear) {
 		this.productionYear = productionYear;
 	}
 

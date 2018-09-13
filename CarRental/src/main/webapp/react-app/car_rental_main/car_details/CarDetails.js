@@ -20,20 +20,80 @@ export class CarDetails extends React.Component {
 		super();
 
 		this.state = {
-			vehicleProperties:null
+			vehicleProperties:null,
+			isAuthenticated:false,
+			currentuser:null,
+			comments:null,
+			commentsPage:0,
+			commentsNumber:10,
+			loaded:false,
+			allPages:null
 		};
 	}
 
+	loadCommentsForPage = (page) => {
+
+
+		const url = "http://localhost:8080/CarRental/comments/"+this.props.match.params.car_id+"?page="+page+"&number="+this.state.commentsNumber;
+
+		console.log(url);
+
+		fetch(url)
+		.then(response => response.json())
+		.then(data => {
+				this.setState({
+					loaded:true,
+					comments:data.content,
+					allPages:data.totalPages
+				});
+			console.log("refresh");
+			console.log(data.content);
+		})
+	}
+
+
+	componentWillReceiveProps(){
+		this.loadCommentsForPage(0);
+	}
+
 	componentDidMount(){
-		fetch("http://localhost:8080/CarRental/carlist/"+this.props.match.params.car_id)
+		const url1="http://localhost:8080/CarRental/carlist/"+this.props.match.params.car_id;
+		fetch(url1)
 		.then(response=>{
 			response.json().then(json=>{
 				this.setState({vehicleProperties:json});
 			});
-	});
+		});
+
+		const url2="http://localhost:8080/CarRental/userdata/isauthenticated";
+		fetch(url2)
+		.then(response=>{
+			response.json().then(json=>{
+				this.setState({isAuthenticated:json.isAuthenticated});
+			});
+		});
+
+		const url3="http://localhost:8080/CarRental/userdata/all";
+		fetch(url3)
+		.then(response => response.json())
+		.then(json => {this.setState({
+				currentuser:json
+			})
+			console.log(json);
+		})
+		.catch(error => {});
+
+		this.loadCommentsForPage(0);
 	};
 
- 	renderContent = (vehicleProperties) => {
+ 	renderContent = (vehicleProperties, comments) => {
+		const isAuthenticated = this.state.isAuthenticated;
+		const currentuser = this.state.currentuser;
+
+		console.log(currentuser);
+
+		console.log(comments);
+
 		return(
 		<div>
 	 		<CarDetailsHeader vehicleProperties={vehicleProperties}/>
@@ -60,16 +120,30 @@ export class CarDetails extends React.Component {
 	 			<h3 className="mt-2 ml-3 mb-4">Comments</h3>
 			</div>
 
-	 		<AddComment/>
+	 		{isAuthenticated && currentuser ? <AddComment loadCommentsForPage={this.loadCommentsForPage} login={currentuser.login} carid={this.props.match.params.car_id}/> : ""}
 
-	 		<CommentList/>
+	 		{comments ? <CommentList comments={comments} carid={this.props.match.params.car_id} currentuser={this.state.currentuser}/> : ""}
  		</div>);
 	}
+
+	changePage = () => {
+		const page = this.state.commentsPage;
+		const newPage = page+1;
+		const allPages = this.state.allPages;
+
+		console.log(newPage);
+		if(newPage<allPages){
+			this.loadCommentsForPage(newPage);
+			this.setState({commentsPage:newPage});
+		}
+	}
+
 
 
 	render () {
 
 		const vehicleProperties = this.state.vehicleProperties;
+		const comments = this.state.comments;
 
 		return (
 			<div>
@@ -79,8 +153,9 @@ export class CarDetails extends React.Component {
 
 					<div className="text-center">
 
-						{vehicleProperties ? this.renderContent(vehicleProperties) : <i className="fa fa-spinner fa-pulse fa-3x fa-fw "></i>}
+						{vehicleProperties ? this.renderContent(vehicleProperties, comments) : <i className="fa fa-spinner fa-pulse fa-3x fa-fw "></i>}
 
+						<button type="button" className="btn btn-primary my-5" onClick={this.changePage}>Older comments</button>
 					</div>
 
 				</div>

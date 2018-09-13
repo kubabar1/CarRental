@@ -14,11 +14,12 @@ export class ReservationConfirm extends React.Component {
 	constructor() {
     super();
     this.state = {
+			user_id:null,
       step:3,
-      name:"Jan",
-      surname:"Kowalski",
-      phone:"423 645 765",
-      email:"jan@gmail.com",
+      name:null,
+      surname:null,
+      phone:null,
+      email:null,
       brand:null,
       model:null,
       dailyFee:null,
@@ -29,6 +30,9 @@ export class ReservationConfirm extends React.Component {
       return_date:null,
       return_hour:null,
 			selectedCar:null,
+			fullCost:null,
+
+			selected_city_name:null,
 
       loaded:false
     };
@@ -56,6 +60,28 @@ export class ReservationConfirm extends React.Component {
       });
     });
 
+		const url2="http://localhost:8080/CarRental/userdata/all";
+
+    fetch(url2)
+    .then(response => response.json())
+    .then(data => {
+        this.setState({
+					user_id:data.id,
+          name:data.name,
+          surname:data.surname,
+          phone:data.phone,
+          email:data.email,
+        });
+    }).catch(error => {})
+
+		fetch("http://localhost:8080/CarRental/locations/"+this.props.location.state.selected_city)
+		.then(response=>{
+			response.json().then(json=>{
+				this.setState({selected_city_name:json.city});
+				console.log(json.city);
+			});
+		});
+
 		this.setState({
 			selected_city:this.props.location.state.selected_city,
 			reception_date:this.props.location.state.reception_date,
@@ -68,13 +94,63 @@ export class ReservationConfirm extends React.Component {
 		this.setState({loaded:true});
 	};
 
-	countCost = (dailyFee,receptionDate,returnDate) => {
-		const start = new Date(receptionDate);
-		const stop = new Date(returnDate);
-		const diff = (Math.abs(stop - start))/(24*60*60*1000);
-		const cost = diff*dailyFee;
+	createBookingWrapper = () => {
+		const item = {};
 
-		return cost;
+		item['userId']=this.state.user_id;
+		item['vehicleId']=this.state.selectedCar;
+		item['locationId']=this.state.selected_city;
+		item['receiptDate']=this.state.reception_date+" "+this.state.reception_hour+":00";
+		item['returnDate']=this.state.return_date+" "+this.state.return_hour+":00";
+		item['bookingStateCode']='RES';
+		item['rentingEmployee']=null;
+		item['totalCost']=this.state.fullCost;
+
+		return item;
+	}
+
+	countCost = () => {
+		const bookingWrapper = JSON.stringify(this.createBookingWrapper());
+		console.log(bookingWrapper);
+
+		const url = 'http://localhost:8080/CarRental/booking/cost';
+
+		fetch(url, {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: bookingWrapper
+		}).then(response => response.json())
+		.then(json => {this.setState({fullCost:json.fullCost})})
+		.catch(error => {});
+	}
+
+	addBooking = () => {
+			const bookingWrapper = JSON.stringify(this.createBookingWrapper());
+			const url = 'http://localhost:8080/CarRental/booking/reserve';
+
+			fetch(url, {
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: bookingWrapper
+			})
+			.catch(error => {});
+
+	}
+
+	onClickNext = (event) => {
+		event.preventDefault();
+
+		this.addBooking();
+
+		this.props.history.push({
+			pathname: "/CarRental/reservation/succeed"
+		})
 	}
 
 	render () {
@@ -90,7 +166,16 @@ export class ReservationConfirm extends React.Component {
     const brand = this.state.brand;
     const model = this.state.model;
     const dailyFee = this.state.dailyFee;
-		const cost = this.countCost(dailyFee,receptionDate,returnDate);
+		const selected_city_name = this.state.selected_city_name;
+
+
+		const fullCost = this.state.fullCost;
+
+		const loaded = this.state.loaded;
+
+		if(loaded && fullCost==null){
+			this.countCost();
+		}
 
 		return (
       <main>
@@ -128,7 +213,7 @@ export class ReservationConfirm extends React.Component {
 
                 <div className="form-group">
                   <label>City: </label>
-                  <strong> {city}</strong>
+                  <strong> {selected_city_name}</strong>
                 </div>
 
                 <div className="form-group">
@@ -158,7 +243,7 @@ export class ReservationConfirm extends React.Component {
 
                 <div className="form-group">
                   <label>Cost: </label>
-                  <strong> {cost} $</strong>
+                  <strong> {fullCost ? fullCost : ""} $</strong>
                 </div>
 
                 <hr></hr>
@@ -177,7 +262,7 @@ export class ReservationConfirm extends React.Component {
 									}} className="linkstyle btn btn-lg btn-secondary btn-block col-md-2 ml-5">
 										Back
 									</Link>
-                  <Link to={"/CarRental/reservation/succeed"} className="linkstyle btn btn-lg btn-success btn-block col-md-2 ml-auto mr-5">Rent car</Link>
+									<button className="btn btn-lg btn-success btn-block  col-md-2 ml-auto mr-5" onClick={this.onClickNext}>Rent car</button>
                 </div>
               </div>
             </div>

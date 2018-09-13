@@ -22,7 +22,7 @@ public interface UserService {
 	
 	public Page<User> getUsersForPage(Pageable pageable);
 
-	public int updateUser(User userUpdate);
+	public int updateUser(String userlogin, User userUpdate);
 	
 	public void addRoleToUser(Long userId, Long roleId);
 

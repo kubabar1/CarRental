@@ -3,53 +3,45 @@ import 'jquery/src/jquery.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
 import '../../static/css/main.css'
+import {Link} from 'react-router-dom';
 
 
 export class Footer extends React.Component {
 	render () {
+		var d = new Date();
+    var n = d.getFullYear();
+
 		return (
 			  <footer>
 				<div className="container">
 			      <div className="row">
 			        <div id="pages-list" className="col-lg-3 col-md-12">
 			          <ul>
-			            <li><a href="#">Home</a></li>
-			            <li><a href="#">Car list</a></li>
-			            <li><a href="#">Best offers</a></li>
-			            <li><a href="#">Blog</a></li>
-			            <li><a href="#">About us</a></li>
-			            <li><a href="#">Contact</a></li>
+									<li><Link to='/CarRental/' className="linkstyle_black">Home</Link></li>
+									<li><Link to='/CarRental/listcar' className="linkstyle_black">Car list</Link></li>
+									<li><Link to='/CarRental/bestoffers' className="linkstyle_black">Best offers</Link></li>
+									<li><Link to='/CarRental/aboutus' className="linkstyle_black">About us</Link></li>
+									<li><Link to='/CarRental/contact' className="linkstyle_black">Contact</Link></li>
 			          </ul>
 			        </div>
 
 
-			        <div id="news-list" className="col-lg-5 col-md-12">
-			          <h5>Latest news:</h5>
-			          <div className="container">
-			            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-			              Lorem ipsum dolor sit amet, consectetur adipiscing elit ...<br></br>
-			            <a className="underline-href" href="#">read more</a></p>
-			          </div>
-			          <div className="container">
-			            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-			              Lorem ipsum dolor sit amet, consectetur adipiscing elit ...<br></br>
-			            <a className="underline-href" href="#">read more</a></p>
-			          </div>
+			        <div id="news-list" className="col-lg-5 col-md-12 mt-3">
+								<h5>Socials:</h5>
+								<div className="row">
+									<a href="#"><i className="socials-icons fab fa-facebook facebook-icon" style={{fontSize:40}}></i></a><br></br>
+									<a href="#"><i className="socials-icons fab fa-twitter twitter-icon" style={{fontSize:40}}></i></a><br></br>
+									<a href="#"><i className="socials-icons fab fa-instagram instagram-icon" style={{fontSize:40}}></i></a><br></br>
+									<a href="#"><i className="socials-icons fab fa-youtube youtube-icon" style={{fontSize:40}}></i></a><br></br>
+								</div>
 			        </div>
 
 
-			        <div className="footer-contact"  className="col-lg-4 col-md-12">
+			        <div className="footer-contact"  className="col-lg-4 col-md-12 mt-3">
 			          <h5>Contact us:</h5>
 			          <i className="fa fa-phone" style={{fontSize:24}}></i>  423 232 123 <br></br>
 			          <i className="fa fa-mobile" style={{fontSize:24}}></i>  948 132 423 <br></br>
 			          <i className="fa fa-envelope" style={{fontSize:24}}></i> car.rental@gmail.com <br></br><br></br>
-			          <h5>Socials:</h5>
-			          <div className="row">
-			            <a href="#"><i className="socials-icons fab fa-facebook facebook-icon" style={{fontSize:40}}></i></a><br></br>
-			            <a href="#"><i className="socials-icons fab fa-twitter twitter-icon" style={{fontSize:40}}></i></a><br></br>
-			            <a href="#"><i className="socials-icons fab fa-instagram instagram-icon" style={{fontSize:40}}></i></a><br></br>
-			            <a href="#"><i className="socials-icons fab fa-youtube youtube-icon" style={{fontSize:40}}></i></a><br></br>
-			          </div>
 			        </div>
 			      </div>
 
@@ -57,7 +49,7 @@ export class Footer extends React.Component {
 			    </div>
 
 			    <div className="footer-copyright text-center">
-			      © 2018 Copyright:  <a className ="font-weight-bold" href="#">CarRental</a>
+			      © {n} Copyright:  <a className ="font-weight-bold" href="#">CarRental</a>
 			    </div>
 			   </footer>
 		)

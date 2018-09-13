@@ -24,6 +24,8 @@ class CarSelectionForm extends React.Component{
       return_date:null,
       return_hour:null,
 
+      inputError:false,
+
       loaded:false
     };
   }
@@ -75,10 +77,36 @@ class CarSelectionForm extends React.Component{
     });
   }
 
+  onClickNext = (event) => {
+    event.preventDefault();
+    const selectedCar = this.state.selectedCar;
+
+    const inputError = this.state.inputError;
+
+    if(selectedCar!=null){
+      this.props.history.push({
+        pathname: "/CarRental/reservation/confirm",
+        state: {
+          selected_city:this.state.selected_city,
+          reception_date:this.state.reception_date,
+          reception_hour:this.state.reception_hour,
+          return_date:this.state.return_date,
+          return_hour:this.state.return_hour,
+          selectedCar:this.state.selectedCar
+        }
+      })
+      this.setState({inputError:false});
+    }else{
+      this.setState({inputError:true});
+    }
+
+  }
+
 
   renderContent = () => {
     const carlist = this.state.carlist;
     const selectedCar = this.state.selectedCar;
+    const inputError = this.state.inputError;
 
 
     return(
@@ -96,6 +124,12 @@ class CarSelectionForm extends React.Component{
           <div className="shadow card mt-3">
             <div className="card-body">
               <h4 className="ml-4 mt-3">Selected car: <strong>{this.state.brandAndModel ? this.state.brandAndModel : ""}</strong></h4>
+              {inputError ? [
+                <div key="input_Error" className="alert alert-danger my-4">
+                  Fill all fields with valid values.
+                </div>
+                ] : ""
+              }
               <div className="row mb-3 mt-5">
                 <Link to={{
                   pathname: "/CarRental/reservation/data",
@@ -110,19 +144,7 @@ class CarSelectionForm extends React.Component{
                 }} className="linkstyle btn btn-lg btn-secondary btn-block col-md-2 ml-5">
                   Back
                 </Link>
-                <Link to={{
-                  pathname: "/CarRental/reservation/confirm",
-                  state: {
-            				selected_city:this.state.selected_city,
-            				reception_date:this.state.reception_date,
-            				reception_hour:this.state.reception_hour,
-            				return_date:this.state.return_date,
-            				return_hour:this.state.return_hour,
-                    selectedCar:this.state.selectedCar
-                  }
-                }}className="linkstyle btn btn-lg btn-primary btn-block  col-md-2 ml-auto mr-5">
-                  Next
-                </Link>
+                <button className="btn btn-lg btn-primary btn-block  col-md-2 ml-auto mr-5" onClick={this.onClickNext}>Next</button>
               </div>
             </div>
           </div>

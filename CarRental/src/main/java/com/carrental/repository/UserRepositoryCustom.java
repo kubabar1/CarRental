@@ -13,7 +13,7 @@ public interface UserRepositoryCustom {
 	
 	public User addUser(UserRegistrationDto user);
 	
-	public int updateUser(User userUpdate);
+	public int updateUser(String userlogin, User userUpdate);
 	
 	public void addRoleToUser(Long userId, Long roleId);
 

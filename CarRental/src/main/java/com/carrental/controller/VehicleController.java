@@ -30,8 +30,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.carrental.dto.VehicleAddDto;
 import com.carrental.dto.VehicleFilterDto;
+import com.carrental.model.Comment;
+import com.carrental.model.Equipment;
 import com.carrental.model.User;
 import com.carrental.model.Vehicle;
+import com.carrental.service.EquipmentServiceImpl;
 import com.carrental.service.VehicleServiceImpl;
 
 @RestController
@@ -40,6 +43,9 @@ public class VehicleController {
 
 	@Autowired
 	VehicleServiceImpl vehicleService;
+	
+	@Autowired
+	EquipmentServiceImpl equipmentService;
 
 	@RequestMapping(method = RequestMethod.GET, params = { "page", "number" })
 	public Page<Vehicle> getVehicleList(@RequestParam(value = "page") int page,
@@ -53,8 +59,8 @@ public class VehicleController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, params = { "city" })
-	public List<Vehicle> getVehicleListForCity(@RequestParam(value = "city") String city) {
-		return vehicleService.getVehicleListForCity(city);
+	public List<Vehicle> getAvailableVehicleListForLocation(@RequestParam(value = "city") Long city) {
+		return vehicleService.getAvailableVehicleListForLocation(city);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
@@ -84,12 +90,25 @@ public class VehicleController {
 		vehicleService.addVehicle(vehicleAddDto);
 
 	}
+	
+	@RequestMapping(value="/equipment/{vehicleID}", method = RequestMethod.POST)
+	public void addEquipmentToVehicle(@PathVariable Long vehicleID, @RequestBody Equipment equipment) {
+		Equipment eqp = equipmentService.getEquipmentByCode(equipment.getEquipmentCode());
+		
+		vehicleService.addEquipment(eqp,vehicleID);
+	}
+	
+
+	@RequestMapping(value = { "/equipment/{vehicleID}" }, method = RequestMethod.DELETE)
+	public void removeEquipmentFromVehicle(@PathVariable Long vehicleID, @RequestBody Equipment equipment) {
+		vehicleService.removeEquipment(equipment.getEquipmentCode(),vehicleID);
+	}
 
 	private String addVehicleImage(MultipartFile image) {
 
 		UUID uuid = UUID.randomUUID();
 		
-		String fileName = uuid.toString() + FilenameUtils.getExtension(image.getOriginalFilename());
+		String fileName = uuid.toString() + "." + FilenameUtils.getExtension(image.getOriginalFilename());
 
 		try {
 			byte[] bytes = image.getBytes();

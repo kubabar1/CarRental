@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,9 +13,9 @@ import com.carrental.model.Equipment;
 import com.carrental.service.EquipmentServiceImpl;
 
 @RestController
-@RequestMapping(value = { "/equipmentlist"})
+@RequestMapping(value = { "/equipmentlist" })
 public class EquipmentController {
-	
+
 	@Autowired
 	private EquipmentServiceImpl equipmentService;
 
@@ -22,9 +23,20 @@ public class EquipmentController {
 	public List<Equipment> getEquipmentList() {
 		return equipmentService.getEquipmentList();
 	}
-	
-	@RequestMapping(value = { "/{id}"}, method = RequestMethod.GET)
+
+	@RequestMapping(value = { "/{id}" }, method = RequestMethod.GET)
 	public List<Equipment> getUnexistingDistinctEquipmentListForVehicle(@PathVariable Long id) {
 		return equipmentService.getUnexistingDistinctEquipmentListForVehicle(id);
 	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public void addEquipment(@RequestBody Equipment equipment) {
+		equipmentService.addEquipment(equipment);
+	}
+
+	@RequestMapping(value = { "/{eqpCode}" }, method = RequestMethod.DELETE)
+	public void deleteEquipment(@PathVariable String eqpCode) {
+		equipmentService.deleteEquipmentById(eqpCode);
+	}
+
 }

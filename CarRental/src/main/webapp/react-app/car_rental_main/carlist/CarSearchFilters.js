@@ -14,10 +14,11 @@ import {Price} from './search_item/Price.js';
 import {Seatsnumber} from './search_item/Seatsnumber.js';
 import {Doorsnumber} from './search_item/Doorsnumber.js';
 import {Productionyear} from './search_item/Productionyear.js';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 
-export class CarSearchFilters extends React.Component {
+class CarSearchFilters extends React.Component {
 
 	constructor() {
      	super();
@@ -62,9 +63,14 @@ export class CarSearchFilters extends React.Component {
 	handleSubmit = (event) => {
 			event.preventDefault();
 			const item = this.createFilterWrapperObject();
-			const data = JSON.stringify(item);
-			this.setState({filterWrapperObject:data});
-			this.props.setFilterWrapper(data);
+			const filterWrapperObjectJson = JSON.stringify(item);
+
+			console.log("current location:"+this.props.location);
+
+			this.props.history.push({
+  			pathname: '/CarRental/searchresult',
+  			state: { filterWrapperObjectJson: filterWrapperObjectJson }
+			})
 	}
 
 	handleBrandInputChange = (event) => {
@@ -123,3 +129,6 @@ export class CarSearchFilters extends React.Component {
 	}
 
 }
+
+
+export default withRouter(CarSearchFilters);

@@ -20,6 +20,19 @@ export class FeaturesList extends React.Component {
   }
 
 	componentDidMount(){
+      this.loadEqpList();
+  }
+
+  deleteEquipment = (eqp) => {
+    const url="http://localhost:8080/CarRental/equipmentlist/"+eqp;
+
+    fetch(url, {
+      method: 'DELETE'
+    });
+    this.props.history.push({pathname: '/CarRental/profile'});
+  }
+
+  loadEqpList = () => {
     fetch("http://localhost:8080/CarRental/equipmentlist")
 		.then(response=>{
 			response.json().then(json=>{
@@ -29,10 +42,6 @@ export class FeaturesList extends React.Component {
 			  });
 		  });
     });
-  }
-
-  deleteEquipment = (eqp) => {
-
   }
 
   renderRow = (eqp) => {
@@ -67,15 +76,42 @@ export class FeaturesList extends React.Component {
   }
 
   handleSubmitAddEquipment = (event) => {
+    const url="http://localhost:8080/CarRental/equipmentlist";
+    const eqp_code=this.state.eqp_code;
+    const eqp_description=this.state.eqp_description;
+
+    const equipment = {};
+    equipment["equipmentCode"]=eqp_code;
+    equipment["description"]=eqp_description;
+
+    console.log(JSON.stringify(equipment));
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(equipment)
+    });
     event.preventDefault();
+    this.props.history.push({pathname: '/CarRental/profile'});
   }
 
-  handleInputChange = (event) => {
+  handleEqCodeChange = (event) => {
     event.preventDefault();
     const target = event.target;
     const value = target.value;
 
-    this.setState({target:value});
+    this.setState({eqp_code:value});
+
+  }
+
+  handleEqDescChange = (event) => {
+    event.preventDefault();
+    const target = event.target;
+    const value = target.value;
+
+    this.setState({eqp_description:value});
 
   }
 
@@ -84,11 +120,11 @@ export class FeaturesList extends React.Component {
       <form onSubmit={this.handleSubmitAddEquipment}>
         <label className="ml-5 mt-4 mx-auto">Equipment code:</label>
         <div className="mt-3 ml-3 col-md-5 mx-auto">
-          <input name="eqp_code" className="form-control" required onChange={this.handleInputChange} placeholder={"Max 3 chars!"} maxLength={3}/>
+          <input name="eqp_code" className="form-control" required onChange={this.handleEqCodeChange} placeholder={"Max 3 chars!"} maxLength={3}/>
         </div>
         <label className="ml-5 mt-4 mx-auto">Equipment description:</label>
         <div className="mt-3 ml-3 col-md-5 mx-auto">
-          <input name="eqp_description" type="text" className="form-control" required onChange={this.handleInputChange}/>
+          <input name="eqp_description" type="text" className="form-control" required onChange={this.handleEqDescChange}/>
         </div>
         <div className="mt-3 mx-auto">
           <input type="submit" value="Add" className="btn btn-primary"/>

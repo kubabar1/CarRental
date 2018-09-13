@@ -34,11 +34,13 @@ export class Users extends React.Component {
   }
 
   setPageNumber = (page) => {
+    console.log("setPageNumber");
     this.setState({pageNumber:page});
     this.setVehicleList(page, this.state.resultNumber);
   }
 
   setVehicleList = (page,number) => {
+    console.log("setVehicleList");
     fetch("http://localhost:8080/CarRental/userlist?page="+page+"&number="+number)
 		.then(response=>{
 			response.json().then(json=>{
@@ -55,6 +57,7 @@ export class Users extends React.Component {
 	render () {
     const loaded = this.state.loaded;
     const userlist = this.state.userlist;
+      console.log("render");
 
 		return (
       <div className="col-md-9 pl-0 pr-3">

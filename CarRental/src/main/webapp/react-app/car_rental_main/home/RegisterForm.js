@@ -21,22 +21,33 @@ class RegisterForm extends React.Component {
 			return_date:null,
 			return_hour:null,
 			minReturnDate:null,
-			maxReceptionDate:null
+			maxReceptionDate:null,
+			isAuthenticated:null,
+			authError:false
 		};
 	}
 
 	componentDidMount(){
-		fetch("http://localhost:8080/CarRental/carlistsearch/citylist")
+		fetch("http://localhost:8080/CarRental/locations")
+    .then(response=>{
+      response.json().then(json=>{
+        this.setState({citylist:json});
+      });
+    });
+
+
+		fetch("http://localhost:8080/CarRental/userdata/isauthenticated")
 		.then(response=>{
 			response.json().then(json=>{
-				this.setState({citylist:json});
+				this.setState({isAuthenticated:json.isAuthenticated});
+				console.log(json);
 			});
 		});
 
 	};
 
   optionsList = city=>{
-      return <option key={city} name={city} id={city} value={city}>{city}</option>;
+      return <option key={city.id} name={city.city+"_"+city.id} id={city.city+"_"+city.id} value={city.id}>{city.city}</option>;
   }
 
 	getMinDate = () => {
@@ -65,17 +76,31 @@ class RegisterForm extends React.Component {
 	}
 
 	handleSubmit = (e) => {
-		e.preventDefault()
-		this.props.history.push({
-  		pathname: '/CarRental/reservation/data',
-  		state: {
-				selected_city:this.state.selected_city,
-				reception_date:this.state.reception_date,
-				reception_hour:this.state.reception_hour,
-				return_date:this.state.return_date,
-				return_hour:this.state.return_hour
-			}
-		});
+		e.preventDefault();
+		const isAuthenticated = this.state.isAuthenticated;
+
+		console.log(isAuthenticated);
+
+		if(isAuthenticated==false){
+			this.setState({
+				authError:true
+			});
+		}else{
+			console.log(isAuthenticated);
+			this.setState({
+				authError:false
+			});
+			this.props.history.push({
+				pathname: '/CarRental/reservation/data',
+				state: {
+					selected_city:this.state.selected_city,
+					reception_date:this.state.reception_date,
+					reception_hour:this.state.reception_hour,
+					return_date:this.state.return_date,
+					return_hour:this.state.return_hour
+				}
+			});
+		}
 	}
 
 	handleInputChange = (event) => {
@@ -132,7 +157,8 @@ class RegisterForm extends React.Component {
 		const citylist = this.state.citylist;
 		const minReturnDate = this.state.minReturnDate;
 		const maxReceptionDate = this.state.maxReceptionDate;
-
+		const isAuthenticated = this.state.isAuthenticated;
+		const authError = this.state.authError;
 
 		return (
       <div>
@@ -160,6 +186,14 @@ class RegisterForm extends React.Component {
                   <input type="time" id="return_hour" name="return_hour" className="form-control" required onChange={this.handleInputChange}/>
                 </div>
               </div>
+
+							{authError ? [
+									<div className="alert alert-danger" key="auth_error">
+										You must be authenticated to  reserve cars.
+									</div>
+								] : ""
+							}
+
               <input type="submit" value="Reserve" className="btn btn-primary"/>
             </form>
           </div>

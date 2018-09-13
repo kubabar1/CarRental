@@ -11,8 +11,21 @@ export class CommentItem extends React.Component {
 		super();
 
 		this.state = {
+			userLogin:null,
+			date:null,
+			rating:null,
+			content:null
 		};
 
+	}
+
+	componentDidMount(){
+		this.setState({
+			userLogin:this.props.userLogin,
+			date:this.props.date,
+			rating:this.props.rating,
+			content:this.props.content
+		});
 	}
 
 
@@ -31,17 +44,22 @@ export class CommentItem extends React.Component {
 	}
 
 	render () {
+		const userLogin = this.state.userLogin;
+		const date = this.state.date;
+		const rating = this.state.rating;
+		const content = this.state.content;
+
 		return (
       <article className="media border p-3 my-4 text-left">
         <img src="/CarRental/etc-img/user.png" className="mr-3 mt-3 rounded-circle" style={{width:80}}/>
         <div className="media-body">
-          <h4>Jan Kowalski <small><i>Posted on February 19, 2016</i></small></h4>
+          <h4>{userLogin ? userLogin : ""} <small><i> Posted on {date ? date : ""}</i></small></h4>
 
           <div className="car-rank mb-2" >
-            {this.renderStars(4)}
+            {rating ? this.renderStars(rating) : this.renderStars(0)}
           </div>
 
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget finibus turpis, in rhoncus ex. Cras hendrerit blandit ligula, at tempus dolor ultrices id. Sed porta justo ligula. Donec pellentesque ornare blandit. Nam porta massa nec lorem cursus, facilisis tristique neque luctus. Aliquam ac placerat massa, quis tristique odio.</p>
+          <p>{content}</p>
         </div>
       </article>
 		)

@@ -4,12 +4,14 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
 import '../../../static/css/main.css';
 import '../../../static/css/car_list.css';
-import {CarSearchItem} from './CarSearchItem.js';
-import {PaginationCarList} from './PaginationCarList.js';
-import {CarSearchFilters} from './CarSearchFilters.js';
+import {CarItem} from './CarItem.js';
+import {Pageable} from './Pageable.js';
+import CarSearchFilters from './CarSearchFilters.js';
+import { Link } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 
-export class ContentContainer extends React.Component {
+class ContentContainer extends React.Component {
 
 	constructor() {
 		super();
@@ -27,20 +29,7 @@ export class ContentContainer extends React.Component {
 	}
 
 	componentDidMount(){
-		this.setState({activePageNumber:this.props.activePage});
-
-		console.log("contentcontainer mounted");
-
-		const url = "http://localhost:8080/CarRental/carlist?page="+this.state.activePageNumber+"&number="+this.state.vehiclesCountOnSinglePage;
-		fetch(url)
-		.then(response=>{
-			response.json().then(json=>{
-				this.setState({vehicles:json.content});
-				this.setState({totalPages:json.totalPages});
-				this.setState({totalElements:json.totalElements});
-				this.setState({loaded:true});
-			});
-		});
+		this.setVehicles(0);
 	}
 
 	scrollTop = () => {
@@ -55,6 +44,42 @@ export class ContentContainer extends React.Component {
 		window.scroll(0,window.pageYOffset - 50);
 	}
 
+	setVehicles = (pageNumber) => {
+		this.scrollTop();
+	  this.setState({activePageNumber:pageNumber});
+
+		const url = "http://localhost:8080/CarRental/carlist?page="+pageNumber+"&number="+this.state.vehiclesCountOnSinglePage;
+		fetch(url)
+		.then(response=>{
+			response.json().then(json=>{
+					this.setState({vehicles:json.content});
+					this.setState({totalPages:json.totalPages});
+					this.setState({totalElements:json.totalElements});
+					this.setState({loaded:true});
+			});
+		});
+	}
+
+
+
+	setPageNumber = (page) => {
+    this.setState({activePageNumber:page});
+    this.setVehicles(page);
+  }
+
+	renderCarList = () => {
+		const vehicles=this.state.vehicles;
+		const totalPages=this.state.totalPages;
+		const activePageNumber=this.state.activePageNumber;
+
+		return(
+			<div>
+				{vehicles.map(this.vehiclesToTableRow)}
+				{totalPages > 0 ? <Pageable setPageNumber={this.setPageNumber} activePageNumber={this.state.pageNumber} totalPages={this.state.totalPages}/> : <div></div>}
+			</div>
+		);
+	}
+
 	vehiclesToTableRow = vehicles=>{
 			const id = vehicles.id;
 			const brand = vehicles.brand;
@@ -64,82 +89,7 @@ export class ContentContainer extends React.Component {
 			const photoName = vehicles.vehicleParameters.photoName;
 			const starsNumber = vehicles.stars ? vehicles.stars.starsAvgCount : null;
 
-			return <CarSearchItem key={id} id={id} name={name} brand={brand} model={model} dailyFee={dailyFee} description={description} photoName={photoName} starsNumber={starsNumber}/>;
-	}
-
-	setVehicles = (pageNumber) => {
-		console.log("call 'setVehicles'");
-		this.setState({loaded:false});
-
-		this.scrollTop();
-
-		this.setState({activePageNumber:pageNumber});
-		const url = "http://localhost:8080/CarRental/carlist?page="+pageNumber+"&number="+this.state.vehiclesCountOnSinglePage;
-		fetch(url)
-		.then(response=>{
-			response.json().then(json=>{
-					this.setState({vehicles:json.content});
-					this.setState({totalPages:json.totalPages});
-					this.setState({totalElements:json.totalElements});
-					console.log(json.totalElements);
-					this.setState({loaded:true});
-			});
-		});
-	}
-
-	setFilteredVehicles = (pageNumber,filterWrapper) => {
-		console.log("call 'setFilteredVehicles'");
-		this.setState({loaded:false});
-
-		this.scrollTop();
-
-		this.setState({activePageNumber:pageNumber});
-
-		console.log(filterWrapper);
-
-		const url = "http://localhost:8080/CarRental/carlistsearch?page="+pageNumber+"&number="+this.state.vehiclesCountOnSinglePage;
-
-		fetch(url, {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: filterWrapper
-		}).then(response=>{
-			response.json().then(json=>{
-					this.setState({vehicles:json.content});
-					this.setState({totalPages:json.totalPages});
-					this.setState({totalElements:json.totalElements});
-					console.log(json.totalElements);
-					this.setState({loaded:true});
-			});
-		});
-	}
-
-	renderCarList = () => {
-		const vehicles=this.state.vehicles;
-		const filterWrapper=this.state.filterWrapper;
-		const totalElements=this.state.totalElements;
-
-
-		console.log(totalElements);
-
-		const pagination = filterWrapper ?
-			<PaginationCarList setVehicles={this.setFilteredVehicles} activePageNumber={this.state.activePageNumber} totalPages={this.state.totalPages} filterWrapper={filterWrapper}/> :
-			<PaginationCarList setVehicles={this.setVehicles} activePageNumber={this.state.activePageNumber} totalPages={this.state.totalPages}/>;
-
-		return(
-			<div>
-				{vehicles.map(this.vehiclesToTableRow)}
-				{totalElements > 0 ? pagination : <div></div>}
-			</div>
-		);
-	}
-
-	setFilterWrapper = (filter) => {
-		this.setState({filterWrapper:filter});
-		this.setFilteredVehicles(0,filter);
+			return <CarItem key={id} id={id} name={name} brand={brand} model={model} dailyFee={dailyFee} description={description} photoName={photoName} starsNumber={starsNumber}/>;
 	}
 
 	render () {
@@ -150,7 +100,7 @@ export class ContentContainer extends React.Component {
 		return (
 			<div className="row">
 				<div className="col-md-3 container  mb-5 mt-3 ">
-					<CarSearchFilters setFilterWrapper={this.setFilterWrapper}/>
+					<CarSearchFilters/>
 				</div>
 				<div id="serach-results-container" className="col-md-9 text-center">
 					{loaded ? this.renderCarList() : <i className="fa fa-spinner fa-pulse fa-3x fa-fw "></i>}
@@ -161,3 +111,6 @@ export class ContentContainer extends React.Component {
 	}
 
 }
+
+
+export default withRouter(ContentContainer);

@@ -19,17 +19,25 @@ class DataForm extends React.Component {
       reception_hour_data_form:null,
       return_date_data_form:null,
       return_hour_data_form:null,
-      selectedCar:null
+      selectedCar:null,
+      inputError:false,
+			minReturnDate:null,
+			maxReceptionDate:null,
+      userName:null,
+      userSurname:null,
+      userPhone:null,
+      userEmail:null
     };
   }
 
   componentDidMount(){
-  	fetch("http://localhost:8080/CarRental/carlistsearch/citylist")
-  	.then(response=>{
-  		response.json().then(json=>{
-  			this.setState({citylist:json});
-  		});
-  	});
+
+  		fetch("http://localhost:8080/CarRental/locations")
+      .then(response=>{
+        response.json().then(json=>{
+          this.setState({citylist:json});
+        });
+      });
 
     this.setState({
       selected_city_data_form:this.props.selected_city,
@@ -40,12 +48,24 @@ class DataForm extends React.Component {
       selectedCar:this.props.selectedCar
     });
 
-    this.setState({loaded:true});
+    const url2="http://localhost:8080/CarRental/userdata/all";
+
+    fetch(url2)
+    .then(response => response.json())
+    .then(data => {
+        this.setState({
+          userName:data.name,
+          userSurname:data.surname,
+          userPhone:data.phone,
+          userEmail:data.email,
+          loaded:true
+        });
+    }).catch(error => {})
   };
 
 
   optionsCityList = city=>{
-      return <option key={city} name={city} id={city} value={city}>{city}</option>;
+      return <option key={city.id} name={city.city+"_"+city.id} id={city.city+"_"+city.id} value={city.id}>{city.city}</option>;
   }
 
   getMinDate = () => {
@@ -88,12 +108,134 @@ class DataForm extends React.Component {
     });
   }
 
-  renderForm = () => {
+  getMinDate = () => {
+		var today = new Date();
+		var tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
+		var mm = tomorrow.getMonth() + 1;
+		var dd = tomorrow.getDate();
 
-    const name = "Jan";
-    const surname = "Kowalski";
-    const phone = "423 645 765";
-    const email = "jan@gmail.com";
+		return [tomorrow.getFullYear(),
+						(mm>9 ? '' : '0') + mm,
+						(dd>9 ? '' : '0') + dd
+				 	].join('-');
+	};
+
+	getMinDateReturn = () => {
+		var today = new Date();
+		var tomorrow = new Date(today.getTime() + (2*24 * 60 * 60 * 1000));
+		var mm = tomorrow.getMonth() + 1;
+		var dd = tomorrow.getDate();
+
+		return [tomorrow.getFullYear(),
+						(mm>9 ? '' : '0') + mm,
+						(dd>9 ? '' : '0') + dd
+				 	].join('-');
+
+	}
+
+  handleReceiptDateInputChange = (event) => {
+		this.handleInputChange(event);
+
+		const target = event.target;
+		const value = target.value;
+
+		const date = new Date(value);
+		const next_day = new Date(date.getTime() + (24 * 60 * 60 * 1000));
+		const mm = next_day.getMonth() + 1;
+		const dd = next_day.getDate();
+
+		const minReturnDate = [next_day.getFullYear(),(mm>9 ? '' : '0') + mm,(dd>9 ? '' : '0') + dd].join('-');
+
+		this.setState({
+			minReturnDate:minReturnDate
+		});
+	}
+
+	handleReturnDateInputChange = (event) => {
+		this.handleInputChange(event);
+
+		const target = event.target;
+		const value = target.value;
+
+		const date = new Date(value);
+		const next_day = new Date(date.getTime() - (24 * 60 * 60 * 1000));
+		const mm = next_day.getMonth() + 1;
+		const dd = next_day.getDate();
+
+		const maxReceptionDate = [next_day.getFullYear(),(mm>9 ? '' : '0') + mm,(dd>9 ? '' : '0') + dd].join('-');
+
+		console.log(maxReceptionDate);
+
+		this.setState({
+			maxReceptionDate:maxReceptionDate
+		});
+	}
+
+
+  onClickNext = (event) => {
+    event.preventDefault();
+
+    const validationData = this.validateData();
+    const inputError = this.state.inputError;
+
+    if(validationData){
+      this.props.history.push({
+        pathname: "/CarRental/reservation/selectcar",
+        state: {
+          selected_city:this.state.selected_city_data_form,
+          reception_date:this.state.reception_date_data_form,
+          reception_hour:this.state.reception_hour_data_form,
+          return_date:this.state.return_date_data_form,
+          return_hour:this.state.return_hour_data_form,
+          selectedCar:this.state.selectedCar
+        }
+      })
+      this.setState({inputError:false});
+    }else{
+      this.setState({inputError:true});
+    }
+
+  }
+
+  validateData = () => {
+    const reception_date=this.state.reception_date_data_form;
+    const reception_hour=this.state.reception_hour_data_form;
+    const return_date=this.state.return_date_data_form;
+    const return_hour=this.state.return_hour_data_form;
+    const selected_city=this.state.selected_city_data_form;
+
+    var test=true;
+
+    if(reception_date==null || reception_hour==null || return_date==null || return_hour==null || selected_city==null){
+      test = false;
+    }
+
+    if(reception_date=="" || reception_hour=="" || return_date=="" || return_hour=="" || selected_city==""){
+      test = false;
+    }
+
+    var d1 = new Date(reception_date);
+    var d2 = new Date(return_date);
+    var d1time = d1.getTime();
+    var d2time = d2.getTime();
+
+    if(d1time>=d2time){
+      test = false;
+    }
+
+    return test;
+
+
+  }
+
+  renderForm = () => {
+    const minReturnDate = this.state.minReturnDate;
+    const maxReceptionDate = this.state.maxReceptionDate;
+
+    const name = this.state.userName;
+    const surname = this.state.userSurname;
+    const phone = this.state.userPhone;
+    const email = this.state.userEmail;
     const citylist = this.state.citylist;
 
     const selected_city = this.state.selected_city_data_form;
@@ -102,6 +244,8 @@ class DataForm extends React.Component {
     const selected_return_date = this.state.return_date_data_form;
     const selected_return_hour = this.state.return_hour_data_form;
     const selectedCar = this.state.selectedCar;
+
+    const inputError = this.state.inputError;
 
     return(
       <form>
@@ -144,7 +288,7 @@ class DataForm extends React.Component {
             </div>
             <div className="form-group">
               <label>Reception date:</label>
-              <input type="date" id="reception_date_data_form" name="reception_date_data_form" min={this.getMinDate()} className="form-control" required value={selected_reception_date} onChange={this.handleInputChange}/>
+              <input type="date" id="reception_date_data_form" name="reception_date_data_form" min={this.getMinDate()} max={maxReceptionDate ? maxReceptionDate : ""} className="form-control" onChange={this.handleReceiptDateInputChange} className="form-control" required value={selected_reception_date} />
             </div>
             <div className="form-group">
               <label>Reception hour:</label>
@@ -152,27 +296,24 @@ class DataForm extends React.Component {
             </div>
             <div className="form-group">
               <label>Return date:</label>
-              <input type="date" id="return_date_data_form" name="return_date_data_form" min={this.getMinDate()} className="form-control" required value={selected_return_date} onChange={this.handleInputChange}/>
+              <input type="date" id="return_date_data_form" name="return_date_data_form" min={minReturnDate ? minReturnDate : this.getMinDateReturn()} className="form-control" onChange={this.handleReturnDateInputChange} className="form-control" required value={selected_return_date} />
             </div>
             <div className="form-group">
               <label>Return hour:</label>
               <input type="time" id="return_hour_data_form" name="return_hour_data_form" className="form-control" required value={selected_return_hour} onChange={this.handleInputChange}/>
             </div>
+
+
+            {inputError ? [
+              <div key="input_Error" className="alert alert-danger my-4">
+                Fill all fields with valid values.
+              </div>
+              ] : ""
+            }
+
             <div className="row">
               <Link to={"/CarRental/"} className="linkstyle btn btn-lg btn-secondary btn-block col-md-2 ml-5">Home</Link>
-              <Link to={{
-                pathname: "/CarRental/reservation/selectcar",
-                state: {
-          				selected_city:this.state.selected_city_data_form,
-          				reception_date:this.state.reception_date_data_form,
-          				reception_hour:this.state.reception_hour_data_form,
-          				return_date:this.state.return_date_data_form,
-          				return_hour:this.state.return_hour_data_form,
-          				selectedCar:this.state.selectedCar
-                }
-              }} className="linkstyle btn btn-lg btn-primary btn-block  col-md-2 ml-auto mr-5">
-                Next
-              </Link>
+              <button className="btn btn-lg btn-primary btn-block  col-md-2 ml-auto mr-5" onClick={this.onClickNext}>Next</button>
             </div>
           </div>
         </div>

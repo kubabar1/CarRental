@@ -81,7 +81,7 @@ export class ItemContainer extends React.Component {
 
 
 		return (
-      <div>
+      <div className="text-center" >
         <div className="row text-center">
   				{loaded ? vehicles.map(this.bestOfferToTableRow) : <i className="fa fa-spinner fa-pulse fa-3x fa-fw "></i>}
         </div>

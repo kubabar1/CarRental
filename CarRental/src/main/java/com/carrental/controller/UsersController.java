@@ -38,11 +38,11 @@ public class UsersController {
 		return userService.getUserById(id);
 	}
 	
-	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
-	public void updateUser(@PathVariable Long id, @RequestBody User userUpdate) {
+	@RequestMapping(value="/{userlogin}", method = RequestMethod.PUT)
+	public void updateUser(@PathVariable String userlogin, @RequestBody User userUpdate) {
 
 		System.out.println(userUpdate.toString());
-		userService.updateUser(userUpdate);
+		userService.updateUser(userlogin, userUpdate);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, params = { "login"})

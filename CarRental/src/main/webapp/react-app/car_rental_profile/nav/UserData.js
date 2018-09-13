@@ -6,7 +6,37 @@ import '../../../static/css/main.css';
 
 export class UserData extends React.Component {
 
+	constructor(){
+		super();
+
+		this.state = {
+			userRoles:null,
+			username:null
+		}
+	}
+
+	componentDidMount(){
+		fetch("http://localhost:8080/CarRental/userdata/userroles")
+		.then(response => response.json())
+		.then(data => {this.setState({
+				userRoles:data.userroles
+			})
+		})
+		.catch(error => {});
+
+
+		fetch("http://localhost:8080/CarRental/userdata/username")
+		.then(response => response.json())
+		.then(data => {this.setState({
+				username:data.username
+			})
+		})
+		.catch(error => {});
+	}
+
 	render () {
+		const username = this.state.username;
+
 		return (
       <div className="card">
         <div className="card-header text-center">
@@ -17,9 +47,8 @@ export class UserData extends React.Component {
             <div className="col-md-3">
               <img src={require("../../../static/img/user.png")} alt="" className="mr-3 mt-3 rounded-circle" style={{"height" : 80}}/>
             </div>
-            <div className="mx-auto mt-4 text-center">
-              <strong>ADMIN</strong>
-              <p>Jan Kowalski</p>
+            <div className="mx-auto mt-4 text-center my-auto">
+              <strong>{username ? username : ""}</strong>
             </div>
           </div>
         </div>

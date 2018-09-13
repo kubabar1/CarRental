@@ -54,8 +54,8 @@ export class Pagination extends React.Component {
 		const loaded = this.state.loaded;
 
 		return(
-			<div className="text-center my-5">
-				<ul className="pagination text-center">
+			<div className="text-center my-5 d-flex">
+				<ul className="pagination text-center mx-auto">
 					<li key={"page_first"} name={"page_first"} id={"page_first"} className="page-item"><Link onClick={()=>this.updateVehicleList(0)} className="page-link" to="/CarRental/bestoffers?page=0" >First</Link></li>
 					<li key={"page_previous"} name={"page_previous"} id={"page_previous"} className="page-item"><Link onClick={()=>this.updateVehicleList(previous)} to={"/CarRental/bestoffers?page="+previous} className="page-link">Previous</Link></li>
 					{this.create_items()}

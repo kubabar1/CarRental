@@ -15,15 +15,18 @@ import com.carrental.model.Vehicle;
 
 public interface VehicleRepository extends  PagingAndSortingRepository<Vehicle, Long>, VehicleRepositoryCustom {
 
-	@Query(value="SELECT DISTINCT v FROM Vehicle v LEFT JOIN FETCH v.equipmentList",
+	@Transactional
+	@Query(value="SELECT DISTINCT v FROM Vehicle v LEFT JOIN FETCH v.equipmentList ORDER BY v.brand ASC, v.model ASC",
 			countQuery = "SELECT COUNT(v) FROM Vehicle v")
     public Page<Vehicle> getVehiclesForPage(Pageable pageable);
 	
-	@Query(value="SELECT DISTINCT v FROM Vehicle v LEFT JOIN FETCH v.equipmentList WHERE v.bestOffer = 1",
+	@Transactional
+	@Query(value="SELECT DISTINCT v FROM Vehicle v LEFT JOIN FETCH v.equipmentList WHERE v.bestOffer = 1 ORDER BY v.brand ASC, v.model ASC",
 			countQuery = "SELECT COUNT(v) FROM Vehicle v WHERE v.bestOffer = 1")
 	public Page<Vehicle> getBestOfferCars(Pageable pageable);
 	
-	@Query(value="SELECT DISTINCT v FROM Vehicle v LEFT JOIN FETCH v.equipmentList")
+	@Transactional
+	@Query(value="SELECT DISTINCT v FROM Vehicle v LEFT JOIN FETCH v.equipmentList ORDER BY v.brand ASC, v.model ASC")
     public List<Vehicle> getAllVehicles();
 
 }

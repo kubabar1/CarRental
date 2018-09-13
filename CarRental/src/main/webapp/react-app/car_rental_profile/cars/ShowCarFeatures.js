@@ -14,13 +14,8 @@ export class ShowCarFeatures extends React.Component {
         featuresList:null,
         car_id:null,
         allFeaturesList:null,
-        selectedEquipment:null,
-        loaded:false
+        selectedEquipment:null
       };
-    }
-
-    componentDidMount(){
-      this.setState({loaded:true});
     }
 
     renderFeaturesTable = () => {
@@ -44,8 +39,25 @@ export class ShowCarFeatures extends React.Component {
       );
     }
 
+
+
     deleteEquipment = (eqCode) => {
-      console.log("Usuwam "+eqCode);
+      const car_id = this.state.car_id;
+      const url="http://localhost:8080/CarRental/carlist/equipment/"+car_id;
+
+      const item = {};
+
+      item["equipmentCode"]=eqCode;
+
+      fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(item)
+      });
+      this.props.history.push({pathname: '/CarRental/profile'});
     }
 
     handleSubmitAddEquipment = (event) => {
@@ -53,13 +65,24 @@ export class ShowCarFeatures extends React.Component {
       const selectedEquipment = this.state.selectedEquipment;
       const car_id = this.state.car_id;
 
+      const item = {};
+
+      item["equipmentCode"]=selectedEquipment;
+
+      const url = "http://localhost:8080/CarRental/carlist/equipment/"+car_id;
+
       if(selectedEquipment!=null){
-        console.log("Dodaje "+selectedEquipment);
-        fetch("http://localhost:8080/CarRental/carlist/"+car_id)
-        .then(response => response.json())
-        .then(data => this.setState({featuresList:data.equipmentList }))
-        .catch(error => {});
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(item)
+        }).catch(error => {});
       }
+
+      this.props.history.push({pathname: '/CarRental/profile'});
     }
 
     renderRow = (equipment) => {
@@ -77,9 +100,9 @@ export class ShowCarFeatures extends React.Component {
       const target = event.target;
       const car_id_v = target.value;
 
-      console.log(car_id_v);
-
       this.setState({car_id:car_id_v});
+
+      this.refreshLists(car_id_v);
 
     }
 
@@ -87,15 +110,12 @@ export class ShowCarFeatures extends React.Component {
       const target = event.target;
       const equipmentCode = target.value;
 
+      console.log(equipmentCode);
+
       this.setState({selectedEquipment:equipmentCode});
     }
 
-
-    handleSubmit = (event) => {
-      event.preventDefault();
-
-      const car_id = this.state.car_id ? this.state.car_id : 0;
-
+    refreshLists = (car_id) => {
       fetch("http://localhost:8080/CarRental/carlist/"+car_id)
       .then(response => response.json())
       .then(data => this.setState({featuresList:data.equipmentList }))
@@ -103,7 +123,7 @@ export class ShowCarFeatures extends React.Component {
 
       fetch("http://localhost:8080/CarRental/equipmentlist/"+car_id)
       .then(response => response.json())
-      .then(data => this.setState({allFeaturesList:data, loaded:true}))
+      .then(data => this.setState({allFeaturesList:data}))
       .catch(error => this.setState({featuresList:null }));
     }
 
@@ -119,11 +139,12 @@ export class ShowCarFeatures extends React.Component {
 
       return(
         <form onSubmit={this.handleSubmitAddEquipment}>
-          <div className="row">
+          <div className="row my-3">
             <label className="ml-5 mt-4">Equipment list:</label>
             <div className="mt-3 ml-3">
-              <select name="features_list" className="form-control " required onChange={this.handleOptionChange}>
-                {loaded ? allFeaturesList.map(this.renderFeatureOption) : ""}
+              <select id="features_list" name="features_list"  key="features_list" className="form-control "  defaultValue={"null"} onChange={this.handleOptionChange}>
+                <option key="dispabled_feature" name="dispabled_feature" value="null" disabled="disabled" >Choose equipment</option>
+                {allFeaturesList.map(this.renderFeatureOption)}
               </select>
             </div>
             <div className="mt-3 ml-3">
@@ -134,20 +155,8 @@ export class ShowCarFeatures extends React.Component {
       );
     }
 
-    renderSearchForm = () => {
-      return(
-        <form onSubmit={this.handleSubmit}>
-          <div className="row">
-            <label className="ml-5 mt-4">Car id:</label>
-            <div className="ml-2 mt-3">
-              <input type="number" className="form-control" name="car_id" onChange={this.handleInputChange}/>
-            </div>
-            <div className="mt-3 ml-3">
-              <input type="submit" value="Search" className="btn btn-primary"/>
-            </div>
-          </div>
-        </form>
-      );
+    handleSubmit = (event) => {
+      event.preventDefault();
     }
 
 
@@ -163,15 +172,22 @@ export class ShowCarFeatures extends React.Component {
           <div className="card">
             <HeaderContainer title={"Car equipment list"}/>
             <div className="card-body text-center">
-              <div className="row">
+              <div className="row my-3">
                 <div className="form-group">
-                  {loaded ? this.renderSearchForm() : ""}
+                  <form onSubmit={this.handleSubmit}>
+                    <div className="row">
+                      <label className="ml-5 mt-4">Car id:</label>
+                      <div className="ml-2 mt-3">
+                        <input type="number" className="form-control" name="car_id" onChange={this.handleInputChange}/>
+                      </div>
+                    </div>
+                  </form>
                 </div>
               </div>
               <hr className="mb-3"></hr>
               {featuresList ? this.renderFeaturesTable() : ""}
             </div>
-            {car_id && featuresList ? this.renderAddForm() : ""}
+            {car_id && allFeaturesList ? this.renderAddForm() : ""}
           </div>
         </div>
   		)

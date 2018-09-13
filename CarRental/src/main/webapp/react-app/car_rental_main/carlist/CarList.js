@@ -5,7 +5,7 @@ import 'bootstrap/dist/js/bootstrap.js';
 import '../../../static/css/main.css';
 import '../../../static/css/car_list.css';
 import {PageLocation} from './PageLocation.js';
-import {ContentContainer} from './ContentContainer.js';
+import ContentContainer from './ContentContainer.js';
 
 export class CarList extends React.Component {
 

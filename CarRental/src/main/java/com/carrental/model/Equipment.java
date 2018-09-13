@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "Equipment")
-@JsonIgnoreProperties(value= {"equipmentList"})
+@JsonIgnoreProperties(value = { "equipmentList" })
 public class Equipment implements Serializable {
 
 	@Id
@@ -30,8 +30,7 @@ public class Equipment implements Serializable {
 	@Column(name = "description")
 	private String description;
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "Eqp", joinColumns = @JoinColumn(name = "equipmentID"), inverseJoinColumns = @JoinColumn(name = "vehicleID"))
+	@ManyToMany(mappedBy="equipmentList")
 	private List<Vehicle> carList = new ArrayList<Vehicle>();
 
 	public String getEquipmentCode() {
