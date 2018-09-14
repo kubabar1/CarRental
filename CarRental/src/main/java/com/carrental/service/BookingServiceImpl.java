@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,6 +73,21 @@ public class BookingServiceImpl implements BookingService {
 	@Override
 	public List<Booking> getAllBookings() {
 		return bookingRepository.getAllBookings();
+	}
+
+	@Override
+	public Page<Booking> getUserBookingsForPage(PageRequest pageRequest, Long userId) {
+		return bookingRepository.getUserBookingsForPage(pageRequest,userId);
+	}
+
+	@Override
+	public Page<Booking> getUserBookingsReservedForPage(PageRequest pageRequest, Long userId) {
+		return bookingRepository.getUserBookingsReservedForPage(pageRequest,userId);
+	}
+
+	@Override
+	public Page<Booking> getUserBookingsRentedForPage(PageRequest pageRequest, Long userId) {
+		return bookingRepository.getUserBookingsRentedForPage(pageRequest,userId);
 	}
 
 }

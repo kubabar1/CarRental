@@ -22,6 +22,11 @@ import {Settings} from './settings/Settings.js';
 import {AllBookings} from './booking/AllBookings.js';
 import {AllRentedVehicles} from './booking/AllRentedVehicles.js';
 import {AllReservedVehicles} from './booking/AllReservedVehicles.js';
+import {MyAllBookings} from './booking/MyAllBookings.js';
+import {MyAllReservedVehicles} from './booking/MyAllReservedVehicles.js';
+import {MyAllRentedVehicles} from './booking/MyAllRentedVehicles.js';
+import {BookingChanges} from './booking/BookingChanges.js';
+import {Locations} from './locations/Locations.js';
 
 export class Profile extends React.Component {
 
@@ -35,6 +40,10 @@ export class Profile extends React.Component {
 						<Route path="/CarRental/profile/allbookings" component={AllBookings} />
 						<Route path="/CarRental/profile/allreservedvehicles" component={AllReservedVehicles} />
 						<Route path="/CarRental/profile/allrentedvehicles" component={AllRentedVehicles} />
+						<Route path="/CarRental/profile/allmybookings" component={MyAllBookings} />
+						<Route path="/CarRental/profile/bookingchanges" component={BookingChanges} />
+						<Route path="/CarRental/profile/myreservedbookings" component={MyAllReservedVehicles} />
+						<Route path="/CarRental/profile/myrentedbookings" component={MyAllRentedVehicles} />
 						<Route path="/CarRental/profile/userlist" component={Users} />
 						<Route path="/CarRental/profile/edituser/:user_id" component={EditUser} />
 						<Route path="/CarRental/profile/carslist" component={CarList} />
@@ -47,6 +56,7 @@ export class Profile extends React.Component {
 						<Route path="/CarRental/profile/sendemail" component={SendEmail} />
 						<Route path="/CarRental/profile/senduseremail/:user_id" component={UserEmailContainer} />
 						<Route path="/CarRental/profile/settings" component={Settings} />
+						<Route path="/CarRental/profile/locations" component={Locations} />
 					</Switch>
         </div>
       </div>

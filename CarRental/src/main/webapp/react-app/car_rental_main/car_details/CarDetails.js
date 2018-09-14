@@ -112,9 +112,7 @@ export class CarDetails extends React.Component {
 
 	 		<hr className="my-3"></hr>
 
-			<ReserveButton vehicleProperties={vehicleProperties}/>
-
-	 		<hr className="my-3"></hr>
+			{isAuthenticated ? [<div key="reservation_button_panel"> <ReserveButton vehicleProperties={vehicleProperties}/> <hr className="my-3"></hr> </div>] : ""}
 
 			<div className="text-left">
 	 			<h3 className="mt-2 ml-3 mb-4">Comments</h3>

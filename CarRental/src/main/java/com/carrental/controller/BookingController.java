@@ -68,10 +68,22 @@ public class BookingController {
 		return bookingService.getBookingsRentedForPage(new PageRequest(page, number));
 	}
 
-	@RequestMapping(value = { "/returned" }, method = RequestMethod.GET, params = { "page", "number" })
-	public Page<Booking> getReturnedBookingsForPage(@RequestParam(value = "page") int page,
+	@RequestMapping(value = { "/{userId}" },method = RequestMethod.GET, params = { "page", "number" })
+	public Page<Booking> getAllUserBookingsForPage(@PathVariable Long userId, @RequestParam(value = "page") int page,
 			@RequestParam(value = "number") int number) {
-		return bookingService.getBookingsReturnedForPage(new PageRequest(page, number));
+		return bookingService.getUserBookingsForPage(new PageRequest(page, number), userId);
+	}
+
+	@RequestMapping(value = { "/reserved/{userId}" }, method = RequestMethod.GET, params = { "page", "number" })
+	public Page<Booking> getReservedUserBookingsForPage(@PathVariable Long userId, @RequestParam(value = "page") int page,
+			@RequestParam(value = "number") int number) {
+		return bookingService.getUserBookingsReservedForPage(new PageRequest(page, number), userId);
+	}
+
+	@RequestMapping(value = { "/rented/{userId}" }, method = RequestMethod.GET, params = { "page", "number" })
+	public Page<Booking> getRentedUserBookingsForPage(@PathVariable Long userId, @RequestParam(value = "page") int page,
+			@RequestParam(value = "number") int number) {
+		return bookingService.getUserBookingsRentedForPage(new PageRequest(page, number), userId);
 	}
 
 	@RequestMapping(value = { "/canceled" }, method = RequestMethod.GET, params = { "page", "number" })

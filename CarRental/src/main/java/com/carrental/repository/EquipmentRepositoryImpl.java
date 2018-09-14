@@ -35,29 +35,41 @@ public class EquipmentRepositoryImpl implements EquipmentRepositoryCustom{
 		Vehicle vehicle = null;
 		List<Equipment> newEqList = null; 
 
+		System.out.println(1);
+		
 		try {
+			System.out.println(2);
 			vehicle = vehicleRepository.getVehicleUsingId(id);
 			List<Equipment> eqSet = null;
 			
 			if(vehicle!=null) {
+				System.out.println(2);
 				eqSet = vehicle.getEquipmentList();
+				System.out.println(eqSet);
+				System.out.println(eqSet.toString());
 			}
 		
-			if(eqSet==null) {
+			if(eqSet==null || eqSet.isEmpty()) {
+				System.out.println(3);
 				newEqList  = entityManager.createQuery("SELECT e FROM Equipment e").getResultList();
 			}else {
+				System.out.println(4);
 				List<String> eqCodesList = new ArrayList<>();
 				for(Equipment e : eqSet) {
+					System.out.println(5);
 					System.out.println(e.getEquipmentCode());
 					eqCodesList.add(e.getEquipmentCode());
 				}
+				System.out.println(6);
 				
-				newEqList  = entityManager.createQuery("SELECT e FROM Equipment e WHERE e.equipmentCode NOT IN (:vehicleEquipment)")
+				newEqList  = entityManager.createQuery("SELECT e FROM Equipment e WHERE e.equipmentCode NOT IN :vehicleEquipment")
 						.setParameter("vehicleEquipment", eqCodesList).getResultList();
 			}
 		}catch(NoResultException e) {
+			System.out.println(7);
 
 		}
+		System.out.println(8);
 		
 		return newEqList;
 	}

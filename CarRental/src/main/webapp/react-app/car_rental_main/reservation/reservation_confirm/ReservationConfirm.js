@@ -71,7 +71,14 @@ export class ReservationConfirm extends React.Component {
           surname:data.surname,
           phone:data.phone,
           email:data.email,
+					selected_city:this.props.location.state.selected_city,
+					reception_date:this.props.location.state.reception_date,
+					reception_hour:this.props.location.state.reception_hour,
+					return_date:this.props.location.state.return_date,
+					return_hour:this.props.location.state.return_hour,
+					selectedCar:this.props.location.state.selectedCar
         });
+				this.countCost(data.id);
     }).catch(error => {})
 
 		fetch("http://localhost:8080/CarRental/locations/"+this.props.location.state.selected_city)
@@ -82,26 +89,19 @@ export class ReservationConfirm extends React.Component {
 			});
 		});
 
-		this.setState({
-			selected_city:this.props.location.state.selected_city,
-			reception_date:this.props.location.state.reception_date,
-			reception_hour:this.props.location.state.reception_hour,
-			return_date:this.props.location.state.return_date,
-			return_hour:this.props.location.state.return_hour,
-			selectedCar:this.props.location.state.selectedCar
-		});
+
 
 		this.setState({loaded:true});
 	};
 
-	createBookingWrapper = () => {
+	createBookingWrapper = (userId) => {
 		const item = {};
 
-		item['userId']=this.state.user_id;
-		item['vehicleId']=this.state.selectedCar;
-		item['locationId']=this.state.selected_city;
-		item['receiptDate']=this.state.reception_date+" "+this.state.reception_hour+":00";
-		item['returnDate']=this.state.return_date+" "+this.state.return_hour+":00";
+		item['userId']=userId;
+		item['vehicleId']=this.props.location.state.selectedCar;
+		item['locationId']=this.props.location.state.selected_city;
+		item['receiptDate']=this.props.location.state.reception_date+" "+this.props.location.state.reception_hour+":00";
+		item['returnDate']=this.props.location.state.return_date+" "+this.props.location.state.return_hour+":00";
 		item['bookingStateCode']='RES';
 		item['rentingEmployee']=null;
 		item['totalCost']=this.state.fullCost;
@@ -109,11 +109,13 @@ export class ReservationConfirm extends React.Component {
 		return item;
 	}
 
-	countCost = () => {
-		const bookingWrapper = JSON.stringify(this.createBookingWrapper());
+	countCost = (userId) => {
+		const bookingWrapper = JSON.stringify(this.createBookingWrapper(userId));
 		console.log(bookingWrapper);
 
 		const url = 'http://localhost:8080/CarRental/booking/cost';
+
+		console.log(bookingWrapper);
 
 		fetch(url, {
 			method: 'POST',
@@ -128,8 +130,10 @@ export class ReservationConfirm extends React.Component {
 	}
 
 	addBooking = () => {
-			const bookingWrapper = JSON.stringify(this.createBookingWrapper());
+			const bookingWrapper = JSON.stringify(this.createBookingWrapper(this.state.user_id));
 			const url = 'http://localhost:8080/CarRental/booking/reserve';
+
+			console.log(bookingWrapper);
 
 			fetch(url, {
 				method: 'POST',
@@ -174,7 +178,6 @@ export class ReservationConfirm extends React.Component {
 		const loaded = this.state.loaded;
 
 		if(loaded && fullCost==null){
-			this.countCost();
 		}
 
 		return (

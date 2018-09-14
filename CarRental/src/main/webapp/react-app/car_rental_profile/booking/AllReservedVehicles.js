@@ -57,8 +57,8 @@ export class AllReservedVehicles extends React.Component {
 
       return(
         <tr key={booking.id}>
-          <td><Link to={url1} className="linkstyle btn btn-danger custom-width">Cancel</Link></td>
-          <td><Link to={url2} className="linkstyle btn btn-success custom-width">Rent</Link></td>
+          <td><button className="btn btn-success custom-width" onClick={() => {this.rentCar(booking.id)}}>Rent</button></td>
+          <td><button className="btn btn-danger custom-width" onClick={() => {this.cancelBooking(booking.id)}}>Cancel</button></td>
           <td>{booking.id}</td>
           <td>{booking.userId}</td>
           <td>{booking.vehicleId}</td>
@@ -80,8 +80,8 @@ export class AllReservedVehicles extends React.Component {
           <table className="table table-striped table-hover">
             <thead>
               <tr>
-                <th>Cancel</th>
                 <th>Rent</th>
+                <th>Cancel</th>
                 <th>booking ID</th>
                 <th>user ID</th>
                 <th>vehicle ID</th>
@@ -99,6 +99,25 @@ export class AllReservedVehicles extends React.Component {
           </table>
         </div>
   		)
+    }
+
+    rentCar = (bookingId) => {
+      const url = "http://localhost:8080/CarRental/booking/rent/"+bookingId;
+      fetch(url, {
+        method: 'PUT'
+      })
+      .then(response => {this.setBookingList(this.state.pageNumber, this.state.resultNumber)})
+      .catch(error=>{});
+    }
+
+    cancelBooking = (bookingId) => {
+      const url = "http://localhost:8080/CarRental/booking/cancel/"+bookingId;
+
+      fetch(url, {
+        method: 'PUT'
+      })
+      .then(response => {this.setBookingList(this.state.pageNumber, this.state.resultNumber)})
+      .catch(error=>{});
     }
 
   	render () {

@@ -22,13 +22,12 @@ public class ChangesBooking implements Serializable {
 
 	@Id
 	@Column(name = "ID")
-	private Long ID;
+	private Long id;
 
 	@Column(name = "bookingID")
-	private Long bookingID;
+	private Long bookingId;
 
-	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-	@JsonSerialize(using = LocalDateTimeSerializer.class)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@Column(name = "changesDate")
 	private LocalDateTime changesDate;
 
@@ -42,28 +41,28 @@ public class ChangesBooking implements Serializable {
 		super();
 	}
 
-	public ChangesBooking(Long bookingID, LocalDateTime changesDate, String who, String pC) {
+	public ChangesBooking(Long bookingId, LocalDateTime changesDate, String who, String pC) {
 		super();
-		this.bookingID = bookingID;
+		this.bookingId = bookingId;
 		this.changesDate = changesDate;
 		this.who = who;
 		PC = pC;
 	}
 
-	public Long getID() {
-		return ID;
+	public Long getId() {
+		return id;
 	}
 
-	public void setID(Long iD) {
-		ID = iD;
+	public void setID(Long id) {
+		this.id = id;
 	}
 
-	public Long getBookingID() {
-		return bookingID;
+	public Long getBookingId() {
+		return bookingId;
 	}
 
-	public void setBookingID(Long bookingID) {
-		this.bookingID = bookingID;
+	public void setBookingId(Long bookingId) {
+		this.bookingId = bookingId;
 	}
 
 	public LocalDateTime getChangesDate() {
@@ -92,7 +91,7 @@ public class ChangesBooking implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ChangesBooking [ID=" + ID + ", bookingID=" + bookingID + ", changesDate=" + changesDate + ", who=" + who
+		return "ChangesBooking [id=" + id + ", bookingId=" + bookingId + ", changesDate=" + changesDate + ", who=" + who
 				+ ", PC=" + PC + "]";
 	}
 

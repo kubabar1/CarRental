@@ -56,8 +56,7 @@ export class ShowCarFeatures extends React.Component {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(item)
-      });
-      this.props.history.push({pathname: '/CarRental/profile'});
+      }).then(response => {this.refreshLists(car_id)}).catch(error => {});
     }
 
     handleSubmitAddEquipment = (event) => {
@@ -79,10 +78,9 @@ export class ShowCarFeatures extends React.Component {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(item)
-        }).catch(error => {});
+        }).then(response => {this.refreshLists(car_id)}).catch(error => {});
       }
 
-      this.props.history.push({pathname: '/CarRental/profile'});
     }
 
     renderRow = (equipment) => {
@@ -101,7 +99,6 @@ export class ShowCarFeatures extends React.Component {
       const car_id_v = target.value;
 
       this.setState({car_id:car_id_v});
-
       this.refreshLists(car_id_v);
 
     }
@@ -110,15 +107,13 @@ export class ShowCarFeatures extends React.Component {
       const target = event.target;
       const equipmentCode = target.value;
 
-      console.log(equipmentCode);
-
       this.setState({selectedEquipment:equipmentCode});
     }
 
     refreshLists = (car_id) => {
       fetch("http://localhost:8080/CarRental/carlist/"+car_id)
       .then(response => response.json())
-      .then(data => this.setState({featuresList:data.equipmentList }))
+      .then(data => {this.setState({featuresList:data.equipmentList})})
       .catch(error => this.setState({featuresList:null }));
 
       fetch("http://localhost:8080/CarRental/equipmentlist/"+car_id)
@@ -136,13 +131,14 @@ export class ShowCarFeatures extends React.Component {
     renderAddForm = () => {
       const loaded = this.state.loaded;
       const allFeaturesList = this.state.allFeaturesList;
+      const selectedEquipment = this.state.selectedEquipment;
 
       return(
         <form onSubmit={this.handleSubmitAddEquipment}>
           <div className="row my-3">
             <label className="ml-5 mt-4">Equipment list:</label>
             <div className="mt-3 ml-3">
-              <select id="features_list" name="features_list"  key="features_list" className="form-control "  defaultValue={"null"} onChange={this.handleOptionChange}>
+              <select id="features_list" name="features_list"  key="features_list" className="form-control "  value={selectedEquipment==null ? "null" : selectedEquipment} onChange={this.handleOptionChange}>
                 <option key="dispabled_feature" name="dispabled_feature" value="null" disabled="disabled" >Choose equipment</option>
                 {allFeaturesList.map(this.renderFeatureOption)}
               </select>
@@ -185,7 +181,7 @@ export class ShowCarFeatures extends React.Component {
                 </div>
               </div>
               <hr className="mb-3"></hr>
-              {featuresList ? this.renderFeaturesTable() : ""}
+              {car_id && featuresList ? this.renderFeaturesTable() : ""}
             </div>
             {car_id && allFeaturesList ? this.renderAddForm() : ""}
           </div>

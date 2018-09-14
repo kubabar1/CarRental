@@ -101,7 +101,7 @@ export class Settings extends React.Component {
               <div className="row">
                 <label className="ml-5 mt-4 col-md-2">Login:</label>
                 <div className="ml-4 mt-3 col-md-3">
-                  <input type="text" className="form-control"  name="user_login" value={this.state.user_login} onChange={this.handleInputChange}/>
+                  <input type="text" disabled className="form-control"  name="user_login" value={this.state.user_login} onChange={this.handleInputChange}/>
                 </div>
               </div>
             </div>

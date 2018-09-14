@@ -3,6 +3,7 @@ package com.carrental.service;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,7 +20,7 @@ public interface BookingService {
 	public void bookingRent(Long bookingId);
 
 	public void bookingReturn(Long bookingId);
-	
+
 	public Page<Booking> getBookingsForPage(Pageable pageable);
 
 	public Page<Booking> getBookingsRentedForPage(Pageable pageable);
@@ -33,4 +34,11 @@ public interface BookingService {
 	public Booking getBookingsById(Long bookingId);
 
 	public List<Booking> getAllBookings();
+
+	public Page<Booking> getUserBookingsForPage(PageRequest pageRequest, Long userId);
+
+	public Page<Booking> getUserBookingsReservedForPage(PageRequest pageRequest, Long userId);
+
+	public Page<Booking> getUserBookingsRentedForPage(PageRequest pageRequest, Long userId);
+
 }

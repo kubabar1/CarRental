@@ -104,6 +104,7 @@ export class SideNav extends React.Component {
 											My reserved bookings
 										</Link>
             			</div>
+									<hr></hr>
 								</div>
 							] : ""
 						}
@@ -117,6 +118,20 @@ export class SideNav extends React.Component {
 												My rented bookings
 											</Link>
             			</div>
+									<hr></hr>
+								</div>
+							] : ""
+						}
+
+						{userRoles && ["ROLE_ADMIN","ROLE_OFFICEEMPLOYEE","ROLE_RENTINGEMPLOYEE"].some(el => userRoles.includes(el)) ?
+							[
+								<div key="allbokinglist">
+									<div className="container my-3">
+										<i className="fas fa-angle-right mr-2 ml-3"></i>
+											<Link to={"/CarRental/profile/bookingchanges"} className="linkstyle_black">
+												Booking changes
+											</Link>
+									</div>
 								</div>
 							] : ""
 						}
@@ -206,6 +221,26 @@ export class SideNav extends React.Component {
 		            </div>
 		          </div>
 		        </div>
+					] : ""
+				}
+
+				{userRoles ?
+					[
+						<div className="card" key="usersadministration">
+							<div className="card-header">
+								<a className="collapsed card-link" data-toggle="collapse" href="#collapseFive">
+									<i className="fas fa-map-marked-alt mr-2"></i>Locations
+								</a>
+							</div>
+							<div id="collapseFive" className="collapse" data-parent="#accordion">
+								<div className="container my-3">
+									<i className="fas fa-angle-right mr-2 ml-3"></i>
+									<Link to={"/CarRental/profile/locations"} className="linkstyle_black">
+										Show
+									</Link>
+								</div>
+							</div>
+						</div>
 					] : ""
 				}
 

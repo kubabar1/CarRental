@@ -89,20 +89,29 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 	@Transactional
 	public int updateUser(String userlogin, User userUpdate) {
 		
+		if(userUpdate.getPassword()==null) {
+			System.out.println("test");
+		}
+		
 		int number = entityManager
-				.createQuery("UPDATE User u SET " + "u.name=COALESCE(:name,u.name), "
-						+ "u.surname=COALESCE(:surname,u.surname), " + "u.login=COALESCE(:login,u.login), "
-						+ "u.password=COALESCE(:password,u.password), " + "u.email=COALESCE(:email,u.email), "
-						+ "u.phone=COALESCE(:phone,u.phone), " + "u.birthDate=COALESCE(:birthDate,u.birthDate), "
-						+ "u.pesel=COALESCE(:pesel,u.pesel), u.password=COALESCE(:password,u.password) " + "WHERE u.login=:login")
-				.setParameter("name", userUpdate.getName()).setParameter("surname", userUpdate.getSurname())
-				.setParameter("login", userUpdate.getLogin())
-				.setParameter("password",
-						(userUpdate.getPassword() != null ? passwordEncoder.encode(userUpdate.getPassword())
-								: userUpdate.getPassword()))
-				.setParameter("email", userUpdate.getEmail()).setParameter("phone", userUpdate.getPhone())
-				.setParameter("birthDate", userUpdate.getBirthDate()).setParameter("pesel", userUpdate.getPesel())
-				.setParameter("password", passwordEncoder.encode(userUpdate.getPassword())).setParameter("login", userlogin).executeUpdate();
+				.createQuery("UPDATE User u SET " 
+						+ "u.name=COALESCE(:name,u.name), "
+						+ "u.surname=COALESCE(:surname,u.surname), "
+						+ "u.password=COALESCE(:password,u.password), " 
+						+ "u.email=COALESCE(:email,u.email), "
+						+ "u.phone=COALESCE(:phone,u.phone), " 
+						+ "u.birthDate=COALESCE(:birthDate,u.birthDate), "
+						+ "u.pesel=COALESCE(:pesel,u.pesel) "
+						+ "WHERE u.login=:login")
+				.setParameter("name", userUpdate.getName())
+				.setParameter("surname", userUpdate.getSurname())
+				.setParameter("password",userUpdate.getPassword()!=null ? passwordEncoder.encode(userUpdate.getPassword()) : userUpdate.getPassword())
+				.setParameter("email", userUpdate.getEmail())
+				.setParameter("phone", userUpdate.getPhone())
+				.setParameter("birthDate", userUpdate.getBirthDate())
+				.setParameter("pesel", userUpdate.getPesel())
+				.setParameter("login", userlogin)
+				.executeUpdate();
 
 		return number;
 	}

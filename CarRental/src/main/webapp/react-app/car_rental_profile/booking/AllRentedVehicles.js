@@ -52,13 +52,23 @@ export class AllRentedVehicles extends React.Component {
   		.catch(error => {});
     }
 
+    returnBooking = (bookingId) => {
+      const url = "http://localhost:8080/CarRental/booking/return/"+bookingId;
+
+      fetch(url, {
+        method: 'PUT'
+      })
+      .then(response => {this.setBookingList(this.state.pageNumber, this.state.resultNumber)})
+      .catch(error=>{});
+    }
+
     renderRow = (booking) => {
       const url1="";
       const url2="";
 
       return(
-        <tr key={booking.id}>
-          <td><Link to={url2} className="linkstyle btn btn-primary custom-width">Return</Link></td>
+        <tr key={booking.id}>        
+          <td><button className="btn btn-primary custom-width" onClick={() => {this.returnBooking(booking.id)}}>Return</button></td>
           <td>{booking.id}</td>
           <td>{booking.userId}</td>
           <td>{booking.vehicleId}</td>
