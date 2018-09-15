@@ -16,6 +16,10 @@ var _mime = require('mime');
 
 var _mime2 = _interopRequireDefault(_mime);
 
+var _normalizeFallback = require('./utils/normalizeFallback');
+
+var _normalizeFallback2 = _interopRequireDefault(_normalizeFallback);
+
 var _options = require('./options.json');
 
 var _options2 = _interopRequireDefault(_options);
@@ -23,14 +27,12 @@ var _options2 = _interopRequireDefault(_options);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Loader Mode
-/* eslint-disable
-  global-require,
-  no-param-reassign,
-  prefer-destructuring,
-  import/no-dynamic-require,
-*/
-const raw = exports.raw = true;
-
+const raw = exports.raw = true; /* eslint-disable
+                                  global-require,
+                                  no-param-reassign,
+                                  prefer-destructuring,
+                                  import/no-dynamic-require,
+                                */
 function loader(src) {
   // Loader Options
   const options = (0, _loaderUtils.getOptions)(this) || {};
@@ -56,7 +58,20 @@ function loader(src) {
     return `module.exports = ${JSON.stringify(`data:${mimetype || ''};base64,${src.toString('base64')}`)}`;
   }
 
-  const fallback = require(options.fallback ? options.fallback : 'file-loader');
+  // Normalize the fallback.
+  const {
+    loader: fallbackLoader,
+    options: fallbackOptions
+  } = (0, _normalizeFallback2.default)(options.fallback, options);
 
-  return fallback.call(this, src);
+  // Require the fallback.
+  const fallback = require(fallbackLoader);
+
+  // Call the fallback, passing a copy of the loader context. The copy has the query replaced. This way, the fallback
+  // loader receives the query which was intended for it instead of the query which was intended for url-loader.
+  const fallbackLoaderContext = Object.assign({}, this, {
+    query: fallbackOptions
+  });
+
+  return fallback.call(fallbackLoaderContext, src);
 }
