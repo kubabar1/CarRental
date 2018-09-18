@@ -1,6 +1,15 @@
 package com.carrental.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -9,12 +18,24 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,6 +71,32 @@ public class BookingController {
 
 	}
 
+	@RequestMapping(value = { "/excelfile" }, method = RequestMethod.GET)
+	public void getAllBookingsInExcelFormat(HttpServletResponse response) {
+		response.setHeader("Content-Encoding", "UTF-8");
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+		List<Booking> bookingList = bookingService.getAllBookings();
+		File xls = null;
+		try {
+			xls = bookingService.createExcelBookingListExelFile(bookingList);
+			final FileInputStream in = new FileInputStream(xls);
+			final OutputStream out = response.getOutputStream();
+
+			final byte[] buffer = new byte[8192];
+			int length;
+
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.close();
+
+		} catch (IOException e) {
+			System.err.println("Cannot create booking list file in exel format: " + e.getMessage());
+		}
+	}
+
 	@RequestMapping(method = RequestMethod.GET, params = { "page", "number" })
 	public Page<Booking> getAllBookingsForPage(@RequestParam(value = "page") int page,
 			@RequestParam(value = "number") int number) {
@@ -68,15 +115,15 @@ public class BookingController {
 		return bookingService.getBookingsRentedForPage(new PageRequest(page, number));
 	}
 
-	@RequestMapping(value = { "/{userId}" },method = RequestMethod.GET, params = { "page", "number" })
+	@RequestMapping(value = { "/{userId}" }, method = RequestMethod.GET, params = { "page", "number" })
 	public Page<Booking> getAllUserBookingsForPage(@PathVariable Long userId, @RequestParam(value = "page") int page,
 			@RequestParam(value = "number") int number) {
 		return bookingService.getUserBookingsForPage(new PageRequest(page, number), userId);
 	}
 
 	@RequestMapping(value = { "/reserved/{userId}" }, method = RequestMethod.GET, params = { "page", "number" })
-	public Page<Booking> getReservedUserBookingsForPage(@PathVariable Long userId, @RequestParam(value = "page") int page,
-			@RequestParam(value = "number") int number) {
+	public Page<Booking> getReservedUserBookingsForPage(@PathVariable Long userId,
+			@RequestParam(value = "page") int page, @RequestParam(value = "number") int number) {
 		return bookingService.getUserBookingsReservedForPage(new PageRequest(page, number), userId);
 	}
 

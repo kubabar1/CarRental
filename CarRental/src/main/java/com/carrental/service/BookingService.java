@@ -1,5 +1,7 @@
 package com.carrental.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -40,5 +42,7 @@ public interface BookingService {
 	public Page<Booking> getUserBookingsReservedForPage(PageRequest pageRequest, Long userId);
 
 	public Page<Booking> getUserBookingsRentedForPage(PageRequest pageRequest, Long userId);
+	
+	public File createExcelBookingListExelFile(List<Booking> bookingList) throws IOException;
 
 }

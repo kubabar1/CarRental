@@ -47,7 +47,6 @@ export class MyAllReservedVehicles extends React.Component {
     }
 
     setPageNumber = (page) => {
-      console.log("setPageNumber");
       this.setState({pageNumber:page});
       this.setBookingList(page, this.state.resultNumber);
     }
@@ -78,7 +77,6 @@ export class MyAllReservedVehicles extends React.Component {
           <td>{booking.returnDate}</td>
           <td>{booking.locationId}</td>
           <td>{booking.bookingStateCode}</td>
-          <td>{booking.rentingEmployee}</td>
           <td>{booking.totalCost}</td>
         </tr>
       );
@@ -95,8 +93,6 @@ export class MyAllReservedVehicles extends React.Component {
     }
 
     renderAllBookingsTable = (allBookingsList) => {
-      console.log(allBookingsList);
-
   		return (
         <div className="p-3 table-responsive">
           <table className="table table-striped table-hover">
@@ -110,7 +106,6 @@ export class MyAllReservedVehicles extends React.Component {
                 <th>return date</th>
                 <th>location ID</th>
                 <th>booking state</th>
-                <th>renting employee</th>
                 <th>total cost</th>
               </tr>
             </thead>

@@ -54,9 +54,6 @@ public class Booking implements Serializable {
 	@Column(name = "bookingStateCode")
 	private String bookingStateCode;
 
-	@Column(name = "rentingEmployee")
-	private Long rentingEmployee;
-
 	@Column(name = "totalCost")
 	private BigDecimal totalCost;
 
@@ -65,7 +62,7 @@ public class Booking implements Serializable {
 	}
 
 	public Booking(Long userId, Long vehicleId, Long locationId, Timestamp receiptDate, Timestamp returnDate,
-			String bookingStateCode, Long rentingEmployee, BigDecimal totalCost) {
+			String bookingStateCode, BigDecimal totalCost) {
 		super();
 		this.userId = userId;
 		this.vehicleId = vehicleId;
@@ -73,7 +70,6 @@ public class Booking implements Serializable {
 		this.receiptDate = receiptDate;
 		this.returnDate = returnDate;
 		this.bookingStateCode = bookingStateCode;
-		this.rentingEmployee = rentingEmployee;
 		this.totalCost = totalCost;
 	}
 
@@ -133,14 +129,6 @@ public class Booking implements Serializable {
 		this.bookingStateCode = bookingStateCode;
 	}
 
-	public Long getRentingEmployee() {
-		return rentingEmployee;
-	}
-
-	public void setRentingEmployee(Long rentingEmployee) {
-		this.rentingEmployee = rentingEmployee;
-	}
-
 	public BigDecimal getTotalCost() {
 		return totalCost;
 	}
@@ -153,7 +141,7 @@ public class Booking implements Serializable {
 	public String toString() {
 		return "Booking [id=" + id + ", userId=" + userId + ", vehicleId=" + vehicleId + ", locationId=" + locationId
 				+ ", receiptDate=" + receiptDate + ", returnDate=" + returnDate + ", bookingStateCode="
-				+ bookingStateCode + ", rentingEmployee=" + rentingEmployee + ", totalCost=" + totalCost + "]";
+				+ bookingStateCode + ", totalCost=" + totalCost + "]";
 	}
 
 }

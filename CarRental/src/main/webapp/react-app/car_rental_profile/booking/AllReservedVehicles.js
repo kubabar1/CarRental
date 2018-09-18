@@ -66,14 +66,12 @@ export class AllReservedVehicles extends React.Component {
           <td>{booking.returnDate}</td>
           <td>{booking.locationId}</td>
           <td>{booking.bookingStateCode}</td>
-          <td>{booking.rentingEmployee}</td>
           <td>{booking.totalCost}</td>
         </tr>
       );
     }
 
     renderAllBookingsTable = (allBookingsList) => {
-      console.log(allBookingsList);
 
   		return (
         <div className="p-3 table-responsive">
@@ -89,7 +87,6 @@ export class AllReservedVehicles extends React.Component {
                 <th>return date</th>
                 <th>location ID</th>
                 <th>booking state</th>
-                <th>renting employee</th>
                 <th>total cost</th>
               </tr>
             </thead>

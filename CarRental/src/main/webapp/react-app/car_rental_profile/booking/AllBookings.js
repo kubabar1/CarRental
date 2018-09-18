@@ -34,7 +34,6 @@ export class AllBookings extends React.Component {
     }
 
     setPageNumber = (page) => {
-      console.log("setPageNumber");
       this.setState({pageNumber:page});
       this.setBookingList(page, this.state.resultNumber);
     }
@@ -62,14 +61,12 @@ export class AllBookings extends React.Component {
           <td>{booking.returnDate}</td>
           <td>{booking.locationId}</td>
           <td>{booking.bookingStateCode}</td>
-          <td>{booking.rentingEmployee}</td>
           <td>{booking.totalCost}</td>
         </tr>
       );
     }
 
     renderAllBookingsTable = (allBookingsList) => {
-      console.log(allBookingsList);
 
   		return (
         <div className="p-3 table-responsive">
@@ -83,7 +80,6 @@ export class AllBookings extends React.Component {
                 <th>return date</th>
                 <th>location ID</th>
                 <th>booking state</th>
-                <th>renting employee</th>
                 <th>total cost</th>
               </tr>
             </thead>
@@ -93,6 +89,64 @@ export class AllBookings extends React.Component {
           </table>
         </div>
   		)
+    }
+
+    timestamp = () => {
+      var today = new Date();
+		  var mm = today.getMonth() + 1;
+		  var dd = today.getDate();
+
+
+		  var HH = today.getHours();
+		  var mm = today.getMinutes();
+		  var ss = today.getSeconds();
+
+
+		  return [today.getFullYear(),
+						  (mm>9 ? '' : '0') + mm,
+						  (dd>9 ? '' : '0') + dd
+				 	  ].join('-')+" "+[
+						  (HH>9 ? '' : '0') + HH,
+						  (mm>9 ? '' : '0') + mm ,
+						  (ss>9 ? '' : '0') + ss
+				 	  ].join(':');
+    }
+
+    timestampFIleName = () => {
+      var today = new Date();
+		  var mm = today.getMonth() + 1;
+		  var dd = today.getDate();
+
+
+		  var HH = today.getHours();
+		  var mm = today.getMinutes();
+		  var ss = today.getSeconds();
+
+
+		  return [today.getFullYear(),
+						  (mm>9 ? '' : '0') + mm,
+						  (dd>9 ? '' : '0') + dd,
+						  (HH>9 ? '' : '0') + HH,
+						  (mm>9 ? '' : '0') + mm ,
+						  (ss>9 ? '' : '0') + ss
+				 	  ].join('');
+    }
+
+
+    download = () => {
+      const url = "http://localhost:8080/CarRental/booking/excelfile";
+
+      fetch(url).then(response => response.blob())
+        .then(blob => {
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = "bookings_"+this.timestampFIleName()+".xlsx";
+            a.click();
+        })
+        .catch(error => {"Cannot download excel file."});
+
+
     }
 
   	render () {
@@ -106,6 +160,7 @@ export class AllBookings extends React.Component {
             <div className="card-body text-center">
               <div className="row">
                 <ResultNumberSelection setResultNumber={this.setResultNumber}/>
+                {loaded ? <button className="my-3 ml-auto btn btn-primary" onClick={this.download}>Download file</button> : ""}
               </div>
               <hr className="mb-3"></hr>
               {allBookingsList ? this.renderAllBookingsTable(allBookingsList) : <i className="fa fa-spinner fa-pulse fa-3x fa-fw "></i>}

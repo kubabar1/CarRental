@@ -85,7 +85,6 @@ export class ReservationConfirm extends React.Component {
 		.then(response=>{
 			response.json().then(json=>{
 				this.setState({selected_city_name:json.city});
-				console.log(json.city);
 			});
 		});
 
@@ -111,11 +110,9 @@ export class ReservationConfirm extends React.Component {
 
 	countCost = (userId) => {
 		const bookingWrapper = JSON.stringify(this.createBookingWrapper(userId));
-		console.log(bookingWrapper);
 
 		const url = 'http://localhost:8080/CarRental/booking/cost';
 
-		console.log(bookingWrapper);
 
 		fetch(url, {
 			method: 'POST',
@@ -133,7 +130,6 @@ export class ReservationConfirm extends React.Component {
 			const bookingWrapper = JSON.stringify(this.createBookingWrapper(this.state.user_id));
 			const url = 'http://localhost:8080/CarRental/booking/reserve';
 
-			console.log(bookingWrapper);
 
 			fetch(url, {
 				method: 'POST',

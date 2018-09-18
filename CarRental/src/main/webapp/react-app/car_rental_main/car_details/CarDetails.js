@@ -36,7 +36,6 @@ export class CarDetails extends React.Component {
 
 		const url = "http://localhost:8080/CarRental/comments/"+this.props.match.params.car_id+"?page="+page+"&number="+this.state.commentsNumber;
 
-		console.log(url);
 
 		fetch(url)
 		.then(response => response.json())
@@ -46,8 +45,6 @@ export class CarDetails extends React.Component {
 					comments:data.content,
 					allPages:data.totalPages
 				});
-			console.log("refresh");
-			console.log(data.content);
 		})
 	}
 
@@ -79,7 +76,6 @@ export class CarDetails extends React.Component {
 		.then(json => {this.setState({
 				currentuser:json
 			})
-			console.log(json);
 		})
 		.catch(error => {});
 
@@ -90,9 +86,6 @@ export class CarDetails extends React.Component {
 		const isAuthenticated = this.state.isAuthenticated;
 		const currentuser = this.state.currentuser;
 
-		console.log(currentuser);
-
-		console.log(comments);
 
 		return(
 		<div>
@@ -129,7 +122,6 @@ export class CarDetails extends React.Component {
 		const newPage = page+1;
 		const allPages = this.state.allPages;
 
-		console.log(newPage);
 		if(newPage<allPages){
 			this.loadCommentsForPage(newPage);
 			this.setState({commentsPage:newPage});

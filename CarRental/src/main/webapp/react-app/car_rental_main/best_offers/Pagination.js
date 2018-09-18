@@ -24,7 +24,6 @@ export class Pagination extends React.Component {
 	};
 
 	updateVehicleList = (pageNumber) => {
-		console.log(this.props.filterWrapper);
 		this.setState({activePageNumber:pageNumber});
 		this.props.filterWrapper ? this.props.setVehicles(pageNumber,	this.props.filterWrapper) : this.props.setVehicles(pageNumber);
 	}

@@ -40,7 +40,6 @@ class RegisterForm extends React.Component {
 		.then(response=>{
 			response.json().then(json=>{
 				this.setState({isAuthenticated:json.isAuthenticated});
-				console.log(json);
 			});
 		});
 
@@ -79,14 +78,12 @@ class RegisterForm extends React.Component {
 		e.preventDefault();
 		const isAuthenticated = this.state.isAuthenticated;
 
-		console.log(isAuthenticated);
 
 		if(isAuthenticated==false){
 			this.setState({
 				authError:true
 			});
 		}else{
-			console.log(isAuthenticated);
 			this.setState({
 				authError:false
 			});
@@ -145,7 +142,6 @@ class RegisterForm extends React.Component {
 
 		const maxReceptionDate = [next_day.getFullYear(),(mm>9 ? '' : '0') + mm,(dd>9 ? '' : '0') + dd].join('-');
 
-		console.log(maxReceptionDate);
 
 		this.setState({
 			maxReceptionDate:maxReceptionDate

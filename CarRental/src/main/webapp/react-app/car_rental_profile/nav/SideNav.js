@@ -21,7 +21,6 @@ export class SideNav extends React.Component {
 		.then(data => {this.setState({
 			userRoles:data.userroles
 		})
-		console.log(data);
 		})
 		.catch(error => {});
 	}

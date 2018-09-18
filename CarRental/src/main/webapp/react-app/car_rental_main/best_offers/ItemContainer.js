@@ -28,7 +28,6 @@ export class ItemContainer extends React.Component {
 		this.setState({activePageNumber:this.props.activePageNumber});
 		this.setVehicles(0);
 
-    console.log("test: mount itemcontainer -> bestoffer")
 	}
 
 	scrollTop = () => {
@@ -53,9 +52,6 @@ export class ItemContainer extends React.Component {
 		fetch(url)
 		.then(response=>{
 			response.json().then(json=>{
-          console.log(json.content);
-          console.log(json.totalPages);
-          console.log(json.totalElements);
 					this.setState({vehicles:json.content});
 					this.setState({totalPages:json.totalPages});
 					this.setState({totalElements:json.totalElements});

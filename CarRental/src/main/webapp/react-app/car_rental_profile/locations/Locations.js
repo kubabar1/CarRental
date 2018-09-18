@@ -65,7 +65,6 @@ export class Locations extends React.Component {
     }
 
     renderAllBookingsTable = (locations) => {
-      console.log(locations);
 
   		return (
         <div className="p-3 table-responsive">

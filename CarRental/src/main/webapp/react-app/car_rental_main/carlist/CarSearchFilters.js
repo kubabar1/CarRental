@@ -65,7 +65,6 @@ class CarSearchFilters extends React.Component {
 			const item = this.createFilterWrapperObject();
 			const filterWrapperObjectJson = JSON.stringify(item);
 
-			console.log("current location:"+this.props.location);
 
 			this.props.history.push({
   			pathname: '/CarRental/searchresult',

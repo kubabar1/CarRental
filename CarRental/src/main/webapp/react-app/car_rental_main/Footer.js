@@ -29,19 +29,19 @@ export class Footer extends React.Component {
 			        <div id="news-list" className="col-lg-5 col-md-12 mt-3">
 								<h5>Socials:</h5>
 								<div className="row">
-									<a href="#"><i className="socials-icons fab fa-facebook facebook-icon" style={{fontSize:40}}></i></a><br></br>
-									<a href="#"><i className="socials-icons fab fa-twitter twitter-icon" style={{fontSize:40}}></i></a><br></br>
-									<a href="#"><i className="socials-icons fab fa-instagram instagram-icon" style={{fontSize:40}}></i></a><br></br>
-									<a href="#"><i className="socials-icons fab fa-youtube youtube-icon" style={{fontSize:40}}></i></a><br></br>
+									<a href="https://www.facebook.com" target="_blank"><i className="socials-icons fab fa-facebook facebook-icon" style={{fontSize:40}}></i></a><br></br>
+									<a href="https://www.twitter.com" target="_blank"><i className="socials-icons fab fa-twitter twitter-icon" style={{fontSize:40}}></i></a><br></br>
+									<a href="https://www.instagram.com" target="_blank"><i className="socials-icons fab fa-instagram instagram-icon" style={{fontSize:40}}></i></a><br></br>
+									<a href="https://www.youtube.com" target="_blank"><i className="socials-icons fab fa-youtube youtube-icon" style={{fontSize:40}}></i></a><br></br>
 								</div>
 			        </div>
 
 
 			        <div className="footer-contact"  className="col-lg-4 col-md-12 mt-3">
-			          <h5>Contact us:</h5>
-			          <i className="fa fa-phone" style={{fontSize:24}}></i>  423 232 123 <br></br>
-			          <i className="fa fa-mobile" style={{fontSize:24}}></i>  948 132 423 <br></br>
-			          <i className="fa fa-envelope" style={{fontSize:24}}></i> car.rental@gmail.com <br></br><br></br>
+			          <h5 className="linkstyle_black">Contact us:</h5>
+			          <i className="fa fa-phone linkstyle_black" style={{fontSize:24}}></i>  <t className="linkstyle_black"> 423 232 123 </t> <br></br>
+			          <i className="fa fa-mobile linkstyle_black" style={{fontSize:24}}></i> <t className="linkstyle_black"> 948 132 423 </t> <br></br>
+			          <i className="fa fa-envelope linkstyle_black" style={{fontSize:24}}></i> <a href="mailto:car.rental@test.com">car.rental@test.com</a> <br></br><br></br>
 			        </div>
 			      </div>
 
@@ -49,7 +49,7 @@ export class Footer extends React.Component {
 			    </div>
 
 			    <div className="footer-copyright text-center">
-			      © {n} Copyright:  <a className ="font-weight-bold" href="#">CarRental</a>
+			      © {n} Copyright:  <Link to='/CarRental/' className="linkstyle_white font-weight-bold">CarRental</Link>
 			    </div>
 			   </footer>
 		)

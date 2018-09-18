@@ -22,7 +22,6 @@ export class CommentList extends React.Component {
 	render () {
 		const comments = this.props.comments;
 
-		console.log(comments);
 
 		return (
       <section className="mb-5">

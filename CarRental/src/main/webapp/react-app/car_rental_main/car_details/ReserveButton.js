@@ -34,7 +34,6 @@ class ReserveButton extends React.Component {
 		const selectedCar = this.props.vehicleProperties.id;
 		const carCity = this.state.carCity;
 
-		console.log(carCity);
 
 		return(
 			<div>

@@ -31,7 +31,7 @@ export class Pageable extends React.Component {
 	create_items = () => {
 		const objs = [];
 		const totalPages = this.props.totalPages;
-		const activePage = this.props.activePageNumber;
+		const activePage = this.state.activePageNumber;
 		var start = 0;
 		var max = totalPages>5 ? 5 : totalPages;
 
@@ -49,7 +49,7 @@ export class Pageable extends React.Component {
 	}
 
 	renderContent = () => {
-		const activePageNumber=this.props.activePageNumber;
+		const activePageNumber=this.state.activePageNumber;
 		const totalPages=this.props.totalPages;
 		const loaded = this.state.loaded;
 		var previous;

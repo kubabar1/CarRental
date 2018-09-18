@@ -28,7 +28,6 @@ export class UserEmailContainer extends React.Component {
         user_email:data.email,
         loaded:true
       })
-      console.log(data.email);
       })
       .catch(error => {});
 

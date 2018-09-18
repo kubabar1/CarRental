@@ -84,7 +84,6 @@ export class FeaturesList extends React.Component {
     equipment["equipmentCode"]=eqp_code;
     equipment["description"]=eqp_description;
 
-    console.log(JSON.stringify(equipment));
     fetch(url, {
       method: 'POST',
       headers: {

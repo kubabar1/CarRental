@@ -34,7 +34,6 @@ export class AllRentedVehicles extends React.Component {
     }
 
     setPageNumber = (page) => {
-      console.log("setPageNumber");
       this.setState({pageNumber:page});
       this.setBookingList(page, this.state.resultNumber);
     }
@@ -67,7 +66,7 @@ export class AllRentedVehicles extends React.Component {
       const url2="";
 
       return(
-        <tr key={booking.id}>        
+        <tr key={booking.id}>
           <td><button className="btn btn-primary custom-width" onClick={() => {this.returnBooking(booking.id)}}>Return</button></td>
           <td>{booking.id}</td>
           <td>{booking.userId}</td>
@@ -76,14 +75,12 @@ export class AllRentedVehicles extends React.Component {
           <td>{booking.returnDate}</td>
           <td>{booking.locationId}</td>
           <td>{booking.bookingStateCode}</td>
-          <td>{booking.rentingEmployee}</td>
           <td>{booking.totalCost}</td>
         </tr>
       );
     }
 
     renderAllBookingsTable = (allBookingsList) => {
-      console.log(allBookingsList);
 
   		return (
         <div className="p-3 table-responsive">
@@ -98,7 +95,6 @@ export class AllRentedVehicles extends React.Component {
                 <th>return date</th>
                 <th>location ID</th>
                 <th>booking state</th>
-                <th>renting employee</th>
                 <th>total cost</th>
               </tr>
             </thead>
