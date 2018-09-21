@@ -75,7 +75,7 @@ class ContentContainer extends React.Component {
 		return(
 			<div>
 				{vehicles.map(this.vehiclesToTableRow)}
-				{totalPages > 0 ? <Pageable setPageNumber={this.setPageNumber} activePageNumber={this.state.pageNumber} totalPages={this.state.totalPages}/> : <div></div>}
+				{totalPages > 0 ? <Pageable setPageNumber={this.setPageNumber} activePageNumber={this.state.activePageNumber} totalPages={this.state.totalPages}/> : <div></div>}
 			</div>
 		);
 	}

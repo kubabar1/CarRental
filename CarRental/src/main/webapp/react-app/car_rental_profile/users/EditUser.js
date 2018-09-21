@@ -65,8 +65,8 @@ export class EditUser extends React.Component {
   handleSubmit = (event) => {
 			event.preventDefault();
       const userWrapper = this.createUserWrapper();
-      const user_id = this.state.user_id;
-      const url = 'http://localhost:8080/CarRental/userlist/'+user_id;
+      const user_login = this.state.user_login;
+      const url = 'http://localhost:8080/CarRental/userlist/'+user_login;
 
       fetch(url, {
         method: 'PUT',

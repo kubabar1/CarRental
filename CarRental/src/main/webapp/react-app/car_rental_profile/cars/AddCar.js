@@ -263,7 +263,7 @@ export class AddCar extends React.Component {
 
               <div className="form-group">
                 <div className="row">
-                  <label className="ml-5 mt-4 col-md-2">Fuel type:</label>
+                  <label className="ml-5 mt-4 col-md-2">Car availability:</label>
                   <div className="ml-4 mt-3 col-md-3">
                     <select name="car_vehicle_status" className="form-control" required value={this.state.car_vehicle_status} onChange={this.handleInputChange} >
                       <option value={"AVI"}>AVI</option>

@@ -93,6 +93,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 			System.out.println("test");
 		}
 		
+		System.out.println(userlogin);
+		
 		int number = entityManager
 				.createQuery("UPDATE User u SET " 
 						+ "u.name=COALESCE(:name,u.name), "

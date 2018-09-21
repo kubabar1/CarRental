@@ -12,7 +12,7 @@ export class Pageable extends React.Component {
 
 		this.state = {
 			totalPages:null,
-			activePageNumber:null,
+			activePageNumber:0,
 			loaded:false
 		};
 	}
@@ -66,6 +66,7 @@ export class Pageable extends React.Component {
 		}else{
 			next=activePageNumber+1;
 		}
+
 
 		return(
 			<div className="text-center my-5 d-flex">
