@@ -1,6 +1,11 @@
 <img src="https://github.com/kubabar1/CarRental/blob/master/CarRental/src/main/webapp/static/img/car_rental_logo_name.png" width="400"/>
 
 # 1. Opis ogólny
+
+> Dokładniejszy opis zawierający diagramy UML znajduje się w zakładce Wiki, znajdującej sią pod poniższym linkiem.
+> https://github.com/kubabar1/CarRental/wiki
+
+
 ## 1.1 Nazwa programu
 *CarRental*
 
@@ -49,6 +54,8 @@ W sumie frontend składa się ze 101 plików, które w sumie liczą ok. 8000 lin
 
 ## 1.4 Docelowi użytkownicy
 
+<img src="https://github.com/kubabar1/readme_images_repository/blob/master/car_rental_images/actors_diagram.png" width="600"/>
+
 <ul>
   <li><b>Admin</b> - osoba zarządzająca stroną posiadająca najwięcej uprawnień</li>
   <li><b>Customer</b> - klient, osoba korzystająca z naszej strony w celu rezerwacji auta, każdy użytkownik który zakłada konto posiada
@@ -84,7 +91,8 @@ utwórz bazę danych na serwerze MySQL. Aby zainstalować bazę danych należy w
 ```
 
 Polecenie to spowoduje usunięcie istniejącej bazy danych o nazwie carrental (jeżeli istnieje) i utworzenie nowej wraz z tabelami i wpisanymi do nich wartościami. 
-!!! bardzo istotne jest to, aby w naszej bazie danych znajdował się użytkownik root, nie posiadający hasła, jeżeli jednak jest ustawione hasło, należy je wpisać w następującym pliku 
+!!! bardzo istotne jest to, aby w naszej bazie danych znajdował się użytkownik root, nie posiadający hasła, jeżeli jednak jest ustawione hasło, należy je wpisać w pliku *persistence-mysql.properties* <a href="https://github.com/kubabar1/CarRental/blob/master/CarRental/src/main/java/persistence-mysql.properties">link</a>.
+
 3.	Przejdż do katalogu w projekcie w którym znajduje się plik pom.xml i wykonaj następujące polecenie:
  ```
    sudo mvn clean install
@@ -93,20 +101,29 @@ Polecenie to spowoduje usunięcie istniejącej bazy danych o nazwie carrental (j
 *sudo* jest konieczne ze względu na fakt, że Maven tworzy w folderze głównym systemu folder w którym wypakowuje część zdjęć 
 wykorzystywanych w aplikacji oraz w którym są przechowywane m.in. zdjęcia dodanych przez nas aut.
 
-4.	Po zakończeniu działania programu Maven należy przejść do folderu *CarRental/target i skopiować plik CarRental.war do folderu 
-*webapps* naszego serwera *Tomcat* (np. dla serwera Tomcat 8 będzie to folder *tomcat8/webapps*).
+4.	Po zakończeniu działania programu Maven należy przejść do folderu *CarRental/target* i skopiować plik CarRental.war do folderu 
+*webapps* naszego serwera *Tomcat* (np. dla serwera Tomcat 8 będzie to folder */var/lib/tomcat8/webapps*).
 
-5.	Edytujemy konfigurację w pliku tomcat/conf/server.xml:
+5.	Edytujemy konfigurację w pliku */etc/tomcat8/server.xml*:
+
 a)	Dla systemu Windows
 ```
-  <Context docBase="C:\carrental\img\vehicles_img" path="/CarRental/vehicles-img"/>
-  <Context docBase="C:\carrental\img\etc_img" path="/CarRental/etc-img"/>
+  <Host name="localhost">
+    
+  
+    <Context docBase="C:\carrental\img\vehicles_img" path="/CarRental/vehicles-img"/>
+    <Context docBase="C:\carrental\img\etc_img" path="/CarRental/etc-img"/>
+  </Host>
 ```
     
 b)	Dla systemu Linux: 
 ```
-  <Context docBase="/carrental/img/vehicles_img" path="/CarRental/vehicles-img"/>
-  <Context docBase="/carrental/img/etc_img" path="/CarRental/etc-img"/>
+  <Host name="localhost">
+    
+  
+    <Context docBase="/carrental/img/vehicles_img" path="/CarRental/vehicles-img"/>
+    <Context docBase="/carrental/img/etc_img" path="/CarRental/etc-img"/>
+  </Host>
 ```
     
 Dzięki temu nasza aplikacja będzie mogła mieć dostęp do zdjęć przechowywanych na dysku.
@@ -131,20 +148,20 @@ Listę pojazdów możemy wyświetlić po kliknięciu przycisku *Car list* w menu
 
 <img src="https://github.com/kubabar1/readme_images_repository/blob/master/car_rental_images/carsearch.gif" width="600"/>
 
-Aby wyszukać pojazdy według kryteriów należy przejść do listy pojazdów przez kliknięcie przycisku „Car list” w menu, a następnie wprowadzić pożądane kryteria w panelu filtrów i kliknąć przycisk „Search”. Spowoduje to wyświetlenie na ekranie pojazdów spełniających pożądane kryteria.
+Aby wyszukać pojazdy według kryteriów należy przejść do listy pojazdów przez kliknięcie przycisku *Car list* w menu, a następnie wprowadzić pożądane kryteria w panelu filtrów i kliknąć przycisk *Search*. Spowoduje to wyświetlenie na ekranie pojazdów spełniających pożądane kryteria.
 
 #### 2.2.3 Przejrzenie szczegółów pojazdu
 
 <img src="https://github.com/kubabar1/readme_images_repository/blob/master/car_rental_images/carprops.gif" width="600"/>
 
-Aby przejrzeć informacje szczegółowe na temat pojazdów należy przejść do listy pojazdów (po kliknięciu „Car rental”), a następnie przy wybranym pojeździe z listy kliknąć przycisk „Properties”.
+Aby przejrzeć informacje szczegółowe na temat pojazdów należy przejść do listy pojazdów (po kliknięciu *Car rental*), a następnie przy wybranym pojeździe z listy kliknąć przycisk *Properties*.
 
 #### 2.2.4	Rezerwacja pojazdu
 
 <img src="https://github.com/kubabar1/readme_images_repository/blob/master/car_rental_images/reserve1.gif" width="600"/>
 <img src="https://github.com/kubabar1/readme_images_repository/blob/master/car_rental_images/reserve2.gif" width="600"/>
 
-Zarezerwować pojazd może tylko zalogowany użytkownik. Aby zarezerwować pojazd należy wypełnić formularz znajdujący się na podstronie „Home” i kliknąć przycisk „Reserve”. Następnie należy wypełnić poszczególne podstrony formularza i na ostatniej wybrać „Reserve”. Pojazd można również zarezerwować poprzez kliknięcie przycisku „Reserve”, znajdującego się na podsterownie detali wybranego auta (użytkownik musi być zalogowany aby zobaczyć owy przycisk).
+Zarezerwować pojazd może tylko zalogowany użytkownik. Aby zarezerwować pojazd należy wypełnić formularz znajdujący się na podstronie *Home* i kliknąć przycisk *Reserve*. Następnie należy wypełnić poszczególne podstrony formularza i na ostatniej wybrać *Reserve*. Pojazd można również zarezerwować poprzez kliknięcie przycisku *Reserve*, znajdującego się na podsterownie detali wybranego auta (użytkownik musi być zalogowany aby zobaczyć owy przycisk).
 
 #### 2.2.5 Dodanie komentarza na temat pojazdu.
 
@@ -156,54 +173,54 @@ Aby dodać komentarz należy być zalogowanym. Komentarz wraz z liczbą gwiazdek
 
 <img src="https://github.com/kubabar1/readme_images_repository/blob/master/car_rental_images/bestoffers.gif" width="600"/>
 
-Listę najlepszych ofert możemy wyświetlić po kliknięciu przycisku „Best offers” w menu.
+Listę najlepszych ofert możemy wyświetlić po kliknięciu przycisku *Best offers* w menu.
 
 #### 2.2.7 Przeczytanie informacji na temat firmy.
 
 <img src="https://github.com/kubabar1/readme_images_repository/blob/master/car_rental_images/aboutus.gif" width="600"/>
 
-Informacje na temat firmy możemy przeczytać po kliknięciu przycisku „About us”.
+Informacje na temat firmy możemy przeczytać po kliknięciu przycisku *About us*.
 
 #### 2.2.8 Uzyskanie danych kontaktowych firmy.
 
 <img src="https://github.com/kubabar1/readme_images_repository/blob/master/car_rental_images/contact.gif" width="600"/>
 
-Dane kontaktowe firmy możemy wyświetlić po kliknięciu przycisku „Contact” w menu.
+Dane kontaktowe firmy możemy wyświetlić po kliknięciu przycisku *Contact* w menu.
 
 #### 2.2.9 Wysłanie e-maila do pracowników firmy.
 
 <img src="https://github.com/kubabar1/readme_images_repository/blob/master/car_rental_images/contactemail.gif" width="600"/>
 
-Klient ma możliwość wysłania emaila do pracowników firmy poprzez formularz znajdujący się na podstronie „Contacts”.
+Klient ma możliwość wysłania emaila do pracowników firmy poprzez formularz znajdujący się na podstronie *Contacts*.
 
 #### 2.2.10 Utworzenie nowego konta.
 
 <img src="https://github.com/kubabar1/readme_images_repository/blob/master/car_rental_images/signup.gif" width="600"/>
 
-Nowe konto możemy utworzyć poprzez kliknięcie przycisku „Sign up” i prawidłowe wypełnienie formularza.
+Nowe konto możemy utworzyć poprzez kliknięcie przycisku *Sign up* i prawidłowe wypełnienie formularza.
 
 #### 2.2.11 Zalogowanie się na istniejące konto.
 
 <img src="https://github.com/kubabar1/readme_images_repository/blob/master/car_rental_images/login.gif" width="600"/>
 
-Aby zalogować się na istniejące konto należy kliknąć przycisk „Log in”, wpisać login i hasło, a następnie kliknąć przycisk „Sign in”.
+Aby zalogować się na istniejące konto należy kliknąć przycisk *Log in*, wpisać login i hasło, a następnie kliknąć przycisk *Sign in*.
 
 #### 2.2.12 Wylogowanie się z konta użytkownika.
 
 <img src="https://github.com/kubabar1/readme_images_repository/blob/master/car_rental_images/logout1.gif" width="600"/>
 <img src="https://github.com/kubabar1/readme_images_repository/blob/master/car_rental_images/logout2.gif" width="600"/>
 
-Aby wylogować się z konta użytkownika należy kliknąć przycisk „Log out”, znajdujący się zarówno na głównej stronie internetowej jak i w panelu klienta.
+Aby wylogować się z konta użytkownika należy kliknąć przycisk *Log out*, znajdujący się zarówno na głównej stronie internetowej jak i w panelu klienta.
 
 ## PANEL ADMINA - BOOKING
 <img src="https://github.com/kubabar1/readme_images_repository/blob/master/car_rental_images/bookings_admin.gif" width="600"/>
 
 #### 2.2.13 Przejrzenie listy wszystkich zamówień.
 
-Listę wszystkich zamówień może przeglądać tylko użytkownik posiadający rolę Aby przejrzeć listę wszystkich zamówień należy przejść do panelu klienta i kliknąć przycisk „All bookings”.
+Listę wszystkich zamówień może przeglądać tylko użytkownik posiadający rolę Aby przejrzeć listę wszystkich zamówień należy przejść do panelu klienta i kliknąć przycisk *All bookings*.
 
 #### 2.2.14 Pobranie pliku w formacie Excel zawierającego wszystkie zamówienia.
-Aby pobrać plik Excel zawierający wszystkie zamówienia przechowywane w bazie należy przejść do panelu klienta, wybrać zakładkę „All bookings” , a następnie kliknąć niebieski przycisk „Download file”.
+Aby pobrać plik Excel zawierający wszystkie zamówienia przechowywane w bazie należy przejść do panelu klienta, wybrać zakładkę „All bookings” , a następnie kliknąć niebieski przycisk *Download file*.
 
 #### 2.2.15 Wyświetlenie listy wszystkich aktualnych rezerwacji.
 Aby wyświetlić listę wszystkich aktualnych rezerwacji dokonanych przez użytkowników należy przejść do panelu klienta i kliknąc zakładkę *All reserved bookings*.
