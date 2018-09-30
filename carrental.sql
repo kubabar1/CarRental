@@ -131,10 +131,11 @@ CREATE TABLE Comments(
 );
 
 CREATE TABLE Stars(
+  ID INT NOT NULL  AUTO_INCREMENT,
   vehicleID INT NOT NULL,
-  starsAvgCount decimal(15,2) NOT NULL,
-  FOREIGN KEY(vehicleID) REFERENCES Vehicles(ID),
-  UNIQUE (vehicleID) 
+  stars INT NOT NULL,
+  PRIMARY KEY(ID),
+  FOREIGN KEY(vehicleID) REFERENCES Vehicles(ID)
 );
 
 CREATE TABLE BookingStateCodes(
