@@ -62,6 +62,13 @@ class ContentContainer extends React.Component {
 
 
 
+	getAvgStarsNumber = (vehicleId) => {
+
+
+	}
+
+
+
 	setPageNumber = (page) => {
     this.setState({activePageNumber:page});
     this.setVehicles(page);
@@ -87,9 +94,8 @@ class ContentContainer extends React.Component {
 			const dailyFee = vehicles.dailyFee;
 			const description = vehicles.vehicleParameters.description;
 			const photoName = vehicles.vehicleParameters.photoName;
-			const starsNumber = vehicles.stars ? vehicles.stars.starsAvgCount : null;
 
-			return <CarItem key={id} id={id} name={name} brand={brand} model={model} dailyFee={dailyFee} description={description} photoName={photoName} starsNumber={starsNumber}/>;
+			return <CarItem key={id} id={id} name={name} brand={brand} model={model} dailyFee={dailyFee} description={description} photoName={photoName}/>;
 	}
 
 	render () {

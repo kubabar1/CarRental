@@ -58,9 +58,6 @@ public class Vehicle implements Serializable {
 	@OneToOne(mappedBy = "vehicle")
 	private VehicleParameters vehicleParameters;
 
-	@OneToOne(mappedBy = "vehicle")
-	private Stars stars;
-
 	@JsonIgnore
 	@OneToMany(mappedBy = "vehicle")
 	private Set<Comment> comments;
@@ -161,14 +158,6 @@ public class Vehicle implements Serializable {
 		this.vehicleParameters = vehicleParameters;
 	}
 
-	public Stars getStars() {
-		return stars;
-	}
-
-	public void setStars(Stars stars) {
-		this.stars = stars;
-	}
-
 	public Set<Comment> getComments() {
 		return comments;
 	}
@@ -182,7 +171,7 @@ public class Vehicle implements Serializable {
 		return "Vehicle [id=" + id + ", registration=" + registration + ", brand=" + brand + ", model=" + model
 				+ ", dailyFee=" + dailyFee + ", locationId=" + locationId + ", vehicleStatus=" + vehicleStatus
 				+ ", bestOffer=" + bestOffer + ", equipmentList=" + equipmentList + ", vehicleParameters="
-				+ vehicleParameters + ", stars=" + stars + "]";
+				+ vehicleParameters + "]";
 	}
 
 }

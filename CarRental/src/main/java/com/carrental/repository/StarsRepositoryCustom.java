@@ -1,7 +1,9 @@
 package com.carrental.repository;
 
+import com.carrental.model.Stars;
+
 public interface StarsRepositoryCustom {
 
-	void setStars(Long carId);
+	void addStars(Stars stars);
 	
 }

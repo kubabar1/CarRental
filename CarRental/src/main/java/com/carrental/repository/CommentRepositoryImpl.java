@@ -18,7 +18,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
 
 	@Override
 	@Transactional
-	public void addComment(Comment comment, Long vehicleId) {
+	public void addComment(Comment comment) {
 		entityManager.persist(comment);
 	}
 

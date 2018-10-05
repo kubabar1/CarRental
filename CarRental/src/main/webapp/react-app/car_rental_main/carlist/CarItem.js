@@ -9,6 +9,29 @@ import { Link } from 'react-router-dom'
 
 export class CarItem extends React.Component {
 
+	constructor(){
+		super();
+
+		this.state = {
+			stars:0,
+			loaded:false
+		};
+	}
+
+
+	componentDidMount(){
+		const url = "http://localhost:8080/CarRental/stars/"+this.props.id;
+
+		fetch(url)
+		.then(response => response.json())
+		.then(json => {this.setState({
+			stars:json,
+			loaded:true
+			});
+		})
+		.catch(error => {});
+	}
+
 
 	renderStars = (number) => {
 		const objs = [];
@@ -26,7 +49,9 @@ export class CarItem extends React.Component {
 
 	render () {
     const image_url = '/CarRental/vehicles-img/'+this.props.photoName;
-		const starsNumber = this.props.starsNumber ? this.props.starsNumber : 0;
+		const starsNumber = this.state.stars ? Math.floor(this.state.stars) : 0;
+
+		const loaded = this.state.loaded;
 
 		return (
 

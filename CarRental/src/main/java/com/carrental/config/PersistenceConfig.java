@@ -35,11 +35,6 @@ public class PersistenceConfig implements EnvironmentAware {
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
-		System.out.println(env.getProperty("spring.datasource.driver-class-name"));
-		System.out.println(env.getProperty("spring.datasource.url"));
-		System.out.println(env.getProperty("spring.datasource.username"));
-		System.out.println(env.getProperty("spring.datasource.password"));
-
 		dataSource.setDriverClassName(env.getProperty("spring.datasource.driver-class-name"));
 		dataSource.setUrl(env.getProperty("spring.datasource.url"));
 		dataSource.setUsername(env.getProperty("spring.datasource.username"));

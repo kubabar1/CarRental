@@ -1,5 +1,7 @@
 package com.carrental.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,8 +25,13 @@ public class CommentServiceImpl implements CommentService{
 	}
 	
 	@Override
-	public void addComment(Comment comment, Long vehicleId) {
-		commentRepository.addComment(comment,vehicleId);
+	public void addComment(Comment comment) {
+		commentRepository.addComment(comment);
+	}
+
+	@Override
+	public List<Comment> getAllForVehicle(Long vehicleId) {
+		return commentRepository.getAllForVehicle(vehicleId);
 	}
 
 }

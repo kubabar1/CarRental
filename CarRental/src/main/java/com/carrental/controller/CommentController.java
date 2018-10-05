@@ -1,5 +1,7 @@
 package com.carrental.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,23 +23,18 @@ public class CommentController {
 	@Autowired
 	CommentServiceImpl commentService;
 	
-	@Autowired
-	StarsServiceImpl starsService;
-	
 	@RequestMapping(value = { "/{vehicleID}" }, method = RequestMethod.GET)
-	public Page<Comment> addCommentForVehicle(@PathVariable Long vehicleID, @RequestParam(value = "page") int page,@RequestParam(value = "number") int number) {
+	public Page<Comment> getVehicleCommentsForPage(@PathVariable Long vehicleID, @RequestParam(value = "page") int page,@RequestParam(value = "number") int number) {
 		return commentService.getCommentsForVehicle(vehicleID,new PageRequest(page, number));
-
-
+	}
+	
+	@RequestMapping(value = { "/all/{vehicleID}" }, method = RequestMethod.GET)
+	public List<Comment> getAllVehicleComments(@PathVariable Long vehicleID) {
+		return commentService.getAllForVehicle(vehicleID);
 	}
 
 	@RequestMapping(value = { "/{vehicleID}" }, method = RequestMethod.POST)
-	public void addCommentAndStarsForVehicle(@PathVariable Long vehicleID, @RequestBody Comment comment) {
-
-		System.out.println(comment.toString());
-
-		commentService.addComment(comment, vehicleID);
-		
-		starsService.setStars(vehicleID);
+	public void addCommentForVehicle(@PathVariable Long vehicleID, @RequestBody Comment comment) {
+		commentService.addComment(comment);
 	}
 }

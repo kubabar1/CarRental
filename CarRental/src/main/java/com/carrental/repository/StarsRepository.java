@@ -1,5 +1,7 @@
 package com.carrental.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +15,9 @@ import com.carrental.model.Stars;
 public interface StarsRepository extends JpaRepository<Stars, Long>, StarsRepositoryCustom {
 
 	@Query("SELECT s FROM Stars s WHERE s.vehicleId=:vehicleId")
-	public Stars getStarsByVehicleId(@Param("vehicleId") Long vehicleId);
+	public List<Stars> getStarsByVehicleId(@Param("vehicleId") Long vehicleId);
+	
+	@Query("SELECT AVG(s.stars) FROM Stars s WHERE s.vehicleId=:vehicleId")
+	public Double getAvgStarsByVehicleId(@Param("vehicleId") Long vehicleId);
 
 }

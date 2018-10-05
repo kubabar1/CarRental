@@ -52,7 +52,7 @@ export class SideNav extends React.Component {
 							] : ""
 						}
 
-						{userRoles && ["ROLE_ADMIN","ROLE_OFFICEEMPLOYEE","ROLE_RENTINGEMPLOYEE"].some(el => userRoles.includes(el)) ?
+						{userRoles && ["ROLE_ADMIN", "ROLE_RENTINGEMPLOYEE"].some(el => userRoles.includes(el)) ?
 							[
 								<div key="allrentslist">
 									<div className="container my-3">
@@ -66,7 +66,7 @@ export class SideNav extends React.Component {
 							] : ""
 						}
 
-						{userRoles && ["ROLE_ADMIN","ROLE_OFFICEEMPLOYEE","ROLE_RENTINGEMPLOYEE"].some(el => userRoles.includes(el)) ?
+						{userRoles && ["ROLE_ADMIN", "ROLE_RENTINGEMPLOYEE"].some(el => userRoles.includes(el)) ?
 							[
 								<div key="allrentslist">
 									<div className="container my-3">

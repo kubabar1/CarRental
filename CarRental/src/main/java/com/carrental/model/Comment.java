@@ -39,7 +39,7 @@ public class Comment implements Serializable {
 	@Column(name = "login")
 	private String login;
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europe/Warsaw")
 	@Column(name = "creationDate")
 	private Timestamp creationDate;
 
@@ -55,12 +55,23 @@ public class Comment implements Serializable {
 		super();
 	}
 
-	public Comment(Vehicle vehicle, String commentContent, String login, Timestamp creationDate) {
+	public Comment(Long vehicleId, String commentContent, String login, Timestamp creationDate, Integer rating) {
 		super();
-		this.vehicle = vehicle;
+		this.vehicleId = vehicleId;
 		this.commentContent = commentContent;
 		this.login = login;
 		this.creationDate = creationDate;
+		this.rating = rating;
+	}
+
+	public Comment(Long id, Long vehicleId, String commentContent, String login, Timestamp creationDate, Integer rating) {
+		super();
+		this.id = id;
+		this.vehicleId = vehicleId;
+		this.commentContent = commentContent;
+		this.login = login;
+		this.creationDate = creationDate;
+		this.rating = rating;
 	}
 
 	public Long getId() {

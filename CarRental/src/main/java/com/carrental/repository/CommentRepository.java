@@ -17,7 +17,7 @@ public interface CommentRepository extends JpaRepository<Equipment, Long>, Comme
 			countQuery="SELECT COUNT(c) FROM Comment c WHERE c.vehicleId=:vehicleId")
 	public Page<Comment> getCommentsForVehicle(@Param("vehicleId") Long vehicleId, Pageable pageable);
 	
-	@Query(value="SELECT c FROM Comment c WHERE c.vehicleId=:vehicleId")
+	@Query(value="SELECT c FROM Comment c WHERE c.vehicleId=:vehicleId ORDER BY c.creationDate DESC")
 	public List<Comment> getAllForVehicle(@Param("vehicleId") Long vehicleId);
 	
 }

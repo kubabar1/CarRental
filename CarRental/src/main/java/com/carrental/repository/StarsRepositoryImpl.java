@@ -18,37 +18,9 @@ public class StarsRepositoryImpl implements StarsRepositoryCustom {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	@Autowired
-	private StarsRepository starsRepository;
-
-	@Autowired
-	private CommentRepository commentRepository;
-
 	@Override
 	@Transactional
-	public void setStars(Long carId) {
-
-		Stars oldStars = starsRepository.getStarsByVehicleId(carId);
-		
-		List<Comment> commentListForVehicle = commentRepository.getAllForVehicle(carId);
-		
-		int nb = commentListForVehicle.size();
-		
-		int starsSum = 0;
-		
-		for(int i=0;i<nb;i++) {
-			starsSum += commentListForVehicle.get(i).getRating();
-		}
-		
-		double starsAvg = starsSum/nb;
-		Stars newStars = new Stars(carId, starsAvg);
-		System.out.println(newStars.toString());
-
-		if (oldStars == null) {
-			entityManager.persist(newStars);
-		} else {
-			entityManager.merge(newStars);
-		}
-
+	public void addStars(Stars stars) {
+		entityManager.persist(stars);
 	}
 }

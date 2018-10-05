@@ -69,10 +69,19 @@ export class AddComment extends React.Component {
 		return item;
 	}
 
+	createStarItem = () => {
+		const item = {};
+
+		item["vehicleId"] = this.props.carid;
+		item["stars"] = this.state.starsNumber;
+
+		return item;
+	}
+
 	handleAddComment = (event) => {
 		const commentContent = this.state.commentContent;
 		const starsNumber = this.state.starsNumber;
-				event.preventDefault();
+		event.preventDefault();
 
 		if(commentContent==""){
 			this.setState({commentError:true});
@@ -90,9 +99,10 @@ export class AddComment extends React.Component {
 
 			const commentItem = this.createCommentItem();
 
-			const url="http://localhost:8080/CarRental/comments/"+this.props.carid;
+			const starsItem = this.createStarItem();
 
-			fetch(url, {
+			const url1="http://localhost:8080/CarRental/comments/"+this.props.carid;
+			fetch(url1, {
 				method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -100,8 +110,20 @@ export class AddComment extends React.Component {
         },
 				body: JSON.stringify(commentItem)
 			}).then(response => {
-				this.setState({commentContent:"",starsNumber:0});
+				this.setState({commentContent:""});
 				this.props.loadCommentsForPage(0);
+			}).catch(error => {});
+
+			const url2="http://localhost:8080/CarRental/stars/"+this.props.carid;
+			fetch(url2, {
+				method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+				body: JSON.stringify(starsItem)
+			}).then(response => {
+				this.setState({starsNumber:0});
 			}).catch(error => {});
 
 
@@ -122,8 +144,6 @@ export class AddComment extends React.Component {
 
 		return item;
 	}
-
-
 
 	handleInputChange = (event) => {
 		const target = event.target;

@@ -129,7 +129,6 @@ export class CarDetails extends React.Component {
 	}
 
 
-
 	render () {
 
 		const vehicleProperties = this.state.vehicleProperties;
@@ -138,18 +137,12 @@ export class CarDetails extends React.Component {
 		return (
 			<div>
 				<PageLocation/>
-
 				<div className="container col-md-8 offset-md-2 mt-4">
-
 					<div className="text-center">
-
 						{vehicleProperties ? this.renderContent(vehicleProperties, comments) : <i className="fa fa-spinner fa-pulse fa-3x fa-fw "></i>}
-
 						<button type="button" className="btn btn-primary my-5" onClick={this.changePage}>Older comments</button>
 					</div>
-
 				</div>
-
 			</div>
 		)
 	}
