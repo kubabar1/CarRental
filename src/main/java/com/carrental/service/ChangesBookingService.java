@@ -1,6 +1,6 @@
 package com.carrental.service;
 
-import com.carrental.model.ChangesBooking;
+import com.carrental.model.entity.ChangesBooking;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

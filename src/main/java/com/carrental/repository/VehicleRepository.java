@@ -1,6 +1,6 @@
 package com.carrental.repository;
 
-import com.carrental.model.Vehicle;
+import com.carrental.model.entity.Vehicle;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;

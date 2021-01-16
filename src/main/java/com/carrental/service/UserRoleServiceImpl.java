@@ -1,6 +1,6 @@
 package com.carrental.service;
 
-import com.carrental.model.UserRole;
+import com.carrental.model.entity.UserRole;
 import com.carrental.repository.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

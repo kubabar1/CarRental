@@ -1,7 +1,7 @@
 package com.carrental.repository;
 
-import com.carrental.model.User;
-import com.carrental.model.UserRole;
+import com.carrental.model.entity.User;
+import com.carrental.model.entity.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;

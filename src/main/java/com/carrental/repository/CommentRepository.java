@@ -1,7 +1,7 @@
 package com.carrental.repository;
 
-import com.carrental.model.Comment;
-import com.carrental.model.Equipment;
+import com.carrental.model.entity.Comment;
+import com.carrental.model.entity.Equipment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

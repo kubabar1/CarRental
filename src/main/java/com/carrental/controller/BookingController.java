@@ -1,8 +1,8 @@
 package com.carrental.controller;
 
 import com.carrental.exception.BookingUnavailableVehicleException;
-import com.carrental.model.Booking;
-import com.carrental.model.Vehicle;
+import com.carrental.model.entity.Booking;
+import com.carrental.model.entity.Vehicle;
 import com.carrental.service.BookingServiceImpl;
 import com.carrental.service.VehicleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

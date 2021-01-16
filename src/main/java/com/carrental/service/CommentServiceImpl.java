@@ -1,6 +1,6 @@
 package com.carrental.service;
 
-import com.carrental.model.Comment;
+import com.carrental.model.entity.Comment;
 import com.carrental.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

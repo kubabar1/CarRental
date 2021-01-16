@@ -1,6 +1,6 @@
 package com.carrental.controller;
 
-import com.carrental.model.ChangesBooking;
+import com.carrental.model.entity.ChangesBooking;
 import com.carrental.service.ChangesBookingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

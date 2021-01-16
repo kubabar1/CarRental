@@ -1,4 +1,4 @@
-package com.carrental.model;
+package com.carrental.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;

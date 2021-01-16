@@ -1,6 +1,6 @@
 package com.carrental.repository;
 
-import com.carrental.model.UserRole;
+import com.carrental.model.entity.UserRole;
 
 import java.util.List;
 

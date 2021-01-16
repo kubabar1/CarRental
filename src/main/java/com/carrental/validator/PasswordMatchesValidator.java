@@ -1,6 +1,6 @@
 package com.carrental.validator;
 
-import com.carrental.dto.UserRegistrationDto;
+import com.carrental.model.dto.UserRegistrationDto;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

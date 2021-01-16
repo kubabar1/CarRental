@@ -1,8 +1,8 @@
 package com.carrental.repository;
 
 import com.carrental.exception.BookingUnavailableVehicleException;
-import com.carrental.model.Booking;
-import com.carrental.model.Vehicle;
+import com.carrental.model.entity.Booking;
+import com.carrental.model.entity.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

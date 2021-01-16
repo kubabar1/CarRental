@@ -1,6 +1,6 @@
 package com.carrental.service;
 
-import com.carrental.model.Stars;
+import com.carrental.model.entity.Stars;
 import com.carrental.repository.StarsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

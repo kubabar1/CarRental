@@ -1,7 +1,7 @@
 package com.carrental.repository;
 
-import com.carrental.dto.UserRegistrationDto;
-import com.carrental.model.User;
+import com.carrental.model.dto.UserRegistrationDto;
+import com.carrental.model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;

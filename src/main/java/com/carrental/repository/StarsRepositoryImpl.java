@@ -1,6 +1,6 @@
 package com.carrental.repository;
 
-import com.carrental.model.Stars;
+import com.carrental.model.entity.Stars;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

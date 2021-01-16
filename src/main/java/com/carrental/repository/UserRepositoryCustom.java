@@ -1,7 +1,7 @@
 package com.carrental.repository;
 
-import com.carrental.dto.UserRegistrationDto;
-import com.carrental.model.User;
+import com.carrental.model.dto.UserRegistrationDto;
+import com.carrental.model.entity.User;
 
 public interface UserRepositoryCustom {
 

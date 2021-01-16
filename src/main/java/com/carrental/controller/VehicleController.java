@@ -1,8 +1,8 @@
 package com.carrental.controller;
 
-import com.carrental.dto.VehicleAddDto;
-import com.carrental.model.Equipment;
-import com.carrental.model.Vehicle;
+import com.carrental.model.dto.VehicleAddDto;
+import com.carrental.model.entity.Equipment;
+import com.carrental.model.entity.Vehicle;
 import com.carrental.service.EquipmentServiceImpl;
 import com.carrental.service.VehicleServiceImpl;
 import org.apache.commons.io.FilenameUtils;

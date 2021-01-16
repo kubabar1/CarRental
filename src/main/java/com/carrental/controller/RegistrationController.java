@@ -1,9 +1,9 @@
 package com.carrental.controller;
 
-import com.carrental.dto.UserRegistrationDto;
+import com.carrental.model.dto.UserRegistrationDto;
 import com.carrental.exception.EmailExistsException;
 import com.carrental.exception.LoginExistsException;
-import com.carrental.model.User;
+import com.carrental.model.entity.User;
 import com.carrental.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

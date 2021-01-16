@@ -1,6 +1,6 @@
 package com.carrental.controller;
 
-import com.carrental.model.Equipment;
+import com.carrental.model.entity.Equipment;
 import com.carrental.service.EquipmentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

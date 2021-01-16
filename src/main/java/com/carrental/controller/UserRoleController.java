@@ -1,6 +1,6 @@
 package com.carrental.controller;
 
-import com.carrental.model.UserRole;
+import com.carrental.model.entity.UserRole;
 import com.carrental.service.UserRoleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;

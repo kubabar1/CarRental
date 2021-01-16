@@ -1,4 +1,4 @@
-package com.carrental.model;
+package com.carrental.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,7 +1,7 @@
 package com.carrental.service;
 
 import com.carrental.exception.BookingUnavailableVehicleException;
-import com.carrental.model.Booking;
+import com.carrental.model.entity.Booking;
 import com.carrental.repository.BookingRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;

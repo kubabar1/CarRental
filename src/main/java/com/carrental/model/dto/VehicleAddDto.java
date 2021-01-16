@@ -1,4 +1,4 @@
-package com.carrental.dto;
+package com.carrental.model.dto;
 
 import java.math.BigDecimal;
 

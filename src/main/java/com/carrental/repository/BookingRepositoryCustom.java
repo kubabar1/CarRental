@@ -1,7 +1,7 @@
 package com.carrental.repository;
 
 import com.carrental.exception.BookingUnavailableVehicleException;
-import com.carrental.model.Booking;
+import com.carrental.model.entity.Booking;
 
 public interface BookingRepositoryCustom {
 

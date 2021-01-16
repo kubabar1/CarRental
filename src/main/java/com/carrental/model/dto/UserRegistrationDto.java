@@ -1,4 +1,4 @@
-package com.carrental.dto;
+package com.carrental.model.dto;
 
 import com.carrental.validator.PasswordMatches;
 import org.hibernate.validator.constraints.Email;

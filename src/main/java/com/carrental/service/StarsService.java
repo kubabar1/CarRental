@@ -1,6 +1,6 @@
 package com.carrental.service;
 
-import com.carrental.model.Stars;
+import com.carrental.model.entity.Stars;
 
 import java.util.List;
 

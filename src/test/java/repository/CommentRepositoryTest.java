@@ -1,7 +1,7 @@
 package repository;
 
-import com.carrental.model.Comment;
-import com.carrental.model.Stars;
+import com.carrental.model.entity.Comment;
+import com.carrental.model.entity.Stars;
 import com.carrental.repository.CommentRepository;
 import com.carrental.repository.StarsRepository;
 import config.PersistenceConfigTest;

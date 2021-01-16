@@ -1,9 +1,9 @@
 package com.carrental.service;
 
-import com.carrental.dto.VehicleAddDto;
-import com.carrental.dto.VehicleFilterDto;
-import com.carrental.model.Equipment;
-import com.carrental.model.Vehicle;
+import com.carrental.model.dto.VehicleAddDto;
+import com.carrental.model.dto.VehicleFilterDto;
+import com.carrental.model.entity.Equipment;
+import com.carrental.model.entity.Vehicle;
 import com.carrental.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

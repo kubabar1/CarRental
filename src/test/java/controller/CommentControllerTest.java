@@ -1,7 +1,7 @@
 package controller;
 
 import com.carrental.controller.CommentController;
-import com.carrental.model.Comment;
+import com.carrental.model.entity.Comment;
 import com.carrental.service.CommentServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;

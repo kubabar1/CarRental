@@ -1,4 +1,4 @@
-package com.carrental.model;
+package com.carrental.model.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;

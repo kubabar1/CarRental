@@ -1,7 +1,7 @@
 package com.carrental.config;
 
-import com.carrental.model.User;
-import com.carrental.model.UserRole;
+import com.carrental.model.entity.User;
+import com.carrental.model.entity.UserRole;
 import com.carrental.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,6 +1,6 @@
 package com.carrental.service;
 
-import com.carrental.model.Equipment;
+import com.carrental.model.entity.Equipment;
 
 import java.util.List;
 

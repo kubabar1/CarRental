@@ -1,7 +1,7 @@
 package com.carrental.repository;
 
-import com.carrental.model.Equipment;
-import com.carrental.model.Vehicle;
+import com.carrental.model.entity.Equipment;
+import com.carrental.model.entity.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

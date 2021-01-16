@@ -1,6 +1,6 @@
 package com.carrental.repository;
 
-import com.carrental.model.Stars;
+import com.carrental.model.entity.Stars;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

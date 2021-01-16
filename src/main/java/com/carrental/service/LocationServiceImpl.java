@@ -1,6 +1,6 @@
 package com.carrental.service;
 
-import com.carrental.model.Location;
+import com.carrental.model.entity.Location;
 import com.carrental.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

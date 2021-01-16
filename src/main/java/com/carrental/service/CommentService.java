@@ -1,6 +1,6 @@
 package com.carrental.service;
 
-import com.carrental.model.Comment;
+import com.carrental.model.entity.Comment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
