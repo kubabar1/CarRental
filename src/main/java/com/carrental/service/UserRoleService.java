@@ -1,13 +1,12 @@
 package com.carrental.service;
 
-import java.util.List;
-
 import com.carrental.model.UserRole;
 
+import java.util.List;
+
 public interface UserRoleService {
-		
-	public List<UserRole> getAllUserRole();
-	
-	public List<UserRole> getUnexistingDistinctUserRolesForUser(Long id);
-		
+
+  public List<UserRole> getAllUserRole();
+
+  public List<UserRole> getUnexistingDistinctUserRolesForUser(Long id);
 }

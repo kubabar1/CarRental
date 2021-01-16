@@ -1,20 +1,18 @@
 package com.carrental.repository;
 
-import java.util.List;
-
+import com.carrental.model.Equipment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.carrental.model.Equipment;
-import com.carrental.model.User;
+import java.util.List;
 
-public interface EquipmentRepository extends JpaRepository<Equipment, Long>, EquipmentRepositoryCustom {
+public interface EquipmentRepository
+    extends JpaRepository<Equipment, Long>, EquipmentRepositoryCustom {
 
-	@Query("SELECT e FROM Equipment e")
-	public List<Equipment> getEquipmentList();
+  @Query("SELECT e FROM Equipment e")
+  public List<Equipment> getEquipmentList();
 
-	@Query("SELECT e FROM Equipment e WHERE e.equipmentCode=:equipmentCode")
-	public Equipment getEquipmentByCode(@Param("equipmentCode") String equipmentCode);
-
+  @Query("SELECT e FROM Equipment e WHERE e.equipmentCode=:equipmentCode")
+  public Equipment getEquipmentByCode(@Param("equipmentCode") String equipmentCode);
 }

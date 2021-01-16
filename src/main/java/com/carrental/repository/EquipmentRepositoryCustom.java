@@ -1,15 +1,14 @@
 package com.carrental.repository;
 
-import java.util.List;
-
 import com.carrental.model.Equipment;
+
+import java.util.List;
 
 public interface EquipmentRepositoryCustom {
 
-	public List<Equipment> getUnexistingDistinctEquipmentListForVehicle(Long id);
-	
-	public void addEquipment(Equipment equipment);
+  public List<Equipment> getUnexistingDistinctEquipmentListForVehicle(Long id);
 
-	public void deleteEquipmentById(String eqpCode);
-	
+  public void addEquipment(Equipment equipment);
+
+  public void deleteEquipmentById(String eqpCode);
 }

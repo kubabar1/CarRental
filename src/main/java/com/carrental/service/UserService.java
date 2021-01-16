@@ -1,29 +1,27 @@
 package com.carrental.service;
 
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import com.carrental.dto.UserRegistrationDto;
 import com.carrental.exception.EmailExistsException;
 import com.carrental.exception.LoginExistsException;
 import com.carrental.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface UserService {
 
-	public List<User> getAllUsers();
+  public List<User> getAllUsers();
 
-	public User getUserById(Long id);
-	
-	public User getUserByLogin(String login);
-	
-	public User addUser(UserRegistrationDto user) throws EmailExistsException, LoginExistsException;
-	
-	public Page<User> getUsersForPage(Pageable pageable);
+  public User getUserById(Long id);
 
-	public int updateUser(String userlogin, User userUpdate);
-	
-	public void addRoleToUser(Long userId, Long roleId);
+  public User getUserByLogin(String login);
 
+  public User addUser(UserRegistrationDto user) throws EmailExistsException, LoginExistsException;
+
+  public Page<User> getUsersForPage(Pageable pageable);
+
+  public int updateUser(String userlogin, User userUpdate);
+
+  public void addRoleToUser(Long userId, Long roleId);
 }

@@ -1,10 +1,10 @@
 package com.carrental.repository;
 
-import java.util.List;
-
 import com.carrental.model.UserRole;
+
+import java.util.List;
 
 public interface UserRoleRepositoryCustom {
 
-	public List<UserRole> getUnexistingDistinctUserRolesForUser(Long id);
+  public List<UserRole> getUnexistingDistinctUserRolesForUser(Long id);
 }
