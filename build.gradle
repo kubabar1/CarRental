@@ -12,6 +12,7 @@ sourceCompatibility = '11'
 idea {
     module {
         excludeDirs += file('.gradle')
+        //sourceDirs += project(':frontend-app')
     }
 }
 

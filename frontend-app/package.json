@@ -1,13 +1,12 @@
 {
   "name": "CarRental",
   "version": "1.0.0",
-  "description": "Spring car rental app",
+  "description": "Frontend app for CarRenal spring application",
   "main": "index.js",
   "scripts": {
     "start": "npm run build",
     "build": "webpack -d ",
-    "build:prod": "webpack -p ",
-    "watch": "webpack -d "
+    "build:prod": "webpack -p "
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.4",

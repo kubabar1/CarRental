@@ -1,3 +1,3 @@
 rootProject.name = 'CarRental'
-include 'FrontendApp'
+include 'frontend-app'
 
