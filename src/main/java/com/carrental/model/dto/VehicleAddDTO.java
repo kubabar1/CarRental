@@ -2,7 +2,7 @@ package com.carrental.model.dto;
 
 import java.math.BigDecimal;
 
-public class VehicleAddDto {
+public class VehicleAddDTO {
 
   private Long id;
   private String brand;
@@ -26,11 +26,11 @@ public class VehicleAddDto {
   private String fileName;
   private Integer productionYear;
 
-  public VehicleAddDto() {
+  public VehicleAddDTO() {
     super();
   }
 
-  public VehicleAddDto(
+  public VehicleAddDTO(
       Long id,
       String brand,
       String model,

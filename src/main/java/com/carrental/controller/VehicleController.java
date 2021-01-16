@@ -1,6 +1,6 @@
 package com.carrental.controller;
 
-import com.carrental.model.dto.VehicleAddDto;
+import com.carrental.model.dto.VehicleAddDTO;
 import com.carrental.model.entity.Equipment;
 import com.carrental.model.entity.Vehicle;
 import com.carrental.service.EquipmentServiceImpl;
@@ -50,7 +50,7 @@ public class VehicleController {
   @RequestMapping(value = "/{id}", method = RequestMethod.POST)
   public void updateVehicle(
       @PathVariable Long id,
-      VehicleAddDto vehicleAddDto,
+      VehicleAddDTO vehicleAddDto,
       @RequestParam(value = "image", required = false) MultipartFile image) {
 
     System.out.println("Updating vehicle.");
@@ -65,7 +65,7 @@ public class VehicleController {
 
   @RequestMapping(method = RequestMethod.POST)
   public void addVehicle(
-      VehicleAddDto vehicleAddDto,
+      VehicleAddDTO vehicleAddDto,
       @RequestParam(value = "image", required = true) MultipartFile image) {
 
     System.out.println("Adding vehicle to database.");

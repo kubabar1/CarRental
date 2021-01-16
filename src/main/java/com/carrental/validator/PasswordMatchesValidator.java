@@ -1,6 +1,6 @@
 package com.carrental.validator;
 
-import com.carrental.model.dto.UserRegistrationDto;
+import com.carrental.model.dto.UserAddDTO;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -12,7 +12,7 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
 
   @Override
   public boolean isValid(Object obj, ConstraintValidatorContext context) {
-    UserRegistrationDto user = (UserRegistrationDto) obj;
+    UserAddDTO user = (UserAddDTO) obj;
     return user.getPassword().equals(user.getPasswordMatches());
   }
 }

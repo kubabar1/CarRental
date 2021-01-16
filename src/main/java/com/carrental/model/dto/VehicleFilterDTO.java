@@ -3,7 +3,7 @@ package com.carrental.model.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class VehicleFilterDto implements Serializable {
+public class VehicleFilterDTO implements Serializable {
 
   private String brand;
   private String model;
@@ -19,11 +19,11 @@ public class VehicleFilterDto implements Serializable {
   private Integer productionYearTo;
   private String color;
 
-  public VehicleFilterDto() {
+  public VehicleFilterDTO() {
     super();
   }
 
-  public VehicleFilterDto(
+  public VehicleFilterDTO(
       String brand,
       String model,
       String city,

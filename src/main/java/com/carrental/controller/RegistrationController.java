@@ -1,6 +1,6 @@
 package com.carrental.controller;
 
-import com.carrental.model.dto.UserRegistrationDto;
+import com.carrental.model.dto.UserAddDTO;
 import com.carrental.exception.EmailExistsException;
 import com.carrental.exception.LoginExistsException;
 import com.carrental.model.entity.User;
@@ -26,15 +26,15 @@ public class RegistrationController {
 
   @RequestMapping(method = RequestMethod.GET)
   public String registration(WebRequest request, Model model) {
-    UserRegistrationDto userRegistrationDto = new UserRegistrationDto();
-    model.addAttribute("user", userRegistrationDto);
+    UserAddDTO userAddDto = new UserAddDTO();
+    model.addAttribute("user", userAddDto);
     model.addAttribute("standardDate", new Date());
     return "registration";
   }
 
   @RequestMapping(method = RequestMethod.POST)
   public String registerUser(
-      @Valid @ModelAttribute("user") UserRegistrationDto user,
+      @Valid @ModelAttribute("user") UserAddDTO user,
       BindingResult result,
       WebRequest request,
       Errors errors,

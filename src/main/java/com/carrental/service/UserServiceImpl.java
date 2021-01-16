@@ -1,6 +1,6 @@
 package com.carrental.service;
 
-import com.carrental.model.dto.UserRegistrationDto;
+import com.carrental.model.dto.UserAddDTO;
 import com.carrental.exception.EmailExistsException;
 import com.carrental.exception.LoginExistsException;
 import com.carrental.model.entity.User;
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User addUser(UserRegistrationDto user) throws EmailExistsException, LoginExistsException {
+  public User addUser(UserAddDTO user) throws EmailExistsException, LoginExistsException {
     if (checkLoginExists(user.getLogin())) {
       throw new LoginExistsException("There is an account with that login: " + user.getLogin());
     }

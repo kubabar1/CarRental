@@ -1,6 +1,6 @@
 package com.carrental.repository;
 
-import com.carrental.model.dto.UserRegistrationDto;
+import com.carrental.model.dto.UserAddDTO;
 import com.carrental.model.entity.User;
 
 public interface UserRepositoryCustom {
@@ -9,7 +9,7 @@ public interface UserRepositoryCustom {
 
   public User getUserByEmail(String email);
 
-  public User addUser(UserRegistrationDto user);
+  public User addUser(UserAddDTO user);
 
   public int updateUser(String userlogin, User userUpdate);
 

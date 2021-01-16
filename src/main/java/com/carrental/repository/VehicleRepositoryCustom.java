@@ -1,7 +1,7 @@
 package com.carrental.repository;
 
-import com.carrental.model.dto.VehicleAddDto;
-import com.carrental.model.dto.VehicleFilterDto;
+import com.carrental.model.dto.VehicleAddDTO;
+import com.carrental.model.dto.VehicleFilterDTO;
 import com.carrental.model.entity.Equipment;
 import com.carrental.model.entity.Vehicle;
 import org.springframework.data.domain.Page;
@@ -13,7 +13,7 @@ public interface VehicleRepositoryCustom {
 
   public Vehicle getVehicleUsingId(Long id);
 
-  public Page<Vehicle> getFiltredCarListForPage(VehicleFilterDto vehicleFilter, Pageable pageable);
+  public Page<Vehicle> getFiltredCarListForPage(VehicleFilterDTO vehicleFilter, Pageable pageable);
 
   public List<Vehicle> getAvailableVehicleListForLocation(Long cityId);
 
@@ -27,9 +27,9 @@ public interface VehicleRepositoryCustom {
 
   public List<String> getColorList();
 
-  public int updateVehicle(VehicleAddDto vehicleAddDto);
+  public int updateVehicle(VehicleAddDTO vehicleAddDto);
 
-  public void addVehicle(VehicleAddDto vehicleAddDto);
+  public void addVehicle(VehicleAddDTO vehicleAddDto);
 
   public void addEquipment(Equipment equipment, Long vehicleId);
 

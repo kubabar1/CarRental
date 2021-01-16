@@ -1,6 +1,6 @@
 package com.carrental.service;
 
-import com.carrental.model.dto.UserRegistrationDto;
+import com.carrental.model.dto.UserAddDTO;
 import com.carrental.exception.EmailExistsException;
 import com.carrental.exception.LoginExistsException;
 import com.carrental.model.entity.User;
@@ -17,7 +17,7 @@ public interface UserService {
 
   public User getUserByLogin(String login);
 
-  public User addUser(UserRegistrationDto user) throws EmailExistsException, LoginExistsException;
+  public User addUser(UserAddDTO user) throws EmailExistsException, LoginExistsException;
 
   public Page<User> getUsersForPage(Pageable pageable);
 

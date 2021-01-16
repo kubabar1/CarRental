@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.sql.Date;
 
 @PasswordMatches
-public class UserRegistrationDto implements Serializable {
+public class UserAddDTO implements Serializable {
 
   @NotNull
   @Size(max = 40)
@@ -46,11 +46,11 @@ public class UserRegistrationDto implements Serializable {
   @Size(min = 11, max = 11, message = "Pesel must have 11 digits")
   private String pesel;
 
-  public UserRegistrationDto() {
+  public UserAddDTO() {
     super();
   }
 
-  public UserRegistrationDto(
+  public UserAddDTO(
       String name,
       String surname,
       String login,

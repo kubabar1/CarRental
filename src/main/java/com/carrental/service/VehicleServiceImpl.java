@@ -1,7 +1,7 @@
 package com.carrental.service;
 
-import com.carrental.model.dto.VehicleAddDto;
-import com.carrental.model.dto.VehicleFilterDto;
+import com.carrental.model.dto.VehicleAddDTO;
+import com.carrental.model.dto.VehicleFilterDTO;
 import com.carrental.model.entity.Equipment;
 import com.carrental.model.entity.Vehicle;
 import com.carrental.repository.VehicleRepository;
@@ -30,7 +30,7 @@ public class VehicleServiceImpl implements VehicleService {
   }
 
   @Override
-  public Page<Vehicle> getFiltredCarListForPage(VehicleFilterDto vehicleFilter, Pageable pageable) {
+  public Page<Vehicle> getFiltredCarListForPage(VehicleFilterDTO vehicleFilter, Pageable pageable) {
     return vehicleRepository.getFiltredCarListForPage(vehicleFilter, pageable);
   }
 
@@ -75,12 +75,12 @@ public class VehicleServiceImpl implements VehicleService {
   }
 
   @Override
-  public int updateVehicle(VehicleAddDto vehicleAddDto) {
+  public int updateVehicle(VehicleAddDTO vehicleAddDto) {
     return vehicleRepository.updateVehicle(vehicleAddDto);
   }
 
   @Override
-  public void addVehicle(VehicleAddDto vehicleAddDto) {
+  public void addVehicle(VehicleAddDTO vehicleAddDto) {
     vehicleRepository.addVehicle(vehicleAddDto);
   }
 

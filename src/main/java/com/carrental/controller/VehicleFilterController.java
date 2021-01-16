@@ -1,6 +1,6 @@
 package com.carrental.controller;
 
-import com.carrental.model.dto.VehicleFilterDto;
+import com.carrental.model.dto.VehicleFilterDTO;
 import com.carrental.model.entity.Vehicle;
 import com.carrental.service.VehicleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class VehicleFilterController {
       method = RequestMethod.POST,
       params = {"page", "number"})
   public Page<Vehicle> getFiltredCarListForFirstPage(
-      @RequestBody VehicleFilterDto carFilter,
+      @RequestBody VehicleFilterDTO carFilter,
       @RequestParam(value = "page") int page,
       @RequestParam(value = "number") int number) {
 

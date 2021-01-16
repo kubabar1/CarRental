@@ -1,6 +1,6 @@
 package com.carrental.repository;
 
-import com.carrental.model.dto.UserRegistrationDto;
+import com.carrental.model.dto.UserAddDTO;
 import com.carrental.model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -60,7 +60,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
   @Override
   @Transactional
-  public User addUser(UserRegistrationDto user) {
+  public User addUser(UserAddDTO user) {
     User userToPersist =
         new User(
             user.getName(),

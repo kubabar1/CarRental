@@ -1,7 +1,7 @@
 package com.carrental.repository;
 
-import com.carrental.model.dto.VehicleAddDto;
-import com.carrental.model.dto.VehicleFilterDto;
+import com.carrental.model.dto.VehicleAddDTO;
+import com.carrental.model.dto.VehicleFilterDTO;
 import com.carrental.model.entity.Equipment;
 import com.carrental.model.entity.Vehicle;
 import com.carrental.model.entity.VehicleParameters;
@@ -120,7 +120,7 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 
   @Override
   @Transactional
-  public Page<Vehicle> getFiltredCarListForPage(VehicleFilterDto vehicleFilter, Pageable pageable) {
+  public Page<Vehicle> getFiltredCarListForPage(VehicleFilterDTO vehicleFilter, Pageable pageable) {
 
     int pageSize = pageable.getPageSize();
     int numberOfFirstElement = (pageable.getPageNumber()) * pageSize;
@@ -258,7 +258,7 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 
   @Override
   @Transactional
-  public int updateVehicle(VehicleAddDto vehicleAddDto) {
+  public int updateVehicle(VehicleAddDTO vehicleAddDto) {
 
     int number =
         entityManager
@@ -318,7 +318,7 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
 
   @Override
   @Transactional
-  public void addVehicle(VehicleAddDto vehicleAddDto) {
+  public void addVehicle(VehicleAddDTO vehicleAddDto) {
     Vehicle vehicle =
         new Vehicle(
             vehicleAddDto.getRegistration(),
