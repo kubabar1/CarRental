@@ -1,0 +1,9 @@
+export const profileLink: string = '/profile';
+export const loginLink: string = '/login';
+export const logoutLink: string = '/logout';
+export const registrationLink: string = '/registration';
+export const homeLink: string = '/';
+export const carListLink: string = '/car-list';
+export const bestOffersLink: string = '/best-offers';
+export const aboutUsLink: string = '/about-us';
+export const contactLink: string = '/contact';

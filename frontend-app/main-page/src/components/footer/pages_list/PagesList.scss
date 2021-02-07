@@ -1,0 +1,24 @@
+#pages-list {
+  ul {
+    list-style-type: none;
+    text-align: center;
+    padding-left: 0;
+    padding-top: 20px;
+
+    li {
+      color: #000000;
+      padding-top: 5px;
+      font-size: 17px;
+      text-align: left;
+
+      a {
+        color: #000000;
+        padding-top: 5px;
+      }
+    }
+
+    li::before {
+      padding-right: 4px;
+    }
+  }
+}

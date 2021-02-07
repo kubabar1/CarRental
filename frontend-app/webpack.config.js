@@ -1,20 +1,17 @@
-var path = require("path");
-var webpack = require("webpack");
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const PATHS = {
-	build : path.join(__dirname, 'src', 'main', 'webapp', 'static', 'js')
-};
 module.exports = {
 	entry : {
-		car_rental_main:'./src/main/webapp/react-app/car_rental_main/index.js',
-		car_rental_profile:'./src/main/webapp/react-app/car_rental_profile/index.js'
+		car_rental_main:'./src/react-app/car_rental_main/index.js',
+		car_rental_profile:'./src/react-app/car_rental_profile/index.js'
 	},
 	output : {
-		path : PATHS.build,
+		path : path.join(__dirname, 'dist'),
 		filename : '[name].js'
 	},
-	resolve : {
-		modules : [ path.join(__dirname, "js/helpers"), "node_modules" ]
+	resolve: {
+		extensions: ['.ts', '.tsx', '.js']
 	},
 	module : {
 		loaders : [ {

@@ -1,0 +1,26 @@
+#footer-socials {
+  color: black;
+
+  .socials-icons {
+    color: #000000;
+    text-decoration: none;
+    padding: 0 25px 0 25px;
+    font-size: 40px;
+  }
+
+  .facebook-icon:hover {
+    color: #3b5998 !important;
+  }
+
+  .youtube-icon:hover {
+    color: #cc181e !important;
+  }
+
+  .instagram-icon:hover {
+    color: #8a3ab9 !important;
+  }
+
+  .twitter-icon:hover {
+    color: #1dcaff !important;
+  }
+}

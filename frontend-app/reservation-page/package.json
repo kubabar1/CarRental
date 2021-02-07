@@ -1,0 +1,8 @@
+{
+  "name": "reservation-page",
+  "version": "1.0.0",
+  "description": "Page for handling car reservation process",
+  "main": "index.js",
+  "author": "Jakub Barański",
+  "license": "MIT"
+}

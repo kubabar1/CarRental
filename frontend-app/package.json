@@ -2,49 +2,7 @@
   "name": "CarRental",
   "version": "1.0.0",
   "description": "Frontend app for CarRenal spring application",
-  "main": "index.js",
-  "scripts": {
-    "start": "npm run build",
-    "build": "webpack -d ",
-    "build:prod": "webpack -p "
-  },
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.4",
-    "@fortawesome/free-solid-svg-icons": "^5.3.1",
-    "@fortawesome/react-fontawesome": "0.1.0-11",
-    "bootstrap": "^4.1.3",
-    "extract-text-webpack-plugin": "^3.0.2",
-    "font-awesome": "^4.7.0",
-    "google-map-react": "^1.0.6",
-    "jquery": "^3.3.1",
-    "npm": "^6.4.1",
-    "popper.js": "^1.14.4",
-    "query-string": "^6.1.0",
-    "react": "^15.6.2",
-    "react-bootstrap": "^0.32.4",
-    "react-bootstrap-carousel": "^3.2.1",
-    "react-dom": "^15.6.2",
-    "react-google-map": "^3.1.1",
-    "react-google-maps": "^9.4.5",
-    "react-router-dom": "^4.3.1",
-    "style-loader": "^0.21.0"
-  },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "bootstrap": "^4.0.0-beta",
-    "css-loader": "^1.0.0",
-    "file-loader": "^1.1.11",
-    "jquery": "^3.3.1",
-    "popper": "^1.0.1",
-    "popper.js": "^1.14.4",
-    "style-loader": "^0.21.0",
-    "url-loader": "^1.1.1",
-    "webpack": "^3.12.0",
-    "webpack-dev-server": "^2.11.3"
+    "prettier": "^2.2.1"
   }
 }

@@ -1,10 +1,7 @@
 plugins {
-    id 'java'
+    id "com.moowork.node"
 }
 
-group 'com.carrental'
-version '0.0.1-SNAPSHOT'
-
-repositories {
-    mavenCentral()
+task buildFrontend(type: YarnTask) {
+    args = ['start']
 }
