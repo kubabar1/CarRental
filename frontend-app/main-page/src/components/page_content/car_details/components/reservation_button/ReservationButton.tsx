@@ -7,7 +7,7 @@ interface ReservationButtonProperties {
 }
 
 // TODO: Add link to reservation
-export default function ReservationButton(props: ReservationButtonProperties) {
+export default function ReservationButton(props: ReservationButtonProperties): JSX.Element {
     const vehicle = props.vehicle;
 
     return (

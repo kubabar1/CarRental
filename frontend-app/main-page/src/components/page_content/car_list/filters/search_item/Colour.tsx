@@ -19,7 +19,7 @@ export class Colour extends React.Component<ColourProperties, ColourState> {
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         fetch(endpoints.coloursListEndpoint).then((response: Response) => {
             response.json().then((colourList: string[]) => {
                 this.setState({ colourList: colourList });
@@ -27,7 +27,7 @@ export class Colour extends React.Component<ColourProperties, ColourState> {
         });
     }
 
-    render() {
+    render(): JSX.Element {
         const colourList = this.state.colourList;
         return (
             <div className="form-group">

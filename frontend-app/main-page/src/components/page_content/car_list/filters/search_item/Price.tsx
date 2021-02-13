@@ -12,7 +12,7 @@ export class Price extends React.Component<PriceProperties> {
         super(props);
     }
 
-    render() {
+    render(): JSX.Element {
         return (
             <div className="form-group">
                 <label>Cena:</label>
@@ -28,7 +28,7 @@ export class Price extends React.Component<PriceProperties> {
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                             this.props.setMinPrice(parseInt(event.target.value))
                         }
-                        value = {this.props.minPrice || ''}
+                        value={this.props.minPrice || ''}
                     />
                     <div className="input-group-prepend">
                         <span className="input-group-text">do</span>
@@ -41,7 +41,7 @@ export class Price extends React.Component<PriceProperties> {
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                             this.props.setMaxPrice(parseInt(event.target.value))
                         }
-                        value = {this.props.maxPrice || ''}
+                        value={this.props.maxPrice || ''}
                     />
                 </div>
             </div>

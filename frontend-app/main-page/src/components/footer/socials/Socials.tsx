@@ -4,11 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faInstagram, faTwitter, faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
-export function Socials() {
+export function Socials(): JSX.Element {
     const renderSocialIcon = (targetUrl: string, icon: IconProp, additionalClasses: string[] = []) => {
         const iconClasses = ['socials-icons'].concat(additionalClasses).join(' ');
         return (
-            <a className={iconClasses} href={targetUrl} target="_blank">
+            <a className={iconClasses} href={targetUrl} target="_blank" rel="noreferrer">
                 <FontAwesomeIcon icon={icon} />
             </a>
         );
@@ -19,13 +19,13 @@ export function Socials() {
             <h5>Socials:</h5>
             <div className="row">
                 {renderSocialIcon('https://www.facebook.com', faFacebook, ['facebook-icon'])}
-                <br></br>
+                <br />
                 {renderSocialIcon('https://www.twitter.com', faTwitter, ['twitter-icon'])}
-                <br></br>
+                <br />
                 {renderSocialIcon('https://www.instagram.com', faInstagram, ['instagram-icon'])}
-                <br></br>
+                <br />
                 {renderSocialIcon('https://www.youtube.com', faYoutube, ['youtube-icon'])}
-                <br></br>
+                <br />
             </div>
         </div>
     );

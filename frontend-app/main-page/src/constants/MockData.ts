@@ -3,6 +3,7 @@ import VehicleStatusResponseDTO from '../model/VehicleStatusResponseDTO';
 import VehicleStatCodeEnum from '../model/VehicleStatCodeEnum';
 import VehicleParametersResponseDTO from '../model/VehicleParametersResponseDTO';
 import VehicleResponseDTO from '../model/VehicleResponseDTO';
+import CommentResponseDTO from '../model/CommentResponseDTO';
 
 export const localisationResponseDTOMock = new LocalisationResponseDTO(
     1,
@@ -53,3 +54,5 @@ export const vehicleResponseDTOMock2 = new VehicleResponseDTO(
     vehicleParametersResponseDTO,
     true
 );
+
+export const commentMock = new CommentResponseDTO(1, 1, 'This is really good car', 'jan123', new Date(), 3.23);

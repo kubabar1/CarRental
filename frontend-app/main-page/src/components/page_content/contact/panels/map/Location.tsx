@@ -2,7 +2,7 @@ import React from 'react';
 import GoogleMapReact from 'google-map-react';
 import { Map } from './Map';
 
-export function Location() {
+export function Location(): JSX.Element {
     const defaultProps = {
         center: {
             lat: 52.23,

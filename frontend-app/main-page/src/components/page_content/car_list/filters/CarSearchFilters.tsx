@@ -10,8 +10,6 @@ import { DoorsCount } from './search_item/DoorsCount';
 import { ProductionYear } from './search_item/ProductionYear';
 import { Colour } from './search_item/Colour';
 
-interface CarSearchFiltersProperties {}
-
 interface CarSearchFiltersState {
     brand: string | null;
     model: string | null;
@@ -29,8 +27,8 @@ interface CarSearchFiltersState {
     modelList: string[] | null;
 }
 
-export class CarSearchFilters extends React.Component<CarSearchFiltersProperties, CarSearchFiltersState> {
-    constructor(props: CarSearchFiltersProperties) {
+export class CarSearchFilters extends React.Component<Record<string, never>, CarSearchFiltersState> {
+    constructor(props: Record<string, never>) {
         super(props);
         this.state = {
             brand: null,
@@ -81,7 +79,7 @@ export class CarSearchFilters extends React.Component<CarSearchFiltersProperties
     // 		})
     // }
 
-    setBrand = (brand: string) => {
+    setBrand = (brand: string): void => {
         this.setState({
             brand: brand,
         });
@@ -93,31 +91,31 @@ export class CarSearchFilters extends React.Component<CarSearchFiltersProperties
         });
     };
 
-    setModel = (model: string) => {
+    setModel = (model: string): void => {
         this.setState({
             model: model,
         });
     };
 
-    setCity = (city: string) => {
+    setCity = (city: string): void => {
         this.setState({
             city: city,
         });
     };
 
-    setBodyType = (bodyType: string) => {
+    setBodyType = (bodyType: string): void => {
         this.setState({
             bodyType: bodyType,
         });
     };
 
-    setMinPrice = (minPrice: number) => {
+    setMinPrice = (minPrice: number): void => {
         this.setState({
             minPrice: minPrice,
         });
     };
 
-    setMaxPrice = (maxPrice: number) => {
+    setMaxPrice = (maxPrice: number): void => {
         this.setState({
             maxPrice: maxPrice,
         });
@@ -129,7 +127,7 @@ export class CarSearchFilters extends React.Component<CarSearchFiltersProperties
         });
     };
 
-    setMaxSeatsCount = (maxSeatsCount: number) => {
+    setMaxSeatsCount = (maxSeatsCount: number): void => {
         this.setState({
             maxSeatsCount: maxSeatsCount,
         });
@@ -141,7 +139,7 @@ export class CarSearchFilters extends React.Component<CarSearchFiltersProperties
         });
     };
 
-    setMaxDoorsCount = (maxDoorsCount: number) => {
+    setMaxDoorsCount = (maxDoorsCount: number): void => {
         this.setState({
             maxDoorsCount: maxDoorsCount,
         });
@@ -153,23 +151,23 @@ export class CarSearchFilters extends React.Component<CarSearchFiltersProperties
         });
     };
 
-    setMaxProductionYear = (maxProductionYear: number) => {
+    setMaxProductionYear = (maxProductionYear: number): void => {
         this.setState({
             maxProductionYear: maxProductionYear,
         });
     };
 
-    setColour = (colour: string) => {
+    setColour = (colour: string): void => {
         this.setState({
             colour: colour,
         });
     };
 
-    handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
     };
 
-    render() {
+    render(): JSX.Element {
         const {
             brand,
             modelList,

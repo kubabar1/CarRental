@@ -35,7 +35,7 @@ export class ReservationWidget extends React.Component<ReservationWidgetProperti
         };
     }
 
-    handleSubmit = (e: any) => {
+    handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         const isAuthenticated = this.props.isAuthenticated;
         if (!isAuthenticated) {
@@ -49,47 +49,47 @@ export class ReservationWidget extends React.Component<ReservationWidgetProperti
         }
     };
 
-    setLocalisation = (localisationId: number) => {
+    setLocalisation = (localisationId: number): void => {
         this.setState({
             selectedCityId: localisationId,
         });
     };
 
-    setReceptionDate = (receptionDate: Date) => {
+    setReceptionDate = (receptionDate: Date): void => {
         this.setState({
             receptionDate: receptionDate,
         });
     };
 
-    setReceptionHour = (receptionHour: number) => {
+    setReceptionHour = (receptionHour: number): void => {
         this.setState({
             receptionHour: receptionHour,
         });
     };
 
-    setReturnDate = (returnDate: Date) => {
+    setReturnDate = (returnDate: Date): void => {
         this.setState({
             returnDate: returnDate,
         });
     };
 
-    setReturnHour = (returnHour: number) => {
+    setReturnHour = (returnHour: number): void => {
         this.setState({
             returnHour: returnHour,
         });
     };
 
-    private renderAuthError() {
-        return this.state.authError
-            ? [
-                  <div className="alert alert-danger" key="auth_error">
-                      You must be authenticated to reserve cars.
-                  </div>,
-              ]
-            : '';
+    private renderAuthError(): JSX.Element {
+        return this.state.authError ? (
+            <div className="alert alert-danger" key="auth_error">
+                You must be authenticated to reserve cars.
+            </div>
+        ) : (
+            <div />
+        );
     }
 
-    render() {
+    render(): JSX.Element {
         const { localisations } = this.props;
 
         return (

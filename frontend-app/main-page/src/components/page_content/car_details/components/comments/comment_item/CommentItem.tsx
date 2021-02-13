@@ -22,7 +22,7 @@ export class CommentItem extends React.Component<CommentItemProperties, CarItemS
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         fetch(endpoints.starsCountEndpoint(this.props.comment.vehicleId))
             .then((response: Response) => {
                 response.json().then((starsCount: { stars: number }) => {
@@ -36,7 +36,7 @@ export class CommentItem extends React.Component<CommentItemProperties, CarItemS
             });
     }
 
-    render() {
+    render(): JSX.Element {
         const userLogin = this.props.comment.userLogin;
         const creationDate = this.props.comment.creationDate;
         const stars = this.state.stars;

@@ -6,11 +6,11 @@ interface CommentListProps {
     comments: CommentResponseDTO[];
 }
 
-function renderCommentItem(comment: CommentResponseDTO) {
+function renderCommentItem(comment: CommentResponseDTO): JSX.Element {
     return <CommentItem comment={comment} />;
 }
 
-export function CommentList(props: CommentListProps) {
+export function CommentList(props: CommentListProps): JSX.Element {
     const comments = props.comments;
     return <section className="mb-5">{comments && comments.map(renderCommentItem)}</section>;
 }

@@ -1,9 +1,26 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
+const StylelintPlugin = require('stylelint-webpack-plugin');
 const path = require('path');
 
 process.env.NODE_ENV = 'development';
 
 const host = process.env.HOST || 'localhost';
+
+const eslintOptions = {
+    extensions: ['ts', 'tsx', 'js', 'json'],
+    exclude: 'node_modules',
+    failOnWarning: true,
+    fix: false,
+};
+
+const stylelintOptions = {
+    emitError: true,
+    emitWarning: true,
+    failOnError: true,
+    failOnWarning: true,
+    fix: false,
+};
 
 module.exports = {
     entry: './src/index.tsx',
@@ -24,21 +41,12 @@ module.exports = {
                 use: 'ts-loader',
                 exclude: /node_modules/,
             },
-            // {
-            //     enforce: 'pre',
-            //     test: /\.js$/,
-            //     loader: 'source-map-loader'
-            // },
-            // {
-            //     test: /\.css$/,
-            //     use: 'css-loader'
-            // },
             {
                 test: /\.s[ac]ss$/i,
                 use: ['style-loader', 'css-loader', 'sass-loader'],
             },
             {
-                test: /\.(gif|svg|jp(e)?g|png)$/,
+                test: /\.(gif|svg|jpe?g|png)$/,
                 loader: 'file-loader',
                 options: {
                     esModule: false,
@@ -47,17 +55,11 @@ module.exports = {
             {
                 test: /\.(woff|woff2|eot|ttf|svg)(\?.*$|$)/,
                 loader: 'file-loader',
-                // options: {
-                //     name: '[name].[ext]',
-                //     outputPath: '../icons',
-                //     publicPath: '/CarRental/static/icons/',
-                // },
             },
         ],
     },
     devServer: {
         contentBase: './',
-        // compress: true,
         hot: true,
         host,
         port: 3000,
@@ -69,5 +71,7 @@ module.exports = {
             template: path.join(__dirname, 'public/index.html'),
             filename: 'index.html',
         }),
+        new ESLintPlugin(eslintOptions),
+        new StylelintPlugin(stylelintOptions),
     ],
 };

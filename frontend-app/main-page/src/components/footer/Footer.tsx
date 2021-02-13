@@ -6,7 +6,7 @@ import { PagesList } from './pages_list/PagesList';
 import './Footer.scss';
 
 export class Footer extends React.Component {
-    render() {
+    render(): JSX.Element {
         return (
             <footer>
                 <div className="container">

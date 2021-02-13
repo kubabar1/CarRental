@@ -13,7 +13,7 @@ export class Navbar extends React.Component<NavbarProps> {
         super(props);
     }
 
-    render() {
+    render(): JSX.Element {
         const { active, setTrue } = this.props;
 
         return (
@@ -32,4 +32,3 @@ export class Navbar extends React.Component<NavbarProps> {
         );
     }
 }
-

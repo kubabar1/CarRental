@@ -14,7 +14,7 @@ export class AsideNav extends React.Component<AsideNavProperties> {
         };
     }
 
-    renderLink = (name: string, link: string) => {
+    renderLink = (name: string, link: string): JSX.Element => {
         return (
             <a href={link} className="linkstyle nav-link">
                 <small>{name}</small>
@@ -22,7 +22,7 @@ export class AsideNav extends React.Component<AsideNavProperties> {
         );
     };
 
-    render() {
+    render(): JSX.Element {
         const { isAuthenticated } = this.props;
 
         return (

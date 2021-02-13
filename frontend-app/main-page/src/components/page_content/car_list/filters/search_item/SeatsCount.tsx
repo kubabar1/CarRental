@@ -12,7 +12,7 @@ export class SeatsCount extends React.Component<SeatsCountProperties> {
         super(props);
     }
 
-    render() {
+    render(): JSX.Element {
         return (
             <div className="form-group">
                 <label>Liczba miejsc:</label>
@@ -29,7 +29,7 @@ export class SeatsCount extends React.Component<SeatsCountProperties> {
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                             this.props.setMinSeatsCount(parseInt(event.target.value))
                         }
-                        value = {this.props.minSeatsCount || ''}
+                        value={this.props.minSeatsCount || ''}
                     />
                     <div className="input-group-prepend">
                         <span className="input-group-text">do</span>
@@ -43,7 +43,7 @@ export class SeatsCount extends React.Component<SeatsCountProperties> {
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                             this.props.setMaxSeatsCount(parseInt(event.target.value))
                         }
-                        value = {this.props.maxSeatsCount || ''}
+                        value={this.props.maxSeatsCount || ''}
                     />
                 </div>
             </div>

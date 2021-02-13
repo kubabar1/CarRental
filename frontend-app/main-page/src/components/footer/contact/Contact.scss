@@ -1,31 +1,31 @@
 #footer-contacts {
-  margin-left: 10px;
-  color: #000000;
-
-  a {
-    color: #000000;
-  }
-
-  i {
-    font-size: 15px;
-  }
-
-  .contacts-container {
-    width: 140px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-  }
-
-  .font-awesome-additional-styles {
-    float: left;
-    font-size: 24px;
-    width: 30px;
-  }
-
-  .contact-text {
-    float: right;
-    margin-bottom: 0;
     margin-left: 10px;
-  }
+    color: #000;
+
+    a {
+        color: #000;
+    }
+
+    i {
+        font-size: 15px;
+    }
+
+    .contacts-container {
+        width: 140px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+    }
+
+    .font-awesome-additional-styles {
+        float: left;
+        font-size: 24px;
+        width: 30px;
+    }
+
+    .contact-text {
+        float: right;
+        margin-bottom: 0;
+        margin-left: 10px;
+    }
 }

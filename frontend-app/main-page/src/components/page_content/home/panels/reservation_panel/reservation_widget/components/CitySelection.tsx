@@ -1,12 +1,12 @@
 import React, { ChangeEvent } from 'react';
-import LocalisationResponseDTO from "../../../../../../../model/LocalisationResponseDTO";
+import LocalisationResponseDTO from '../../../../../../../model/LocalisationResponseDTO';
 
 interface CitySelectionProperties {
     localisations: LocalisationResponseDTO[] | null;
     setLocalisation: (localisationId: number) => void;
 }
 
-const optionsList = (city: LocalisationResponseDTO) => {
+const optionsList = (city: LocalisationResponseDTO): JSX.Element => {
     return (
         <option id={city.id.toString()} key={city.id} value={city.id}>
             {city.city}
@@ -14,7 +14,7 @@ const optionsList = (city: LocalisationResponseDTO) => {
     );
 };
 
-export function CitySelection(props: CitySelectionProperties) {
+export function CitySelection(props: CitySelectionProperties): JSX.Element {
     const { localisations } = props;
 
     return (

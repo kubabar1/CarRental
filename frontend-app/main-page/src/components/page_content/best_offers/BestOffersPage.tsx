@@ -36,7 +36,7 @@ class BestOffersPage extends React.Component<BestOffersPageProperties, BestOffer
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         const activePage: number = getPageFromUrl(this.props.location.search);
         this.setState({ activePage: activePage });
         this.loadVehicles(activePage);
@@ -73,7 +73,7 @@ class BestOffersPage extends React.Component<BestOffersPageProperties, BestOffer
         return <CarItem vehicle={vehicle} />;
     };
 
-    render() {
+    render(): JSX.Element {
         const { loaded, vehicles, totalPages } = this.state;
 
         return (

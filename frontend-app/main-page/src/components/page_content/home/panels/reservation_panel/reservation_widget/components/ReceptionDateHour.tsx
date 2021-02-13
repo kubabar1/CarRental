@@ -11,7 +11,7 @@ function getMinDate(): string {
     return date.format(date.addDays(new Date(), 1), 'YYYY-MM-DD');
 }
 
-export function ReceptionDateHour(props: ReceptionDateHourProperties) {
+export function ReceptionDateHour(props: ReceptionDateHourProperties): JSX.Element {
     const maxReceptionDate: string = props.returnDate
         ? date.format(date.addDays(props.returnDate, -2), 'YYYY-MM-DD')
         : '';

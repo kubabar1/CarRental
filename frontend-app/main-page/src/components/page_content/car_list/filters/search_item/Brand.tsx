@@ -19,7 +19,7 @@ export class Brand extends React.Component<BrandProperties, BrandState> {
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         fetch(endpoints.brandListEndpoint).then((response: Response) => {
             response.json().then((brandList: string[]) => {
                 this.setState({ brandList: brandList });
@@ -27,7 +27,7 @@ export class Brand extends React.Component<BrandProperties, BrandState> {
         });
     }
 
-    render() {
+    render(): JSX.Element {
         const brandList = this.state.brandList;
 
         return (

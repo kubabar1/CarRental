@@ -12,7 +12,7 @@ export class ProductionYear extends React.Component<ProductionYearProperties> {
         super(props);
     }
 
-    render() {
+    render(): JSX.Element {
         return (
             <div className="form-group">
                 <label>Rok produkcji:</label>

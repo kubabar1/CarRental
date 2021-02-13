@@ -3,7 +3,7 @@ import './Contact.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faMobile, faPhone } from '@fortawesome/free-solid-svg-icons';
 
-export function Contact() {
+export function Contact(): JSX.Element {
     return (
         <div id="footer-contacts" className="col-lg-4 col-md-12 mt-3">
             <h5 className="linkstyle_black">Contact us:</h5>
@@ -17,7 +17,9 @@ export function Contact() {
             </div>
             <div className="contacts-container">
                 <FontAwesomeIcon className="linkstyle_black font-awesome-additional-styles" icon={faEnvelope} />
-                <a className='contact-text' href="mailto:car.rental@test.com">car.rental@test.com</a>
+                <a className="contact-text" href="mailto:car.rental@test.com">
+                    car.rental@test.com
+                </a>
             </div>
         </div>
     );

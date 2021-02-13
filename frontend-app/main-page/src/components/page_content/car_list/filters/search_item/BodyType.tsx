@@ -19,7 +19,7 @@ export class BodyType extends React.Component<BodyTypeProperties, BodyTypeState>
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         fetch(endpoints.bodyTypesListEndpoint).then((response: Response) => {
             response.json().then((bodyTypeList: string[]) => {
                 this.setState({ bodyTypeList: bodyTypeList });
@@ -27,7 +27,7 @@ export class BodyType extends React.Component<BodyTypeProperties, BodyTypeState>
         });
     }
 
-    render() {
+    render(): JSX.Element {
         const bodyTypeList = this.state.bodyTypeList;
 
         return (

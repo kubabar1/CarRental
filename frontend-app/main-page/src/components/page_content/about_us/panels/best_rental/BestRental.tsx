@@ -2,7 +2,7 @@ import React from 'react';
 import './BestRental.scss';
 
 export class BestRental extends React.Component {
-    render() {
+    render(): JSX.Element {
         return (
             <div id="best-rental" className="flow-container mt-5">
                 <div className="container">

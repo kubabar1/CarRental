@@ -1,8 +1,8 @@
 import React from 'react';
 
-export function SendMessage() {
+export function SendMessage(): JSX.Element {
     return (
-        <div className="conatiner col-md-8 ml-auto">
+        <div className="container col-md-8 ml-auto">
             <div id="contacts-send-message" className="card shadow ">
                 <div className="card-header bg-secondary text-white mb-4">
                     <h3>Send e-mail:</h3>

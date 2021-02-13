@@ -1,4 +1,4 @@
-import VehicleStatCodeEnum from "./VehicleStatCodeEnum";
+import VehicleStatCodeEnum from './VehicleStatCodeEnum';
 
 class VehicleStatusResponseDTO {
     vehicleStatCode: VehicleStatCodeEnum;

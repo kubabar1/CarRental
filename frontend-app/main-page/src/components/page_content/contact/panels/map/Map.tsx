@@ -7,6 +7,6 @@ interface MapProperties {
     text: string;
 }
 
-export function Map(props: MapProperties) {
+export function Map(props: MapProperties): JSX.Element {
     return <div>{props.text}</div>;
 }

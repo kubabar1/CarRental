@@ -12,7 +12,7 @@ export class DoorsCount extends React.Component<DoorsCountProperties> {
         super(props);
     }
 
-    render() {
+    render(): JSX.Element {
         return (
             <div className="form-group">
                 <label>Liczba drzwi:</label>
@@ -28,7 +28,7 @@ export class DoorsCount extends React.Component<DoorsCountProperties> {
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                             this.props.setMinDoorsCount(parseInt(event.target.value))
                         }
-                        value = {this.props.minDoorsCount || ''}
+                        value={this.props.minDoorsCount || ''}
                     />
                     <div className="input-group-prepend">
                         <span className="input-group-text">do</span>
@@ -41,7 +41,7 @@ export class DoorsCount extends React.Component<DoorsCountProperties> {
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                             this.props.setMinDoorsCount(parseInt(event.target.value))
                         }
-                        value = {this.props.maxDoorsCount || ''}
+                        value={this.props.maxDoorsCount || ''}
                     />
                 </div>
             </div>

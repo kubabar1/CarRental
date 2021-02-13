@@ -8,24 +8,24 @@ interface MainNavState {
     active: boolean;
 }
 
-export class MainNav extends React.Component<{}, MainNavState> {
-    constructor(props: {}) {
+export class MainNav extends React.Component<Record<string, never>, MainNavState> {
+    constructor(props: Record<string, never>) {
         super(props);
         this.state = {
             active: false,
         };
     }
 
-    toggleClass = () => {
+    toggleClass = (): void => {
         const currentState = this.state.active;
         this.setState({ active: !currentState });
     };
 
-    setTrue = () => {
+    setTrue = (): void => {
         this.setState({ active: true });
     };
 
-    render() {
+    render(): JSX.Element {
         return (
             <nav id="main-nav" className="navbar navbar-expand-lg navbar-light sticky-top">
                 <Link to={homeLink} className="navbar-brand pl-5 linkstyle">

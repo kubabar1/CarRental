@@ -25,15 +25,15 @@ export class AddComment extends React.Component<AddCommentProperties, AddComment
         };
     }
 
-    onStarClick = (nextValue: number, prevValue: number, name: string) => {
+    onStarClick = (nextValue: number): void => {
         this.setState({ starsCount: nextValue });
     };
 
-    setComment = (commentContent: string) => {
+    setComment = (commentContent: string): void => {
         this.setState({ commentContent: commentContent });
     };
 
-    handleAddComment = (event: React.FormEvent<HTMLFormElement>) => {
+    handleAddComment = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
     };
 
@@ -127,7 +127,7 @@ export class AddComment extends React.Component<AddCommentProperties, AddComment
     //     });
     // };
 
-    render() {
+    render(): JSX.Element {
         const { starsCount, commentError, errorMessage } = this.state;
 
         return (

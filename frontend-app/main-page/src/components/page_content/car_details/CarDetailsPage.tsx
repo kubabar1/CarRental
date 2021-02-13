@@ -2,19 +2,16 @@ import React from 'react';
 import VehicleResponseDTO from '../../../model/VehicleResponseDTO';
 import { endpoints } from '../../../constants/PathsAPI';
 import { CarDetailsHeader } from './components/car_details_header/CarDetailsHeader';
-import LocalisationResponseDTO from '../../../model/LocalisationResponseDTO';
-import VehicleStatusResponseDTO from '../../../model/VehicleStatusResponseDTO';
-import VehicleParametersResponseDTO from '../../../model/VehicleParametersResponseDTO';
 import { CarStatus } from './components/car_status/CarStatus';
-import VehicleStatCodeEnum from '../../../model/VehicleStatCodeEnum';
 import { CarProperties } from './components/details_list/CarProperties';
 import ReservationButton from './components/reservation_button/ReservationButton';
 import { CommentList } from './components/comments/CommentList';
 import { AddComment } from './components/comments/add_comment/AddComment';
 import CommentResponseDTO from '../../../model/CommentResponseDTO';
-import { RouteComponentProps, useParams, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import ClipLoader from 'react-spinners/ClipLoader';
 import Page from '../../../model/Page';
+import { commentMock, vehicleResponseDTOMock } from '../../../constants/MockData';
 
 interface CarDetailsProperties extends RouteComponentProps<{ carId: string }> {
     isAuthenticated: boolean;
@@ -26,10 +23,6 @@ interface CarDetailsState {
     comments: CommentResponseDTO[] | null;
     commentsCurrentPage: number;
     loadCommentsCount: number;
-}
-
-function test() {
-    console.log(useParams());
 }
 
 class CarDetailsPage extends React.Component<CarDetailsProperties, CarDetailsState> {
@@ -44,47 +37,7 @@ class CarDetailsPage extends React.Component<CarDetailsProperties, CarDetailsSta
         };
     }
 
-    localisationResponseDTOMock = new LocalisationResponseDTO(
-        1,
-        'Poland',
-        'warsaw',
-        'ul. Wesola 21',
-        'test@gmail.com',
-        '123432123'
-    );
-
-    vehicleStatusResponseDTO = new VehicleStatusResponseDTO(VehicleStatCodeEnum.UAV, 'unavailable');
-
-    vehicleParametersResponseDTO = new VehicleParametersResponseDTO(
-        'sedan',
-        2001,
-        'LPG',
-        124.12,
-        'manual',
-        false,
-        4,
-        5,
-        'red',
-        false,
-        'ford_mustang_example.jpg',
-        'Lorem ipsum, test, qwerty'
-    );
-
-    vehicleResponseDTOMock = new VehicleResponseDTO(
-        1,
-        '213324123',
-        'Ford',
-        'Mustang',
-        151.22,
-        this.localisationResponseDTOMock,
-        this.vehicleStatusResponseDTO,
-        this.vehicleParametersResponseDTO,
-        false
-    );
-
-    comment = new CommentResponseDTO(1, 1, 'This is really good car', 'jan123', new Date(), 3.23);
-
-    loadCommentsForPage = (carId: number, page: number = 0, perPageCount: number = 10) => {
+    loadCommentsForPage = (carId: number, page = 0, perPageCount = 10) => {
         const commentsUrl: string = endpoints.commentsEndpoint(carId, page, perPageCount);
         fetch(commentsUrl)
             .then((response: Response) => response.json())
@@ -94,7 +47,7 @@ class CarDetailsPage extends React.Component<CarDetailsProperties, CarDetailsSta
                 });
             })
             .finally(() => {
-                this.setState({ comments: [this.comment] }); // TODO: delete line
+                this.setState({ comments: [commentMock] }); // TODO: delete line
             });
     };
 
@@ -119,20 +72,20 @@ class CarDetailsPage extends React.Component<CarDetailsProperties, CarDetailsSta
                 });
             })
             .finally(() => {
-                this.setState({ vehicle: this.vehicleResponseDTOMock }); // TODO: delete line
+                this.setState({ vehicle: vehicleResponseDTOMock }); // TODO: delete line
             });
     };
 
-    componentDidMount() {
+    componentDidMount(): void {
         const vehicleId: number = parseInt(this.props.match.params.carId);
         this.loadVehicleById(vehicleId);
         this.loadComments(vehicleId);
         // TODO: FETCH USER DATA
     }
 
-    render() {
+    render(): JSX.Element {
         const { isAuthenticated } = this.props;
-        const { vehicle, currentUserLogin, comments } = this.state;
+        const { vehicle, comments } = this.state;
         return (
             <div>
                 <div className="container col-md-8 offset-md-2 mt-4">
@@ -154,18 +107,12 @@ class CarDetailsPage extends React.Component<CarDetailsProperties, CarDetailsSta
                                 <div className="text-left">
                                     <h3 className="mt-2 ml-3 mb-4">Comments</h3>
                                 </div>
-                                {isAuthenticated && (
-                                    <AddComment
-                                        loadComments={this.loadComments}
-                                    />
-                                )}
+                                {isAuthenticated && <AddComment loadComments={this.loadComments} />}
                                 {comments && <CommentList comments={comments} />}
                                 <button
                                     type="button"
                                     className="btn btn-primary my-5"
-                                    onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
-                                        this.loadMoreComments(vehicle.id)
-                                    }
+                                    onClick={() => this.loadMoreComments(vehicle.id)}
                                 >
                                     More comments
                                 </button>

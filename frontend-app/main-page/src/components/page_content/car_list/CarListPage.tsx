@@ -40,7 +40,7 @@ class CarListPage extends React.Component<CarListProperties, CarListState> {
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         const activePage: number = getPageFromUrl(this.props.location.search);
         this.setState({ activePage: activePage });
         this.loadVehicles(activePage);
@@ -77,7 +77,7 @@ class CarListPage extends React.Component<CarListProperties, CarListState> {
         return <CarItem vehicle={vehicle} />;
     };
 
-    render() {
+    render(): JSX.Element {
         const { vehicles, totalPages, loaded } = this.state;
 
         return (

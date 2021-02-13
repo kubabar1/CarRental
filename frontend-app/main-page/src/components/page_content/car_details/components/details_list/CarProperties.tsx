@@ -5,7 +5,7 @@ interface CarPropertiesProps {
     vehicle: VehicleResponseDTO;
 }
 
-function renderProps(name: string, value: string) {
+function renderProps(name: string, value: string): JSX.Element {
     return (
         <p className="mx-5 my-4">
             {name}: <strong>{value}</strong>
@@ -13,7 +13,7 @@ function renderProps(name: string, value: string) {
     );
 }
 
-export function CarProperties(props: CarPropertiesProps) {
+export function CarProperties(props: CarPropertiesProps): JSX.Element {
     const vehicle = props.vehicle;
     const frontWheelDrive = vehicle.vehicleParameters.frontWheelDrive ? 'Yes' : 'No';
     const metallic = vehicle.vehicleParameters.metallic ? 'Yes' : 'No';

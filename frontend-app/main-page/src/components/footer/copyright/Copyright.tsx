@@ -3,7 +3,7 @@ import React from 'react';
 import { homeLink } from '../../../constants/Links';
 import './Copyright.scss';
 
-export function Copyright() {
+export function Copyright(): JSX.Element {
     const date = new Date();
     const year = date.getFullYear();
 

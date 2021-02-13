@@ -5,7 +5,7 @@ import VehicleResponseDTO from '../../../../model/VehicleResponseDTO';
 import { endpoints } from '../../../../constants/PathsAPI';
 import { carImagesMainPageCarList } from '../../../../constants/PathsServer';
 import StarRatingComponent from 'react-star-rating-component';
-import {carDetailsByIdLink} from "../../../../constants/Links";
+import { carDetailsByIdLink } from '../../../../constants/Links';
 
 interface CarItemProperties {
     vehicle: VehicleResponseDTO;
@@ -24,7 +24,7 @@ export class CarItem extends React.Component<CarItemProperties, CarItemState> {
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         fetch(endpoints.starsCountEndpoint(this.props.vehicle.id))
             .then((response: Response) => {
                 response.json().then((starsCount: { stars: number }) => {
@@ -38,7 +38,7 @@ export class CarItem extends React.Component<CarItemProperties, CarItemState> {
             });
     }
 
-    render() {
+    render(): JSX.Element {
         const vehicle: VehicleResponseDTO = this.props.vehicle;
         const vehicleImage: string = carImagesMainPageCarList(vehicle.vehicleParameters.photoName);
         const stars: number | null = this.state.stars;

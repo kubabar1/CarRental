@@ -3,8 +3,8 @@ import React from 'react';
 import './PagesList.scss';
 import { aboutUsLink, bestOffersLink, carListLink, contactLink, homeLink } from '../../../constants/Links';
 
-export function PagesList() {
-    const renderLink = (name: string, target: string) => {
+export function PagesList(): JSX.Element {
+    const renderLink = (name: string, target: string): JSX.Element => {
         return (
             <li>
                 <Link to={target} className="linkstyle_black">

@@ -1,7 +1,7 @@
 import React from 'react';
 import LocalisationResponseDTO from '../../../../../model/LocalisationResponseDTO';
 import './ReservationPanel.scss';
-import {ReservationWidget} from "./reservation_widget/ReservationWidget";
+import { ReservationWidget } from './reservation_widget/ReservationWidget';
 
 interface ReservationPanelProperties {
     isAuthenticated: boolean;
@@ -13,7 +13,7 @@ export class ReservationPanel extends React.Component<ReservationPanelProperties
         super(props);
     }
 
-    render() {
+    render(): JSX.Element {
         const { isAuthenticated, localisations } = this.props;
         return (
             <div id="register-panel-image-container" className="container-fluid">

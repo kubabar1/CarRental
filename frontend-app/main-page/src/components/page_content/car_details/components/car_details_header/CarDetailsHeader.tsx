@@ -7,7 +7,7 @@ interface CarDetailsHeaderProperties {
     vehicle: VehicleResponseDTO;
 }
 
-export function CarDetailsHeader(props: CarDetailsHeaderProperties) {
+export function CarDetailsHeader(props: CarDetailsHeaderProperties): JSX.Element {
     const vehicle: VehicleResponseDTO = props.vehicle;
     const vehicleImage: string = carImagesMainPageCarList(vehicle.vehicleParameters.photoName);
 

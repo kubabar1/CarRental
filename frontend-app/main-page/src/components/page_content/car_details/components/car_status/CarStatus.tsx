@@ -1,12 +1,12 @@
 import React from 'react';
 import VehicleResponseDTO from '../../../../../model/VehicleResponseDTO';
-import VehicleStatCodeEnum from "../../../../../model/VehicleStatCodeEnum";
+import VehicleStatCodeEnum from '../../../../../model/VehicleStatCodeEnum';
 
 interface CarStatusProperties {
     vehicle: VehicleResponseDTO;
 }
 
-export function CarStatus(props: CarStatusProperties) {
+export function CarStatus(props: CarStatusProperties): JSX.Element {
     const vehicle: VehicleResponseDTO = props.vehicle;
 
     const colorClassName =

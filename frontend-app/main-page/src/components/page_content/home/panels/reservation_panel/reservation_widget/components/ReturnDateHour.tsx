@@ -11,7 +11,7 @@ function getMinDateReturn(): string {
     return date.format(date.addDays(new Date(), 2), 'YYYY-MM-DD');
 }
 
-export function ReturnDateHour(props: ReturnDateHourProperties) {
+export function ReturnDateHour(props: ReturnDateHourProperties): JSX.Element {
     const minReturnDate: string = props.receptionDate
         ? date.format(date.addDays(props.receptionDate, 1), 'YYYY-MM-DD')
         : '';

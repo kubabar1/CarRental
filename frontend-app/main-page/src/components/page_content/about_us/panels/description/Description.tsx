@@ -1,10 +1,9 @@
 import React from 'react';
 import './Description.scss';
-
-const carRentalLogoName = require('../../../../../images/car_rental_logo_name.png');
+import carRentalLogoName from '../../../../../images/car_rental_logo_name.png';
 
 export class Description extends React.Component {
-    render() {
+    render(): JSX.Element {
         return (
             <div id="car-rental-description-container" className="flow-container">
                 <div id="car-rental-description">

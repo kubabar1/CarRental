@@ -19,7 +19,7 @@ export class City extends React.Component<CityProperties, CityState> {
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         fetch(endpoints.cityListEndpoint).then((response: Response) => {
             response.json().then((cityList: string[]) => {
                 this.setState({ cityList: cityList });
@@ -27,7 +27,7 @@ export class City extends React.Component<CityProperties, CityState> {
         });
     }
 
-    render() {
+    render(): JSX.Element {
         const cityList = this.state.cityList;
 
         return (

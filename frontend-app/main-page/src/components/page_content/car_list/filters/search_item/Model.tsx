@@ -1,5 +1,5 @@
 import React from 'react';
-import {optionsList} from "../../../../../utils/ReactUtil";
+import { optionsList } from '../../../../../utils/ReactUtil';
 
 interface ModelProperties {
     model: string | null;
@@ -12,7 +12,7 @@ export class Model extends React.Component<ModelProperties> {
         super(props);
     }
 
-    render() {
+    render(): JSX.Element {
         const { model, modelList } = this.props;
 
         return (

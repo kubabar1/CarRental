@@ -1,10 +1,9 @@
 import React from 'react';
 import './AboutCarRental.scss';
-
-const shelby = require('../../../../../images/shelby_gt500.jpg');
+import shelby from '../../../../../images/shelby_gt500.jpg';
 
 export class AboutCarRental extends React.Component {
-    render() {
+    render(): JSX.Element {
         return (
             <div id="about-car-rental" className="container">
                 <h1 className="mt-4">ABOUT CAR RENTAL</h1>
