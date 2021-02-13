@@ -137,7 +137,7 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
                         + "(:brand IS NULL OR v.brand=:brand) AND "
                         + "(:model IS NULL OR v.model=:model) AND "
                         + "(:city IS NULL OR l.city=:city) AND "
-                        + "(:bodytype IS NULL OR vp.bodytype=:bodytype) AND "
+                        + "(:bodyType IS NULL OR vp.bodyType=:bodyType) AND "
                         + "((:priceFrom IS NULL OR v.dailyFee > :priceFrom) AND (:priceTo IS NULL OR v.dailyFee < :priceTo)) AND "
                         + "((:placesNumberFrom IS NULL OR vp.seatsNumber > :placesNumberFrom) AND (:placesNumberTo IS NULL OR vp.seatsNumber < :placesNumberTo)) AND "
                         + "((:doorsNumberFrom IS NULL OR vp.doorsNumber > :doorsNumberFrom) AND (:doorsNumberTo IS NULL OR vp.doorsNumber < :doorsNumberTo)) AND "
@@ -147,7 +147,7 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
                 .setParameter("brand", vehicleFilter.getBrand())
                 .setParameter("model", vehicleFilter.getModel())
                 .setParameter("city", vehicleFilter.getCity())
-                .setParameter("bodytype", vehicleFilter.getBodytype())
+                .setParameter("bodyType", vehicleFilter.getBodytype())
                 .setParameter("priceFrom", vehicleFilter.getPriceFrom())
                 .setParameter("priceTo", vehicleFilter.getPriceTo())
                 .setParameter("placesNumberFrom", vehicleFilter.getPlacesNumberFrom())
@@ -169,7 +169,7 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
                         + "(:brand IS NULL OR v.brand=:brand) AND "
                         + "(:model IS NULL OR v.model=:model) AND "
                         + "(:city IS NULL OR l.city=:city) AND "
-                        + "(:bodytype IS NULL OR vp.bodytype=:bodytype) AND "
+                        + "(:bodyType IS NULL OR vp.bodyType=:bodyType) AND "
                         + "((:priceFrom IS NULL OR v.dailyFee > :priceFrom) AND (:priceTo IS NULL OR v.dailyFee < :priceTo)) AND "
                         + "((:placesNumberFrom IS NULL OR vp.seatsNumber > :placesNumberFrom) AND (:placesNumberTo IS NULL OR vp.seatsNumber < :placesNumberTo)) AND "
                         + "((:doorsNumberFrom IS NULL OR vp.doorsNumber > :doorsNumberFrom) AND (:doorsNumberTo IS NULL OR vp.doorsNumber < :doorsNumberTo)) AND "
@@ -179,7 +179,7 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
                 .setParameter("brand", vehicleFilter.getBrand())
                 .setParameter("model", vehicleFilter.getModel())
                 .setParameter("city", vehicleFilter.getCity())
-                .setParameter("bodytype", vehicleFilter.getBodytype())
+                .setParameter("bodyType", vehicleFilter.getBodyType())
                 .setParameter("priceFrom", vehicleFilter.getPriceFrom())
                 .setParameter("priceTo", vehicleFilter.getPriceTo())
                 .setParameter("placesNumberFrom", vehicleFilter.getPlacesNumberFrom())
@@ -225,7 +225,7 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
     return (List<String>)
         entityManager
             .createQuery(
-                "SELECT distinct vp.bodytype FROM Vehicle v JOIN VehicleParameters vp ON (v.id=vp.vehicleID)")
+                "SELECT distinct vp.bodyType FROM Vehicle v JOIN VehicleParameters vp ON (v.id=vp.vehicleID)")
             .getResultList();
   }
 
@@ -285,7 +285,7 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
     entityManager
         .createQuery(
             "UPDATE VehicleParameters vp SET "
-                + "vp.bodytype=COALESCE(:bodytype,vp.bodytype), "
+                + "vp.bodyType=COALESCE(:bodyType,vp.bodyType), "
                 + "vp.fuelType=COALESCE(:fuelType,vp.fuelType), "
                 + "vp.power=COALESCE(:power,vp.power), "
                 + "vp.gearbox=COALESCE(:gearbox,vp.gearbox), "
@@ -298,7 +298,7 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
                 + "vp.productionYear=COALESCE(:productionYear,vp.productionYear), "
                 + "vp.photoName=COALESCE(:photoName,vp.photoName) "
                 + "WHERE vp.vehicleID=:id")
-        .setParameter("bodytype", vehicleAddDto.getBodytype())
+        .setParameter("bodyType", vehicleAddDto.getBodyType())
         .setParameter("fuelType", vehicleAddDto.getFuelType())
         .setParameter("power", vehicleAddDto.getPower())
         .setParameter("gearbox", vehicleAddDto.getGearbox())
@@ -339,7 +339,7 @@ public class VehicleRepositoryImpl implements VehicleRepositoryCustom {
     vehicleParameters =
         new VehicleParameters(
             vehicleId,
-            vehicleAddDto.getBodytype(),
+            vehicleAddDto.getBodyType(),
             vehicleAddDto.getProductionYear(),
             vehicleAddDto.getFuelType(),
             vehicleAddDto.getPower(),

@@ -77,7 +77,7 @@ CREATE TABLE Vehicles(
 
 CREATE TABLE VehicleParameters(
   vehicleID INT NOT NULL,
-  bodytype NVARCHAR(30) NOT NULL,
+  bodyType NVARCHAR(30) NOT NULL,
   productionYear INT  NOT NULL,
   fuelType NVARCHAR(30) NOT NULL,
   power INT NOT NULL,

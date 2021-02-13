@@ -8,7 +8,7 @@ public class VehicleFilterDTO implements Serializable {
   private String brand;
   private String model;
   private String city;
-  private String bodytype;
+  private String bodyType;
   private BigDecimal priceFrom;
   private BigDecimal priceTo;
   private Integer placesNumberFrom;
@@ -27,7 +27,7 @@ public class VehicleFilterDTO implements Serializable {
       String brand,
       String model,
       String city,
-      String bodytype,
+      String bodyType,
       BigDecimal priceFrom,
       BigDecimal priceTo,
       Integer placesNumberFrom,
@@ -41,7 +41,7 @@ public class VehicleFilterDTO implements Serializable {
     this.brand = brand;
     this.model = model;
     this.city = city;
-    this.bodytype = bodytype;
+    this.bodyType = bodyType;
     this.priceFrom = priceFrom;
     this.priceTo = priceTo;
     this.placesNumberFrom = placesNumberFrom;
@@ -78,11 +78,11 @@ public class VehicleFilterDTO implements Serializable {
   }
 
   public String getBodytype() {
-    return bodytype;
+    return bodyType;
   }
 
-  public void setBodytype(String bodytype) {
-    this.bodytype = bodytype;
+  public void setBodytype(String bodyType) {
+    this.bodyType = bodyType;
   }
 
   public BigDecimal getPriceFrom() {
@@ -165,8 +165,8 @@ public class VehicleFilterDTO implements Serializable {
         + model
         + ", city="
         + city
-        + ", bodytype="
-        + bodytype
+        + ", bodyType="
+        + bodyType
         + ", priceFrom="
         + priceFrom
         + ", priceTo="

@@ -13,7 +13,7 @@ public class VehicleAddDTO {
   private String vehicleStatus;
   private Integer bestOffer;
 
-  private String bodytype;
+  private String bodyType;
   private String fuelType;
   private Integer power;
   private String gearbox;
@@ -39,7 +39,7 @@ public class VehicleAddDTO {
       Long location,
       String vehicleStatus,
       Integer bestOffer,
-      String bodytype,
+      String bodyType,
       String fuelType,
       Integer power,
       String gearbox,
@@ -60,7 +60,7 @@ public class VehicleAddDTO {
     this.location = location;
     this.vehicleStatus = vehicleStatus;
     this.bestOffer = bestOffer;
-    this.bodytype = bodytype;
+    this.bodyType = bodyType;
     this.fuelType = fuelType;
     this.power = power;
     this.gearbox = gearbox;
@@ -138,12 +138,12 @@ public class VehicleAddDTO {
     this.bestOffer = bestOffer;
   }
 
-  public String getBodytype() {
-    return bodytype;
+  public String getBodyType() {
+    return bodyType;
   }
 
-  public void setBodytype(String bodytype) {
-    this.bodytype = bodytype;
+  public void setBodyType(String bodyType) {
+    this.bodyType = bodyType;
   }
 
   public String getFuelType() {
@@ -252,8 +252,8 @@ public class VehicleAddDTO {
         + vehicleStatus
         + ", bestOffer="
         + bestOffer
-        + ", bodytype="
-        + bodytype
+        + ", bodyType="
+        + bodyType
         + ", fuelType="
         + fuelType
         + ", power="

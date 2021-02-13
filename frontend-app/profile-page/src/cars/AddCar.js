@@ -86,7 +86,7 @@ export class AddCar extends React.Component {
       item["vehicleStatus"] = this.state.car_vehicle_status;
       item["bestOffer"] = this.state.car_best_offer==true ? 1 : 0;
 
-      item["bodytype"] = this.state.car_body;
+      item["bodyType"] = this.state.car_body;
       item["fuelType"] = this.state.car_fuel_type;
       item["power"] = this.state.car_power;
       item["gearbox"] = this.state.car_gearbox;
@@ -139,7 +139,7 @@ export class AddCar extends React.Component {
       formData.append('location',carWrapper["location"]);
       formData.append('vehicleStatus',carWrapper["vehicleStatus"]);
       formData.append('bestOffer',carWrapper["bestOffer"]);
-      formData.append('bodytype',carWrapper["bodytype"]);
+      formData.append('bodyType',carWrapper["bodyType"]);
       formData.append('fuelType',carWrapper["fuelType"]);
       formData.append('power',carWrapper["power"]);
       formData.append('gearbox',carWrapper["gearbox"]);

@@ -1,19 +1,16 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
-const fs = require('fs');
 
 process.env.NODE_ENV = 'development';
 
-const appDirectory = fs.realpathSync(process.cwd());
-const resolveAppPath = relativePath => path.resolve(appDirectory, relativePath);
 const host = process.env.HOST || 'localhost';
-
 
 module.exports = {
     entry: './src/index.tsx',
     output: {
         path: path.join(__dirname, 'dist'),
         filename: '[name].js',
+        publicPath: '/',
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js'],
@@ -44,7 +41,7 @@ module.exports = {
                 test: /\.(gif|svg|jp(e)?g|png)$/,
                 loader: 'file-loader',
                 options: {
-                    esModule: false
+                    esModule: false,
                 },
             },
             {
@@ -59,12 +56,13 @@ module.exports = {
         ],
     },
     devServer: {
-        contentBase: resolveAppPath('public'),
+        contentBase: './',
         // compress: true,
         hot: true,
         host,
         port: 3000,
-        publicPath: '/'
+        publicPath: '/',
+        historyApiFallback: true,
     },
     plugins: [
         new HtmlWebpackPlugin({

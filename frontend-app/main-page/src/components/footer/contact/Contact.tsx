@@ -9,11 +9,11 @@ export function Contact() {
             <h5 className="linkstyle_black">Contact us:</h5>
             <div className="contacts-container">
                 <FontAwesomeIcon className="linkstyle_black font-awesome-additional-styles" icon={faPhone} />
-                <p className="linkstyle_black contact-text">423 232 123</p>
+                <p className="linkstyle_black contact-text">123 456 789</p>
             </div>
             <div className="contacts-container">
                 <FontAwesomeIcon className="linkstyle_black font-awesome-additional-styles" icon={faMobile} />
-                <p className="linkstyle_black contact-text">948 132 423</p>
+                <p className="linkstyle_black contact-text">123 456 789</p>
             </div>
             <div className="contacts-container">
                 <FontAwesomeIcon className="linkstyle_black font-awesome-additional-styles" icon={faEnvelope} />

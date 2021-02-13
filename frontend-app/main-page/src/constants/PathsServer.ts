@@ -1,0 +1,2 @@
+export const carImagesMainPageCarList = (photoName: string) => require(`../images/car_images/${photoName}`);
+export const userImagesMainPage = (photoName: string) => require(`../images/user_images/${photoName}`);

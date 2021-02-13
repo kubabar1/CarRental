@@ -39,7 +39,7 @@ public class VehicleFilterController {
     return vehicleService.getModelListForBrand(brand);
   }
 
-  @RequestMapping(value = "/bodytypelist", method = RequestMethod.GET)
+  @RequestMapping(value = "/body-type-list", method = RequestMethod.GET)
   public List<String> vehicleSearchGetBodTypeList() {
 
     return vehicleService.getBodTypeList();

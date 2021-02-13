@@ -14,8 +14,8 @@ public class VehicleParameters implements Serializable {
   @Column(name = "vehicleID")
   private Long vehicleID;
 
-  @Column(name = "bodytype")
-  private String bodytype;
+  @Column(name = "bodyType")
+  private String bodyType;
 
   @Column(name = "productionYear")
   private Integer productionYear;
@@ -61,7 +61,7 @@ public class VehicleParameters implements Serializable {
 
   public VehicleParameters(
       Long vehicleID,
-      String bodytype,
+      String bodyType,
       Integer productionYear,
       String fuelType,
       Integer power,
@@ -75,7 +75,7 @@ public class VehicleParameters implements Serializable {
       String description) {
     super();
     this.vehicleID = vehicleID;
-    this.bodytype = bodytype;
+    this.bodyType = bodyType;
     this.productionYear = productionYear;
     this.fuelType = fuelType;
     this.power = power;
@@ -98,11 +98,11 @@ public class VehicleParameters implements Serializable {
   }
 
   public String getBodytype() {
-    return bodytype;
+    return bodyType;
   }
 
-  public void setBodytype(String bodytype) {
-    this.bodytype = bodytype;
+  public void setBodyType(String bodyType) {
+    this.bodyType = bodyType;
   }
 
   public Integer getProductionYear() {
@@ -205,8 +205,8 @@ public class VehicleParameters implements Serializable {
   public String toString() {
     return "VehicleParameters [vehicleID="
         + vehicleID
-        + ", bodytype="
-        + bodytype
+        + ", bodyType="
+        + bodyType
         + ", productionYear="
         + productionYear
         + ", fuelType="

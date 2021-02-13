@@ -1,0 +1,13 @@
+#car-types-round-images {
+  .text-under-round-image {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  div {
+    img {
+      border-radius: 50%;
+      width: 100%;
+    }
+  }
+}

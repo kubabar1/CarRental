@@ -1,0 +1,21 @@
+#contacts-data {
+
+  .contacts-container {
+    width: 180px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+  }
+
+  .contacts-container-text {
+    float: right;
+    margin-bottom: 0;
+    margin-left: 10px;
+  }
+
+  .font-awesome-style {
+    float: left;
+    font-size: 18px;
+    width: 30px;
+  }
+}

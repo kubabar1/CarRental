@@ -62,7 +62,7 @@ export class EditCar extends React.Component {
           car_vehicle_status:json.vehicleStatus,
           car_best_offer:json.bestOffer==1?true:false,
 
-          car_body:json.vehicleParameters.bodytype,
+          car_body:json.vehicleParameters.bodyType,
           car_fuel_type:json.vehicleParameters.fuelType,
           car_power:json.vehicleParameters.power,
           car_gearbox:json.vehicleParameters.gearbox,
@@ -118,7 +118,7 @@ export class EditCar extends React.Component {
     item["vehicleStatus"] = this.state.car_vehicle_status;
     item["bestOffer"] = this.state.car_best_offer==true ? 1 : 0;
 
-    item["bodytype"] = this.state.car_body;
+    item["bodyType"] = this.state.car_body;
     item["fuelType"] = this.state.car_fuel_type;
     item["power"] = this.state.car_power;
     item["gearbox"] = this.state.car_gearbox;
@@ -147,7 +147,7 @@ export class EditCar extends React.Component {
     formData.append('location',carWrapper["location"]);
     formData.append('vehicleStatus',carWrapper["vehicleStatus"]);
     formData.append('bestOffer',carWrapper["bestOffer"]);
-    formData.append('bodytype',carWrapper["bodytype"]);
+    formData.append('bodyType',carWrapper["v"]);
     formData.append('fuelType',carWrapper["fuelType"]);
     formData.append('power',carWrapper["power"]);
     formData.append('gearbox',carWrapper["gearbox"]);
