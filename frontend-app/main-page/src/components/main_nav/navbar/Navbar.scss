@@ -1,9 +1,44 @@
 #collapsibleNavbar {
     ul {
+        li {
+            display: inline-block;
+            position: relative;
+
+            a {
+                color: #000;
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+
+            h4 {
+                margin: 0;
+            }
+        }
+
         li:hover {
-            background-color: #cd3737;
-            color: #fff;
-            transition: 0.3s;
+            a {
+                color: #cd3737;
+                text-decoration: none;
+            }
+        }
+
+        li::after {
+            bottom: 0;
+            content: "";
+            display: block;
+            height: 2px;
+            left: 50%;
+            position: absolute;
+            color: #cd3737;
+            background: #cd3737;
+            transition: width 0.3s ease 0s, left 0.3s ease 0s;
+            width: 0;
+        }
+
+        li:hover::after {
+            width: 100%;
+            left: 0;
         }
     }
 }

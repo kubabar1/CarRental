@@ -1,6 +1,6 @@
 import React from 'react';
 import './Navbar.scss';
-import { NavbarLink } from './NavbarLink';
+import { NavbarLink } from './navbar_link/NavbarLink';
 import { aboutUsLink, bestOffersLink, carListLink, contactLink, homeLink } from '../../../constants/Links';
 
 interface NavbarProps {

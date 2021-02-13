@@ -9,8 +9,8 @@ interface NavbarLink {
 
 export function NavbarLink(props: NavbarLink): JSX.Element {
     return (
-        <li data-toggle="collapse" data-target="#collapsibleNavbar" className="nav-item p-2 ">
-            <Link onClick={props.setTrue} to={props.target} className="navlinkstyle">
+        <li data-toggle="collapse" data-target="#collapsibleNavbar" className="nav-item">
+            <Link onClick={props.setTrue} to={props.target} className="p-2">
                 <h4>{props.name}</h4>
             </Link>
         </li>
