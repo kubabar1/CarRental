@@ -70,6 +70,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.join(__dirname, 'public/index.html'),
             filename: 'index.html',
+            favicon: "./src/images/car_rental_page_logo.png"
         }),
         new ESLintPlugin(eslintOptions),
         new StylelintPlugin(stylelintOptions),

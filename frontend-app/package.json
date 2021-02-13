@@ -1,5 +1,5 @@
 {
-  "name": "CarRental",
+  "name": "car-rental",
   "version": "1.0.0",
   "description": "Frontend app for CarRenal spring application",
   "devDependencies": {

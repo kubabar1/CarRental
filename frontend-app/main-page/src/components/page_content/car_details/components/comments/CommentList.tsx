@@ -7,7 +7,7 @@ interface CommentListProps {
 }
 
 function renderCommentItem(comment: CommentResponseDTO): JSX.Element {
-    return <CommentItem comment={comment} />;
+    return <CommentItem comment={comment} key={comment.id} />;
 }
 
 export function CommentList(props: CommentListProps): JSX.Element {

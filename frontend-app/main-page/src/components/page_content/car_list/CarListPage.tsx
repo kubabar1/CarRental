@@ -74,7 +74,7 @@ class CarListPage extends React.Component<CarListProperties, CarListState> {
     };
 
     vehiclesToTableRow = (vehicle: VehicleResponseDTO) => {
-        return <CarItem vehicle={vehicle} />;
+        return <CarItem vehicle={vehicle} key={vehicle.id} />;
     };
 
     render(): JSX.Element {

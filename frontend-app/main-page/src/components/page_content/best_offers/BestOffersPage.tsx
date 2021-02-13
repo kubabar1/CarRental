@@ -70,7 +70,7 @@ class BestOffersPage extends React.Component<BestOffersPageProperties, BestOffer
     };
 
     vehiclesToTableRow = (vehicle: VehicleResponseDTO) => {
-        return <CarItem vehicle={vehicle} />;
+        return <CarItem vehicle={vehicle} key={vehicle.id} />;
     };
 
     render(): JSX.Element {
