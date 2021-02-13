@@ -5,6 +5,7 @@
     }
 
     .car-item {
+        transition: 0.3s;
         opacity: 0.9;
 
         h2 {
@@ -13,6 +14,7 @@
     }
 
     .car-item:hover {
+        transition: 0.3s;
         opacity: 1;
 
         a:hover {
