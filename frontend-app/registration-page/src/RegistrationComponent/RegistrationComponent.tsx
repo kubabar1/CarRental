@@ -11,7 +11,7 @@ export function RegistrationComponent(): JSX.Element {
         <div id="register-page-container" className="container my-5 full_body_register">
             <div className="col-md-6 offset-md-3 card-body shadow-lg">
                 <form onSubmit={handleSubmit}>
-                    <img className="mb-4" src={carRentalLogo} alt="" width="100%"/>
+                    <img className="mb-4" src={carRentalLogo} alt="" width="100%" />
                     <h1 className="h3 mb-3 font-weight-normal">Register</h1>
 
                     <div className="form-group">

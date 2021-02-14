@@ -1,46 +1,74 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
+const StylelintPlugin = require('stylelint-webpack-plugin');
+
+process.env.NODE_ENV = 'development';
+
+const host = process.env.HOST || 'localhost';
+
+const eslintOptions = {
+	extensions: ['ts', 'tsx', 'js', 'json'],
+	exclude: 'node_modules',
+	failOnError: true,
+	failOnWarning: true,
+	fix: false,
+};
+
+const stylelintOptions = {
+	emitError: true,
+	emitWarning: true,
+	failOnError: false,
+	failOnWarning: false,
+	fix: false,
+};
 
 module.exports = {
-	entry : {
-		car_rental_main:'./src/react-app/car_rental_main/index.js',
-		car_rental_profile:'./src/react-app/car_rental_profile/index.js'
-	},
-	output : {
-		path : path.join(__dirname, 'dist'),
-		filename : '[name].js'
+	output: {
+		filename: '[name].js',
+		publicPath: '/',
 	},
 	resolve: {
-		extensions: ['.ts', '.tsx', '.js']
+		extensions: ['.ts', '.tsx', '.js'],
 	},
-	module : {
-		loaders : [ {
-			test : /\.js?$/,
-			/** Regular expression to scan for files */
-			exclude : /node_modules/,
-			loader : 'babel-loader',
-			query : {
-				presets : [ "react", "es2015", "stage-2" ]
+	mode: process.env.NODE_ENV,
+	devtool: 'source-map',
+	module: {
+		rules: [
+			{
+				test: /\.tsx?$/,
+				use: 'ts-loader',
+				exclude: /node_modules/,
 			},
-		}, {
-			test : /\.css$/,
-			loader : 'style-loader!css-loader'
-		}, {
-			test : /\.(gif|svg|jpg|png)$/,
-			loader : "file-loader",
-			options : {
-				name : '[name].[ext]',
-				outputPath : '../img',
-				publicPath : '/CarRental/static/img/'
-			}
-		}, {
-			test: /\.(woff|woff2|eot|ttf|svg)(\?.*$|$)/,
-			loader : "file-loader",
-			options : {
-				name : '[name].[ext]',
-				outputPath : '../icons',
-				publicPath : '/CarRental/static/icons/'
-			}
-		} ]
-	}
+			{
+				test: /\.s[ac]ss$/i,
+				use: ['style-loader', 'css-loader', 'sass-loader'],
+			},
+			{
+				test: /\.(gif|svg|jpe?g|png)$/,
+				loader: 'file-loader',
+				options: {
+					esModule: false,
+					outputPath: 'images'
+				},
+			},
+			{
+				test: /\.(woff|woff2|eot|ttf)(\?.*$|$)/,
+				loader: 'file-loader',
+				options: {
+					outputPath: 'fonts'
+				},
+			},
+		],
+	},
+	plugins: [
+		new ESLintPlugin(eslintOptions),
+		new StylelintPlugin(stylelintOptions),
+	],
+	devServer: {
+		hot: true,
+		host,
+		port: 3000,
+		publicPath: '/',
+		historyApiFallback: true,
+		open: true,
+	},
 };
