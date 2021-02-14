@@ -4,8 +4,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
 import '../../../../main/static/css/main.css';
 import '../../../../main/static/css/reservation_data.css';
-import {Logo} from '../Logo.js';
-import {ReservationStep} from '../ReservationStep.js';
+import {Logo} from '../StepsSubpages.ReservationStepContainer.components.Logo.tsx';
+import {ReservationStepContainer} from '../StepsSubpages.ReservationStepContainer.tsx';
 import { Link } from 'react-router-dom'
 
 
@@ -179,12 +179,12 @@ export class ReservationConfirm extends React.Component {
 		return (
       <main>
         <Logo/>
-        <ReservationStep step={3}/>
+        <ReservationStepContainer step={3}/>
         <div id="reservation-data-container" className="container col-md-6 offset-md-3 my-5 ">
           <form>
             <div className="shadow card">
               <div className="card-header">
-                <h1>Confirm reservation</h1>
+                <h1>Confirm ReservationStepContainer</h1>
               </div>
               <div className="card-body">
 

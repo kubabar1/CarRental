@@ -2,46 +2,6 @@
 # yarn lockfile v1
 
 
-"@fortawesome/fontawesome-common-types@^0.2.34":
-  version "0.2.34"
-  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-0.2.34.tgz#0a8c348bb23b7b760030f5b1d912e582be4ec915"
-  integrity sha512-XcIn3iYbTEzGIxD0/dY5+4f019jIcEIWBiHc3KrmK/ROahwxmZ/s+tdj97p/5K0klz4zZUiMfUlYP0ajhSJjmA==
-
-"@fortawesome/fontawesome-svg-core@^1.2.34":
-  version "1.2.34"
-  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-svg-core/-/fontawesome-svg-core-1.2.34.tgz#1d1a7c92537cbc2b8a83eef6b6d824b4b5b46b26"
-  integrity sha512-0KNN0nc5eIzaJxlv43QcDmTkDY1CqeN6J7OCGSs+fwGPdtv0yOQqRjieopBCmw+yd7uD3N2HeNL3Zm5isDleLg==
-  dependencies:
-    "@fortawesome/fontawesome-common-types" "^0.2.34"
-
-"@fortawesome/free-brands-svg-icons@^5.15.2":
-  version "5.15.2"
-  resolved "https://registry.yarnpkg.com/@fortawesome/free-brands-svg-icons/-/free-brands-svg-icons-5.15.2.tgz#d74e2540b5552b915d6bef719f17e361b70a8d65"
-  integrity sha512-YPlVjE1cEO+OJ9I9ay3TQ3I88+XkxMTYwnnddqAboxLhPNGncsHV0DjWOVLCyuAY66yPfyndWwVn4v7vuqsO1g==
-  dependencies:
-    "@fortawesome/fontawesome-common-types" "^0.2.34"
-
-"@fortawesome/free-regular-svg-icons@^5.15.2":
-  version "5.15.2"
-  resolved "https://registry.yarnpkg.com/@fortawesome/free-regular-svg-icons/-/free-regular-svg-icons-5.15.2.tgz#61eeb8c206e792c530eaa58279cc32c55332fe8f"
-  integrity sha512-Uv5NQCYjyisNVTu/1Xjs+z8vwQjbfT6hiqYvQNfF0n8qdgfWLM581bAfVMQ3BCs1SPy+eEUKNcGkK4n0FihFHg==
-  dependencies:
-    "@fortawesome/fontawesome-common-types" "^0.2.34"
-
-"@fortawesome/free-solid-svg-icons@^5.15.2":
-  version "5.15.2"
-  resolved "https://registry.yarnpkg.com/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-5.15.2.tgz#25bb035de57cf85aee8072965732368ccc8e8943"
-  integrity sha512-ZfCU+QjaFsdNZmOGmfqEWhzI3JOe37x5dF4kz9GeXvKn/sTxhqMtZ7mh3lBf76SvcYY5/GKFuyG7p1r4iWMQqw==
-  dependencies:
-    "@fortawesome/fontawesome-common-types" "^0.2.34"
-
-"@fortawesome/react-fontawesome@^0.1.14":
-  version "0.1.14"
-  resolved "https://registry.yarnpkg.com/@fortawesome/react-fontawesome/-/react-fontawesome-0.1.14.tgz#bf28875c3935b69ce2dc620e1060b217a47f64ca"
-  integrity sha512-4wqNb0gRLVaBm/h+lGe8UfPPivcbuJ6ecI4hIgW0LjI7kzpYB9FkN0L9apbVzg+lsBdcTf0AlBtODjcSX5mmKA==
-  dependencies:
-    prop-types "^15.7.2"
-
 "@types/eslint-scope@^3.7.0":
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/@types/eslint-scope/-/eslint-scope-3.7.0.tgz#4792816e31119ebd506902a482caec4951fabd86"
@@ -585,7 +545,7 @@ lodash@^4.17.20:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
-loose-envify@^1.1.0, loose-envify@^1.4.0:
+loose-envify@^1.1.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
   integrity sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
@@ -682,15 +642,6 @@ pretty-error@^2.1.1:
     lodash "^4.17.20"
     renderkid "^2.0.4"
 
-prop-types@^15.7.2:
-  version "15.7.2"
-  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
-  integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
-  dependencies:
-    loose-envify "^1.4.0"
-    object-assign "^4.1.1"
-    react-is "^16.8.1"
-
 punycode@^2.1.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
@@ -711,11 +662,6 @@ react-dom@^17.0.1:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     scheduler "^0.20.1"
-
-react-is@^16.8.1:
-  version "16.13.1"
-  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
-  integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
 react@^17.0.1:
   version "17.0.1"

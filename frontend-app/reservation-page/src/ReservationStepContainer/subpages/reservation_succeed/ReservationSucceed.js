@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
 import '../../../../main/static/css/main.css';
 import '../../../../main/static/css/reservation_data.css';
-import {Logo} from '../Logo.js';
+import {Logo} from '../StepsSubpages.ReservationStepContainer.components.Logo.tsx';
 import { Link } from 'react-router-dom'
 
 

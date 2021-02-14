@@ -5,8 +5,8 @@ import 'bootstrap/dist/js/bootstrap.js';
 import '../../../../main/static/css/main.css';
 import '../../../../main/static/css/reservation_data.css';
 import '../../../../main/static/css/reservation_car_selection.css';
-import {Logo} from '../Logo.js';
-import {ReservationStep} from '../ReservationStep.js';
+import {Logo} from '../StepsSubpages.ReservationStepContainer.components.Logo.tsx';
+import {ReservationStepContainer} from '../StepsSubpages.ReservationStepContainer.tsx';
 import CarSelectionForm from './CarSelectionForm.js';
 import { Link } from 'react-router-dom'
 
@@ -24,7 +24,7 @@ export class ReservationCarSelection extends React.Component {
 		return (
       <main>
         <Logo/>
-        <ReservationStep step={2}/>
+        <ReservationStepContainer step={2}/>
         <CarSelectionForm/>
       </main>
 		)
