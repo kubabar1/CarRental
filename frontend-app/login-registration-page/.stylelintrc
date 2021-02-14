@@ -1,0 +1,16 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "comment-empty-line-before": [
+      "always",
+      {
+        "ignore": [
+          "stylelint-commands",
+          "after-comment"
+        ]
+      }
+    ],
+    "indentation": 4,
+    "max-empty-lines": 1
+  }
+}

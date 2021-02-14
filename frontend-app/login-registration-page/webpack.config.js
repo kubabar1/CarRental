@@ -7,10 +7,13 @@ process.env.NODE_ENV = 'development';
 
 const host = process.env.HOST || 'localhost';
 
+const dist = path.join(__dirname, 'dist');
+
 const eslintOptions = {
     extensions: ['ts', 'tsx', 'js', 'json'],
     exclude: 'node_modules',
-    failOnWarning: true,
+    failOnError: false,
+    failOnWarning: false,
     fix: false,
 };
 
@@ -23,10 +26,13 @@ const stylelintOptions = {
 };
 
 module.exports = {
-    entry: './src/index.tsx',
+    entry: {
+        login: './src/login/login.tsx',
+        registration: './src/registration/registration.tsx',
+    },
     output: {
-        path: path.join(__dirname, 'dist'),
-        filename: '[name].js',
+        path: dist,
+        filename: '[name]/[name].js',
         publicPath: '/',
     },
     resolve: {
@@ -50,6 +56,17 @@ module.exports = {
                 loader: 'file-loader',
                 options: {
                     esModule: false,
+                    outputPath: (url, resourcePath, context) => {
+                        if (/src\/login/.test(resourcePath)) {
+                            return `login/images/${url}`;
+                        }
+
+                        if (/src\/registration/.test(context)) {
+                            return `registration/images/${url}`;
+                        }
+
+                        return `images/${url}`;
+                    },
                 },
             },
             {
@@ -60,19 +77,42 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, 'public/index.html'),
-            filename: 'index.html',
+            template: path.join(__dirname, 'public/login.html'),
+            chunks: ['login'],
             favicon: './src/images/car_rental_page_logo.png',
+            path: dist,
+            filename: 'login/login.html',
+        }),
+        new HtmlWebpackPlugin({
+            template: path.join(__dirname, 'public/registration.html'),
+            chunks: ['registration'],
+            favicon: './src/images/car_rental_page_logo.png',
+            path: dist,
+            filename: 'registration/registration.html',
         }),
         new ESLintPlugin(eslintOptions),
         new StylelintPlugin(stylelintOptions),
     ],
     devServer: {
-        contentBase: './',
+        proxy: {
+            '/*': {
+                target: 'http://localhost:3000',
+                bypass: (req) => {
+                    if (req.url.indexOf('/registration') !== -1) {
+                        return '/registration/registration.html';
+                    } else if (req.url.indexOf('/login') !== -1) {
+                        return '/login/login.html';
+                    }
+                },
+            },
+        },
+        contentBase: dist,
         hot: true,
         host,
         port: 3000,
         publicPath: '/',
         historyApiFallback: true,
+        open: true,
+        openPage: 'login',
     },
 };
