@@ -27,12 +27,11 @@ const stylelintOptions = {
 
 module.exports = {
     entry: {
-        login: './src/login/login.tsx',
-        registration: './src/registration/registration.tsx',
+        registration: './src/registration.tsx',
     },
     output: {
         path: dist,
-        filename: '[name]/[name].js',
+        filename: '[name].js',
         publicPath: '/',
     },
     resolve: {
@@ -56,17 +55,7 @@ module.exports = {
                 loader: 'file-loader',
                 options: {
                     esModule: false,
-                    outputPath: (url, resourcePath, context) => {
-                        if (/src\/login/.test(resourcePath)) {
-                            return `login/images/${url}`;
-                        }
-
-                        if (/src\/registration/.test(context)) {
-                            return `registration/images/${url}`;
-                        }
-
-                        return `images/${url}`;
-                    },
+                    outputPath: 'images',
                 },
             },
             {
@@ -77,35 +66,16 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, 'public/login.html'),
-            chunks: ['login'],
-            favicon: './src/images/car_rental_page_logo.png',
-            path: dist,
-            filename: 'login/login.html',
-        }),
-        new HtmlWebpackPlugin({
             template: path.join(__dirname, 'public/registration.html'),
             chunks: ['registration'],
             favicon: './src/images/car_rental_page_logo.png',
             path: dist,
-            filename: 'registration/registration.html',
+            filename: 'registration.html',
         }),
         new ESLintPlugin(eslintOptions),
         new StylelintPlugin(stylelintOptions),
     ],
     devServer: {
-        proxy: {
-            '/*': {
-                target: 'http://localhost:3000',
-                bypass: (req) => {
-                    if (req.url.indexOf('/registration') !== -1) {
-                        return '/registration/registration.html';
-                    } else if (req.url.indexOf('/login') !== -1) {
-                        return '/login/login.html';
-                    }
-                },
-            },
-        },
         contentBase: dist,
         hot: true,
         host,
@@ -113,6 +83,6 @@ module.exports = {
         publicPath: '/',
         historyApiFallback: true,
         open: true,
-        openPage: 'login',
+        index: 'registration.html',
     },
 };

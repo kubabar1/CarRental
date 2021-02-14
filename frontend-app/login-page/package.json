@@ -1,7 +1,7 @@
 {
   "name": "login-page",
   "version": "1.0.0",
-  "description": "Web application login and registration page",
+  "description": "Web application login page",
   "author": "Jakub Barański",
   "license": "MIT",
   "scripts": {

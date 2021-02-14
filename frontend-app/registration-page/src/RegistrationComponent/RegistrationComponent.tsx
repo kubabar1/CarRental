@@ -1,5 +1,5 @@
 import React from 'react';
-import carRentalLogo from '../../images/car_rental_logo_name.png';
+import carRentalLogo from '../images/car_rental_logo_name.png';
 import './RegistrationComponent.scss';
 
 export function RegistrationComponent(): JSX.Element {
