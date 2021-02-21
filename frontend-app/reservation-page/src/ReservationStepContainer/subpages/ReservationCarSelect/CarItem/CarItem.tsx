@@ -9,7 +9,7 @@ interface CarItemProperties {
     selectCar: (carId: number) => void;
 }
 
-export function CarItem(props: CarItemProperties) {
+export function CarItem(props: CarItemProperties): JSX.Element {
     const vehicleImage: string = carImagesMainPageCarList(props.vehicle.vehicleParameters.photoName);
 
     return (

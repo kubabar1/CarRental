@@ -14,7 +14,7 @@ module.exports = Object.assign({}, mainConfig, {
         path: dist,
     },
     plugins: [
-        // ...mainConfig.plugins, TODO: REMOVE COMMENT
+        ...mainConfig.plugins,
         new HtmlWebpackPlugin({
             template: path.join(__dirname, 'public/index.html'),
             chunks: ['reservation'],

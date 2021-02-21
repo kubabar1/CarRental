@@ -12,7 +12,9 @@ interface ReservationStatusState {
     reservationStatus?: ReservationStatusResponseDTO;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export class ReservationStatus extends React.Component<any, ReservationStatusState> {
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     constructor(props: any) {
         super(props);
         this.state = {

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
 import 'bootstrap/scss/bootstrap.scss';
 import { ReservationStepContainer } from './ReservationStepContainer/ReservationStepContainer';
-import {reservationRootLink} from "./constants/Links";
+import { reservationRootLink } from './constants/Links';
 
 ReactDOM.render(
     <BrowserRouter>

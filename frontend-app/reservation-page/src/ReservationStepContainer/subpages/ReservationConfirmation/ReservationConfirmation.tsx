@@ -39,7 +39,7 @@ export class ReservationConfirmation extends React.Component<
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         this.props.setStep(3);
         const selectedVehicleId = this.props.selectedVehicleId;
         fetch(endpoints.carByIdEndpoint(selectedVehicleId))
@@ -103,7 +103,7 @@ export class ReservationConfirmation extends React.Component<
     //
     // }
 
-    onClickNext = (event: React.MouseEvent<HTMLButtonElement>) => {
+    onClickNext = (event: React.MouseEvent<HTMLButtonElement>): void => {
         event.preventDefault();
         // fetch to add reservation eg. '/reservation/add' - it will return reservationId
         const reservationId = 'axd2awd4s1';
@@ -113,7 +113,7 @@ export class ReservationConfirmation extends React.Component<
         window.location.href = endpoints.orderStatusById(reservationId);
     };
 
-    renderFormGroupItem = (label: string, value: string) => {
+    renderFormGroupItem = (label: string, value: string): JSX.Element => {
         return (
             <div className="form-group">
                 <label>{label}</label>
@@ -122,7 +122,7 @@ export class ReservationConfirmation extends React.Component<
         );
     };
 
-    render() {
+    render(): JSX.Element {
         const { userName, userSurname, phone, email } = this.props.userData;
         const { fullCost, selectedVehicle, selectedLocalisation } = this.state;
         const { selectedReceptionDate, selectedReceptionHour, selectedReturnDate, selectedReturnHour } = this.props;

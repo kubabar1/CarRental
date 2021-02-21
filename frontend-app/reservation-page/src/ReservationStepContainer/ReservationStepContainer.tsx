@@ -16,9 +16,6 @@ import { ReservationCarSelect } from './subpages/ReservationCarSelect/Reservatio
 import { ReservationConfirmation } from './subpages/ReservationConfirmation/ReservationConfirmation';
 import { StepsHeader } from './components/StepsHeader/StepsHeader';
 import { ErrorCard } from './components/ErrorCard/ErrorCard';
-import VehicleResponseDTO from '../model/VehicleResponseDTO';
-
-interface ReservationStepContainerProperties {}
 
 interface ReservationStepContainerState {
     step: number;
@@ -33,11 +30,8 @@ interface ReservationStepContainerState {
     validationErrorMessage?: string;
 }
 
-export class ReservationStepContainer extends React.Component<
-    ReservationStepContainerProperties,
-    ReservationStepContainerState
-> {
-    constructor(props: ReservationStepContainerProperties) {
+export class ReservationStepContainer extends React.Component<Record<string, never>, ReservationStepContainerState> {
+    constructor(props: Record<string, never>) {
         super(props);
         this.state = {
             step: 1,

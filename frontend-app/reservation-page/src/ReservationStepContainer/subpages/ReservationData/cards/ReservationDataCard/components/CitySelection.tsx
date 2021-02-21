@@ -27,9 +27,7 @@ export function CitySelection(props: CitySelectionProps): JSX.Element {
                 required
                 className="form-control"
                 value={selectedLocalisationId ? selectedLocalisationId.toString() : ''}
-                onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
-                    props.setLocalisation(event.target.value)
-                }
+                onChange={(event: React.ChangeEvent<HTMLSelectElement>) => props.setLocalisation(event.target.value)}
             >
                 <option value="" />
                 {localisations ? localisations.map(optionsList) : <option value="" />}

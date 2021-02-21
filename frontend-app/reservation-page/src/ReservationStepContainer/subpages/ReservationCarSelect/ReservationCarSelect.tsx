@@ -1,10 +1,10 @@
 import React from 'react';
-import {Link, Redirect} from 'react-router-dom';
-import {CarItem} from './CarItem/CarItem';
-import {endpoints} from '../../../constants/PathsAPI';
-import {vehicleResponseDTOMock, vehicleResponseDTOMock2} from '../../../constants/MockData';
+import { Link, Redirect } from 'react-router-dom';
+import { CarItem } from './CarItem/CarItem';
+import { endpoints } from '../../../constants/PathsAPI';
+import { vehicleResponseDTOMock, vehicleResponseDTOMock2 } from '../../../constants/MockData';
 import VehicleResponseDTO from '../../../model/VehicleResponseDTO';
-import {confirmationSubpageLink, reservationDataSubpageLink} from '../../../constants/Links';
+import { confirmationSubpageLink, reservationDataSubpageLink } from '../../../constants/Links';
 import ClipLoader from 'react-spinners/ClipLoader';
 import './ReservationCarSelect.scss';
 
@@ -25,35 +25,35 @@ export class ReservationCarSelect extends React.Component<ReservationCarSelectPr
     constructor(props: ReservationCarSelectProperties) {
         super(props);
         this.state = {
-            redirect: false
+            redirect: false,
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         const selectedLocalisationId = this.props.selectedLocalisationId;
         this.props.setStep(2);
 
         fetch(endpoints.carListByCityEndpoint(selectedLocalisationId))
             .then((response: Response) => {
                 response.json().then((vehicles: VehicleResponseDTO[]) => {
-                    this.setState({vehicles: vehicles});
+                    this.setState({ vehicles: vehicles });
                 });
             })
-            .finally(() => this.setState({vehicles: [vehicleResponseDTOMock, vehicleResponseDTOMock2]})); // TODO: Remove
-    };
+            .finally(() => this.setState({ vehicles: [vehicleResponseDTOMock, vehicleResponseDTOMock2] })); // TODO: Remove
+    }
 
-    createCarItem = (vehicle: VehicleResponseDTO) => {
+    createCarItem = (vehicle: VehicleResponseDTO): JSX.Element => {
         let selected = false;
         if (vehicle.id === this.props.selectedVehicleId) {
             selected = true;
         }
-        return <CarItem vehicle={vehicle} key={vehicle.id} selectCar={this.props.selectCar} selected={selected}/>
-    }
+        return <CarItem vehicle={vehicle} key={vehicle.id} selectCar={this.props.selectCar} selected={selected} />;
+    };
 
-    onClickNext = (event: React.MouseEvent<HTMLButtonElement>) => {
+    onClickNext = (event: React.MouseEvent<HTMLButtonElement>): void => {
         event.preventDefault();
-        this.setState({redirect: true});
-    }
+        this.setState({ redirect: true });
+    };
 
     getVehicleById = (vehicles?: VehicleResponseDTO[], vehicleId?: number): VehicleResponseDTO | undefined => {
         if (vehicles && vehicleId) {
@@ -63,9 +63,9 @@ export class ReservationCarSelect extends React.Component<ReservationCarSelectPr
         }
     };
 
-    render() {
-        const {vehicles, inputError, redirect} = this.state;
-        const {selectedLocalisationId, selectedVehicleId} = this.props;
+    render(): JSX.Element {
+        const { vehicles, inputError, redirect } = this.state;
+        const { selectedLocalisationId, selectedVehicleId } = this.props;
         const selectedVehicle = this.getVehicleById(this.state.vehicles, selectedVehicleId);
 
         if (!selectedLocalisationId) {
@@ -77,7 +77,7 @@ export class ReservationCarSelect extends React.Component<ReservationCarSelectPr
         }
 
         if (redirect && !inputError) {
-            return <Redirect to={confirmationSubpageLink} push/>;
+            return <Redirect to={confirmationSubpageLink} push />;
         }
 
         return (
@@ -90,28 +90,34 @@ export class ReservationCarSelect extends React.Component<ReservationCarSelectPr
                             </div>
                             <div id="car-item-container" className="card-body">
                                 <div className="row justify-content-center">
-                                    {vehicles ? vehicles.map(this.createCarItem) :
-                                        <ClipLoader size={50}/>}
+                                    {vehicles ? vehicles.map(this.createCarItem) : <ClipLoader size={50} />}
                                 </div>
                             </div>
                             <div className="shadow card mt-3">
                                 <div className="card-body">
-                                    <h4 className="ml-4 mt-3">Selected
-                                        car: <strong>{selectedVehicle && selectedVehicle.brand + ' ' + selectedVehicle.model}</strong>
+                                    <h4 className="ml-4 mt-3">
+                                        Selected car:{' '}
+                                        <strong>
+                                            {selectedVehicle && selectedVehicle.brand + ' ' + selectedVehicle.model}
+                                        </strong>
                                     </h4>
-                                    {
-                                        inputError &&
+                                    {inputError && (
                                         <div key="input_Error" className="alert alert-danger my-4">
                                             Fill all fields with valid values.
                                         </div>
-                                    }
+                                    )}
                                     <div className="row mb-3 mt-5">
-                                        <Link to={reservationDataSubpageLink}
-                                              className="linkstyle btn btn-lg btn-secondary btn-block col-md-2 ml-5">
+                                        <Link
+                                            to={reservationDataSubpageLink}
+                                            className="linkstyle btn btn-lg btn-secondary btn-block col-md-2 ml-5"
+                                        >
                                             Back
                                         </Link>
-                                        <button className="btn btn-lg btn-primary btn-block  col-md-2 ml-auto mr-5"
-                                                onClick={this.onClickNext}>Next
+                                        <button
+                                            className="btn btn-lg btn-primary btn-block  col-md-2 ml-auto mr-5"
+                                            onClick={this.onClickNext}
+                                        >
+                                            Next
                                         </button>
                                     </div>
                                 </div>
@@ -120,7 +126,7 @@ export class ReservationCarSelect extends React.Component<ReservationCarSelectPr
                     </form>
                 </div>
             </main>
-        )
+        );
     }
 }
 
