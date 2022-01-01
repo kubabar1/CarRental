@@ -1,0 +1,18 @@
+.card-link {
+    margin-left: 0 !important;
+
+    .card-header {
+        color: #333;
+        cursor: pointer;
+    }
+
+    .card-header:hover {
+        color: #333;
+        cursor: pointer;
+        background-color: #d5d5d5;
+    }
+
+    .header-collapsed {
+        background-color: #d5d5d5;
+    }
+}

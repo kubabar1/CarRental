@@ -39,20 +39,19 @@ export class CarItem extends React.Component<CarItemProperties, CarItemState> {
     }
 
     handleClick = (clicked_id) => {
-        this.setState({selectedCar:clicked_id});
+        this.setState({ selectedCar: clicked_id });
         this.setBrandAndModel(clicked_id);
-    }
+    };
 
     setBrandAndModel = (clicked_id) => {
-        const url="http://localhost:8080/CarRental/carlist/"+clicked_id;
+        const url = 'http://localhost:8080/CarRental/carlist/' + clicked_id;
 
-        fetch(url)
-            .then(response=>{
-                response.json().then(json=>{
-                    this.setState({brandAndModel:(json.brand+" "+json.model)});
-                });
+        fetch(url).then((response) => {
+            response.json().then((json) => {
+                this.setState({ brandAndModel: json.brand + ' ' + json.model });
             });
-    }
+        });
+    };
 
     render(): JSX.Element {
         const vehicle: VehicleResponseDTO = this.props.vehicle;

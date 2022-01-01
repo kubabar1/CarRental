@@ -1,0 +1,26 @@
+.sub-link-container {
+    color: #333;
+    cursor: pointer;
+
+    .sub-link {
+        text-decoration: none;
+        color: #333;
+        cursor: pointer;
+    }
+
+    &.selected-sub-link {
+        font-weight: bold;
+    }
+}
+
+.sub-link:hover {
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+}
+
+.sub-link-container:hover {
+    color: #333;
+    cursor: pointer;
+    background-color: #e6e6e6;
+}

@@ -1,0 +1,11 @@
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+/* Turn off parallax scrolling for tablets and phones. */
+@media only screen and (max-device-width: 1366px) {
+    .parallax {
+        background-attachment: scroll;
+    }
+}
