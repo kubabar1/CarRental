@@ -16,5 +16,6 @@ export const carEquipmentListPath = '/cars/equipment';
 export const equipmentListPath = '/equipments';
 export const settingsPath = '/settings';
 export const userRolesListPath = '/user-roles';
+export const roleAddPath = '/user-roles/add/:userId';
 export const locationsListPath = '/locations';
 export const sendEmailPath = '/emails/send';

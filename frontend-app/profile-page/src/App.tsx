@@ -5,8 +5,18 @@ import { Route, Switch } from 'react-router-dom';
 import { UserResponseDTO } from './model/UserResponseDTO';
 import { getCurrentUserData } from './service/UserService';
 import { SettingsSubpage } from './subpages/settings/SettingsSubpage';
-import { profileRootLink, settingsPath, usersListPath } from './constants/Links';
+import {
+    locationsListPath,
+    profileRootLink,
+    roleAddPath,
+    settingsPath,
+    userRolesListPath,
+    usersListPath,
+} from './constants/Links';
 import { UsersListSubpage } from './subpages/users/UsersListSubpage';
+import { LocationsListSubpage } from './subpages/locations/LocationsListSubpage';
+import { UsersWithRolesListSubpage } from './subpages/users_roles/UsersWithRolesListSubpage';
+import AddRoleSubpage from './subpages/users_roles/AddRoleSubpage';
 
 // import { WelcomeSubpage } from './subpages/WelcomeSubpage/WelcomeSubpage';
 
@@ -37,12 +47,12 @@ export function App(): JSX.Element {
                     {/*<Route path="/CarRental/profile/addcar" component={AddCar} />*/}
                     {/*<Route path="/CarRental/profile/carequipments" component={ShowCarFeatures} />*/}
                     {/*<Route path="/CarRental/profile/equipmentslist" component={FeaturesList} />*/}
-                    {/*<Route path="/CarRental/profile/userroles" component={UsersRoles} />*/}
-                    {/*<Route path="/CarRental/profile/addrole/:user_id" component={AddRole} />*/}
+                    <Route path={roleAddPath} component={AddRoleSubpage} />
+                    <Route path={userRolesListPath} component={UsersWithRolesListSubpage} />
                     {/*<Route path="/CarRental/profile/sendemail" component={SendEmail} />*/}
                     {/*<Route path="/CarRental/profile/senduseremail/:user_id" component={UserEmailContainer} />*/}
                     <Route path={settingsPath} component={SettingsSubpage} />
-                    {/*<Route path="/CarRental/profile/locations" component={Locations} />*/}
+                    <Route path={locationsListPath} component={LocationsListSubpage} />
                 </Switch>
             </div>
         </div>

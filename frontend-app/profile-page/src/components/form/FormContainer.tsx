@@ -1,11 +1,19 @@
 import React, { FormEvent, FormEventHandler } from 'react';
+import { Button } from 'react-bootstrap';
 
 interface FormContainerProperties {
     onSubmit: FormEventHandler<HTMLFormElement>;
+    isSubmitButtonDisabled?: boolean;
+    submitButtonValue?: string;
     children?: React.ReactNode;
 }
 
-export function FormContainer({ children, onSubmit }: FormContainerProperties): JSX.Element {
+export function FormContainer({
+    children,
+    onSubmit,
+    isSubmitButtonDisabled = false,
+    submitButtonValue = 'Update',
+}: FormContainerProperties): JSX.Element {
     return (
         <form
             onSubmit={(event: FormEvent<HTMLFormElement>) => {
@@ -15,7 +23,9 @@ export function FormContainer({ children, onSubmit }: FormContainerProperties): 
         >
             {children}
             <div className="ml-4 my-4 text-center">
-                <input type="submit" value="Update" className="btn btn-primary" />
+                <Button type="submit" disabled={isSubmitButtonDisabled}>
+                    {submitButtonValue}
+                </Button>
             </div>
         </form>
     );

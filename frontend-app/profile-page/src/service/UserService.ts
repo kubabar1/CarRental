@@ -58,8 +58,22 @@ export const getUsersList = (): Promise<UserResponseDTO[]> => {
     ]);
 };
 
+export const getAllUserRoles = (): Promise<UserRoleResponseDTO[]> => {
+    return Promise.all(
+        Object.keys(UserRolesEnum).map(
+            (userRole: string, id: number) => new UserRoleResponseDTO(id.toString(), userRole)
+        )
+    );
+};
+
 export const updateUserSettings = (settingsUpdateDTO: SettingsUpdateDTO): Promise<void> => {
     return new Promise<void>(() => {
         console.log(settingsUpdateDTO);
+    });
+};
+
+export const updateUserRoles = (userRoleId: string, userId: string): Promise<void> => {
+    return new Promise<void>(() => {
+        console.log(`Adding role with ID "${userRoleId}" to user with ID "${userId}"`);
     });
 };

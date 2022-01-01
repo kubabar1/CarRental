@@ -6,8 +6,10 @@ import { SubpageContent } from '../../components/subpage/content/SubpageContent'
 import { getUsersList } from '../../service/UserService';
 import { Column } from 'react-table';
 import { UserResponseDTO } from '../../model/UserResponseDTO';
+import { UserRolesTableItem } from './tab_items/UserRolesTableItem';
+import { AddRoleTableItem } from './tab_items/AddRoleTableItem';
 
-export function UsersListSubpage(): JSX.Element {
+export function UsersWithRolesListSubpage(): JSX.Element {
     const [usersList, setUsersList] = useState<UserResponseDTO[]>([]);
 
     useEffect(() => {
@@ -39,18 +41,12 @@ export function UsersListSubpage(): JSX.Element {
                 accessor: 'email',
             },
             {
-                Header: 'Phone',
-                accessor: 'phone',
+                Header: 'User roles',
+                accessor: UserRolesTableItem,
             },
             {
-                Header: 'Birth date',
-                accessor: (row: UserResponseDTO) => {
-                    return row.birthDate.toLocaleDateString();
-                },
-            },
-            {
-                Header: 'Pesel',
-                accessor: 'pesel',
+                Header: 'Edit',
+                accessor: (user: UserResponseDTO) => AddRoleTableItem(user.id),
             },
         ],
         []
@@ -58,7 +54,7 @@ export function UsersListSubpage(): JSX.Element {
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'Users list'} />
+            <SubpageHeader title={'Users with roles list'} />
             <SubpageContent>
                 <Table<UserResponseDTO> columns={columns} data={usersList} />
             </SubpageContent>
