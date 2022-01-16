@@ -5,7 +5,7 @@ import { SettingsUpdateDTO } from '../model/SettingsUpdateDTO';
 
 export const getCurrentUserData = (): UserResponseDTO => {
     return new UserResponseDTO(
-        '123',
+        '1',
         'Jan',
         'Kowalski',
         'jan123',

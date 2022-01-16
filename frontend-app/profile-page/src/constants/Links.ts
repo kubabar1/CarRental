@@ -6,6 +6,7 @@ export const bookingsListPath = '/bookings/list';
 export const reservedBookingsListPath = '/bookings/reserved';
 export const rentedBookingsListPath = '/bookings/rented';
 export const myBookingsListPath = '/my-bookings/list';
+export const myReservedBookingsListPath = '/my-bookings/reserved';
 export const myRentedBookingsListPath = '/my-bookings/rented';
 export const reservedVehiclesListPath = '/vehicles/reserved';
 export const bookingChangesListPath = '/bookings/changes';

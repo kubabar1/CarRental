@@ -113,3 +113,52 @@ export function addVehicle(vehicleAddDTO: VehiclePersistDTO): Promise<void> {
         console.log(vehicleAddDTO);
     });
 }
+
+export function getUnavailableVehiclesList(): Promise<VehicleResponseDTO[]> {
+    return Promise.all([
+        new VehicleResponseDTO(
+            '2',
+            'Ford',
+            'Mustang',
+            125.99,
+            'FSR1321',
+            'Wrocław, ul. Testowa 11/5',
+            new VehicleStatusResponseDTO(VehicleStatCodeEnum.UAV, 'Unavailable'),
+            true,
+            'sedan',
+            'petrol',
+            230,
+            'manual',
+            false,
+            5,
+            5,
+            'blue',
+            false,
+            'The Ford Mustang is a series of American automobiles manufactured by Ford.',
+            2014,
+            'ford_mustang_example.jpg'
+        ),
+        new VehicleResponseDTO(
+            '3',
+            'Audi',
+            'A4',
+            88.12,
+            'SHE41253',
+            'Poznań, ul. Testowa 22/1',
+            new VehicleStatusResponseDTO(VehicleStatCodeEnum.UAV, 'Unavailable'),
+            false,
+            'sedan',
+            'gasoline',
+            160,
+            'manual',
+            true,
+            5,
+            5,
+            'gray',
+            true,
+            'Audi is a German automotive manufacturer of luxury vehicles.',
+            2012,
+            'ford_mustang_example.jpg'
+        ),
+    ]);
+}

@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Navigation } from './components/nav/Navigation';
-import { WelcomeSubpage } from './subpages/welcome/WelcomeSubpage';
 import { Route, Switch } from 'react-router-dom';
 import { UserResponseDTO } from './model/UserResponseDTO';
 import { getCurrentUserData } from './service/UserService';
-import { SettingsSubpage } from './subpages/settings/SettingsSubpage';
 import {
+    bookingChangesListPath,
+    bookingsListPath,
     equipmentListPath,
     locationsListPath,
+    myBookingsListPath,
+    myRentedBookingsListPath,
+    myReservedBookingsListPath,
     profileRootLink,
+    rentedBookingsListPath,
+    reservedBookingsListPath,
+    reservedVehiclesListPath,
     roleAddPath,
     sendEmailPath,
     sendEmailToUserPath,
@@ -21,6 +27,8 @@ import {
     vehicleEquipmentEditPath,
     vehiclesListPath,
 } from './constants/Links';
+import { WelcomeSubpage } from './subpages/welcome/WelcomeSubpage';
+import { SettingsSubpage } from './subpages/settings/SettingsSubpage';
 import { UsersListSubpage } from './subpages/users/UsersListSubpage';
 import { LocationsListSubpage } from './subpages/locations/LocationsListSubpage';
 import { UsersWithRolesListSubpage } from './subpages/users_roles/UsersWithRolesListSubpage';
@@ -33,6 +41,14 @@ import { VehicleEditSubpage } from './subpages/vehicles/VehicleEditSubpage';
 import { VehicleAddSubpage } from './subpages/vehicles/VehicleAddSubpage';
 import { VehicleEquipmentEditSubpage } from './subpages/vehicles/VehicleEquipmentEditSubpage';
 import { EquipmentListSubpage } from './subpages/vehicles/EquipmentListSubpage';
+import { BookingsListSubpage } from './subpages/booking/BookingsListSubpage';
+import { ReservedBookingsListSubpage } from './subpages/booking/ReservedBookingsListSubpage';
+import { RentedBookingsListSubpage } from './subpages/booking/RentedBookingsListSubpage';
+import { MyBookingsListSubpage } from './subpages/booking/MyBookingsListSubpage';
+import { MyRentedBookingsListSubpage } from './subpages/booking/MyRentedBookingsListSubpage';
+import { ReservedVehiclesListSubpage } from './subpages/booking/ReservedVehiclesListSubpage';
+import { BookingChangesListSubpage } from './subpages/booking/BookingChangesListSubpage';
+import { MyReservedBookingsListSubpage } from './subpages/booking/MyReservedBookingsListSubpage';
 
 export function App(): JSX.Element {
     const [currentUser, setCurrentUserData] = useState<UserResponseDTO | undefined>(undefined);
@@ -48,13 +64,14 @@ export function App(): JSX.Element {
                 <Switch>
                     <Route path={profileRootLink} exact component={WelcomeSubpage} />
 
-                    {/*<Route path="/CarRental/profile/allbookings" exact component={AllBookings} />*/}
-                    {/*<Route path="/CarRental/profile/allreservedvehicles" exact component={AllReservedVehicles} />*/}
-                    {/*<Route path="/CarRental/profile/allrentedvehicles" exact component={AllRentedVehicles} />*/}
-                    {/*<Route path="/CarRental/profile/allmybookings" exact component={MyAllBookings} />*/}
-                    {/*<Route path="/CarRental/profile/myrentedbookings" exact component={MyAllRentedVehicles} />*/}
-                    {/*<Route path="/CarRental/profile/myreservedbookings" exact component={MyAllReservedVehicles} />*/}
-                    {/*<Route path="/CarRental/profile/bookingchanges" exact component={BookingChanges} />*/}
+                    <Route path={bookingsListPath} exact component={BookingsListSubpage} />
+                    <Route path={reservedBookingsListPath} exact component={ReservedBookingsListSubpage} />
+                    <Route path={rentedBookingsListPath} exact component={RentedBookingsListSubpage} />
+                    <Route path={myBookingsListPath} exact component={MyBookingsListSubpage} />
+                    <Route path={myReservedBookingsListPath} exact component={MyReservedBookingsListSubpage} />
+                    <Route path={myRentedBookingsListPath} exact component={MyRentedBookingsListSubpage} />
+                    <Route path={reservedVehiclesListPath} exact component={ReservedVehiclesListSubpage} />
+                    <Route path={bookingChangesListPath} exact component={BookingChangesListSubpage} />
 
                     <Route path={usersListPath} exact component={UsersListSubpage} />
                     <Route path={userEditPath} exact component={UsersEditSubpage} />

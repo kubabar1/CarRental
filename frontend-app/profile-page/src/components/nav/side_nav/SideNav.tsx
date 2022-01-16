@@ -30,6 +30,7 @@ import {
     settingsPath,
     userRolesListPath,
     usersListPath,
+    myReservedBookingsListPath,
 } from '../../../constants/Links';
 import { userHasAnyRole, userHasRole } from '../../../utils/UserUtils';
 import { UserRolesEnum } from '../../../utils/UserRolesEnum';
@@ -62,6 +63,7 @@ export function SideNav({ userRoles = [] }: SideNavProperties): JSX.Element {
                     <></>
                 )}
                 <NavSubLink navItemName={'My bookings list'} linkPath={myBookingsListPath} />
+                <NavSubLink navItemName={'My reserved bookings list'} linkPath={myReservedBookingsListPath} />
                 <NavSubLink navItemName={'My rented bookings list'} linkPath={myRentedBookingsListPath} />
                 <NavSubLink navItemName={'Reserved vehicles list'} linkPath={reservedVehiclesListPath} />
                 {userHasAnyRole(userRoles, [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE]) ? (
@@ -87,7 +89,7 @@ export function SideNav({ userRoles = [] }: SideNavProperties): JSX.Element {
 
             {userHasRole(userRoles, UserRolesEnum.ROLE_ADMIN) && (
                 <NavLink navItemName={'User roles'} iconName={faUserLock}>
-                    <NavSubLink navItemName={'User roles list'} linkPath={userRolesListPath} />
+                    <NavSubLink navItemName={'User with roles'} linkPath={userRolesListPath} />
                 </NavLink>
             )}
 

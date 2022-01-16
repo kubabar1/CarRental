@@ -57,8 +57,6 @@ export function VehicleEquipmentEditSubpage(): JSX.Element {
             <SubpageContent>
                 <h5 className={'mb-4 font-weight-bold'}>Vehicle details</h5>
                 {vehicleResponseDTO && <VehicleDetails vehicleResponseDTO={vehicleResponseDTO} />}
-                <h5 className={'mt-4 mb-4 font-weight-bold'}>Vehicle equipment</h5>
-                {vehicleEquipments && <Table<EquipmentResponseDTO> columns={columns} data={vehicleEquipments} />}
                 <h5 className={'mt-4 mb-4 font-weight-bold'}>Vehicle add equipment</h5>
                 {vehicleEquipments && (
                     <VehicleAddEquipment
@@ -67,6 +65,8 @@ export function VehicleEquipmentEditSubpage(): JSX.Element {
                         setVehicleEquipments={setVehicleEquipments}
                     />
                 )}
+                <h5 className={'mt-4 mb-4 font-weight-bold'}>Vehicle equipment</h5>
+                {vehicleEquipments && <Table<EquipmentResponseDTO> columns={columns} data={vehicleEquipments} />}
             </SubpageContent>
         </SubpageContainer>
     );

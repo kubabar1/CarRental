@@ -23,15 +23,15 @@ export function LocationsListSubpage(): JSX.Element {
                 accessor: 'id',
             },
             {
-                Header: 'User name',
+                Header: 'Country',
                 accessor: 'country',
             },
             {
-                Header: 'User surname',
+                Header: 'City',
                 accessor: 'city',
             },
             {
-                Header: 'User login',
+                Header: 'Address',
                 accessor: 'address',
             },
             {
