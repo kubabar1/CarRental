@@ -5,10 +5,10 @@ import { SubpageContainer } from '../../components/subpage/container/SubpageCont
 import { UserRoleResponseDTO } from '../../model/UserRoleResponseDTO';
 import { getAllUserRoles, updateUserRoles } from '../../service/UserService';
 import { FormContainer } from '../../components/form/FormContainer';
-import { useHistory, useParams, withRouter } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { userRolesListPath } from '../../constants/Links';
 
-function AddRoleSubpage(): JSX.Element {
+export function AddRoleSubpage(): JSX.Element {
     const history = useHistory();
     const { userId } = useParams<{ userId: string }>();
     const [userRoles, setUserRoles] = useState<UserRoleResponseDTO[]>([]);
@@ -54,5 +54,3 @@ function AddRoleSubpage(): JSX.Element {
         </SubpageContainer>
     );
 }
-
-export default withRouter(AddRoleSubpage);

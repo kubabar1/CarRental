@@ -7,7 +7,7 @@ import { getUsersList } from '../../service/UserService';
 import { Column } from 'react-table';
 import { UserResponseDTO } from '../../model/UserResponseDTO';
 import { UserRolesTableItem } from './tab_items/UserRolesTableItem';
-import { AddRoleTableItem } from './tab_items/AddRoleTableItem';
+import { ButtonTableItem } from '../../components/table/tab_items/ButtonTableItem';
 
 export function UsersWithRolesListSubpage(): JSX.Element {
     const [usersList, setUsersList] = useState<UserResponseDTO[]>([]);
@@ -21,7 +21,7 @@ export function UsersWithRolesListSubpage(): JSX.Element {
     const columns = React.useMemo<Column<UserResponseDTO>[]>(
         () => [
             {
-                Header: 'User ID',
+                Header: 'ID',
                 accessor: 'id',
             },
             {
@@ -46,7 +46,8 @@ export function UsersWithRolesListSubpage(): JSX.Element {
             },
             {
                 Header: 'Edit',
-                accessor: (user: UserResponseDTO) => AddRoleTableItem(user.id),
+                accessor: (user: UserResponseDTO) =>
+                    ButtonTableItem('+ Add role', `/user-roles/add/${user.id}`, 'success'),
             },
         ],
         []

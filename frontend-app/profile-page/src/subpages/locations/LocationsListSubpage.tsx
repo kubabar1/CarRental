@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { UserResponseDTO } from '../../model/UserResponseDTO';
 import { getLocationsList } from '../../service/LocationService';
 import { Column } from 'react-table';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
@@ -20,7 +19,7 @@ export function LocationsListSubpage(): JSX.Element {
     const columns = React.useMemo<Column<LocationResponseDTO>[]>(
         () => [
             {
-                Header: 'User ID',
+                Header: 'ID',
                 accessor: 'id',
             },
             {

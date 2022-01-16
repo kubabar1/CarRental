@@ -12,21 +12,27 @@ export function Table<T extends object>({ columns, data }: TableOptions<T>): JSX
     return (
         <BTable striped bordered hover size="sm" {...getTableProps()}>
             <thead>
-                {headerGroups.map((headerGroup) => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                        {headerGroup.headers.map((column) => (
-                            <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                {headerGroups.map((headerGroup, headerGroupIdx) => (
+                    <tr {...headerGroup.getHeaderGroupProps()} key={headerGroupIdx}>
+                        {headerGroup.headers.map((column, columnIdx) => (
+                            <th {...column.getHeaderProps()} key={columnIdx}>
+                                {column.render('Header')}
+                            </th>
                         ))}
                     </tr>
                 ))}
             </thead>
             <tbody>
-                {rows.map((row) => {
+                {rows.map((row, rowIdx) => {
                     prepareRow(row);
                     return (
-                        <tr {...row.getRowProps()}>
-                            {row.cells.map((cell) => {
-                                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+                        <tr {...row.getRowProps()} key={rowIdx}>
+                            {row.cells.map((cell, cellIdx) => {
+                                return (
+                                    <td {...cell.getCellProps()} key={cellIdx}>
+                                        {cell.render('Cell')}
+                                    </td>
+                                );
                             })}
                         </tr>
                     );

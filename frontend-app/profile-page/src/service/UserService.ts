@@ -17,6 +17,20 @@ export const getCurrentUserData = (): UserResponseDTO => {
     );
 };
 
+export const getUserById = (userId: string): UserResponseDTO => {
+    return new UserResponseDTO(
+        userId,
+        'Adam',
+        'Nowak',
+        'adam123',
+        'adam@test.com',
+        '11332',
+        new Date('Jul 19, 1991'),
+        '22222222222',
+        [new UserRoleResponseDTO('2', UserRolesEnum.ROLE_OFFICE_EMPLOYEE)]
+    );
+};
+
 export const getUsersList = (): Promise<UserResponseDTO[]> => {
     return Promise.all([
         new UserResponseDTO(
@@ -66,8 +80,9 @@ export const getAllUserRoles = (): Promise<UserRoleResponseDTO[]> => {
     );
 };
 
-export const updateUserSettings = (settingsUpdateDTO: SettingsUpdateDTO): Promise<void> => {
+export const updateUserSettings = (userId: string, settingsUpdateDTO: SettingsUpdateDTO): Promise<void> => {
     return new Promise<void>(() => {
+        console.log(userId);
         console.log(settingsUpdateDTO);
     });
 };

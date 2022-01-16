@@ -1,0 +1,24 @@
+.vehicle-details {
+    .vehicle-details-container {
+        overflow: hidden;
+        height: 200px;
+
+        .vehicle-details-item-image {
+            float: left;
+
+            .vehicle-details-image {
+                max-width: 350px;
+                max-height: 200px;
+            }
+        }
+
+        .vehicle-details-item-text {
+            float: left;
+            margin-left: 50px;
+        }
+    }
+
+    .vehicle-details-container > div {
+        flex: 50%;
+    }
+}

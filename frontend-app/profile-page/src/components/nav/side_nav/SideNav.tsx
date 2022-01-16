@@ -15,9 +15,8 @@ import {
 import {
     bookingChangesListPath,
     bookingsListPath,
-    carAddPath,
-    carEquipmentListPath,
-    carsListPath,
+    vehicleAddPath,
+    vehiclesListPath,
     equipmentListPath,
     homeLink,
     locationsListPath,
@@ -79,10 +78,9 @@ export function SideNav({ userRoles = [] }: SideNavProperties): JSX.Element {
             )}
 
             {userHasAnyRole(userRoles, [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE]) && (
-                <NavLink navItemName={'Cars'} iconName={faCar}>
-                    <NavSubLink navItemName={'Cars list'} linkPath={carsListPath} />
-                    <NavSubLink navItemName={'Add car'} linkPath={carAddPath} />
-                    <NavSubLink navItemName={'Car equipment list'} linkPath={carEquipmentListPath} />
+                <NavLink navItemName={'Vehicles'} iconName={faCar}>
+                    <NavSubLink navItemName={'Vehicles list'} linkPath={vehiclesListPath} />
+                    <NavSubLink navItemName={'Add vehicle'} linkPath={vehicleAddPath} />
                     <NavSubLink navItemName={'Equipment list'} linkPath={equipmentListPath} />
                 </NavLink>
             )}
@@ -107,7 +105,7 @@ export function SideNav({ userRoles = [] }: SideNavProperties): JSX.Element {
                 </NavLink>
             )}
 
-            <NavLink navItemName={'Settings'} iconName={faCog} linkPath={settingsPath} />
+            <NavLink navItemName={'Settings'} iconName={faCog} linkPath={settingsPath} disableRefresh={true} />
 
             <NavLink navItemName={'Home'} iconName={faHome} linkPath={homeLink} />
 

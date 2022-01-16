@@ -1,0 +1,11 @@
+.input-form-group-container {
+    .checkbox-input-container {
+        display: flex;
+        align-items: center;
+
+        input {
+            height: 20px;
+            width: 20px;
+        }
+    }
+}

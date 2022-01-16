@@ -6,19 +6,33 @@ import { UserResponseDTO } from './model/UserResponseDTO';
 import { getCurrentUserData } from './service/UserService';
 import { SettingsSubpage } from './subpages/settings/SettingsSubpage';
 import {
+    equipmentListPath,
     locationsListPath,
     profileRootLink,
     roleAddPath,
+    sendEmailPath,
+    sendEmailToUserPath,
     settingsPath,
+    userEditPath,
     userRolesListPath,
     usersListPath,
+    vehicleAddPath,
+    vehicleEditPath,
+    vehicleEquipmentEditPath,
+    vehiclesListPath,
 } from './constants/Links';
 import { UsersListSubpage } from './subpages/users/UsersListSubpage';
 import { LocationsListSubpage } from './subpages/locations/LocationsListSubpage';
 import { UsersWithRolesListSubpage } from './subpages/users_roles/UsersWithRolesListSubpage';
-import AddRoleSubpage from './subpages/users_roles/AddRoleSubpage';
-
-// import { WelcomeSubpage } from './subpages/WelcomeSubpage/WelcomeSubpage';
+import { AddRoleSubpage } from './subpages/users_roles/AddRoleSubpage';
+import { EmailSubpage } from './subpages/emails/EmailSubpage';
+import { UsersEmailSubpage } from './subpages/emails/UsersEmailSubpage';
+import { UsersEditSubpage } from './subpages/users/UserEditSubpage';
+import { VehicleListSubpage } from './subpages/vehicles/VehicleListSubpage';
+import { VehicleEditSubpage } from './subpages/vehicles/VehicleEditSubpage';
+import { VehicleAddSubpage } from './subpages/vehicles/VehicleAddSubpage';
+import { VehicleEquipmentEditSubpage } from './subpages/vehicles/VehicleEquipmentEditSubpage';
+import { EquipmentListSubpage } from './subpages/vehicles/EquipmentListSubpage';
 
 export function App(): JSX.Element {
     const [currentUser, setCurrentUserData] = useState<UserResponseDTO | undefined>(undefined);
@@ -32,27 +46,34 @@ export function App(): JSX.Element {
             <div className="row">
                 {currentUser && <Navigation currentUser={currentUser} />}
                 <Switch>
-                    <Route exact path={profileRootLink} component={WelcomeSubpage} />
-                    {/*<Route path="/CarRental/profile/allbookings" component={AllBookings} />*/}
-                    {/*<Route path="/CarRental/profile/allreservedvehicles" component={AllReservedVehicles} />*/}
-                    {/*<Route path="/CarRental/profile/allrentedvehicles" component={AllRentedVehicles} />*/}
-                    {/*<Route path="/CarRental/profile/allmybookings" component={MyAllBookings} />*/}
-                    {/*<Route path="/CarRental/profile/bookingchanges" component={BookingChanges} />*/}
-                    {/*<Route path="/CarRental/profile/myreservedbookings" component={MyAllReservedVehicles} />*/}
-                    {/*<Route path="/CarRental/profile/myrentedbookings" component={MyAllRentedVehicles} />*/}
-                    <Route path={usersListPath} component={UsersListSubpage} />
-                    {/*<Route path="/CarRental/profile/edituser/:user_id" component={EditUser} />*/}
-                    {/*<Route path="/CarRental/profile/carslist" component={CarList} />*/}
-                    {/*<Route path="/CarRental/profile/editcar/:car_id" component={EditCar} />*/}
-                    {/*<Route path="/CarRental/profile/addcar" component={AddCar} />*/}
-                    {/*<Route path="/CarRental/profile/carequipments" component={ShowCarFeatures} />*/}
-                    {/*<Route path="/CarRental/profile/equipmentslist" component={FeaturesList} />*/}
+                    <Route path={profileRootLink} exact component={WelcomeSubpage} />
+
+                    {/*<Route path="/CarRental/profile/allbookings" exact component={AllBookings} />*/}
+                    {/*<Route path="/CarRental/profile/allreservedvehicles" exact component={AllReservedVehicles} />*/}
+                    {/*<Route path="/CarRental/profile/allrentedvehicles" exact component={AllRentedVehicles} />*/}
+                    {/*<Route path="/CarRental/profile/allmybookings" exact component={MyAllBookings} />*/}
+                    {/*<Route path="/CarRental/profile/myrentedbookings" exact component={MyAllRentedVehicles} />*/}
+                    {/*<Route path="/CarRental/profile/myreservedbookings" exact component={MyAllReservedVehicles} />*/}
+                    {/*<Route path="/CarRental/profile/bookingchanges" exact component={BookingChanges} />*/}
+
+                    <Route path={usersListPath} exact component={UsersListSubpage} />
+                    <Route path={userEditPath} exact component={UsersEditSubpage} />
+
+                    <Route path={vehiclesListPath} exact component={VehicleListSubpage} />
+                    <Route path={vehicleEditPath} exact component={VehicleEditSubpage} />
+                    <Route path={vehicleEquipmentEditPath} exact component={VehicleEquipmentEditSubpage} />
+                    <Route path={vehicleAddPath} exact component={VehicleAddSubpage} />
+                    <Route path={equipmentListPath} exact component={EquipmentListSubpage} />
+
+                    <Route path={userRolesListPath} exact component={UsersWithRolesListSubpage} />
                     <Route path={roleAddPath} component={AddRoleSubpage} />
-                    <Route path={userRolesListPath} component={UsersWithRolesListSubpage} />
-                    {/*<Route path="/CarRental/profile/sendemail" component={SendEmail} />*/}
-                    {/*<Route path="/CarRental/profile/senduseremail/:user_id" component={UserEmailContainer} />*/}
-                    <Route path={settingsPath} component={SettingsSubpage} />
-                    <Route path={locationsListPath} component={LocationsListSubpage} />
+
+                    <Route path={locationsListPath} exact component={LocationsListSubpage} />
+
+                    <Route path={sendEmailPath} exact component={UsersEmailSubpage} />
+                    <Route path={sendEmailToUserPath} component={EmailSubpage} />
+
+                    <Route path={settingsPath} exact component={SettingsSubpage} />
                 </Switch>
             </div>
         </div>

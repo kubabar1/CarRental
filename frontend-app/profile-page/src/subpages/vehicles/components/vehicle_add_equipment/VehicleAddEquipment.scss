@@ -1,0 +1,17 @@
+.vehicle-add-equipment-container {
+    margin-bottom: 100px;
+
+    .select-container {
+        float: left;
+        width: 90%;
+    }
+
+    .add-button-container {
+        float: right;
+        width: 7%;
+
+        button {
+            width: 100%;
+        }
+    }
+}

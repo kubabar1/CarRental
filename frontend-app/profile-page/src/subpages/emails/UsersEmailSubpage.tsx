@@ -8,7 +8,7 @@ import { Column } from 'react-table';
 import { UserResponseDTO } from '../../model/UserResponseDTO';
 import { ButtonTableItem } from '../../components/table/tab_items/ButtonTableItem';
 
-export function UsersListSubpage(): JSX.Element {
+export function UsersEmailSubpage(): JSX.Element {
     const [usersList, setUsersList] = useState<UserResponseDTO[]>([]);
 
     useEffect(() => {
@@ -20,7 +20,7 @@ export function UsersListSubpage(): JSX.Element {
     const columns = React.useMemo<Column<UserResponseDTO>[]>(
         () => [
             {
-                Header: 'ID',
+                Header: 'User ID',
                 accessor: 'id',
             },
             {
@@ -40,22 +40,8 @@ export function UsersListSubpage(): JSX.Element {
                 accessor: 'email',
             },
             {
-                Header: 'Phone',
-                accessor: 'phone',
-            },
-            {
-                Header: 'Birth date',
-                accessor: (row: UserResponseDTO) => {
-                    return row.birthDate.toLocaleDateString();
-                },
-            },
-            {
-                Header: 'Pesel',
-                accessor: 'pesel',
-            },
-            {
-                Header: 'Edit',
-                accessor: (user: UserResponseDTO) => ButtonTableItem('Edit', `/users/${user.id}/edit`, 'success'),
+                Header: 'Action',
+                accessor: (user: UserResponseDTO) => ButtonTableItem('Send email', `/email-send/${user.id}`, 'success'),
             },
         ],
         []
@@ -63,7 +49,7 @@ export function UsersListSubpage(): JSX.Element {
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'Users list'} />
+            <SubpageHeader title={'Send email - user list'} />
             <SubpageContent>
                 <Table<UserResponseDTO> columns={columns} data={usersList} />
             </SubpageContent>

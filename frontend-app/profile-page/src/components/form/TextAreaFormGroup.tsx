@@ -1,34 +1,37 @@
-import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import React, { ChangeEvent } from 'react';
 
 interface FormGroupProperties {
     label: string;
     name: string;
-    value: string | ReadonlyArray<string> | number;
-    onChange: Dispatch<SetStateAction<string>>;
-    type?: string;
+    value?: string;
+    onChange: (event: ChangeEvent<HTMLTextAreaElement>) => void;
     isDisabled?: boolean;
+    required?: boolean;
+    rows?: number;
 }
 
-export function FormGroup({
+export function TextAreaFormGroup({
     name,
     label,
     value,
     onChange,
-    type,
     isDisabled = false,
+    required = false,
+    rows = 8,
 }: FormGroupProperties): JSX.Element {
     return (
         <div className="form-group">
             <div className="row">
                 <label className="ml-5 mt-4 col-md-2">{label}</label>
-                <div className="ml-4 mt-3 col-md-3">
-                    <input
-                        type={type ? type : 'text'}
+                <div className="ml-4 mt-3 col-md-8">
+                    <textarea
+                        rows={rows}
                         disabled={isDisabled}
                         className="form-control"
                         name={name}
                         value={value}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => onChange(event.target.value)}
+                        onChange={(event: ChangeEvent<HTMLTextAreaElement>) => onChange(event)}
+                        required={required}
                     />
                 </div>
             </div>

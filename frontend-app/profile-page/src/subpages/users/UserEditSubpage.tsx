@@ -3,31 +3,36 @@ import { SubpageContainer } from '../../components/subpage/container/SubpageCont
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { InputFormGroup } from '../../components/form/InputFormGroup';
-import { getCurrentUserData, updateUserSettings } from '../../service/UserService';
+import { getUserById, updateUserSettings } from '../../service/UserService';
 import { UserResponseDTO } from '../../model/UserResponseDTO';
 import { FormContainer } from '../../components/form/FormContainer';
 import { SettingsUpdateDTO } from '../../model/SettingsUpdateDTO';
+import { useHistory, useParams } from 'react-router-dom';
+import { usersListPath } from '../../constants/Links';
 
-export function SettingsSubpage(): JSX.Element {
-    const currentUser: UserResponseDTO = getCurrentUserData();
-    const [userLogin, setUserLogin] = useState<string>(currentUser.login);
-    const [name, setName] = useState<string>(currentUser.name);
-    const [surname, setSurname] = useState<string>(currentUser.surname);
-    const [email, setEmail] = useState<string>(currentUser.email);
-    const [phone, setPhone] = useState<string>(currentUser.phone);
-    const [pesel, setPesel] = useState<string>(currentUser.pesel);
-    const [birthDate, setBirthDate] = useState<string>(currentUser.birthDate.toISOString().slice(0, 10));
+export function UsersEditSubpage(): JSX.Element {
+    const history = useHistory();
+    const { userId } = useParams<{ userId: string }>();
+    const editedUser: UserResponseDTO = getUserById(userId);
+    const [userLogin, setUserLogin] = useState<string>(editedUser.login);
+    const [name, setName] = useState<string>(editedUser.name);
+    const [surname, setSurname] = useState<string>(editedUser.surname);
+    const [email, setEmail] = useState<string>(editedUser.email);
+    const [phone, setPhone] = useState<string>(editedUser.phone);
+    const [pesel, setPesel] = useState<string>(editedUser.pesel);
+    const [birthDate, setBirthDate] = useState<string>(editedUser.birthDate.toISOString().slice(0, 10));
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'Settings'} />
+            <SubpageHeader title={'Edit user'} />
             <SubpageContent>
                 <FormContainer
                     onSubmit={() => {
                         updateUserSettings(
-                            currentUser.id,
+                            userId,
                             new SettingsUpdateDTO(userLogin, name, surname, email, phone, pesel, birthDate)
                         );
+                        history.push(usersListPath);
                     }}
                 >
                     <InputFormGroup
