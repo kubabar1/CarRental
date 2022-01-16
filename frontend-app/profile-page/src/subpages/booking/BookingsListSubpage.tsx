@@ -6,7 +6,7 @@ import { SubpageContent } from '../../components/subpage/content/SubpageContent'
 import { Column } from 'react-table';
 import { BookingResponseDTO } from '../../model/BookingResponseDTO';
 import { getBookingsList } from '../../service/BookingService';
-import { DownloadButton } from './download_button/DownloadButton';
+import { GenerateReport } from './download_button/GenerateReport';
 
 export function BookingsListSubpage(): JSX.Element {
     const [bookingsList, setBookingList] = useState<BookingResponseDTO[]>([]);
@@ -67,7 +67,7 @@ export function BookingsListSubpage(): JSX.Element {
         <SubpageContainer>
             <SubpageHeader title={'Bookings list'} />
             <SubpageContent>
-                <DownloadButton />
+                <GenerateReport />
                 <Table<BookingResponseDTO> columns={columns} data={bookingsList} />
             </SubpageContent>
         </SubpageContainer>

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import './DownloadButton.scss';
+import './GenerateReport.scss';
 
-export const DownloadButton = (): JSX.Element => {
+export const GenerateReport = (): JSX.Element => {
     return (
         <div className={'download-file-container'}>
-            <Button>Download file</Button>
+            <Button>Generate report</Button>
         </div>
     );
 };
