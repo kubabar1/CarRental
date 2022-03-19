@@ -31,12 +31,6 @@ test {
 }
 
 node {
-    // version = '0.11.10'
-    // yarnVersion = '0.16.1'
-    // distBaseUrl = 'https://nodejs.org/dist'
-    // If false, it will try to use globally installed node.
-    // download = false
     workDir = file(".gradle/nodejs")
     yarnWorkDir = file(".gradle/yarn")
-    // nodeModulesDir = file("${project.projectDir}")
 }

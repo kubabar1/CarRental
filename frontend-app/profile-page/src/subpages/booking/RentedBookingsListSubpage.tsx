@@ -5,14 +5,14 @@ import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Column } from 'react-table';
 import { BookingResponseDTO } from '../../model/BookingResponseDTO';
-import { getRentedBookingsList, returnBooking } from '../../service/BookingService';
+import { getAllRentedBookingsList, returnBooking } from '../../service/BookingAdminService';
 import { ButtonTableItem } from '../../components/table/tab_items/ButtonTableItem';
 
 export function RentedBookingsListSubpage(): JSX.Element {
     const [bookingsList, setBookingList] = useState<BookingResponseDTO[]>([]);
 
     useEffect(() => {
-        getRentedBookingsList().then((bookingsListResponse: BookingResponseDTO[]) => {
+        getAllRentedBookingsList().then((bookingsListResponse: BookingResponseDTO[]) => {
             setBookingList(bookingsListResponse);
         });
     }, []);
@@ -34,19 +34,19 @@ export function RentedBookingsListSubpage(): JSX.Element {
             {
                 Header: 'Receipt date',
                 accessor: (row: BookingResponseDTO) => {
-                    return row.receiptDate.toLocaleDateString();
+                    return row.receiptDate;
                 },
             },
             {
                 Header: 'Return date',
                 accessor: (row: BookingResponseDTO) => {
-                    return row.returnDate.toLocaleDateString();
+                    return row.returnDate;
                 },
             },
             {
                 Header: 'Location',
                 accessor: (row: BookingResponseDTO) => {
-                    return `${row.location.country}, ${row.location.city}, ${row.location.address}`;
+                    return `${row.location.country}, ${row.location.city}, ${row.location.streetAndNb}`;
                 },
             },
             {
@@ -63,9 +63,10 @@ export function RentedBookingsListSubpage(): JSX.Element {
                 Header: 'Return',
                 accessor: (row: BookingResponseDTO) =>
                     ButtonTableItem('Return', undefined, 'success', () => {
-                        returnBooking(row.id);
-                        getRentedBookingsList().then((bookingsListResponse: BookingResponseDTO[]) => {
-                            setBookingList(bookingsListResponse);
+                        returnBooking(row.id).then(() => {
+                            getAllRentedBookingsList().then((bookingsListResponse: BookingResponseDTO[]) => {
+                                setBookingList(bookingsListResponse);
+                            });
                         });
                     }),
             },

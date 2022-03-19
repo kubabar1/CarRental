@@ -65,7 +65,6 @@ export function SideNav({ userRoles = [] }: SideNavProperties): JSX.Element {
                 <NavSubLink navItemName={'My bookings list'} linkPath={myBookingsListPath} />
                 <NavSubLink navItemName={'My reserved bookings list'} linkPath={myReservedBookingsListPath} />
                 <NavSubLink navItemName={'My rented bookings list'} linkPath={myRentedBookingsListPath} />
-                <NavSubLink navItemName={'Reserved vehicles list'} linkPath={reservedVehiclesListPath} />
                 {userHasAnyRole(userRoles, [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE]) ? (
                     <NavSubLink navItemName={'Booking changes list'} linkPath={bookingChangesListPath} />
                 ) : (
@@ -82,6 +81,7 @@ export function SideNav({ userRoles = [] }: SideNavProperties): JSX.Element {
             {userHasAnyRole(userRoles, [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE]) && (
                 <NavLink navItemName={'Vehicles'} iconName={faCar}>
                     <NavSubLink navItemName={'Vehicles list'} linkPath={vehiclesListPath} />
+                    <NavSubLink navItemName={'Reserved vehicles list'} linkPath={reservedVehiclesListPath} />
                     <NavSubLink navItemName={'Add vehicle'} linkPath={vehicleAddPath} />
                     <NavSubLink navItemName={'Equipment list'} linkPath={equipmentListPath} />
                 </NavLink>

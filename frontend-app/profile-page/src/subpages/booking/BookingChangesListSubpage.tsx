@@ -4,8 +4,8 @@ import { SubpageContainer } from '../../components/subpage/container/SubpageCont
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Column } from 'react-table';
-import { getBookingChangesList } from '../../service/BookingService';
 import { BookingChangeResponseDTO } from '../../model/BookingChangeResponseDTO';
+import { getBookingChangesList } from '../../service/BookingChangesService';
 
 export function BookingChangesListSubpage(): JSX.Element {
     const [bookingChangesList, setBookingChangesList] = useState<BookingChangeResponseDTO[]>([]);
@@ -31,8 +31,8 @@ export function BookingChangesListSubpage(): JSX.Element {
                 accessor: 'changeDate',
             },
             {
-                Header: 'User login',
-                accessor: 'userLogin',
+                Header: 'User ID',
+                accessor: 'userId',
             },
             {
                 Header: 'IP address',

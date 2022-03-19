@@ -5,14 +5,13 @@ import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Column } from 'react-table';
 import { BookingResponseDTO } from '../../model/BookingResponseDTO';
-import { getCurrentUserBookingsList } from '../../service/BookingService';
-import { getCurrentUserData } from '../../service/UserService';
+import { getAuthenticatedUserBookingsList } from '../../service/BookingUserService';
 
 export function MyBookingsListSubpage(): JSX.Element {
     const [bookingsList, setBookingList] = useState<BookingResponseDTO[]>([]);
 
     useEffect(() => {
-        getCurrentUserBookingsList(getCurrentUserData().id).then((bookingsListResponse: BookingResponseDTO[]) => {
+        getAuthenticatedUserBookingsList().then((bookingsListResponse: BookingResponseDTO[]) => {
             setBookingList(bookingsListResponse);
         });
     }, []);
@@ -34,19 +33,19 @@ export function MyBookingsListSubpage(): JSX.Element {
             {
                 Header: 'Receipt date',
                 accessor: (row: BookingResponseDTO) => {
-                    return row.receiptDate.toLocaleDateString();
+                    return row.receiptDate;
                 },
             },
             {
                 Header: 'Return date',
                 accessor: (row: BookingResponseDTO) => {
-                    return row.returnDate.toLocaleDateString();
+                    return row.returnDate;
                 },
             },
             {
                 Header: 'Location',
                 accessor: (row: BookingResponseDTO) => {
-                    return `${row.location.country}, ${row.location.city}, ${row.location.address}`;
+                    return `${row.location.country}, ${row.location.city}, ${row.location.streetAndNb}`;
                 },
             },
             {

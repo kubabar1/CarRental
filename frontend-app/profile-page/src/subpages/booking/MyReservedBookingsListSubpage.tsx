@@ -5,19 +5,19 @@ import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Column } from 'react-table';
 import { BookingResponseDTO } from '../../model/BookingResponseDTO';
-import { cancelCurrentUserBooking, getCurrentUserReservedBookingsList } from '../../service/BookingService';
 import { ButtonTableItem } from '../../components/table/tab_items/ButtonTableItem';
-import { getCurrentUserData } from '../../service/UserService';
+import {
+    cancelAuthorizedUserBooking,
+    getAuthenticatedUserReservedBookingsList,
+} from '../../service/BookingUserService';
 
 export function MyReservedBookingsListSubpage(): JSX.Element {
     const [bookingsList, setBookingList] = useState<BookingResponseDTO[]>([]);
 
     useEffect(() => {
-        getCurrentUserReservedBookingsList(getCurrentUserData().id).then(
-            (bookingsListResponse: BookingResponseDTO[]) => {
-                setBookingList(bookingsListResponse);
-            }
-        );
+        getAuthenticatedUserReservedBookingsList().then((bookingsListResponse: BookingResponseDTO[]) => {
+            setBookingList(bookingsListResponse);
+        });
     }, []);
 
     const columns = React.useMemo<Column<BookingResponseDTO>[]>(
@@ -37,19 +37,19 @@ export function MyReservedBookingsListSubpage(): JSX.Element {
             {
                 Header: 'Receipt date',
                 accessor: (row: BookingResponseDTO) => {
-                    return row.receiptDate.toLocaleDateString();
+                    return row.receiptDate;
                 },
             },
             {
                 Header: 'Return date',
                 accessor: (row: BookingResponseDTO) => {
-                    return row.returnDate.toLocaleDateString();
+                    return row.returnDate;
                 },
             },
             {
                 Header: 'Location',
                 accessor: (row: BookingResponseDTO) => {
-                    return `${row.location.country}, ${row.location.city}, ${row.location.address}`;
+                    return `${row.location.country}, ${row.location.city}, ${row.location.streetAndNb}`;
                 },
             },
             {
@@ -66,8 +66,8 @@ export function MyReservedBookingsListSubpage(): JSX.Element {
                 Header: 'Cancel',
                 accessor: (row: BookingResponseDTO) =>
                     ButtonTableItem('Cancel', undefined, 'danger', () => {
-                        cancelCurrentUserBooking(row.id);
-                        getCurrentUserReservedBookingsList(getCurrentUserData().id).then(
+                        cancelAuthorizedUserBooking(row.id);
+                        getAuthenticatedUserReservedBookingsList().then(
                             (bookingsListResponse: BookingResponseDTO[]) => {
                                 setBookingList(bookingsListResponse);
                             }

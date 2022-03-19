@@ -5,8 +5,8 @@ export class BookingResponseDTO {
     id: string;
     userId: string;
     vehicleId: string;
-    receiptDate: Date;
-    returnDate: Date;
+    receiptDate: string;
+    returnDate: string;
     location: LocationResponseDTO;
     bookingState: BookingStateDTO;
     totalCost: number;
@@ -15,8 +15,8 @@ export class BookingResponseDTO {
         id: string,
         userId: string,
         vehicleId: string,
-        receiptDate: Date,
-        returnDate: Date,
+        receiptDate: string,
+        returnDate: string,
         location: LocationResponseDTO,
         bookingState: BookingStateDTO,
         totalCost: number

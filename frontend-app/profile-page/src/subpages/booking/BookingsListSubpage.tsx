@@ -5,14 +5,13 @@ import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Column } from 'react-table';
 import { BookingResponseDTO } from '../../model/BookingResponseDTO';
-import { getBookingsList } from '../../service/BookingService';
-import { GenerateReport } from './download_button/GenerateReport';
+import { getAllBookingsList } from '../../service/BookingAdminService';
 
 export function BookingsListSubpage(): JSX.Element {
     const [bookingsList, setBookingList] = useState<BookingResponseDTO[]>([]);
 
     useEffect(() => {
-        getBookingsList().then((bookingsListResponse: BookingResponseDTO[]) => {
+        getAllBookingsList().then((bookingsListResponse: BookingResponseDTO[]) => {
             setBookingList(bookingsListResponse);
         });
     }, []);
@@ -34,19 +33,19 @@ export function BookingsListSubpage(): JSX.Element {
             {
                 Header: 'Receipt date',
                 accessor: (row: BookingResponseDTO) => {
-                    return row.receiptDate.toLocaleDateString();
+                    return row.receiptDate;
                 },
             },
             {
                 Header: 'Return date',
                 accessor: (row: BookingResponseDTO) => {
-                    return row.returnDate.toLocaleDateString();
+                    return row.returnDate;
                 },
             },
             {
                 Header: 'Location',
                 accessor: (row: BookingResponseDTO) => {
-                    return `${row.location.country}, ${row.location.city}, ${row.location.address}`;
+                    return `${row.location.country}, ${row.location.city}, ${row.location.streetAndNb}`;
                 },
             },
             {
@@ -67,7 +66,7 @@ export function BookingsListSubpage(): JSX.Element {
         <SubpageContainer>
             <SubpageHeader title={'Bookings list'} />
             <SubpageContent>
-                <GenerateReport />
+                {/*<GenerateReport />*/}
                 <Table<BookingResponseDTO> columns={columns} data={bookingsList} />
             </SubpageContent>
         </SubpageContainer>

@@ -9,7 +9,7 @@ interface NavContainerProperties {
 }
 
 export const Navigation = ({ currentUser }: NavContainerProperties): JSX.Element => (
-    <div className="col-md-3 px-0">
+    <div className="col-md-4 col-lg-3 col-xl-2 px-0">
         <div id="accordion">
             <UserData currentUser={currentUser} />
             <SideNav userRoles={mapUserRolesDtoToStringArray(currentUser.userRoles)} />

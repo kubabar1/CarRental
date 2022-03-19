@@ -32,7 +32,7 @@ export function LocationsListSubpage(): JSX.Element {
             },
             {
                 Header: 'Address',
-                accessor: 'address',
+                accessor: 'streetAndNb',
             },
             {
                 Header: 'Email',

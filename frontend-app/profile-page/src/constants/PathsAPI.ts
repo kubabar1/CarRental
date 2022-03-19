@@ -1,13 +1,39 @@
-export const protocol = 'http';
+const PROTOCOL = 'http';
 
-export const host = 'localhost';
+const HOST = 'localhost';
 
-export const port = 8080;
+const PORT = 8080;
 
-export const context = '/CarRental';
+const CONTEXT = '';
 
-export const appAddr: string = protocol + '://' + host + ':' + port + context;
+const APP_ADDR = `${PROTOCOL}://${HOST}:${PORT}${CONTEXT}`;
 
-export const endpoints = {
-    homeEndpoint: appAddr + '/',
+const ADMIN_PATH = `${APP_ADDR}/admin`;
+
+const USER_PATH = `${APP_ADDR}/user`;
+
+const withId = (basePath: string, userId: string): string => {
+    return `${basePath}/${userId}`;
 };
+
+export const GET_ADMIN_BOOKINGS_PATH = `${ADMIN_PATH}/bookings`;
+
+export const GET_ADMIN_BOOKINGS_RESERVED_PATH = `${ADMIN_PATH}/bookings/reserved`;
+
+export const GET_ADMIN_BOOKINGS_RENTED_PATH = `${ADMIN_PATH}/bookings/rented`;
+
+export const RENT_ADMIN_BOOKING = (bookingId: string): string => withId(`${ADMIN_PATH}/bookings/rent`, bookingId);
+
+export const CANCEL_ADMIN_BOOKING = (bookingId: string): string => withId(`${ADMIN_PATH}/bookings/cancel`, bookingId);
+
+export const RETURN_ADMIN_BOOKING = (bookingId: string): string => withId(`${ADMIN_PATH}/bookings/return`, bookingId);
+
+export const GET_BOOKINGS_CHANGES_PATH = `${APP_ADDR}/bookings-changes`;
+
+export const GET_USER_BOOKINGS_PATH = `${USER_PATH}/bookings`;
+
+export const GET_USER_BOOKINGS_RESERVED_PATH = `${USER_PATH}/bookings/reserved`;
+
+export const GET_USER_BOOKINGS_RENTED_PATH = `${USER_PATH}/bookings/rented`;
+
+export const CANCEL_USER_BOOKING = (bookingId: string): string => withId(`${USER_PATH}/bookings/cancel`, bookingId);
