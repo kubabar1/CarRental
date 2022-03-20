@@ -13,7 +13,7 @@ import {
     faUserLock,
 } from '@fortawesome/free-solid-svg-icons';
 import {
-    bookingChangesListPath,
+    bookingsAuditLogsListPath,
     bookingsListPath,
     vehicleAddPath,
     vehiclesListPath,
@@ -66,7 +66,7 @@ export function SideNav({ userRoles = [] }: SideNavProperties): JSX.Element {
                 <NavSubLink navItemName={'My reserved bookings list'} linkPath={myReservedBookingsListPath} />
                 <NavSubLink navItemName={'My rented bookings list'} linkPath={myRentedBookingsListPath} />
                 {userHasAnyRole(userRoles, [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE]) ? (
-                    <NavSubLink navItemName={'Booking changes list'} linkPath={bookingChangesListPath} />
+                    <NavSubLink navItemName={'Bookings audit logs'} linkPath={bookingsAuditLogsListPath} />
                 ) : (
                     <></>
                 )}

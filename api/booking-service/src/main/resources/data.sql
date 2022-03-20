@@ -1,66 +1,54 @@
-DROP TABLE IF EXISTS BookingsChanges;
-DROP TABLE IF EXISTS Bookings;
-DROP TABLE IF EXISTS BookingStates;
-DROP TABLE IF EXISTS Locations;
+DROP TABLE IF EXISTS bookings;
+DROP TABLE IF EXISTS booking_states;
+DROP TABLE IF EXISTS locations;
 
-CREATE TABLE BookingStates
+CREATE TABLE booking_states
 (
-    bookingCode NVARCHAR(3)  NOT NULL,
-    description NVARCHAR(50) NOT NULL,
-    PRIMARY KEY (bookingCode)
+    booking_code NVARCHAR(3)  NOT NULL,
+    description  NVARCHAR(50) NOT NULL,
+    PRIMARY KEY (booking_code)
 );
 
 CREATE TABLE Locations
 (
-    ID          BIGINT        NOT NULL AUTO_INCREMENT,
-    country     NVARCHAR(50)  NOT NULL,
-    city        NVARCHAR(150) NOT NULL,
-    streetAndNb NVARCHAR(150) NOT NULL,
-    code        NVARCHAR(20)  NOT NULL,
-    email       NVARCHAR(255) NOT NULL,
-    phone       VARCHAR(30)   NOT NULL,
-    PRIMARY KEY (ID)
+    id            BIGINT        NOT NULL AUTO_INCREMENT,
+    country       NVARCHAR(50)  NOT NULL,
+    city          NVARCHAR(150) NOT NULL,
+    street_and_nb NVARCHAR(150) NOT NULL,
+    code          NVARCHAR(20)  NOT NULL,
+    email         NVARCHAR(255) NOT NULL,
+    phone         VARCHAR(30)   NOT NULL,
+    PRIMARY KEY (id)
 );
 
-CREATE TABLE Bookings
+CREATE TABLE bookings
 (
-    ID               BIGINT         NOT NULL AUTO_INCREMENT,
-    userID           BIGINT         NOT NULL,
-    vehicleID        BIGINT         NOT NULL,
-    receiptDate      DATETIME       NOT NULL,
-    returnDate       DATETIME       NOT NULL,
-    locationID       BIGINT         NOT NULL,
-    bookingStateCode NVARCHAR(3)    NOT NULL,
-    totalCost        decimal(15, 2) NOT NULL,
-    PRIMARY KEY (ID),
---     FOREIGN KEY (userID) REFERENCES Users (ID),
---     FOREIGN KEY (vehicleID) REFERENCES Vehicles (ID),
-    FOREIGN KEY (locationID) REFERENCES Locations (ID),
-    FOREIGN KEY (bookingStateCode) REFERENCES BookingStates (bookingCode)
+    id                 BIGINT         NOT NULL AUTO_INCREMENT,
+    user_id            BIGINT         NOT NULL,
+    vehicle_id         BIGINT         NOT NULL,
+    receipt_date       DATETIME       NOT NULL,
+    return_date        DATETIME       NOT NULL,
+    location_id        BIGINT         NOT NULL,
+    booking_state_code NVARCHAR(3)    NOT NULL,
+    total_cost         decimal(15, 2) NOT NULL,
+    PRIMARY KEY (id),
+--     FOREIGN KEY (user_id) REFERENCES users (id),
+--     FOREIGN KEY (vehicle_id) REFERENCES vehicles (id),
+    FOREIGN KEY (location_id) REFERENCES Locations (id),
+    FOREIGN KEY (booking_state_code) REFERENCES booking_states (booking_code)
 );
 
-CREATE TABLE BookingsChanges
-(
-    ID         BIGINT        NOT NULL AUTO_INCREMENT,
-    bookingID  BIGINT        NOT NULL,
-    userId     BIGINT        NOT NULL,
-    changeDate DATETIME      NOT NULL DEFAULT NOW(),
-    ipAddress  NVARCHAR(100) NOT NULL,
-    PRIMARY KEY (ID),
-    FOREIGN KEY (bookingID) REFERENCES Bookings (ID)
-);
-
-INSERT INTO BookingStates
+INSERT INTO booking_states
 VALUES ('CAN', 'canceled'),
        ('REN', 'rented'),
        ('RES', 'reserved'),
        ('RET', 'returned');
 
-INSERT INTO Locations (country, city, streetAndNb, code, email, phone)
+INSERT INTO locations (country, city, street_and_nb, code, email, phone)
 VALUES ('Poland', 'Wrocław', 'ul. Testowa 12/3', '11-123', 'test1@mail.com', '321 321 321'),
        ('Poland', 'Warszawa', 'ul. Testowa 21/62', '22-432', 'test2@mail.com', '123 123 123');
 
-INSERT INTO Bookings (userID, vehicleID, receiptDate, returnDate, locationID, bookingStateCode, totalCost)
+INSERT INTO bookings (user_id, vehicle_id, receipt_date, return_date, location_id, booking_state_code, total_cost)
 VALUES (1, 1, {ts '2020-09-17 18:47:52.69'}, {ts '2020-09-17 18:47:52.69'}, 1, 'RET', 123.21),
        (1, 15, {ts '2020-09-17 18:47:52.69'}, {ts '2020-09-17 18:47:52.69'}, 1, 'RES', 123.21),
        (1, 16, {ts '2020-09-17 18:47:52.69'}, {ts '2020-09-17 18:47:52.69'}, 1, 'REN', 123.21),
@@ -77,6 +65,3 @@ VALUES (1, 1, {ts '2020-09-17 18:47:52.69'}, {ts '2020-09-17 18:47:52.69'}, 1, '
        (12, 12, {ts '2020-09-17 18:47:52.69'}, {ts '2020-09-17 18:47:52.69'}, 1, 'CAN', 433.98),
        (13, 13, {ts '2020-09-17 18:47:52.69'}, {ts '2020-09-17 18:47:52.69'}, 2, 'RES', 2123.67),
        (14, 14, {ts '2020-09-17 18:47:52.69'}, {ts '2020-09-17 18:47:52.69'}, 1, 'RES', 1223.76);
-
-INSERT INTO BookingsChanges (bookingID, changeDate, userId, ipAddress)
-VALUES (1, {ts '2020-09-17 18:47:52.69'}, 1, '300:300:300:300')

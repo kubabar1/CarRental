@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import { UserResponseDTO } from './model/UserResponseDTO';
 import { getCurrentUserData } from './service/UserService';
 import {
-    bookingChangesListPath,
+    bookingsAuditLogsListPath,
     bookingsListPath,
     equipmentListPath,
     locationsListPath,
@@ -47,7 +47,7 @@ import { RentedBookingsListSubpage } from './subpages/booking/RentedBookingsList
 import { MyBookingsListSubpage } from './subpages/booking/MyBookingsListSubpage';
 import { MyRentedBookingsListSubpage } from './subpages/booking/MyRentedBookingsListSubpage';
 import { ReservedVehiclesListSubpage } from './subpages/booking/ReservedVehiclesListSubpage';
-import { BookingChangesListSubpage } from './subpages/booking/BookingChangesListSubpage';
+import { BookingsAuditLogsListSubpage } from './subpages/booking/BookingsAuditLogsListSubpage';
 import { MyReservedBookingsListSubpage } from './subpages/booking/MyReservedBookingsListSubpage';
 
 export function App(): JSX.Element {
@@ -71,7 +71,7 @@ export function App(): JSX.Element {
                     <Route path={myReservedBookingsListPath} exact component={MyReservedBookingsListSubpage} />
                     <Route path={myRentedBookingsListPath} exact component={MyRentedBookingsListSubpage} />
                     <Route path={reservedVehiclesListPath} exact component={ReservedVehiclesListSubpage} />
-                    <Route path={bookingChangesListPath} exact component={BookingChangesListSubpage} />
+                    <Route path={bookingsAuditLogsListPath} exact component={BookingsAuditLogsListSubpage} />
 
                     <Route path={usersListPath} exact component={UsersListSubpage} />
                     <Route path={userEditPath} exact component={UsersEditSubpage} />

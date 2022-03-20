@@ -28,7 +28,7 @@ export const CANCEL_ADMIN_BOOKING = (bookingId: string): string => withId(`${ADM
 
 export const RETURN_ADMIN_BOOKING = (bookingId: string): string => withId(`${ADMIN_PATH}/bookings/return`, bookingId);
 
-export const GET_BOOKINGS_CHANGES_PATH = `${APP_ADDR}/bookings-changes`;
+export const GET_BOOKINGS_AUDIT_LOGS_PATH = `${APP_ADDR}/bookings-audit-logs`;
 
 export const GET_USER_BOOKINGS_PATH = `${USER_PATH}/bookings`;
 
