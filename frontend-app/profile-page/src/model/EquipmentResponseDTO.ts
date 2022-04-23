@@ -1,9 +1,9 @@
 export class EquipmentResponseDTO {
-    code: string;
+    equipmentCode: string;
     description: string;
 
-    constructor(code: string, description: string) {
-        this.code = code;
+    constructor(equipmentCode: string, description: string) {
+        this.equipmentCode = equipmentCode;
         this.description = description;
     }
 }

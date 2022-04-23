@@ -40,7 +40,7 @@ export function ReservedVehiclesListSubpage(): JSX.Element {
             },
             {
                 Header: 'Location',
-                accessor: 'location',
+                accessor: 'locationId',
             },
             {
                 Header: 'Status',
@@ -52,19 +52,19 @@ export function ReservedVehiclesListSubpage(): JSX.Element {
             },
             {
                 Header: 'Body type',
-                accessor: 'bodyType',
+                accessor: (vehicleResponseDTO: VehicleResponseDTO) => vehicleResponseDTO.vehicleDetails.bodyType,
             },
             {
                 Header: 'Fuel type',
-                accessor: 'fuelType',
+                accessor: (vehicleResponseDTO: VehicleResponseDTO) => vehicleResponseDTO.vehicleDetails.fuelType,
             },
             {
                 Header: 'Power',
-                accessor: (vehicleResponseDTO: VehicleResponseDTO) => `${vehicleResponseDTO.power} HP`,
+                accessor: (vehicleResponseDTO: VehicleResponseDTO) => `${vehicleResponseDTO.vehicleDetails.power} HP`,
             },
             {
                 Header: 'Production year',
-                accessor: 'productionYear',
+                accessor: (vehicleResponseDTO: VehicleResponseDTO) => vehicleResponseDTO.vehicleDetails.productionYear,
             },
         ],
         []

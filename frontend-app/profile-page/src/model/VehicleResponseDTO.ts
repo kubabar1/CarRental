@@ -1,26 +1,18 @@
 import { VehicleStatusResponseDTO } from './VehicleStatusResponseDTO';
+import { VehicleDetailsDTO } from './VehicleDetailsDTO';
+import { EquipmentResponseDTO } from './EquipmentResponseDTO';
 
 export class VehicleResponseDTO {
     id: string;
+    registration: string;
     brand: string;
     model: string;
     dailyFee: number;
-    registration: string;
-    location: string;
-    vehicleStatus: VehicleStatusResponseDTO;
+    locationId: string;
     bestOffer: boolean;
-    bodyType: string;
-    fuelType: string;
-    power: number;
-    gearbox: string;
-    frontWheelDrive: boolean;
-    doorsNumber: number;
-    seatsNumber: number;
-    color: string;
-    metallic: boolean;
-    description: string;
-    productionYear: number;
-    photoName: string;
+    vehicleStatus: VehicleStatusResponseDTO;
+    vehicleDetails: VehicleDetailsDTO;
+    equipments: EquipmentResponseDTO[];
 
     constructor(
         id: string,
@@ -28,41 +20,21 @@ export class VehicleResponseDTO {
         model: string,
         dailyFee: number,
         registration: string,
-        location: string,
-        vehicleStatus: VehicleStatusResponseDTO,
+        locationId: string,
         bestOffer: boolean,
-        bodyType: string,
-        fuelType: string,
-        power: number,
-        gearbox: string,
-        frontWheelDrive: boolean,
-        doorsNumber: number,
-        seatsNumber: number,
-        color: string,
-        metallic: boolean,
-        description: string,
-        productionYear: number,
-        photoName: string
+        vehicleStatus: VehicleStatusResponseDTO,
+        vehicleDetails: VehicleDetailsDTO,
+        equipments: EquipmentResponseDTO[]
     ) {
         this.id = id;
         this.brand = brand;
         this.model = model;
         this.dailyFee = dailyFee;
         this.registration = registration;
-        this.location = location;
-        this.vehicleStatus = vehicleStatus;
+        this.locationId = locationId;
         this.bestOffer = bestOffer;
-        this.bodyType = bodyType;
-        this.fuelType = fuelType;
-        this.power = power;
-        this.gearbox = gearbox;
-        this.frontWheelDrive = frontWheelDrive;
-        this.doorsNumber = doorsNumber;
-        this.seatsNumber = seatsNumber;
-        this.color = color;
-        this.metallic = metallic;
-        this.description = description;
-        this.productionYear = productionYear;
-        this.photoName = photoName;
+        this.vehicleStatus = vehicleStatus;
+        this.vehicleDetails = vehicleDetails;
+        this.equipments = equipments;
     }
 }

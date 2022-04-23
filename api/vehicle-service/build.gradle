@@ -1,0 +1,37 @@
+plugins {
+    id 'org.springframework.boot' version '2.6.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'application'
+}
+
+group = 'com.carrental.vehicle-service'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+springBoot {
+    mainClassName = 'com.carrental.vehicleservice.VehicleServiceApplication'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile project(':api:commons')
+    implementation 'org.hibernate:hibernate-envers:5.6.7.Final'
+    implementation 'org.springframework.boot:spring-boot-starter:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.3'
+    implementation 'org.modelmapper:modelmapper:3.0.0'
+    implementation 'io.springfox:springfox-swagger2:3.0.0'
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+    implementation 'org.springframework.boot:spring-boot-starter-parent:2.6.3'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    runtime 'com.h2database:h2:2.1.210'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
+    implementation 'javax.validation:validation-api:2.0.1.Final'
+}

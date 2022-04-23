@@ -5,6 +5,7 @@ import { TextAreaFormGroup } from '../../../../components/form/TextAreaFormGroup
 import { FormContainer } from '../../../../components/form/FormContainer';
 import { VehicleResponseDTO } from '../../../../model/VehicleResponseDTO';
 import { VehiclePersistDTO } from '../../../../model/VehiclePersistDTO';
+import { VehicleDetailsDTO } from '../../../../model/VehicleDetailsDTO';
 
 export interface VehicleFormProperties {
     onSubmitAction: (vehiclePersistDTO: VehiclePersistDTO) => void;
@@ -16,7 +17,7 @@ export const VehicleForm = ({ vehicleResponseDTO, onSubmitAction }: VehicleFormP
     const [model, setModel] = useState<string | undefined>(undefined);
     const [dailyFee, setDailyFee] = useState<number | undefined>(undefined);
     const [registration, setRegistration] = useState<string | undefined>(undefined);
-    const [location, setLocation] = useState<string | undefined>(undefined);
+    const [locationId, setLocationId] = useState<string | undefined>(undefined);
     const [vehicleStatus, setVehicleStatus] = useState<VehicleStatCodeEnum | undefined>(undefined);
     const [bestOffer, setBestOffer] = useState<boolean>(false);
     const [bodyType, setBodyType] = useState<string | undefined>(undefined);
@@ -38,21 +39,21 @@ export const VehicleForm = ({ vehicleResponseDTO, onSubmitAction }: VehicleFormP
             setModel(vehicleResponseDTO.model);
             setDailyFee(vehicleResponseDTO.dailyFee);
             setRegistration(vehicleResponseDTO.registration);
-            setLocation(vehicleResponseDTO.location);
+            setLocationId(vehicleResponseDTO.locationId);
             setVehicleStatus(vehicleResponseDTO.vehicleStatus.vehicleStatCode);
             setBestOffer(vehicleResponseDTO.bestOffer);
-            setBodyType(vehicleResponseDTO.bodyType);
-            setFuelType(vehicleResponseDTO.fuelType);
-            setPower(vehicleResponseDTO.power);
-            setGearbox(vehicleResponseDTO.gearbox);
-            setFrontWheelDrive(vehicleResponseDTO.frontWheelDrive);
-            setDoorsNumber(vehicleResponseDTO.doorsNumber);
-            setSeatsNumber(vehicleResponseDTO.seatsNumber);
-            setColor(vehicleResponseDTO.color);
-            setMetallic(vehicleResponseDTO.metallic);
-            setDescription(vehicleResponseDTO.description);
-            setProductionYear(vehicleResponseDTO.productionYear);
-            setPhotoName(vehicleResponseDTO.photoName);
+            setBodyType(vehicleResponseDTO.vehicleDetails.bodyType);
+            setFuelType(vehicleResponseDTO.vehicleDetails.fuelType);
+            setPower(vehicleResponseDTO.vehicleDetails.power);
+            setGearbox(vehicleResponseDTO.vehicleDetails.gearbox);
+            setFrontWheelDrive(vehicleResponseDTO.vehicleDetails.frontWheelDrive);
+            setDoorsNumber(vehicleResponseDTO.vehicleDetails.doorsNumber);
+            setSeatsNumber(vehicleResponseDTO.vehicleDetails.seatsNumber);
+            setColor(vehicleResponseDTO.vehicleDetails.color);
+            setMetallic(vehicleResponseDTO.vehicleDetails.metallic);
+            setDescription(vehicleResponseDTO.vehicleDetails.description);
+            setProductionYear(vehicleResponseDTO.vehicleDetails.productionYear);
+            setPhotoName(vehicleResponseDTO.vehicleDetails.photoName);
         }
     }, [vehicleResponseDTO]);
 
@@ -64,7 +65,7 @@ export const VehicleForm = ({ vehicleResponseDTO, onSubmitAction }: VehicleFormP
                     !!model &&
                     !!dailyFee &&
                     !!registration &&
-                    !!location &&
+                    !!locationId &&
                     !!vehicleStatus &&
                     !!bodyType &&
                     !!fuelType &&
@@ -79,25 +80,27 @@ export const VehicleForm = ({ vehicleResponseDTO, onSubmitAction }: VehicleFormP
                 ) {
                     onSubmitAction(
                         new VehiclePersistDTO(
+                            registration,
                             brand,
                             model,
                             dailyFee,
-                            registration,
-                            location,
-                            vehicleStatus,
+                            locationId,
                             bestOffer,
-                            bodyType,
-                            fuelType,
-                            power,
-                            gearbox,
-                            frontWheelDrive,
-                            doorsNumber,
-                            seatsNumber,
-                            color,
-                            metallic,
-                            description,
-                            productionYear,
-                            photoName
+                            vehicleStatus,
+                            new VehicleDetailsDTO(
+                                bodyType,
+                                productionYear,
+                                fuelType,
+                                power,
+                                gearbox,
+                                frontWheelDrive,
+                                doorsNumber,
+                                seatsNumber,
+                                color,
+                                metallic,
+                                photoName,
+                                description
+                            )
                         )
                     );
                 }
@@ -131,8 +134,8 @@ export const VehicleForm = ({ vehicleResponseDTO, onSubmitAction }: VehicleFormP
             <InputFormGroup
                 label={'Location:'}
                 name={'vehicle_location'}
-                value={location}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setLocation(e.target.value)}
+                value={locationId}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setLocationId(e.target.value)}
             />
             <InputFormGroup
                 label={'Status:'}

@@ -22,7 +22,7 @@ export function EquipmentListSubpage(): JSX.Element {
         () => [
             {
                 Header: 'Code',
-                accessor: 'code',
+                accessor: 'equipmentCode',
             },
             {
                 Header: 'Description',

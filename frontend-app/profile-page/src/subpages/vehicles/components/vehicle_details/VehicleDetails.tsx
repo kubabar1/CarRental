@@ -37,7 +37,7 @@ export const VehicleDetails = ({ vehicleResponseDTO }: VehicleDetailsProperties)
                     </p>
                     <p>
                         <strong>Localisation: </strong>
-                        {vehicleResponseDTO.location}
+                        {vehicleResponseDTO.locationId}
                     </p>
                 </div>
             </div>

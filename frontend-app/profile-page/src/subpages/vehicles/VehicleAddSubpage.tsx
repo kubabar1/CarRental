@@ -11,9 +11,10 @@ import { VehicleForm } from './components/vehicle_form/VehicleForm';
 export function VehicleAddSubpage(): JSX.Element {
     const history = useHistory();
 
-    const addVehicleForm = (vehiclePersistDTO: VehiclePersistDTO): void => {
-        addVehicle(vehiclePersistDTO);
-        history.push(vehiclesListPath);
+    const addVehicleForm = async (vehiclePersistDTO: VehiclePersistDTO): Promise<void> => {
+        addVehicle(vehiclePersistDTO).then(() => {
+            history.push(vehiclesListPath);
+        });
     };
 
     return (

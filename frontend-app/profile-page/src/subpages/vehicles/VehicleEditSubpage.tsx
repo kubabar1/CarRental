@@ -21,8 +21,10 @@ export function VehicleEditSubpage(): JSX.Element {
     }, [vehicleId]);
 
     const updateVehicleForm = (vehiclePersistDTO: VehiclePersistDTO): void => {
-        updateVehicleData(vehicleId, vehiclePersistDTO);
-        history.push(vehiclesListPath);
+        updateVehicleData(vehicleId, vehiclePersistDTO).then((vehicleResp: VehicleResponseDTO) => {
+            setVehicleResponseDTO(vehicleResp);
+            history.push(vehiclesListPath);
+        });
     };
 
     return (
