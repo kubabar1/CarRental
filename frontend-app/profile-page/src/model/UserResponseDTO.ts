@@ -7,7 +7,7 @@ export class UserResponseDTO {
     login: string;
     email: string;
     phone: string;
-    birthDate: Date;
+    birthDate: string;
     pesel: string;
     userRoles: UserRoleResponseDTO[];
 
@@ -18,7 +18,7 @@ export class UserResponseDTO {
         login: string,
         email: string,
         phone: string,
-        birthDate: Date,
+        birthDate: string,
         pesel: string,
         userRoles: UserRoleResponseDTO[]
     ) {

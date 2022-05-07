@@ -1,94 +1,50 @@
 import { UserResponseDTO } from '../model/UserResponseDTO';
 import { UserRoleResponseDTO } from '../model/UserRoleResponseDTO';
-import { UserRolesEnum } from '../utils/UserRolesEnum';
-import { SettingsUpdateDTO } from '../model/SettingsUpdateDTO';
+import { UserUpdateDTO } from '../model/UserUpdateDTO';
+import { fetchGet, fetchPost } from './FetchUtil';
+import {
+    ADD_ROLE_TO_USER_PATH,
+    GET_AUTHORIZED_USER_PATH,
+    GET_USER_BY_ID_PATH,
+    GET_USER_ROLES_NOT_ASSIGNED_TO_USER_PATH,
+    GET_USERS_PATH,
+    GET_USERS_ROLES_PATH,
+    UPDATE_AUTHORIZED_USER_PATH,
+    UPDATE_USER_PATH,
+} from '../constants/PathsAPI';
+import { RoleAddDTO } from '../model/RoleAddDTO';
 
-export const getCurrentUserData = (): UserResponseDTO => {
-    return new UserResponseDTO(
-        '1',
-        'Jan',
-        'Kowalski',
-        'jan123',
-        'jan@test.com',
-        '12345',
-        new Date('Aug 9, 1995'),
-        '11111111111',
-        [new UserRoleResponseDTO('1', UserRolesEnum.ROLE_ADMIN)]
-    );
+export const getAuthorizedUserData = (): Promise<UserResponseDTO> => {
+    return fetchGet<UserResponseDTO>(GET_AUTHORIZED_USER_PATH);
 };
 
-export const getUserById = (userId: string): UserResponseDTO => {
-    return new UserResponseDTO(
-        userId,
-        'Adam',
-        'Nowak',
-        'adam123',
-        'adam@test.com',
-        '11332',
-        new Date('Jul 19, 1991'),
-        '22222222222',
-        [new UserRoleResponseDTO('2', UserRolesEnum.ROLE_OFFICE_EMPLOYEE)]
-    );
+export const getUserById = (userId: string): Promise<UserResponseDTO> => {
+    return fetchGet<UserResponseDTO>(GET_USER_BY_ID_PATH(userId));
 };
 
 export const getUsersList = (): Promise<UserResponseDTO[]> => {
-    return Promise.all([
-        new UserResponseDTO(
-            '123',
-            'Jan',
-            'Kowalski',
-            'jan123',
-            'jan@test.com',
-            '12345',
-            new Date('Aug 9, 1995'),
-            '11111111111',
-            [new UserRoleResponseDTO('1', UserRolesEnum.ROLE_ADMIN)]
-        ),
-        new UserResponseDTO(
-            '124',
-            'Adam',
-            'Nowak',
-            'adam123',
-            'adam@test.com',
-            '11332',
-            new Date('Jul 19, 1991'),
-            '22222222222',
-            [new UserRoleResponseDTO('2', UserRolesEnum.ROLE_OFFICE_EMPLOYEE)]
-        ),
-        new UserResponseDTO(
-            '125',
-            'Marek',
-            'Test',
-            'marek123',
-            'marek@test.com',
-            '43123',
-            new Date('Jan 12, 1992'),
-            '33333333333',
-            [
-                new UserRoleResponseDTO('2', UserRolesEnum.ROLE_OFFICE_EMPLOYEE),
-                new UserRoleResponseDTO('3', UserRolesEnum.ROLE_RENTING_EMPLOYEE),
-            ]
-        ),
-    ]);
+    return fetchGet<UserResponseDTO[]>(GET_USERS_PATH);
 };
 
 export const getAllUserRoles = (): Promise<UserRoleResponseDTO[]> => {
-    return Promise.all(
-        Object.keys(UserRolesEnum).map(
-            (userRole: string, id: number) => new UserRoleResponseDTO(id.toString(), userRole)
-        )
+    return fetchGet<UserRoleResponseDTO[]>(GET_USERS_ROLES_PATH);
+};
+
+export const getAllUserRolesNotAssignedToUser = (userId: string): Promise<UserRoleResponseDTO[]> => {
+    return fetchGet<UserRoleResponseDTO[]>(GET_USER_ROLES_NOT_ASSIGNED_TO_USER_PATH(userId));
+};
+
+export const updateAuthorizedUserData = (settingsUpdateDTO: UserUpdateDTO): Promise<UserResponseDTO> => {
+    return fetchPost<UserResponseDTO>(UPDATE_AUTHORIZED_USER_PATH, settingsUpdateDTO);
+};
+
+export const updateUserData = (userId: string, settingsUpdateDTO: UserUpdateDTO): Promise<UserResponseDTO> => {
+    return fetchPost<UserResponseDTO>(UPDATE_USER_PATH(userId), settingsUpdateDTO);
+};
+
+export const addRolesToUser = (userRolesId: string[], userId: string): Promise<UserResponseDTO> => {
+    return fetchPost<UserResponseDTO>(
+        ADD_ROLE_TO_USER_PATH(userId),
+        userRolesId.map((userRoleId: string) => new RoleAddDTO(userRoleId))
     );
-};
-
-export const updateUserSettings = (userId: string, settingsUpdateDTO: SettingsUpdateDTO): Promise<void> => {
-    return new Promise<void>(() => {
-        console.log(userId);
-        console.log(settingsUpdateDTO);
-    });
-};
-
-export const updateUserRoles = (userRoleId: string, userId: string): Promise<void> => {
-    return new Promise<void>(() => {
-        console.log(`Adding role with ID "${userRoleId}" to user with ID "${userId}"`);
-    });
 };

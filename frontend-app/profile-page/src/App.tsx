@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Navigation } from './components/nav/Navigation';
 import { Route, Switch } from 'react-router-dom';
 import { UserResponseDTO } from './model/UserResponseDTO';
-import { getCurrentUserData } from './service/UserService';
+import { getAuthorizedUserData } from './service/UserService';
 import {
     bookingsAuditLogsListPath,
     bookingsListPath,
@@ -31,8 +31,8 @@ import { WelcomeSubpage } from './subpages/welcome/WelcomeSubpage';
 import { SettingsSubpage } from './subpages/settings/SettingsSubpage';
 import { UsersListSubpage } from './subpages/users/UsersListSubpage';
 import { LocationsListSubpage } from './subpages/locations/LocationsListSubpage';
-import { UsersWithRolesListSubpage } from './subpages/users_roles/UsersWithRolesListSubpage';
-import { AddRoleSubpage } from './subpages/users_roles/AddRoleSubpage';
+import { UsersRolesListSubpage } from './subpages/users_roles/UsersRolesListSubpage';
+import { AddRoleSubpage } from './subpages/users/AddRoleSubpage';
 import { EmailSubpage } from './subpages/emails/EmailSubpage';
 import { UsersEmailSubpage } from './subpages/emails/UsersEmailSubpage';
 import { UsersEditSubpage } from './subpages/users/UserEditSubpage';
@@ -54,7 +54,7 @@ export function App(): JSX.Element {
     const [currentUser, setCurrentUserData] = useState<UserResponseDTO | undefined>(undefined);
 
     useEffect(() => {
-        setCurrentUserData(getCurrentUserData());
+        getAuthorizedUserData().then((authorizedUser: UserResponseDTO) => setCurrentUserData(authorizedUser));
     }, []);
 
     return (
@@ -82,7 +82,7 @@ export function App(): JSX.Element {
                     <Route path={vehicleAddPath} exact component={VehicleAddSubpage} />
                     <Route path={equipmentListPath} exact component={EquipmentListSubpage} />
 
-                    <Route path={userRolesListPath} exact component={UsersWithRolesListSubpage} />
+                    <Route path={userRolesListPath} exact component={UsersRolesListSubpage} />
                     <Route path={roleAddPath} component={AddRoleSubpage} />
 
                     <Route path={locationsListPath} exact component={LocationsListSubpage} />

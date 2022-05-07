@@ -1,18 +1,30 @@
-.container-car-search {
-    .car-img-container {
-        max-height: 190px;
-        min-height: 150px;
+.item {
+    color: #000;
+
+    .container-car-search {
+        .car-img-container {
+            max-height: 190px;
+            min-height: 150px;
+        }
+
+        .car-info-container {
+            margin-left: 20px;
+
+            .car-rank {
+                font-size: 25px;
+            }
+
+            .car-description {
+                padding-left: 15px;
+            }
+        }
     }
 
-    .car-info-container {
-        margin-left: 20px;
+    .container-car-search:first-child {
+        margin-top: 0 !important;
+    }
 
-        .car-rank {
-            font-size: 25px;
-        }
-
-        .car-description {
-            padding-left: 15px;
-        }
+    :hover {
+        background-color: #eee;
     }
 }

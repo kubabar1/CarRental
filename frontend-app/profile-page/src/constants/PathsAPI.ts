@@ -60,3 +60,20 @@ export const UPDATE_VEHICLE_PATH = (vehicleId: string): string => withId(`${APP_
 export const GET_UNAVAILABLE_VEHICLES_PATH = `${APP_ADDR}/vehicles/unavailable`;
 
 export const GET_VEHICLE_BY_ID_PATH = (vehicleId: string): string => withId(`${APP_ADDR}/vehicles`, vehicleId);
+
+export const GET_USERS_ROLES_PATH = `${APP_ADDR}/users-roles`;
+
+export const GET_USER_ROLES_NOT_ASSIGNED_TO_USER_PATH = (userId: string): string =>
+    withId(`${APP_ADDR}/users-roles/not-assigned`, userId);
+
+export const GET_USERS_PATH = `${APP_ADDR}/users`;
+
+export const GET_AUTHORIZED_USER_PATH = `${APP_ADDR}/users/authorized`;
+
+export const UPDATE_USER_PATH = (userId: string): string => withId(`${APP_ADDR}/users`, userId);
+
+export const UPDATE_AUTHORIZED_USER_PATH = `${APP_ADDR}/users/authorized`;
+
+export const GET_USER_BY_ID_PATH = (userId: string): string => withId(`${APP_ADDR}/users`, userId);
+
+export const ADD_ROLE_TO_USER_PATH = (userId: string): string => `${withId(`${APP_ADDR}/users`, userId)}/roles`;

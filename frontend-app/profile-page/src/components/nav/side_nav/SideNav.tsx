@@ -89,7 +89,7 @@ export function SideNav({ userRoles = [] }: SideNavProperties): JSX.Element {
 
             {userHasRole(userRoles, UserRolesEnum.ROLE_ADMIN) && (
                 <NavLink navItemName={'User roles'} iconName={faUserLock}>
-                    <NavSubLink navItemName={'User with roles'} linkPath={userRolesListPath} />
+                    <NavSubLink navItemName={'User roles'} linkPath={userRolesListPath} />
                 </NavLink>
             )}
 

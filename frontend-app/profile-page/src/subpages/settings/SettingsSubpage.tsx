@@ -1,22 +1,29 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { InputFormGroup } from '../../components/form/InputFormGroup';
-import { getCurrentUserData, updateUserSettings } from '../../service/UserService';
+import { getAuthorizedUserData, updateAuthorizedUserData } from '../../service/UserService';
 import { UserResponseDTO } from '../../model/UserResponseDTO';
 import { FormContainer } from '../../components/form/FormContainer';
-import { SettingsUpdateDTO } from '../../model/SettingsUpdateDTO';
+import { UserUpdateDTO } from '../../model/UserUpdateDTO';
 
 export function SettingsSubpage(): JSX.Element {
-    const currentUser: UserResponseDTO = getCurrentUserData();
-    const [userLogin, setUserLogin] = useState<string>(currentUser.login);
-    const [name, setName] = useState<string>(currentUser.name);
-    const [surname, setSurname] = useState<string>(currentUser.surname);
-    const [email, setEmail] = useState<string>(currentUser.email);
-    const [phone, setPhone] = useState<string>(currentUser.phone);
-    const [pesel, setPesel] = useState<string>(currentUser.pesel);
-    const [birthDate, setBirthDate] = useState<string>(currentUser.birthDate.toISOString().slice(0, 10));
+    const [name, setName] = useState<string | undefined>(undefined);
+    const [surname, setSurname] = useState<string | undefined>(undefined);
+    const [phone, setPhone] = useState<string | undefined>(undefined);
+    const [pesel, setPesel] = useState<string | undefined>(undefined);
+    const [birthDate, setBirthDate] = useState<string | undefined>(undefined);
+
+    useEffect(() => {
+        getAuthorizedUserData().then((authorizedUser: UserResponseDTO) => {
+            setName(authorizedUser.name);
+            setSurname(authorizedUser.surname);
+            setPhone(authorizedUser.phone);
+            setPesel(authorizedUser.pesel);
+            setBirthDate(authorizedUser.birthDate);
+        });
+    }, []);
 
     return (
         <SubpageContainer>
@@ -24,20 +31,11 @@ export function SettingsSubpage(): JSX.Element {
             <SubpageContent>
                 <FormContainer
                     onSubmit={() => {
-                        updateUserSettings(
-                            currentUser.id,
-                            new SettingsUpdateDTO(userLogin, name, surname, email, phone, pesel, birthDate)
-                        );
+                        if (name && surname && phone && birthDate && pesel) {
+                            updateAuthorizedUserData(new UserUpdateDTO(name, surname, phone, birthDate, pesel));
+                        }
                     }}
                 >
-                    <InputFormGroup
-                        label={'Login:'}
-                        name={'user_login'}
-                        value={userLogin}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                            setUserLogin(event.target.value);
-                        }}
-                    />
                     <InputFormGroup
                         label={'Name:'}
                         name={'user_name'}
@@ -52,14 +50,6 @@ export function SettingsSubpage(): JSX.Element {
                         value={surname}
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             setSurname(event.target.value);
-                        }}
-                    />
-                    <InputFormGroup
-                        label={'E-mail:'}
-                        name={'user_email'}
-                        value={email}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                            setEmail(event.target.value);
                         }}
                     />
                     <InputFormGroup

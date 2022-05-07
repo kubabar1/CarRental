@@ -15,7 +15,6 @@ public interface EquipmentRepository extends PagingAndSortingRepository<Equipmen
     @Query("SELECT e FROM equipment e WHERE e.equipmentCode NOT IN (" +
                 "SELECT ve.equipmentCode FROM vehicles v " +
                     "JOIN v.equipments ve " +
-//                    "ON (eqp.vehicle_id = v.id) " +
                     "WHERE v.id=:vehicleId" +
             ")")
     Set<EquipmentEntity> getAllEquipmentsNotAssignedToVehicle(@Param("vehicleId") Long vehicleId);

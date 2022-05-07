@@ -1,26 +1,34 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { InputFormGroup } from '../../components/form/InputFormGroup';
-import { getUserById, updateUserSettings } from '../../service/UserService';
+import { getUserById, updateUserData } from '../../service/UserService';
 import { UserResponseDTO } from '../../model/UserResponseDTO';
 import { FormContainer } from '../../components/form/FormContainer';
-import { SettingsUpdateDTO } from '../../model/SettingsUpdateDTO';
+import { UserUpdateDTO } from '../../model/UserUpdateDTO';
 import { useHistory, useParams } from 'react-router-dom';
 import { usersListPath } from '../../constants/Links';
 
 export function UsersEditSubpage(): JSX.Element {
     const history = useHistory();
     const { userId } = useParams<{ userId: string }>();
-    const editedUser: UserResponseDTO = getUserById(userId);
-    const [userLogin, setUserLogin] = useState<string>(editedUser.login);
-    const [name, setName] = useState<string>(editedUser.name);
-    const [surname, setSurname] = useState<string>(editedUser.surname);
-    const [email, setEmail] = useState<string>(editedUser.email);
-    const [phone, setPhone] = useState<string>(editedUser.phone);
-    const [pesel, setPesel] = useState<string>(editedUser.pesel);
-    const [birthDate, setBirthDate] = useState<string>(editedUser.birthDate.toISOString().slice(0, 10));
+
+    const [name, setName] = useState<string | undefined>(undefined);
+    const [surname, setSurname] = useState<string | undefined>(undefined);
+    const [phone, setPhone] = useState<string | undefined>(undefined);
+    const [pesel, setPesel] = useState<string | undefined>(undefined);
+    const [birthDate, setBirthDate] = useState<string | undefined>(undefined);
+
+    useEffect(() => {
+        getUserById(userId).then((authorizedUser: UserResponseDTO) => {
+            setName(authorizedUser.name);
+            setSurname(authorizedUser.surname);
+            setPhone(authorizedUser.phone);
+            setPesel(authorizedUser.pesel);
+            setBirthDate(authorizedUser.birthDate);
+        });
+    }, [userId]);
 
     return (
         <SubpageContainer>
@@ -28,21 +36,12 @@ export function UsersEditSubpage(): JSX.Element {
             <SubpageContent>
                 <FormContainer
                     onSubmit={() => {
-                        updateUserSettings(
-                            userId,
-                            new SettingsUpdateDTO(userLogin, name, surname, email, phone, pesel, birthDate)
-                        );
-                        history.push(usersListPath);
+                        if (name && surname && phone && birthDate && pesel) {
+                            updateUserData(userId, new UserUpdateDTO(name, surname, phone, birthDate, pesel));
+                            history.push(usersListPath);
+                        }
                     }}
                 >
-                    <InputFormGroup
-                        label={'Login:'}
-                        name={'user_login'}
-                        value={userLogin}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                            setUserLogin(event.target.value);
-                        }}
-                    />
                     <InputFormGroup
                         label={'Name:'}
                         name={'user_name'}
@@ -57,14 +56,6 @@ export function UsersEditSubpage(): JSX.Element {
                         value={surname}
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             setSurname(event.target.value);
-                        }}
-                    />
-                    <InputFormGroup
-                        label={'E-mail:'}
-                        name={'user_email'}
-                        value={email}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                            setEmail(event.target.value);
                         }}
                     />
                     <InputFormGroup

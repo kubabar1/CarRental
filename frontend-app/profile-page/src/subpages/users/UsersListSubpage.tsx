@@ -7,6 +7,7 @@ import { getUsersList } from '../../service/UserService';
 import { Column } from 'react-table';
 import { UserResponseDTO } from '../../model/UserResponseDTO';
 import { ButtonTableItem } from '../../components/table/tab_items/ButtonTableItem';
+import { UserRolesTableItem } from './tab_items/UserRolesTableItem';
 
 export function UsersListSubpage(): JSX.Element {
     const [usersList, setUsersList] = useState<UserResponseDTO[]>([]);
@@ -45,17 +46,24 @@ export function UsersListSubpage(): JSX.Element {
             },
             {
                 Header: 'Birth date',
-                accessor: (row: UserResponseDTO) => {
-                    return row.birthDate.toLocaleDateString();
-                },
+                accessor: 'birthDate',
             },
             {
                 Header: 'Pesel',
                 accessor: 'pesel',
             },
             {
+                Header: 'User roles',
+                accessor: UserRolesTableItem,
+            },
+            {
                 Header: 'Edit',
                 accessor: (user: UserResponseDTO) => ButtonTableItem('Edit', `/users/${user.id}/edit`, 'success'),
+            },
+            {
+                Header: 'Add role',
+                accessor: (user: UserResponseDTO) =>
+                    ButtonTableItem('+ Add role', `/user-roles/add/${user.id}`, 'success'),
             },
         ],
         []
