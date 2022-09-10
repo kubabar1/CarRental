@@ -1,6 +1,6 @@
 import VehicleStatCodeEnum from './VehicleStatCodeEnum';
 
-class VehicleStatusResponseDTO {
+export class VehicleStatusResponseDTO {
     vehicleStatCode: VehicleStatCodeEnum;
     description: string;
 
@@ -9,5 +9,3 @@ class VehicleStatusResponseDTO {
         this.description = description;
     }
 }
-
-export default VehicleStatusResponseDTO;

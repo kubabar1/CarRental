@@ -1,0 +1,11 @@
+.search-min-max-input-container {
+    .search-min-max-input-groups-container {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+
+        .search-min-max-input-group {
+            margin-bottom: 25px;
+        }
+    }
+}

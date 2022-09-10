@@ -12,6 +12,14 @@ import java.util.Set;
 @Table(name = "vehicles")
 public class VehicleEntity implements Serializable {
 
+    public static final String BRAND_FIELD = "brand";
+
+    public static final String MODEL_FIELD = "model";
+
+    public static final String DAILY_FEE_FIELD = "dailyFee";
+
+    public static final String VEHICLE_DETAILS_FIELD = "vehicleDetails";
+
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)

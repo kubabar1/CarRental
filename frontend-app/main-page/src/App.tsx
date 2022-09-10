@@ -18,8 +18,8 @@ import { HomePage } from './components/page_content/home/HomePage';
 import LocalisationResponseDTO from './model/LocalisationResponseDTO';
 import { AboutUsPage } from './components/page_content/about_us/AboutUsPage';
 import { ContactPage } from './components/page_content/contact/ContactPage';
-import CarListPage from './components/page_content/car_list/CarListPage';
-import CarDetailsPage from './components/page_content/car_details/CarDetailsPage';
+import CarListPage from './components/page_content/vehicle_list/VehicleListPage';
+import CarDetailsPage from './components/page_content/vehicle_details/VehicleDetailsPage';
 import BestOffersPage from './components/page_content/best_offers/BestOffersPage';
 
 interface AppState {

@@ -1,5 +1,6 @@
 package com.carrental.vehicleservice.service;
 
+import com.carrental.vehicleservice.model.dto.VehicleFilterParamsDTO;
 import com.carrental.vehicleservice.model.dto.VehiclePersistDTO;
 import com.carrental.vehicleservice.model.dto.VehicleResponseDTO;
 
@@ -19,4 +20,8 @@ public interface VehicleService {
     VehicleResponseDTO addVehicle(VehiclePersistDTO vehiclePersistDTO);
 
     VehicleResponseDTO updateVehicleById(Long vehicleId, VehiclePersistDTO vehiclePersistDTO) throws NoSuchElementException;
+
+    VehicleFilterParamsDTO getVehiclesFilterParams();
+
+    Set<String> getVehicleModelsByBrand(String brand);
 }

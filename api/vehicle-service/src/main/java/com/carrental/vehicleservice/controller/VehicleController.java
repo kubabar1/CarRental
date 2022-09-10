@@ -1,15 +1,17 @@
 package com.carrental.vehicleservice.controller;
 
+import com.carrental.vehicleservice.model.constants.FilteringParamsEnum;
+import com.carrental.vehicleservice.model.dto.VehicleFilterParamsDTO;
 import com.carrental.vehicleservice.model.dto.VehiclePersistDTO;
 import com.carrental.vehicleservice.model.dto.VehicleResponseDTO;
+import com.carrental.vehicleservice.service.FilteringService;
 import com.carrental.vehicleservice.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 
 @CrossOrigin
 @RestController
@@ -18,6 +20,9 @@ public class VehicleController {
 
     @Autowired
     private VehicleService vehicleService;
+
+    @Autowired
+    private FilteringService filteringService;
 
 
     @GetMapping
@@ -66,5 +71,24 @@ public class VehicleController {
     public ResponseEntity<VehicleResponseDTO> updateVehicleByIdController(@PathVariable(name = "vehicleId") Long vehicleId,
                                                                           @Valid @RequestBody VehiclePersistDTO vehiclePersistDTO) {
         return ResponseEntity.ok().body(vehicleService.updateVehicleById(vehicleId, vehiclePersistDTO));
+    }
+
+    @GetMapping(value = "/filter-params")
+    public ResponseEntity<VehicleFilterParamsDTO> getVehiclesFilterParamsController() {
+        return ResponseEntity.ok().body(vehicleService.getVehiclesFilterParams());
+    }
+
+    @GetMapping(value = "/filter-params/brand-models/{brand}")
+    public ResponseEntity<Set<String>> getVehicleModelsByBrand(@PathVariable(name = "brand") String brand) {
+        return ResponseEntity.ok().body(vehicleService.getVehicleModelsByBrand(brand));
+    }
+
+    @GetMapping(value = "/filter")
+    public ResponseEntity<List<VehicleResponseDTO>> getVehiclesByFilter(@RequestParam Map<String, String> filtersMap) {
+        try {
+            return ResponseEntity.ok().body(filteringService.filterVehicles(filtersMap));
+        } catch (NumberFormatException exception) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

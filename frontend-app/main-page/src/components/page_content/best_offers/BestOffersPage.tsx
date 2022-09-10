@@ -1,13 +1,12 @@
 import React from 'react';
 import LocalisationResponseDTO from '../../../model/LocalisationResponseDTO';
-import VehicleResponseDTO from '../../../model/VehicleResponseDTO';
+import { VehicleResponseDTO } from '../../../model/VehicleResponseDTO';
 import ReactPaginate from 'react-paginate';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { getPageFromUrl } from '../../../utils/UrlUtil';
 import { endpoints } from '../../../constants/PathsAPI';
 import Page from '../../../model/Page';
-import { vehicleResponseDTOMock, vehicleResponseDTOMock2 } from '../../../constants/MockData';
-import { CarItem } from '../car_list/car_item/CarItem';
+import { VehicleItem } from '../vehicle_list/vehicle_item/VehicleItem';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 interface BestOffersPageProperties extends RouteComponentProps {
@@ -57,7 +56,7 @@ class BestOffersPage extends React.Component<BestOffersPageProperties, BestOffer
             })
             .finally(() => {
                 this.setState({
-                    vehicles: [vehicleResponseDTOMock, vehicleResponseDTOMock2], // TODO: REMOVE
+                    vehicles: [], // TODO: REMOVE
                     loaded: true,
                 });
             });
@@ -70,7 +69,7 @@ class BestOffersPage extends React.Component<BestOffersPageProperties, BestOffer
     };
 
     vehiclesToTableRow = (vehicle: VehicleResponseDTO) => {
-        return <CarItem vehicle={vehicle} key={vehicle.id} />;
+        return <VehicleItem vehicle={vehicle} key={vehicle.id} />;
     };
 
     render(): JSX.Element {

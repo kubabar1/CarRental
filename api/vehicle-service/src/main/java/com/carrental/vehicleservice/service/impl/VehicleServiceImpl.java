@@ -1,5 +1,6 @@
 package com.carrental.vehicleservice.service.impl;
 
+import com.carrental.vehicleservice.model.dto.VehicleFilterParamsDTO;
 import com.carrental.vehicleservice.model.dto.VehiclePersistDTO;
 import com.carrental.vehicleservice.model.dto.VehicleResponseDTO;
 import com.carrental.vehicleservice.model.entity.VehicleEntity;
@@ -9,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -69,5 +71,31 @@ public class VehicleServiceImpl implements VehicleService {
         vehicleEntityToUpdate.setId(vehicleId);
         VehicleEntity vehicleEntityAfterUpdate = vehicleRepository.save(vehicleEntityToUpdate);
         return modelMapper.map(vehicleEntityAfterUpdate, VehicleResponseDTO.class);
+    }
+
+    @Override
+    public VehicleFilterParamsDTO getVehiclesFilterParams() {
+        VehicleFilterParamsDTO vehicleFilterParamsDTO = new VehicleFilterParamsDTO();
+        vehicleFilterParamsDTO.setBodyTypes(vehicleRepository.findAllBodyTypes());
+        vehicleFilterParamsDTO.setBrands(vehicleRepository.findAllBrands());
+//        vehicleFilterParamsDTO.setCities(vehicleRepository.findAllCities());
+        vehicleFilterParamsDTO.setColors(vehicleRepository.findAllColors());
+        vehicleFilterParamsDTO.setMinDoorCount(vehicleRepository.findMinDoorCount());
+        vehicleFilterParamsDTO.setMaxDoorCount(vehicleRepository.findMaxDoorCount());
+        vehicleFilterParamsDTO.setMinPrice(vehicleRepository.findMinPrice());
+        vehicleFilterParamsDTO.setMaxPrice(vehicleRepository.findMaxPrice());
+        vehicleFilterParamsDTO.setMinProductionYear(vehicleRepository.findMinProductionYear());
+        vehicleFilterParamsDTO.setMaxProductionYear(vehicleRepository.findMaxProductionYear());
+        vehicleFilterParamsDTO.setMinSeatsCount(vehicleRepository.findMinSeatsCount());
+        vehicleFilterParamsDTO.setMaxSeatsCount(vehicleRepository.findMaxSeatsCount());
+        return vehicleFilterParamsDTO;
+    }
+
+    @Override
+    public Set<String> getVehicleModelsByBrand(String brand) {
+        if (brand != null) {
+            return vehicleRepository.findAllModelsByBrand(brand.toUpperCase());
+        }
+        return new HashSet<>();
     }
 }

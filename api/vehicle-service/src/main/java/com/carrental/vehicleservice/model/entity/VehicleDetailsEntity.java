@@ -10,6 +10,16 @@ import java.io.Serializable;
 @Table(name = "vehicle_details")
 public class VehicleDetailsEntity implements Serializable {
 
+    public static final String BODY_TYPE_FIELD = "bodyType";
+
+    public static final String COLOR_FIELD = "color";
+
+    public static final String SEATS_NUMBER_FIELD = "seatsNumber";
+
+    public static final String DOORS_NUMBER_FIELD = "doorsNumber";
+
+    public static final String PRODUCTION_YEAR_FIELD = "productionYear";
+
     @Id
     @Column(name = "vehicle_id", nullable = false, unique = true)
     private Long vehicleId;

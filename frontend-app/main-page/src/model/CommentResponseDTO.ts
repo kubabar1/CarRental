@@ -1,26 +1,15 @@
-class CommentResponseDTO {
-    id: number;
-    vehicleId: number;
-    commentContent: string;
-    userLogin: string;
-    creationDate: Date;
-    rating: number;
+export class CommentResponseDTO {
+    id: string;
+    content: string;
+    vehicleId: string;
+    userId: string;
+    creationDate: string;
 
-    constructor(
-        id: number,
-        vehicleId: number,
-        commentContent: string,
-        userLogin: string,
-        creationDate: Date,
-        rating: number
-    ) {
+    constructor(id: string, vehicleId: string, content: string, userId: string, creationDate: string) {
         this.id = id;
         this.vehicleId = vehicleId;
-        this.commentContent = commentContent;
-        this.userLogin = userLogin;
+        this.content = content;
+        this.userId = userId;
         this.creationDate = creationDate;
-        this.rating = rating;
     }
 }
-
-export default CommentResponseDTO;

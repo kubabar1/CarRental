@@ -4,22 +4,39 @@ export const host = 'localhost';
 
 export const port = 8080;
 
-export const context = '/CarRental';
+export const context = '';
 
-export const appAddr: string = protocol + '://' + host + ':' + port + context;
+export const APP_ADDR: string = protocol + '://' + host + ':' + port + context;
+
+const withId = (basePath: string, id: string): string => {
+    return `${basePath}/${id}`;
+};
+
+export const GET_VEHICLES_PATH = `${APP_ADDR}/vehicles`;
+
+export const GET_VEHICLES_FILTER_PARAMS_PATH = `${APP_ADDR}/vehicles/filter-params`;
+
+export const GET_VEHICLE_BY_ID_PATH = (vehicleId: string): string => withId(`${APP_ADDR}/vehicles`, vehicleId);
+
+export const GET_VEHICLE_MODELS_BY_BRAND_PATH = (brand: string): string =>
+    withId(`${APP_ADDR}/vehicles/filter-params/brand-models`, brand);
+
+export const GET_VEHICLE_RATE_BY_ID_PATH = (vehicleId: string): string => withId(`${APP_ADDR}/rates`, vehicleId);
+
+export const GET_VEHICLE_COMMENTS_BY_ID_PATH = (vehicleId: string): string => withId(`${APP_ADDR}/comments`, vehicleId);
 
 export const endpoints = {
-    authenticationEndpoint: appAddr + '/userdata/is-authenticated',
-    localisationsEndpoint: appAddr + '/locations',
-    brandListEndpoint: appAddr + '/car-list-search/brands',
-    brandModelsListEndpoint: (brand: string): string => appAddr + `/car-list-search/brands/models/${brand}`,
-    cityListEndpoint: appAddr + '/car-list-search/brands/cities',
-    bodyTypesListEndpoint: appAddr + '/car-list-search/body-types',
-    coloursListEndpoint: appAddr + '/car-list-search/colours',
+    authenticationEndpoint: APP_ADDR + '/userdata/is-authenticated',
+    localisationsEndpoint: APP_ADDR + '/locations',
+    brandListEndpoint: APP_ADDR + '/car-list-search/brands',
+    brandModelsListEndpoint: (brand: string): string => APP_ADDR + `/car-list-search/brands/models/${brand}`,
+    cityListEndpoint: APP_ADDR + '/car-list-search/brands/cities',
+    bodyTypesListEndpoint: APP_ADDR + '/car-list-search/body-types',
+    coloursListEndpoint: APP_ADDR + '/car-list-search/colours',
     carsPageableEndpoint: (page: number, pageCount: number): string =>
-        appAddr + `/cars?page=${page}&number=${pageCount}`,
-    starsCountEndpoint: (carId: number): string => appAddr + `/stars/${carId}`,
-    commentsEndpoint: (carId: number, page: number, pageCount: number): string =>
-        appAddr + `/comments/${carId}?page=${page}&number=${pageCount}`,
-    carByIdEndpoint: (carId: number): string => appAddr + `/cars/${carId}`,
+        APP_ADDR + `/cars?page=${page}&number=${pageCount}`,
+    starsCountEndpoint: (carId: string): string => APP_ADDR + `/stars/${carId}`,
+    commentsEndpoint: (carId: string, page: number, pageCount: number): string =>
+        APP_ADDR + `/comments/${carId}?page=${page}&number=${pageCount}`,
+    carByIdEndpoint: (carId: string): string => APP_ADDR + `/cars/${carId}`,
 };
