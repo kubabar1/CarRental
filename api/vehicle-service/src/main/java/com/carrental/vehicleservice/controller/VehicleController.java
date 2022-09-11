@@ -7,6 +7,8 @@ import com.carrental.vehicleservice.model.dto.VehicleResponseDTO;
 import com.carrental.vehicleservice.service.FilteringService;
 import com.carrental.vehicleservice.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,12 +28,12 @@ public class VehicleController {
 
 
     @GetMapping
-    public ResponseEntity<Set<VehicleResponseDTO>> getVehiclesController() {
-        Set<VehicleResponseDTO> vehicleResponseDTOSet = vehicleService.getVehicles();
-        if (vehicleResponseDTOSet.isEmpty()) {
+    public ResponseEntity<Page<VehicleResponseDTO>> getVehiclesController(Pageable pageable) {
+        Page<VehicleResponseDTO> vehicleResponseDTOPage = vehicleService.getVehicles(pageable);
+        if (vehicleResponseDTOPage.getContent().isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok().body(vehicleResponseDTOSet);
+        return ResponseEntity.ok().body(vehicleResponseDTOPage);
     }
 
     @GetMapping(value = "/available")
@@ -84,9 +86,9 @@ public class VehicleController {
     }
 
     @GetMapping(value = "/filter")
-    public ResponseEntity<List<VehicleResponseDTO>> getVehiclesByFilter(@RequestParam Map<String, String> filtersMap) {
+    public ResponseEntity<Page<VehicleResponseDTO>> getVehiclesByFilter(@RequestParam Map<String, String> filtersMap, Pageable pageable) {
         try {
-            return ResponseEntity.ok().body(filteringService.filterVehicles(filtersMap));
+            return ResponseEntity.ok().body(filteringService.filterVehicles(filtersMap, pageable));
         } catch (NumberFormatException exception) {
             return ResponseEntity.badRequest().build();
         }

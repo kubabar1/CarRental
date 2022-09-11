@@ -1,6 +1,6 @@
 import React from 'react';
 import { VehicleFiltersParamsDTO } from '../../../../model/VehicleFiltersParamsDTO';
-import { OptionType, SearchSelect } from './search_components/select/SearchSelect';
+import { SearchSelectOption, SearchSelect } from './search_components/select/SearchSelect';
 // import { SingleValue } from 'react-select';
 // import { SearchMinMaxInput } from './search_components/min_max_input/SearchMinMaxInput';
 import FilteringParamsEnum from '../../../../model/FilteringParamsEnum';
@@ -22,7 +22,7 @@ export function VehicleSearchFilters({
     setVehicleFilters,
     handleFilterSubmit,
 }: CarSearchFiltersInterface): JSX.Element {
-    const mapToOptionType = (val?: string): OptionType => {
+    const mapToOptionType = (val?: string): SearchSelectOption => {
         if (val) {
             return {
                 value: val,
@@ -49,7 +49,7 @@ export function VehicleSearchFilters({
             <SearchSelect
                 label={searchLabel}
                 value={mapToOptionType(vehicleFilters.get(filteringParam))}
-                onChange={(newValue: SingleValue<OptionType>) => {
+                onChange={(newValue: SingleValue<SearchSelectOption>) => {
                     setVehicleFilters(
                         new Map(vehicleFilters).set(
                             filteringParam,

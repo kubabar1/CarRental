@@ -10,5 +10,10 @@
         #vehicles-paginate-container {
             width: 100%;
         }
+
+        .pagination-and-counter-container {
+            display: flex;
+            justify-content: space-between;
+        }
     }
 }

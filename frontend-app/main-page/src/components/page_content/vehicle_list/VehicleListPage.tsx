@@ -14,7 +14,13 @@ import {
 import { LoaderContainer } from './container/LoaderContainer';
 import { VehicleFiltersParamsDTO } from '../../../model/VehicleFiltersParamsDTO';
 import FilteringParamsEnum from '../../../model/FilteringParamsEnum';
-import { getVehicleFilteringParamsUrl } from '../../../utils/UrlUtil';
+import { getCountFromUrl, getPageFromUrl, getVehicleFilteringParamsUrl } from '../../../utils/UrlUtil';
+import Page from '../../../model/Page';
+import ReactPaginate from 'react-paginate';
+import Select, { SingleValue } from 'react-select';
+import qs, { ParsedQs } from 'qs';
+
+type OptionType = { value: string | null; label: string | null };
 
 interface CarListProperties extends RouteComponentProps {
     localisations: LocalisationResponseDTO[] | null;
@@ -22,15 +28,19 @@ interface CarListProperties extends RouteComponentProps {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function VehicleListPage(props: CarListProperties): JSX.Element {
+    const VEHICLES_PER_PAGE_COUNTS: number[] = [5, 10, 25, 50];
+    const DEFAULT_PER_PAGE_COUNT = 10;
+    const DEFAULT_START_PAGE = 0;
     const history = useHistory();
     const location = useLocation();
-    const [vehiclesList, setVehiclesList] = useState<VehicleResponseDTO[]>([]);
+    const [vehiclesPage, setVehiclesPage] = useState<Page<VehicleResponseDTO> | undefined>(undefined);
     const [vehicleFiltersParams, setVehicleFiltersParams] = useState<VehicleFiltersParamsDTO | undefined>(undefined);
     const [vehicleFilterModelsParam, setVehicleFilterModelsParam] = useState<string[]>([]);
     const [vehicleFilters, setVehicleFilters] = useState<Map<FilteringParamsEnum, string | undefined>>(
         new Map<FilteringParamsEnum, string | undefined>()
     );
-    const [isLoaded, setIsLoaded] = useState<boolean>(false);
+    const [currentPage, setCurrentPage] = useState<number>(DEFAULT_START_PAGE);
+    const [perPageCount, setPerPageCount] = useState<number>(DEFAULT_PER_PAGE_COUNT);
 
     const getVehicleFiltersParamsUrl = (vehicleFiltersMap: Map<FilteringParamsEnum, string | undefined>): string => {
         return Array.from(vehicleFiltersMap)
@@ -43,21 +53,33 @@ export function VehicleListPage(props: CarListProperties): JSX.Element {
             .join('&');
     };
 
+    const mapToOptionType = (val: number): OptionType => {
+        return {
+            value: `${val}`,
+            label: `${val}`,
+        };
+    };
+
     useEffect(() => {
         const vehicleFilteringParamsUrl: Map<FilteringParamsEnum, string | undefined> = getVehicleFilteringParamsUrl(
             location.search
         );
+        const page: number = getPageFromUrl(location.search);
+        let count: number = getCountFromUrl(location.search);
         setVehicleFilters(vehicleFilteringParamsUrl);
+        setCurrentPage(page);
+        if (count <= 0) {
+            count = DEFAULT_PER_PAGE_COUNT;
+        }
+        setPerPageCount(count);
         if (vehicleFilteringParamsUrl.size == 0) {
-            getVehiclesList().then((vehicleResponseDTOS: VehicleResponseDTO[]) => {
-                setVehiclesList(vehicleResponseDTOS);
-                setIsLoaded(true);
+            getVehiclesList(page, count).then((vehicleResponseDTOS: Page<VehicleResponseDTO>) => {
+                setVehiclesPage(vehicleResponseDTOS);
             });
         } else {
-            getVehiclesListWithFiltering(getVehicleFiltersParamsUrl(vehicleFilteringParamsUrl)).then(
-                (vehicleResponseDTOS: VehicleResponseDTO[]) => {
-                    setVehiclesList(vehicleResponseDTOS);
-                    setIsLoaded(true);
+            getVehiclesListWithFiltering(getVehicleFiltersParamsUrl(vehicleFilteringParamsUrl), page, count).then(
+                (vehicleResponseDTOPage: Page<VehicleResponseDTO>) => {
+                    setVehiclesPage(vehicleResponseDTOPage);
                 }
             );
         }
@@ -78,24 +100,25 @@ export function VehicleListPage(props: CarListProperties): JSX.Element {
     }, [vehicleFilters]);
 
     const handleFilterSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-        setIsLoaded(false);
         event.preventDefault();
         const vehicleFiltersParamsUrl: string = getVehicleFiltersParamsUrl(vehicleFilters);
         if (vehicleFiltersParamsUrl != '') {
             history.push({
                 search: `?${vehicleFiltersParamsUrl}`,
             });
-            getVehiclesListWithFiltering(vehicleFiltersParamsUrl).then((vehicleResponseDTOS: VehicleResponseDTO[]) => {
-                setVehiclesList(vehicleResponseDTOS);
-                setIsLoaded(true);
-            });
+            setCurrentPage(DEFAULT_START_PAGE);
+            setPerPageCount(DEFAULT_PER_PAGE_COUNT);
+            getVehiclesListWithFiltering(vehicleFiltersParamsUrl, currentPage, perPageCount).then(
+                (vehicleResponseDTOPage: Page<VehicleResponseDTO>) => {
+                    setVehiclesPage(vehicleResponseDTOPage);
+                }
+            );
         } else {
             history.push({
                 search: ``,
             });
-            getVehiclesList().then((vehicleResponseDTOS: VehicleResponseDTO[]) => {
-                setVehiclesList(vehicleResponseDTOS);
-                setIsLoaded(true);
+            getVehiclesList(currentPage, perPageCount).then((vehicleResponseDTOS: Page<VehicleResponseDTO>) => {
+                setVehiclesPage(vehicleResponseDTOS);
             });
         }
     };
@@ -117,13 +140,67 @@ export function VehicleListPage(props: CarListProperties): JSX.Element {
                     </div>
                     <div id="search-results-container" className="col-md-9 text-center">
                         <LoaderContainer
-                            dataArrayLength={vehiclesList.length}
-                            isLoaded={isLoaded}
+                            dataArrayLength={vehiclesPage ? vehiclesPage.content.length : 0}
+                            isLoaded={!!vehiclesPage}
                             containerClass={'vehicles-paginate-container'}
                         >
-                            {vehiclesList.map((vehicle: VehicleResponseDTO) => (
-                                <VehicleItem vehicle={vehicle} key={vehicle.id} />
-                            ))}
+                            <div>
+                                {vehiclesPage &&
+                                    vehiclesPage.content.map((vehicle: VehicleResponseDTO) => (
+                                        <VehicleItem vehicle={vehicle} key={vehicle.id} />
+                                    ))}
+                                {vehiclesPage && (
+                                    <div className="pagination-and-counter-container">
+                                        <ReactPaginate
+                                            previousLabel="Previous"
+                                            nextLabel="Next"
+                                            pageClassName="page-item"
+                                            pageLinkClassName="page-link"
+                                            previousClassName="page-item"
+                                            previousLinkClassName="page-link"
+                                            nextClassName="page-item"
+                                            nextLinkClassName="page-link"
+                                            breakLabel="..."
+                                            breakClassName="page-item"
+                                            breakLinkClassName="page-link"
+                                            pageCount={vehiclesPage.totalPages}
+                                            marginPagesDisplayed={2}
+                                            pageRangeDisplayed={5}
+                                            onPageChange={(selectedItem: { selected: number }) => {
+                                                setCurrentPage(selectedItem.selected);
+                                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                                                const currentParams: ParsedQs = qs.parse(location.search, {
+                                                    ignoreQueryPrefix: true,
+                                                });
+                                                currentParams['page'] = `${selectedItem.selected}`;
+                                                history.push({
+                                                    search: `?${qs.stringify(currentParams)}`,
+                                                });
+                                            }}
+                                            containerClassName="pagination"
+                                            activeClassName="active"
+                                            forcePage={currentPage}
+                                        />
+                                        <Select
+                                            className="count-per-page-select"
+                                            value={mapToOptionType(perPageCount)}
+                                            options={VEHICLES_PER_PAGE_COUNTS.map(mapToOptionType)}
+                                            onChange={(newValue: SingleValue<OptionType>) => {
+                                                if (newValue && newValue.value) {
+                                                    setPerPageCount(parseInt(newValue.value));
+                                                    const currentParams: ParsedQs = qs.parse(location.search, {
+                                                        ignoreQueryPrefix: true,
+                                                    });
+                                                    currentParams['count'] = newValue.value;
+                                                    history.push({
+                                                        search: `?${qs.stringify(currentParams)}`,
+                                                    });
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                )}
+                            </div>
                         </LoaderContainer>
                     </div>
                 </div>

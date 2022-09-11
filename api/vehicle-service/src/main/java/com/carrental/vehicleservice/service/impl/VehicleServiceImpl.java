@@ -8,9 +8,13 @@ import com.carrental.vehicleservice.repository.VehicleRepository;
 import com.carrental.vehicleservice.service.VehicleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,12 +30,13 @@ public class VehicleServiceImpl implements VehicleService {
 
 
     @Override
-    public Set<VehicleResponseDTO> getVehicles() {
-        return vehicleRepository
-                .findAll()
+    public Page<VehicleResponseDTO> getVehicles(Pageable pageable) {
+        Page<VehicleEntity> vehicles = vehicleRepository.findAll(pageable);
+        List<VehicleResponseDTO> vehicleResponseDTOList = vehicles.getContent()
                 .stream()
                 .map(vehicleEntity -> modelMapper.map(vehicleEntity, VehicleResponseDTO.class))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
+        return new PageImpl<>(vehicleResponseDTOList, pageable, vehicles.getTotalElements());
     }
 
     @Override

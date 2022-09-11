@@ -1,11 +1,11 @@
 import React from 'react';
 import Select, { Props } from 'react-select';
 
-interface SearchItemProperties extends Props<OptionType, false> {
+interface SearchItemProperties extends Props<SearchSelectOption, false> {
     label: string;
 }
 
-export type OptionType = { value: string | null; label: string | null };
+export type SearchSelectOption = { value: string | null; label: string | null };
 
 export function SearchSelect(props: SearchItemProperties): JSX.Element {
     return (
@@ -15,7 +15,7 @@ export function SearchSelect(props: SearchItemProperties): JSX.Element {
                 value={props.value}
                 options={props.options}
                 onChange={props.onChange}
-                isClearable={!!props.value && (props.value as OptionType).value != null}
+                isClearable={!!props.value && (props.value as SearchSelectOption).value != null}
             />
         </div>
     );

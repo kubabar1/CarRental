@@ -1,11 +1,13 @@
 package com.carrental.vehicleservice.service.impl;
 
-import com.carrental.vehicleservice.model.constants.FilteringParamsEnum;
 import com.carrental.vehicleservice.model.dto.VehicleResponseDTO;
 import com.carrental.vehicleservice.model.entity.VehicleEntity;
 import com.carrental.vehicleservice.service.FilteringService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -52,10 +54,42 @@ public class FilteringServiceImpl implements FilteringService {
 
 
     @Override
-    public List<VehicleResponseDTO> filterVehicles(Map<String, String> filtersMap) throws NumberFormatException {
+    public Page<VehicleResponseDTO> filterVehicles(Map<String, String> filtersMap, Pageable pageable) throws NumberFormatException {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<VehicleEntity> cq = cb.createQuery(VehicleEntity.class);
 
+        CriteriaQuery<VehicleEntity> cq = cb.createQuery(VehicleEntity.class);
+        Root<VehicleEntity> vehicle = cq.from(VehicleEntity.class);
+        Predicate[] predicates = getVehicleFiltersPredicates(filtersMap, cb, vehicle);
+        cq.where(predicates);
+
+        int pageNumber = pageable.getPageNumber();
+        int pageSize = pageable.getPageSize();
+
+        TypedQuery<VehicleEntity> query = entityManager.createQuery(cq);
+        query.setFirstResult(pageNumber * pageSize);
+        query.setMaxResults(pageSize);
+
+        List<VehicleResponseDTO> vehicles = query
+                .getResultList()
+                .stream()
+                .map(vehicleEntity -> modelMapper.map(vehicleEntity, VehicleResponseDTO.class))
+                .collect(Collectors.toList());
+
+        CriteriaQuery<Long> criteriaQueryCount = cb.createQuery(Long.class);
+        Root<VehicleEntity> vehiclesCount = criteriaQueryCount.from(VehicleEntity.class);
+        Predicate[] countPredicates = getVehicleFiltersPredicates(filtersMap, cb, vehiclesCount);
+        criteriaQueryCount.where(countPredicates);
+        criteriaQueryCount.select(cb.count(vehiclesCount));
+        long totalVehiclesCount = entityManager.createQuery(criteriaQueryCount).getSingleResult();
+
+        return new PageImpl<>(vehicles, pageable, totalVehiclesCount);
+    }
+
+    private Predicate[] getVehicleFiltersPredicates(
+            Map<String, String> filtersMap,
+            CriteriaBuilder cb,
+            Root<VehicleEntity> vehicleEntityRoot
+    ) {
         String brand = filtersMap.get(BRAND_FIELD_FILTER.getFilterName());
         String model = filtersMap.get(MODEL_FIELD_FILTER.getFilterName());
         String bodyType = filtersMap.get(BODY_TYPE_FIELD_FILTER.getFilterName());
@@ -69,57 +103,48 @@ public class FilteringServiceImpl implements FilteringService {
         String doorsNumberTo = filtersMap.get(DOORS_NUMBER_TO_FILTER.getFilterName());
         String productionYearTo = filtersMap.get(PRODUCTION_YEAR_TO_FILTER.getFilterName());
 
-        Root<VehicleEntity> vehicle = cq.from(VehicleEntity.class);
         List<Predicate> predicates = new ArrayList<>();
 
         if (brand != null) {
-            predicates.add(cb.like(cb.upper(vehicle.get(BRAND_FIELD)), "%" + brand.toUpperCase() + "%"));
+            predicates.add(cb.like(cb.upper(vehicleEntityRoot.get(BRAND_FIELD)), "%" + brand.toUpperCase() + "%"));
         }
         if (model != null) {
-            predicates.add(cb.like(cb.upper(vehicle.get(MODEL_FIELD)), "%" + model.toUpperCase() + "%"));
+            predicates.add(cb.like(cb.upper(vehicleEntityRoot.get(MODEL_FIELD)), "%" + model.toUpperCase() + "%"));
         }
         if (bodyType != null) {
-            predicates.add(cb.like(cb.upper(vehicle.get(VEHICLE_DETAILS_FIELD).get(BODY_TYPE_FIELD)), "%" + bodyType.toUpperCase() + "%"));
+            predicates.add(cb.like(cb.upper(vehicleEntityRoot.get(VEHICLE_DETAILS_FIELD).get(BODY_TYPE_FIELD)), "%" + bodyType.toUpperCase() + "%"));
         }
         if (color != null) {
-            predicates.add(cb.like(cb.upper(vehicle.get(VEHICLE_DETAILS_FIELD).get(COLOR_FIELD)), "%" + color.toUpperCase() + "%"));
+            predicates.add(cb.like(cb.upper(vehicleEntityRoot.get(VEHICLE_DETAILS_FIELD).get(COLOR_FIELD)), "%" + color.toUpperCase() + "%"));
         }
         if (dailyFeeFrom != null) {
-            predicates.add(cb.ge(vehicle.get(DAILY_FEE_FIELD), Double.valueOf(dailyFeeFrom)));
+            predicates.add(cb.ge(vehicleEntityRoot.get(DAILY_FEE_FIELD), Double.valueOf(dailyFeeFrom)));
         }
         if (dailyFeeTo != null) {
-            predicates.add(cb.le(vehicle.get(DAILY_FEE_FIELD), Double.valueOf(dailyFeeTo)));
+            predicates.add(cb.le(vehicleEntityRoot.get(DAILY_FEE_FIELD), Double.valueOf(dailyFeeTo)));
         }
         if (seatsNumberFrom != null) {
-            predicates.add(cb.ge(vehicle.get(VEHICLE_DETAILS_FIELD).get(SEATS_NUMBER_FIELD), Double.valueOf(seatsNumberFrom)));
+            predicates.add(cb.ge(vehicleEntityRoot.get(VEHICLE_DETAILS_FIELD).get(SEATS_NUMBER_FIELD), Double.valueOf(seatsNumberFrom)));
         }
         if (seatsNumberTo != null) {
-            predicates.add(cb.le(vehicle.get(VEHICLE_DETAILS_FIELD).get(SEATS_NUMBER_FIELD), Double.valueOf(seatsNumberTo)));
+            predicates.add(cb.le(vehicleEntityRoot.get(VEHICLE_DETAILS_FIELD).get(SEATS_NUMBER_FIELD), Double.valueOf(seatsNumberTo)));
         }
         if (productionYearFrom != null) {
-            predicates.add(cb.ge(vehicle.get(VEHICLE_DETAILS_FIELD).get(PRODUCTION_YEAR_FIELD), Double.valueOf(productionYearFrom)));
+            predicates.add(cb.ge(vehicleEntityRoot.get(VEHICLE_DETAILS_FIELD).get(PRODUCTION_YEAR_FIELD), Double.valueOf(productionYearFrom)));
         }
         if (productionYearTo != null) {
-            predicates.add(cb.le(vehicle.get(VEHICLE_DETAILS_FIELD).get(PRODUCTION_YEAR_FIELD), Double.valueOf(productionYearTo)));
+            predicates.add(cb.le(vehicleEntityRoot.get(VEHICLE_DETAILS_FIELD).get(PRODUCTION_YEAR_FIELD), Double.valueOf(productionYearTo)));
         }
         if (doorsNumberFrom != null) {
-            predicates.add(cb.ge(vehicle.get(VEHICLE_DETAILS_FIELD).get(DOORS_NUMBER_FIELD), Double.valueOf(doorsNumberFrom)));
+            predicates.add(cb.ge(vehicleEntityRoot.get(VEHICLE_DETAILS_FIELD).get(DOORS_NUMBER_FIELD), Double.valueOf(doorsNumberFrom)));
         }
         if (doorsNumberTo != null) {
-            predicates.add(cb.le(vehicle.get(VEHICLE_DETAILS_FIELD).get(DOORS_NUMBER_FIELD), Double.valueOf(doorsNumberTo)));
+            predicates.add(cb.le(vehicleEntityRoot.get(VEHICLE_DETAILS_FIELD).get(DOORS_NUMBER_FIELD), Double.valueOf(doorsNumberTo)));
         }
 
         Predicate[] pr = new Predicate[predicates.size()];
         predicates.toArray(pr);
 
-        cq.where(pr);
-
-        TypedQuery<VehicleEntity> query = entityManager.createQuery(cq);
-
-        return query
-                .getResultList()
-                .stream()
-                .map(vehicleEntity -> modelMapper.map(vehicleEntity, VehicleResponseDTO.class))
-                .collect(Collectors.toList());
+        return pr;
     }
 }

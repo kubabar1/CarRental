@@ -4,6 +4,10 @@ export const host = 'localhost';
 
 export const port = 8080;
 
+export const DEFAULT_START_PAGE = 0;
+
+export const DEFAULT_PAGE_SIZE = 10;
+
 export const context = '';
 
 export const APP_ADDR: string = protocol + '://' + host + ':' + port + context;
@@ -15,6 +19,12 @@ const withId = (basePath: string, id: string): string => {
 export const GET_VEHICLES_PATH = `${APP_ADDR}/vehicles`;
 
 export const GET_VEHICLES_FILTER_PARAMS_PATH = `${APP_ADDR}/vehicles/filter-params`;
+
+export const PAGE_REQUEST = (
+    url: string,
+    page: number = DEFAULT_START_PAGE,
+    size: number = DEFAULT_PAGE_SIZE
+): string => `${url}?page=${page}&size=${size}`;
 
 export const GET_VEHICLE_BY_ID_PATH = (vehicleId: string): string => withId(`${APP_ADDR}/vehicles`, vehicleId);
 

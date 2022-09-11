@@ -5,15 +5,23 @@ import {
     GET_VEHICLE_MODELS_BY_BRAND_PATH,
     GET_VEHICLES_FILTER_PARAMS_PATH,
     GET_VEHICLES_PATH,
+    PAGE_REQUEST,
 } from '../constants/PathsAPI';
 import { VehicleFiltersParamsDTO } from '../model/VehicleFiltersParamsDTO';
+import Page from '../model/Page';
 
-export const getVehiclesList = (): Promise<VehicleResponseDTO[]> => {
-    return fetchGet<VehicleResponseDTO[]>(GET_VEHICLES_PATH);
+export const getVehiclesList = (page?: number, size?: number): Promise<Page<VehicleResponseDTO>> => {
+    return fetchGet<Page<VehicleResponseDTO>>(PAGE_REQUEST(GET_VEHICLES_PATH, page, size));
 };
 
-export const getVehiclesListWithFiltering = (filterQueryParamsUrl: string): Promise<VehicleResponseDTO[]> => {
-    return fetchGet<VehicleResponseDTO[]>(`${GET_VEHICLES_PATH}/filter?${filterQueryParamsUrl}`);
+export const getVehiclesListWithFiltering = (
+    filterQueryParamsUrl: string,
+    page?: number,
+    size?: number
+): Promise<Page<VehicleResponseDTO>> => {
+    return fetchGet<Page<VehicleResponseDTO>>(
+        `${GET_VEHICLES_PATH}/filter?${filterQueryParamsUrl}&page=${page}&size=${size}`
+    );
 };
 
 export const getVehicleById = (vehicleId: string): Promise<VehicleResponseDTO> => {
