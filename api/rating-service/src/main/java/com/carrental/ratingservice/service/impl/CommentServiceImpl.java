@@ -7,8 +7,12 @@ import com.carrental.ratingservice.repository.CommentRepository;
 import com.carrental.ratingservice.service.CommentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,12 +46,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Set<CommentResponseDTO> getCommentsByVehicleId(Long vehicleId) throws NoSuchElementException {
-        return commentRepository
-                .findCommentEntitiesByVehicleId(vehicleId)
+    public Page<CommentResponseDTO> getCommentsByVehicleId(Long vehicleId, Pageable pageable) throws NoSuchElementException {
+        Page<CommentEntity> commentEntityPage = commentRepository.findCommentEntitiesByVehicleId(vehicleId, pageable);
+        List<CommentResponseDTO> commentResponseDTOList = commentEntityPage.getContent()
                 .stream()
                 .map(comment -> modelMapper.map(comment, CommentResponseDTO.class))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(commentResponseDTOList, pageable, commentEntityPage.getTotalElements());
     }
 
     @Override

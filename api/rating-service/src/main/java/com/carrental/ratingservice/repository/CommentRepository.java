@@ -1,6 +1,8 @@
 package com.carrental.ratingservice.repository;
 
 import com.carrental.ratingservice.model.entity.CommentEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Set;
@@ -11,5 +13,5 @@ public interface CommentRepository extends PagingAndSortingRepository<CommentEnt
 
     Set<CommentEntity> findCommentEntitiesByUserId(Long userId);
 
-    Set<CommentEntity> findCommentEntitiesByVehicleId(Long vehicleId);
+    Page<CommentEntity> findCommentEntitiesByVehicleId(Long vehicleId, Pageable pageable);
 }

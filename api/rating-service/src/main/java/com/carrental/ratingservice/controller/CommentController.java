@@ -4,6 +4,8 @@ import com.carrental.ratingservice.model.dto.CommentAddDTO;
 import com.carrental.ratingservice.model.dto.CommentResponseDTO;
 import com.carrental.ratingservice.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,17 +32,17 @@ public class CommentController {
     }
 
     @GetMapping(value = "/vehicle/{vehicleId}")
-    public ResponseEntity<Set<CommentResponseDTO>> getCommentByVehicleIdController(@PathVariable(value = "vehicleId") Long vehicleId) {
-        Set<CommentResponseDTO> commentResponseDTOS;
+    public ResponseEntity<Page<CommentResponseDTO>> getCommentByVehicleIdController(@PathVariable(value = "vehicleId") Long vehicleId, Pageable pageable) {
+        Page<CommentResponseDTO> commentResponseDTOPage;
         try {
-            commentResponseDTOS = commentService.getCommentsByVehicleId(vehicleId);
+            commentResponseDTOPage = commentService.getCommentsByVehicleId(vehicleId, pageable);
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
-        if (commentResponseDTOS.isEmpty()) {
+        if (commentResponseDTOPage.getContent().isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok().body(commentResponseDTOS);
+        return ResponseEntity.ok().body(commentResponseDTOPage);
     }
 
     @GetMapping(value = "/user/{userId}")
