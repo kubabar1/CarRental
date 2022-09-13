@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { AsideNav } from './components/aside_nav/AsideNav';
-import { endpoints } from './constants/PathsAPI';
 import { MainNav } from './components/main_nav/MainNav';
 import { Footer } from './components/footer/Footer';
 import { Route, Switch } from 'react-router';
@@ -21,76 +20,53 @@ import { ContactPage } from './components/page_content/contact/ContactPage';
 import CarListPage from './components/page_content/vehicle_list/VehicleListPage';
 import CarDetailsPage from './components/page_content/vehicle_details/VehicleDetailsPage';
 import BestOffersPage from './components/page_content/best_offers/BestOffersPage';
+import { UserResponseDTO } from '../../profile-page/src/model/UserResponseDTO';
+import { getAuthorizedUserData } from '../../profile-page/src/service/UserService';
 
-interface AppState {
-    isAuthenticated: boolean;
-    localisations: LocalisationResponseDTO[] | null;
-}
+export function App(): JSX.Element {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [currentUser, setCurrentUserData] = useState<UserResponseDTO | undefined>(undefined);
+    // TODO: remove!!!
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [localisations, setLocalisations] = useState<LocalisationResponseDTO[]>([]);
 
-export class App extends React.Component<Record<string, never>, AppState> {
-    constructor(props: Record<string, never>) {
-        super(props);
+    useEffect(() => {
+        getAuthorizedUserData().then((authorizedUser: UserResponseDTO) => setCurrentUserData(authorizedUser));
+    }, []);
 
-        this.state = {
-            isAuthenticated: false,
-            localisations: null,
-        };
-    }
-
-    componentDidMount(): void {
-        fetch(endpoints.authenticationEndpoint)
-            .then((response: Response) => {
-                response.json().then((json) => {
-                    this.setState({ isAuthenticated: json.isAuthenticated });
-                });
-            })
-            .finally(() => this.setState({ isAuthenticated: true })); // TODO: Remove
-        fetch(endpoints.localisationsEndpoint).then((response: Response) => {
-            response.json().then((localisations: LocalisationResponseDTO[]) => {
-                this.setState({ localisations: localisations });
-            });
-        });
-    }
-
-    renderHomePage = (): JSX.Element => {
-        const { isAuthenticated, localisations } = this.state;
+    const renderHomePage = (): JSX.Element => {
         return <HomePage isAuthenticated={isAuthenticated} localisations={localisations} />;
     };
 
-    renderCarListPage = (): JSX.Element => {
-        const { localisations } = this.state;
+    const renderCarListPage = (): JSX.Element => {
         return <CarListPage localisations={localisations} />;
     };
 
-    renderBestOffersPage = (): JSX.Element => {
-        const { localisations } = this.state;
+    const renderBestOffersPage = (): JSX.Element => {
         return <BestOffersPage localisations={localisations} />;
     };
 
-    renderCarDetailsPage = (): JSX.Element => {
-        const { isAuthenticated } = this.state;
-        return <CarDetailsPage isAuthenticated={isAuthenticated} />;
+    const renderCarDetailsPage = (): JSX.Element => {
+        return <CarDetailsPage isAuthenticated={isAuthenticated} currentUser={currentUser} />;
     };
 
-    render(): JSX.Element {
-        const { isAuthenticated } = this.state;
-
-        return (
-            <main>
-                <AsideNav isAuthenticated={isAuthenticated} />
-                <MainNav />
-                <Switch>
-                    <Route exact path={homeLink} component={this.renderHomePage} />
-                    <Route path={carListLink} component={this.renderCarListPage} />
-                    <Route path={carListPageableLink} component={this.renderCarListPage} />
-                    <Route path={carDetailsLink} component={this.renderCarDetailsPage} />
-                    <Route path={bestOffersPageableLink} component={this.renderBestOffersPage} />
-                    <Route path={bestOffersLink} component={this.renderBestOffersPage} />
-                    <Route path={aboutUsLink} component={AboutUsPage} />
-                    <Route path={contactLink} component={ContactPage} />
-                </Switch>
-                <Footer />
-            </main>
-        );
-    }
+    return (
+        <main>
+            <AsideNav isAuthenticated={isAuthenticated} />
+            <MainNav />
+            <Switch>
+                <Route exact path={homeLink} component={renderHomePage} />
+                <Route path={carListLink} component={renderCarListPage} />
+                <Route path={carListPageableLink} component={renderCarListPage} />
+                <Route path={carDetailsLink} component={renderCarDetailsPage} />
+                <Route path={bestOffersPageableLink} component={renderBestOffersPage} />
+                <Route path={bestOffersLink} component={renderBestOffersPage} />
+                <Route path={aboutUsLink} component={AboutUsPage} />
+                <Route path={contactLink} component={ContactPage} />
+            </Switch>
+            <Footer />
+        </main>
+    );
 }

@@ -17,8 +17,8 @@ export function VehicleDetailsHeader(props: CarDetailsHeaderProperties): JSX.Ele
                 <h1 className="mt-2 ml-5">
                     {vehicle.brand} {vehicle.model}
                 </h1>
-                <div className="card bg-success text-white ml-auto mr-5">
-                    <div className="card-body">
+                <div className="card bg-success text-white ml-auto mr-5 daily-fee-container">
+                    <div>
                         <h5>${vehicle.dailyFee}</h5>
                     </div>
                 </div>

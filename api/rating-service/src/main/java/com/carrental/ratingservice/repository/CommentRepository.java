@@ -11,7 +11,7 @@ public interface CommentRepository extends PagingAndSortingRepository<CommentEnt
 
     Set<CommentEntity> findAll();
 
-    Set<CommentEntity> findCommentEntitiesByUserId(Long userId);
+    Set<CommentEntity> findCommentEntitiesByUserIdOrderByCreationDateDesc(Long userId);
 
-    Page<CommentEntity> findCommentEntitiesByVehicleId(Long vehicleId, Pageable pageable);
+    Page<CommentEntity> findCommentEntitiesByVehicleIdOrderByCreationDateDesc(Long vehicleId, Pageable pageable);
 }

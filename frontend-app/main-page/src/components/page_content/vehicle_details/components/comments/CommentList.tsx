@@ -1,12 +1,12 @@
 import React from 'react';
-import { CommentResponseDTO } from '../../../../../model/CommentResponseDTO';
+import { CommentWithRateResponseDTO } from '../../../../../model/CommentWithRateResponseDTO';
 import { CommentItem } from './comment_item/CommentItem';
 
 interface CommentListProps {
-    comments: CommentResponseDTO[];
+    comments: CommentWithRateResponseDTO[];
 }
 
-function renderCommentItem(comment: CommentResponseDTO): JSX.Element {
+function renderCommentItem(comment: CommentWithRateResponseDTO): JSX.Element {
     return <CommentItem comment={comment} key={comment.id} />;
 }
 

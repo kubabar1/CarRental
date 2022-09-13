@@ -1,177 +1,108 @@
-import React from 'react';
+import React, { useState } from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 import './AddComment.scss';
-import { CommentResponseDTO } from '../../../../../../model/CommentResponseDTO';
+import { CommentWithRateResponseDTO } from '../../../../../../model/CommentWithRateResponseDTO';
+import { addComment } from '../../../../../../service/RatingService';
+import { CommentWithRateAddDTO } from '../../../../../../model/CommentWithRateAddDTO';
+import { UserResponseDTO } from '../../../../../../../../profile-page/src/model/UserResponseDTO';
 
 interface AddCommentProperties {
-    setComments: React.Dispatch<React.SetStateAction<CommentResponseDTO[]>>;
+    setComments: (comments: CommentWithRateResponseDTO[]) => void;
+    comments: CommentWithRateResponseDTO[];
+    vehicleId: string;
+    currentUser: UserResponseDTO | undefined;
 }
 
-interface AddCommentState {
-    starsCount: number;
-    commentContent: string;
-    commentError: boolean;
-    errorMessage: string;
-}
+export function AddComment({ vehicleId, comments, setComments }: AddCommentProperties): JSX.Element {
+    const [starsCount, setStarsCount] = useState<number>(0);
+    const [commentContent, setCommentContent] = useState<string>('');
+    const [errorMessage, setErrorMessage] = useState<string>('');
+    const MAX_COMMENT_LENGTH = 10000;
+    const STARS_COUNT = 5;
 
-export class AddComment extends React.Component<AddCommentProperties, AddCommentState> {
-    constructor(props: AddCommentProperties) {
-        super(props);
-
-        this.state = {
-            starsCount: 0,
-            commentContent: '',
-            commentError: false,
-            errorMessage: '',
-        };
-    }
-
-    onStarClick = (nextValue: number): void => {
-        this.setState({ starsCount: nextValue });
+    const onStarClick = (nextValue: number): void => {
+        setStarsCount(nextValue);
     };
 
-    setComment = (commentContent: string): void => {
-        this.setState({ commentContent: commentContent });
+    const setComment = (commentContent: string): void => {
+        setCommentContent(commentContent);
     };
 
-    handleAddComment = (event: React.FormEvent<HTMLFormElement>): void => {
+    const handleAddComment = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
+        const isOk = validateEmail();
+        //todo add  && currentUser != undefined
+        console.log(errorMessage.length);
+        if (isOk) {
+            const userId = '2';
+            addComment(new CommentWithRateAddDTO(starsCount, commentContent, vehicleId, userId)).then(
+                (newComment: CommentWithRateResponseDTO) => {
+                    setComments([newComment, ...comments]);
+                    setCommentContent('');
+                    setStarsCount(0);
+                }
+            );
+        }
     };
 
-    // createCommentItem = () => {
-    //     const item = {};
-    //
-    //     item['vehicleId'] = this.props.carid;
-    //     item['commentContent'] = this.state.commentContent;
-    //     item['login'] = this.props.login;
-    //     item['creationDate'] = this.getTimestamp();
-    //     item['rating'] = this.state.starsNumber;
-    //
-    //     return item;
-    // };
-    //
-    // createStarItem = () => {
-    //     const item = {};
-    //
-    //     item['vehicleId'] = this.props.carid;
-    //     item['stars'] = this.state.starsNumber;
-    //
-    //     return item;
-    // };
-    //
-    // handleAddComment = (event) => {
-    //     const commentContent = this.state.commentContent;
-    //     const starsNumber = this.state.starsNumber;
-    //     event.preventDefault();
-    //
-    //     if (commentContent == '') {
-    //         this.setState({ commentError: true });
-    //     } else {
-    //         this.setState({ commentError: false });
-    //     }
-    //
-    //     if (starsNumber <= 0) {
-    //         this.setState({ starsError: true });
-    //     } else {
-    //         this.setState({ starsError: false });
-    //     }
-    //
-    //     if (commentContent != '' && starsNumber > 0) {
-    //         const commentItem = this.createCommentItem();
-    //
-    //         const starsItem = this.createStarItem();
-    //
-    //         const url1 = 'http://localhost:8080/CarRental/comments/' + this.props.carid;
-    //         fetch(url1, {
-    //             method: 'POST',
-    //             headers: {
-    //                 Accept: 'application/json',
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify(commentItem),
-    //         })
-    //             .then((response) => {
-    //                 this.setState({ commentContent: '' });
-    //                 this.props.loadCommentsForPage(0);
-    //             })
-    //             .catch((error) => {});
-    //
-    //         const url2 = 'http://localhost:8080/CarRental/stars/' + this.props.carid;
-    //         fetch(url2, {
-    //             method: 'POST',
-    //             headers: {
-    //                 Accept: 'application/json',
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify(starsItem),
-    //         })
-    //             .then((response) => {
-    //                 this.setState({ starsNumber: 0 });
-    //             })
-    //             .catch((error) => {});
-    //
-    //         this.props.loadCommentsForPage(0);
-    //     }
-    //
-    //     this.props.loadCommentsForPage(0);
-    //
-    //     event.preventDefault();
-    // };
-    //
-    // handleInputChange = (event) => {
-    //     const target = event.target;
-    //     const value = target.type === 'checkbox' ? target.checked : target.value;
-    //     const name = target.name;
-    //
-    //     this.setState({
-    //         [name]: value,
-    //     });
-    // };
+    const validateEmail = (): boolean => {
+        let isOk = false;
+        if (commentContent.length == 0) {
+            setErrorMessage('Empty comment content');
+        } else if (commentContent.length > MAX_COMMENT_LENGTH) {
+            setErrorMessage('Comment too long');
+        } else if (starsCount == 0) {
+            setErrorMessage('Stars count not set');
+        } else if (starsCount > STARS_COUNT) {
+            setErrorMessage('Incorrect starts count');
+            // } else if (currentUser == undefined) {
+            //     setErrorMessage('Unauthenticated user');
+        } else {
+            setErrorMessage('');
+            isOk = true;
+        }
+        return isOk;
+    };
 
-    render(): JSX.Element {
-        const { starsCount, commentError, errorMessage } = this.state;
-
-        return (
-            <div id="add-comment-container" className="card text-left">
-                <div className="card-header">Leave a comment</div>
-                <div className="card-body">
-                    <form onSubmit={this.handleAddComment}>
-                        <div className="car-rank mb-3 ml-q">
-                            <StarRatingComponent
-                                name="rate1"
-                                starCount={5}
-                                value={starsCount}
-                                onStarClick={this.onStarClick}
-                            />
+    return (
+        <div id="add-comment-container" className="card text-left">
+            <div className="card-header">Leave a comment</div>
+            <div className="card-body">
+                <form onSubmit={handleAddComment}>
+                    <div className="car-rank mb-3 ml-q">
+                        <StarRatingComponent
+                            name="rate1"
+                            starCount={STARS_COUNT}
+                            value={starsCount}
+                            onStarClick={onStarClick}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <textarea
+                            id="commentContent"
+                            name="commentContent"
+                            className="form-control"
+                            rows={5}
+                            value={commentContent}
+                            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => setComment(event.target.value)}
+                            placeholder="Comment"
+                            required
+                            maxLength={MAX_COMMENT_LENGTH}
+                        />
+                    </div>
+                    {errorMessage.length > 0 && (
+                        <div className="alert alert-danger" role="alert" key="alert_comment">
+                            {errorMessage}
                         </div>
-                        {commentError && (
-                            <div className="alert alert-danger" role="alert" key="alert_stars">
-                                {errorMessage}
-                            </div>
-                        )}
-                        <div className="form-group">
-                            <textarea
-                                id="commentContent"
-                                name="commentContent"
-                                className="form-control"
-                                rows={5}
-                                value={this.state.commentContent}
-                                onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
-                                    this.setComment(event.target.value)
-                                }
-                                placeholder="Comment"
-                                required
-                            />
-                        </div>
-                        {commentError && (
-                            <div className="alert alert-danger" role="alert" key="alert_comment">
-                                {errorMessage}
-                            </div>
-                        )}
-                        <input type="submit" value="Submit" className="btn btn-primary" name="leave-comment-button" />
-                    </form>
-                </div>
+                    )}
+                    <input
+                        type="submit"
+                        value="Submit"
+                        className="btn btn-primary leave-comment-button"
+                        name="leave-comment-button"
+                    />
+                </form>
             </div>
-        );
-    }
+        </div>
+    );
 }

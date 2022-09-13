@@ -5,25 +5,28 @@ import { VehicleStatus } from './components/vehicle_status/VehicleStatus';
 import { VehiclerProperties } from './components/details_list/VehiclerProperties';
 import ReservationButton from './components/reservation_button/ReservationButton';
 import { CommentList } from './components/comments/CommentList';
-// import { AddComment } from './components/comments/add_comment/AddComment';
-import { CommentResponseDTO } from '../../../model/CommentResponseDTO';
+import { AddComment } from './components/comments/add_comment/AddComment';
+import { CommentWithRateResponseDTO } from '../../../model/CommentWithRateResponseDTO';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { getVehicleComments } from '../../../service/RatingService';
 import { getVehicleById } from '../../../service/VehicleService';
 import Page from '../../../model/Page';
+import './VehicleDetailsPage.scss';
+import { UserResponseDTO } from '../../../../../profile-page/src/model/UserResponseDTO';
 
 interface CarDetailsProperties extends RouteComponentProps<{ carId: string }> {
     isAuthenticated: boolean;
+    currentUser: UserResponseDTO | undefined;
 }
 
-export function VehicleDetailsPage(props: CarDetailsProperties): JSX.Element {
+export function VehicleDetailsPage({ currentUser, isAuthenticated, match }: CarDetailsProperties): JSX.Element {
     const DEFAULT_START_COMMENTS_PAGE = 0;
     const DEFAULT_COMMENTS_COUNT = 5;
-    const vehicleId = props.match.params.carId;
+    const vehicleId = match.params.carId;
     const [totalCommentsCount, setTotalCommentsCount] = useState<number>(0);
     const [vehicle, setVehicle] = useState<VehicleResponseDTO | undefined>(undefined);
-    const [comments, setComments] = useState<CommentResponseDTO[]>([]);
+    const [comments, setComments] = useState<CommentWithRateResponseDTO[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(DEFAULT_START_COMMENTS_PAGE);
 
     useEffect(() => {
@@ -31,7 +34,7 @@ export function VehicleDetailsPage(props: CarDetailsProperties): JSX.Element {
             setVehicle(vehicleResponseDTO);
         });
         getVehicleComments(vehicleId, DEFAULT_START_COMMENTS_PAGE, DEFAULT_COMMENTS_COUNT).then(
-            (commentResponseDTOS: Page<CommentResponseDTO>) => {
+            (commentResponseDTOS: Page<CommentWithRateResponseDTO>) => {
                 setComments(commentResponseDTOS.content);
                 setTotalCommentsCount(commentResponseDTOS.totalElements);
             }
@@ -42,7 +45,7 @@ export function VehicleDetailsPage(props: CarDetailsProperties): JSX.Element {
         const nextPage = currentPage + 1;
         setCurrentPage(nextPage);
         getVehicleComments(vehicleId, nextPage, DEFAULT_COMMENTS_COUNT).then(
-            (commentResponseDTOS: Page<CommentResponseDTO>) => {
+            (commentResponseDTOS: Page<CommentWithRateResponseDTO>) => {
                 setComments([...comments, ...commentResponseDTOS.content]);
                 console.log(totalCommentsCount);
             }
@@ -50,7 +53,7 @@ export function VehicleDetailsPage(props: CarDetailsProperties): JSX.Element {
     };
 
     return (
-        <div>
+        <div className="vehicle-details-page">
             <div className="container col-md-8 offset-md-2 mt-4">
                 <div className="text-center">
                     {vehicle ? (
@@ -61,7 +64,7 @@ export function VehicleDetailsPage(props: CarDetailsProperties): JSX.Element {
                             <hr className="mt-5" />
                             <VehiclerProperties vehicle={vehicle} />
                             <hr className="my-3" />
-                            {props.isAuthenticated && (
+                            {isAuthenticated && (
                                 <div>
                                     <ReservationButton vehicle={vehicle} />
                                     <hr className="my-3" />
@@ -70,12 +73,19 @@ export function VehicleDetailsPage(props: CarDetailsProperties): JSX.Element {
                             <div className="text-left">
                                 <h3 className="mt-2 ml-3 mb-4">Comments</h3>
                             </div>
-                            {/*{props.isAuthenticated && <AddComment setComments={setComments} />}*/}
+                            {isAuthenticated && (
+                                <AddComment
+                                    setComments={setComments}
+                                    currentUser={currentUser}
+                                    vehicleId={vehicleId}
+                                    comments={comments}
+                                />
+                            )}
                             {comments && <CommentList comments={comments} />}
                             {totalCommentsCount > 0 && comments.length < totalCommentsCount && (
                                 <button
                                     type="button"
-                                    className="btn btn-primary my-5"
+                                    className="btn btn-primary my-5 load-more-comments"
                                     onClick={() => loadMoreComments()}
                                 >
                                     More comments

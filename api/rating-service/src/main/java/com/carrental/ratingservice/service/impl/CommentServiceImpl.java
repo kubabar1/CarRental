@@ -1,9 +1,11 @@
 package com.carrental.ratingservice.service.impl;
 
-import com.carrental.ratingservice.model.dto.CommentAddDTO;
-import com.carrental.ratingservice.model.dto.CommentResponseDTO;
+import com.carrental.ratingservice.model.dto.CommentWithRateAddDTO;
+import com.carrental.ratingservice.model.dto.CommentWithRateResponseDTO;
 import com.carrental.ratingservice.model.entity.CommentEntity;
+import com.carrental.ratingservice.model.entity.RateEntity;
 import com.carrental.ratingservice.repository.CommentRepository;
+import com.carrental.ratingservice.repository.RateRepository;
 import com.carrental.ratingservice.service.CommentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -24,41 +28,69 @@ public class CommentServiceImpl implements CommentService {
     private CommentRepository commentRepository;
 
     @Autowired
+    private RateRepository rateRepository;
+
+    @Autowired
     private ModelMapper modelMapper;
 
 
     @Override
-    public Set<CommentResponseDTO> getComments() {
+    public Set<CommentWithRateResponseDTO> getComments() {
         return commentRepository
                 .findAll()
                 .stream()
-                .map(comment -> modelMapper.map(comment, CommentResponseDTO.class))
+                .map(comment -> modelMapper.map(comment, CommentWithRateResponseDTO.class))
                 .collect(Collectors.toSet());
     }
 
     @Override
-    public Set<CommentResponseDTO> getCommentsByUserId(Long userId) throws NoSuchElementException {
+    public Set<CommentWithRateResponseDTO> getCommentsByUserId(Long userId) throws NoSuchElementException {
         return commentRepository
-                .findCommentEntitiesByUserId(userId)
+                .findCommentEntitiesByUserIdOrderByCreationDateDesc(userId)
                 .stream()
-                .map(comment -> modelMapper.map(comment, CommentResponseDTO.class))
+                .map(comment -> modelMapper.map(comment, CommentWithRateResponseDTO.class))
                 .collect(Collectors.toSet());
     }
 
     @Override
-    public Page<CommentResponseDTO> getCommentsByVehicleId(Long vehicleId, Pageable pageable) throws NoSuchElementException {
-        Page<CommentEntity> commentEntityPage = commentRepository.findCommentEntitiesByVehicleId(vehicleId, pageable);
-        List<CommentResponseDTO> commentResponseDTOList = commentEntityPage.getContent()
+    public Page<CommentWithRateResponseDTO> getCommentsByVehicleId(Long vehicleId, Pageable pageable) throws NoSuchElementException {
+        Page<CommentEntity> commentEntityPage = commentRepository.findCommentEntitiesByVehicleIdOrderByCreationDateDesc(vehicleId, pageable);
+        List<CommentWithRateResponseDTO> commentWithRateResponseDTOList = commentEntityPage.getContent()
                 .stream()
-                .map(comment -> modelMapper.map(comment, CommentResponseDTO.class))
+                .map(comment -> modelMapper.map(comment, CommentWithRateResponseDTO.class))
                 .collect(Collectors.toList());
 
-        return new PageImpl<>(commentResponseDTOList, pageable, commentEntityPage.getTotalElements());
+        return new PageImpl<>(commentWithRateResponseDTOList, pageable, commentEntityPage.getTotalElements());
     }
 
     @Override
-    public CommentResponseDTO addComment(CommentAddDTO commentAddDTO) {
-        CommentEntity commentEntity = modelMapper.map(commentAddDTO, CommentEntity.class);
-        return modelMapper.map(commentRepository.save(commentEntity), CommentResponseDTO.class);
+    public CommentWithRateResponseDTO addCommentWithRate(CommentWithRateAddDTO commentWithRateAddDTO) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+
+        RateEntity rateEntity = new RateEntity();
+        rateEntity.setRate(commentWithRateAddDTO.getRate());
+        rateEntity.setUserId(commentWithRateAddDTO.getUserId());
+        rateEntity.setVehicleId(commentWithRateAddDTO.getVehicleId());
+        rateEntity.setCreationDate(now);
+
+        CommentEntity commentEntity = new CommentEntity();
+        commentEntity.setContent(commentWithRateAddDTO.getContent());
+        commentEntity.setUserId(commentWithRateAddDTO.getUserId());
+        commentEntity.setVehicleId(commentWithRateAddDTO.getVehicleId());
+        commentEntity.setCreationDate(now);
+        commentEntity.setRate(rateEntity);
+
+        CommentEntity savedCommentEntity = commentRepository.save(commentEntity);
+
+        CommentWithRateResponseDTO commentWithRateResponseDTO = new CommentWithRateResponseDTO();
+        commentWithRateResponseDTO.setId(savedCommentEntity.getId());
+        commentWithRateResponseDTO.setContent(savedCommentEntity.getContent());
+        commentWithRateResponseDTO.setCreationDate(dtf.format(savedCommentEntity.getCreationDate()));
+        commentWithRateResponseDTO.setRate(savedCommentEntity.getRate().getRate());
+        commentWithRateResponseDTO.setUserId(savedCommentEntity.getUserId());
+        commentWithRateResponseDTO.setVehicleId(savedCommentEntity.getVehicleId());
+
+        return commentWithRateResponseDTO;
     }
 }

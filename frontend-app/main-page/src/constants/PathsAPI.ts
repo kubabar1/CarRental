@@ -38,6 +38,8 @@ export const GET_VEHICLE_RATE_BY_ID_PATH = (vehicleId: string): string => withId
 export const GET_VEHICLE_COMMENTS_BY_ID_PATH = (vehicleId: string): string =>
     withId(`${APP_ADDR_COMMENTS}/comments/vehicle`, vehicleId);
 
+export const ADD_COMMENT_PATH = `${APP_ADDR_COMMENTS}/comments`;
+
 export const endpoints = {
     authenticationEndpoint: APP_ADDR + '/userdata/is-authenticated',
     localisationsEndpoint: APP_ADDR + '/locations',
@@ -48,7 +50,6 @@ export const endpoints = {
     coloursListEndpoint: APP_ADDR + '/car-list-search/colours',
     carsPageableEndpoint: (page: number, pageCount: number): string =>
         APP_ADDR + `/cars?page=${page}&number=${pageCount}`,
-    starsCountEndpoint: (carId: string): string => APP_ADDR + `/stars/${carId}`,
     commentsEndpoint: (carId: string, page: number, pageCount: number): string =>
         APP_ADDR + `/comments/${carId}?page=${page}&number=${pageCount}`,
     carByIdEndpoint: (carId: string): string => APP_ADDR + `/cars/${carId}`,
