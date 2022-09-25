@@ -1,31 +1,32 @@
 package com.carrental.vehicleservice.controller;
 
-import com.carrental.vehicleservice.model.constants.FilteringParamsEnum;
 import com.carrental.vehicleservice.model.dto.VehicleFilterParamsDTO;
 import com.carrental.vehicleservice.model.dto.VehiclePersistDTO;
 import com.carrental.vehicleservice.model.dto.VehicleResponseDTO;
 import com.carrental.vehicleservice.service.FilteringService;
 import com.carrental.vehicleservice.service.VehicleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.*;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
 
 @CrossOrigin
-@RestController
 @RequestMapping(value = "/vehicles")
 public class VehicleController {
 
-    @Autowired
-    private VehicleService vehicleService;
+    private final VehicleService vehicleService;
 
-    @Autowired
-    private FilteringService filteringService;
+    private final FilteringService filteringService;
 
+    public VehicleController(VehicleService vehicleService, FilteringService filteringService) {
+        this.vehicleService = vehicleService;
+        this.filteringService = filteringService;
+    }
 
     @GetMapping
     public ResponseEntity<Page<VehicleResponseDTO>> getVehiclesController(Pageable pageable) {

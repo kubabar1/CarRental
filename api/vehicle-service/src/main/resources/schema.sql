@@ -1,10 +1,10 @@
-CREATE TABLE vehicle_status(
+CREATE TABLE IF NOT EXISTS vehicle_status(
   vehicle_status_code NVARCHAR(3) NOT NULL,
   description NVARCHAR(50) NOT NULL,
   PRIMARY KEY(vehicle_status_code)
 );
 
-CREATE TABLE vehicles(
+CREATE TABLE IF NOT EXISTS vehicles(
   id INT NOT NULL AUTO_INCREMENT,
   registration NVARCHAR(20) NOT NULL,
   brand NVARCHAR(50) NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE vehicles(
   UNIQUE (registration)
 );
 
-CREATE TABLE vehicle_details(
+CREATE TABLE IF NOT EXISTS vehicle_details(
   vehicle_id INT NOT NULL,
   body_type NVARCHAR(30) NOT NULL,
   production_year INT NOT NULL,
@@ -36,13 +36,13 @@ CREATE TABLE vehicle_details(
   UNIQUE (vehicle_id)
 );
 
-CREATE TABLE equipment(
+CREATE TABLE IF NOT EXISTS equipment(
   equipment_code NVARCHAR(3) NOT NULL,
   description NVARCHAR(50) NOT NULL,
   PRIMARY KEY(equipment_code)
 );
 
-CREATE TABLE eqp(
+CREATE TABLE IF NOT EXISTS eqp(
   vehicle_id INT NOT NULL,
   equipment_id NVARCHAR(3) NOT NULL,
   PRIMARY KEY(vehicle_id, equipment_id),

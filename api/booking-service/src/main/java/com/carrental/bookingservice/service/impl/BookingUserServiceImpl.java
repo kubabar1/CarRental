@@ -19,24 +19,31 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Service
 public class BookingUserServiceImpl implements BookingUserService {
 
-    @Autowired
     private AuthenticatedUserDataService authenticatedUserDataService;
 
-    @Autowired
     private BookingRepository bookingRepository;
 
-    @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
     private BookingStateValidator bookingStateValidator;
 
-    @Autowired
     private BookingStateRepository bookingStateRepository;
 
+    public BookingUserServiceImpl(
+            AuthenticatedUserDataService authenticatedUserDataService,
+            BookingRepository bookingRepository,
+            ModelMapper modelMapper,
+            BookingStateValidator bookingStateValidator,
+            BookingStateRepository bookingStateRepository
+    ) {
+        this.authenticatedUserDataService = authenticatedUserDataService;
+        this.bookingRepository = bookingRepository;
+        this.modelMapper = modelMapper;
+        this.bookingStateValidator = bookingStateValidator;
+        this.bookingStateRepository = bookingStateRepository;
+    }
 
     @Override
     public Set<BookingResponseDTO> getBookings() throws AuthorizationException, NoSuchElementException {

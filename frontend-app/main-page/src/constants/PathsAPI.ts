@@ -12,8 +12,6 @@ export const context = '';
 
 export const APP_ADDR: string = protocol + '://' + host + ':' + port + context;
 
-export const APP_ADDR_COMMENTS: string = protocol + '://' + host + ':' + 8081 + context;
-
 const withId = (basePath: string, id: string): string => {
     return `${basePath}/${id}`;
 };
@@ -36,9 +34,9 @@ export const GET_VEHICLE_MODELS_BY_BRAND_PATH = (brand: string): string =>
 export const GET_VEHICLE_RATE_BY_ID_PATH = (vehicleId: string): string => withId(`${APP_ADDR}/rates`, vehicleId);
 
 export const GET_VEHICLE_COMMENTS_BY_ID_PATH = (vehicleId: string): string =>
-    withId(`${APP_ADDR_COMMENTS}/comments/vehicle`, vehicleId);
+    withId(`${APP_ADDR}/comments/vehicle`, vehicleId);
 
-export const ADD_COMMENT_PATH = `${APP_ADDR_COMMENTS}/comments`;
+export const ADD_COMMENT_PATH = `${APP_ADDR}/comments`;
 
 export const endpoints = {
     authenticationEndpoint: APP_ADDR + '/userdata/is-authenticated',

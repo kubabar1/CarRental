@@ -16,21 +16,27 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Service
 public class BookingAdminServiceImpl implements BookingAdminService {
 
-    @Autowired
     private BookingRepository bookingRepository;
 
-    @Autowired
     private BookingStateRepository bookingStateRepository;
 
-    @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
     private BookingStateValidator bookingStateValidator;
 
+    public BookingAdminServiceImpl(
+            BookingRepository bookingRepository,
+            BookingStateRepository bookingStateRepository,
+            ModelMapper modelMapper,
+            BookingStateValidator bookingStateValidator
+    ) {
+        this.bookingRepository = bookingRepository;
+        this.bookingStateRepository = bookingStateRepository;
+        this.modelMapper = modelMapper;
+        this.bookingStateValidator = bookingStateValidator;
+    }
 
     @Override
     public Set<BookingResponseDTO> getBookings() {

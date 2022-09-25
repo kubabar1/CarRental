@@ -13,6 +13,9 @@ import com.carrental.userservice.repository.UserRoleRepository;
 import com.carrental.userservice.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,21 +23,27 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
     private UserRoleRepository userRoleRepository;
 
-    @Autowired
     private AuthenticatedUserDataService authenticatedUserDataService;
 
-    @Autowired
     private ModelMapper modelMapper;
 
+    public UserServiceImpl(
+            UserRepository userRepository,
+            UserRoleRepository userRoleRepository,
+            AuthenticatedUserDataService authenticatedUserDataService,
+            ModelMapper modelMapper
+    ) {
+        this.userRepository = userRepository;
+        this.userRoleRepository = userRoleRepository;
+        this.authenticatedUserDataService = authenticatedUserDataService;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public UserResponseDTO getAuthorizedUser() throws AuthorizationException, NoSuchElementException {
@@ -48,12 +57,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Set<UserResponseDTO> getUsers() throws NoSuchElementException {
-        return userRepository
-                .findAll()
+    public Page<UserResponseDTO> getUsers(Pageable pageable) throws NoSuchElementException {
+        Page<UserEntity> userEntityPage = userRepository.findAll(pageable);
+        List<UserResponseDTO> userResponseDTOList = userEntityPage
+                .getContent()
                 .stream()
                 .map(userEntity -> modelMapper.map(userEntity, UserResponseDTO.class))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(userResponseDTOList, pageable, userEntityPage.getTotalElements());
     }
 
     @Override

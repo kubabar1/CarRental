@@ -10,15 +10,16 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Service
 public class BookingAuditLogServiceImpl implements BookingAuditLogService {
 
-    @Autowired
     private BookingAuditLogRepository bookingAuditLogRepository;
 
-    @Autowired
     private ModelMapper modelMapper;
 
+    public BookingAuditLogServiceImpl(BookingAuditLogRepository bookingAuditLogRepository, ModelMapper modelMapper) {
+        this.bookingAuditLogRepository = bookingAuditLogRepository;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public Set<BookingAuditLogResponseDTO> getBookingsAuditLogs() {

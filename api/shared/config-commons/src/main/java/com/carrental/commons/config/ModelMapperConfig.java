@@ -1,4 +1,4 @@
-package com.carrental.vehicleservice.config;
+package com.carrental.commons.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

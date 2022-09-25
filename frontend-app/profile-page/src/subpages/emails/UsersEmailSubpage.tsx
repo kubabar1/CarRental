@@ -7,13 +7,14 @@ import { getUsersList } from '../../service/UserService';
 import { Column } from 'react-table';
 import { UserResponseDTO } from '../../model/UserResponseDTO';
 import { ButtonTableItem } from '../../components/table/tab_items/ButtonTableItem';
+import Page from '../../../../main-page/src/model/Page';
 
 export function UsersEmailSubpage(): JSX.Element {
-    const [usersList, setUsersList] = useState<UserResponseDTO[]>([]);
+    const [usersPage, setUsersPage] = useState<Page<UserResponseDTO> | undefined>(undefined);
 
     useEffect(() => {
-        getUsersList().then((usersListResponse: UserResponseDTO[]) => {
-            setUsersList(usersListResponse);
+        getUsersList().then((usersListResponse: Page<UserResponseDTO>) => {
+            setUsersPage(usersListResponse);
         });
     }, []);
 
@@ -51,7 +52,7 @@ export function UsersEmailSubpage(): JSX.Element {
         <SubpageContainer>
             <SubpageHeader title={'Send email - user list'} />
             <SubpageContent>
-                <Table<UserResponseDTO> columns={columns} data={usersList} />
+                {usersPage && <Table<UserResponseDTO> columns={columns} data={usersPage.content} />}
             </SubpageContent>
         </SubpageContainer>
     );

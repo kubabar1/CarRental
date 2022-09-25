@@ -1,0 +1,3 @@
+rootProject.name = 'config-commons'
+
+includeBuild '../auth-commons'

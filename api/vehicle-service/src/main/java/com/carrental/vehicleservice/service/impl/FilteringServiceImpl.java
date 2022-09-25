@@ -4,11 +4,9 @@ import com.carrental.vehicleservice.model.dto.VehicleResponseDTO;
 import com.carrental.vehicleservice.model.entity.VehicleEntity;
 import com.carrental.vehicleservice.service.FilteringService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -17,41 +15,24 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.carrental.vehicleservice.model.constants.FilteringParamsEnum.DAILY_FEE_FROM_FILTER;
-import static com.carrental.vehicleservice.model.constants.FilteringParamsEnum.DAILY_FEE_TO_FILTER;
-import static com.carrental.vehicleservice.model.constants.FilteringParamsEnum.SEATS_NUMBER_FROM_FILTER;
-import static com.carrental.vehicleservice.model.constants.FilteringParamsEnum.DOORS_NUMBER_FROM_FILTER;
-import static com.carrental.vehicleservice.model.constants.FilteringParamsEnum.PRODUCTION_YEAR_FROM_FILTER;
-import static com.carrental.vehicleservice.model.constants.FilteringParamsEnum.SEATS_NUMBER_TO_FILTER;
-import static com.carrental.vehicleservice.model.constants.FilteringParamsEnum.DOORS_NUMBER_TO_FILTER;
-import static com.carrental.vehicleservice.model.constants.FilteringParamsEnum.PRODUCTION_YEAR_TO_FILTER;
-import static com.carrental.vehicleservice.model.constants.FilteringParamsEnum.BRAND_FIELD_FILTER;
-import static com.carrental.vehicleservice.model.constants.FilteringParamsEnum.MODEL_FIELD_FILTER;
-import static com.carrental.vehicleservice.model.constants.FilteringParamsEnum.BODY_TYPE_FIELD_FILTER;
-import static com.carrental.vehicleservice.model.constants.FilteringParamsEnum.COLOR_FIELD_FILTER;
-import static com.carrental.vehicleservice.model.entity.VehicleDetailsEntity.SEATS_NUMBER_FIELD;
-import static com.carrental.vehicleservice.model.entity.VehicleDetailsEntity.DOORS_NUMBER_FIELD;
-import static com.carrental.vehicleservice.model.entity.VehicleDetailsEntity.PRODUCTION_YEAR_FIELD;
-import static com.carrental.vehicleservice.model.entity.VehicleDetailsEntity.BODY_TYPE_FIELD;
-import static com.carrental.vehicleservice.model.entity.VehicleDetailsEntity.COLOR_FIELD;
-import static com.carrental.vehicleservice.model.entity.VehicleEntity.BRAND_FIELD;
-import static com.carrental.vehicleservice.model.entity.VehicleEntity.MODEL_FIELD;
-import static com.carrental.vehicleservice.model.entity.VehicleEntity.DAILY_FEE_FIELD;
-import static com.carrental.vehicleservice.model.entity.VehicleEntity.VEHICLE_DETAILS_FIELD;
+import static com.carrental.vehicleservice.model.constants.FilteringParamsEnum.*;
+import static com.carrental.vehicleservice.model.entity.VehicleDetailsEntity.*;
+import static com.carrental.vehicleservice.model.entity.VehicleEntity.*;
 
-@Service
 public class FilteringServiceImpl implements FilteringService {
 
-    @Autowired
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
+    public FilteringServiceImpl(EntityManager entityManager, ModelMapper modelMapper) {
+        this.entityManager = entityManager;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public Page<VehicleResponseDTO> filterVehicles(Map<String, String> filtersMap, Pageable pageable) throws NumberFormatException {

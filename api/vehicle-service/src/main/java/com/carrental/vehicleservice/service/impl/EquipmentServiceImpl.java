@@ -10,25 +10,28 @@ import com.carrental.vehicleservice.repository.EquipmentRepository;
 import com.carrental.vehicleservice.repository.VehicleRepository;
 import com.carrental.vehicleservice.service.EquipmentService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Service
 public class EquipmentServiceImpl implements EquipmentService {
 
-    @Autowired
-    private EquipmentRepository equipmentRepository;
+    private final EquipmentRepository equipmentRepository;
 
-    @Autowired
-    private VehicleRepository vehicleRepository;
+    private final VehicleRepository vehicleRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
+    public EquipmentServiceImpl(
+            EquipmentRepository equipmentRepository,
+            VehicleRepository vehicleRepository,
+            ModelMapper modelMapper
+    ) {
+        this.equipmentRepository = equipmentRepository;
+        this.vehicleRepository = vehicleRepository;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public Set<EquipmentResponseDTO> getAllEquipments() {

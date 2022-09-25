@@ -1,0 +1,6 @@
+rootProject.name = 'setup'
+
+includeBuild '../api/booking-service'
+includeBuild '../api/rating-service'
+includeBuild '../api/user-service'
+includeBuild '../api/vehicle-service'

@@ -5,27 +5,28 @@ import com.carrental.userservice.model.dto.UserUpdateDTO;
 import com.carrental.userservice.model.dto.UserResponseDTO;
 import com.carrental.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Set;
-
 
 @CrossOrigin
-@RestController
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
     private UserService userService;
 
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
-    public ResponseEntity<Set<UserResponseDTO>> getUsersController() {
-        Set<UserResponseDTO> userResponseDTOS = userService.getUsers();
+    public ResponseEntity<Page<UserResponseDTO>> getUsersController(Pageable pageable) {
+        Page<UserResponseDTO> userResponseDTOS = userService.getUsers(pageable);
         if (userResponseDTOS.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

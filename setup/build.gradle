@@ -1,0 +1,27 @@
+plugins {
+    id 'org.springframework.boot' version '2.6.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'application'
+}
+
+group = 'com.carrental.setup'
+version = 'HEAD-SNAPSHOT'
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+springBoot {
+    mainClassName = 'com.carrental.setup.SetupApplication'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.carrental.api:booking-service'
+    implementation 'com.carrental.api:rating-service'
+    implementation 'com.carrental.api:user-service'
+    implementation 'com.carrental.api:vehicle-service'
+    implementation 'org.springframework.boot:spring-boot-starter:2.6.3'
+}

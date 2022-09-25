@@ -10,15 +10,16 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Service
 public class UserRoleServiceImpl implements UserRoleService {
 
-    @Autowired
     private UserRoleRepository userRoleRepository;
 
-    @Autowired
     private ModelMapper modelMapper;
 
+    public UserRoleServiceImpl(UserRoleRepository userRoleRepository, ModelMapper modelMapper) {
+        this.userRoleRepository = userRoleRepository;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public Set<UserRoleResponseDTO> getRoles() {

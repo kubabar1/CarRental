@@ -14,13 +14,14 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 @CrossOrigin
-@RestController
 @RequestMapping(value = "/equipments")
 public class EquipmentController {
 
-    @Autowired
-    private EquipmentService equipmentService;
+    private final EquipmentService equipmentService;
 
+    public EquipmentController(EquipmentService equipmentService) {
+        this.equipmentService = equipmentService;
+    }
 
     @GetMapping
     public ResponseEntity<Set<EquipmentResponseDTO>> getAllEquipmentsController() {

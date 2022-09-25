@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Set;
 
 @CrossOrigin
-@RestController
 @RequestMapping(value = "/locations")
 public class LocationsController {
 
-    @Autowired
-    private LocationsService locationsService;
+    private final LocationsService locationsService;
 
+    public LocationsController(LocationsService locationsService) {
+        this.locationsService = locationsService;
+    }
 
     @GetMapping
     public ResponseEntity<Set<LocationResponseDTO>> getLocationsController() {

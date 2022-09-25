@@ -3,8 +3,8 @@ plugins {
     id 'application'
 }
 
-group = 'com.carrental.commons'
-version = '0.0.1-SNAPSHOT'
+group = 'com.carrental.shared'
+version = 'HEAD-SNAPSHOT'
 sourceCompatibility = '11'
 targetCompatibility = '11'
 

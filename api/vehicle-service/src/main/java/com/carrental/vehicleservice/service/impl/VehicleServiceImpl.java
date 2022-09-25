@@ -7,11 +7,9 @@ import com.carrental.vehicleservice.model.entity.VehicleEntity;
 import com.carrental.vehicleservice.repository.VehicleRepository;
 import com.carrental.vehicleservice.service.VehicleService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
@@ -19,15 +17,16 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Service
 public class VehicleServiceImpl implements VehicleService {
 
-    @Autowired
-    private VehicleRepository vehicleRepository;
+    private final VehicleRepository vehicleRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
+    public VehicleServiceImpl(VehicleRepository vehicleRepository, ModelMapper modelMapper) {
+        this.vehicleRepository = vehicleRepository;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public Page<VehicleResponseDTO> getVehicles(Pageable pageable) {

@@ -1,0 +1,8 @@
+${AnsiColor.RED} ___    ___     ___    _  __  ___   _  _    ___         ___   ___   ___  __   __  ___    ___   ___
+${AnsiColor.RED}| _ )  / _ \   / _ \  | |/ / |_ _| | \| |  / __|  ___  / __| | __| | _ \ \ \ / / |_ _|  / __| | __|
+${AnsiColor.RED}| _ \ | (_) | | (_) | | ' <   | |  | .` | | (_ | |___| \__ \ | _|  |   /  \ V /   | |  | (__  | _|
+${AnsiColor.RED}|___/  \___/   \___/  |_|\_\ |___| |_|\_|  \___|       |___/ |___| |_|_\   \_/   |___|  \___| |___|
+
+${AnsiColor.BLUE}${application.title}
+${AnsiColor.WHITE}Version: ${AnsiColor.GREEN}${application.version}
+${AnsiColor.WHITE}Powered by Spring Boot ${spring-boot.version}

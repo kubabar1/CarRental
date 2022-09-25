@@ -5,8 +5,8 @@ plugins {
     id 'application'
 }
 
-group = 'com.carrental.user-service'
-version = '0.0.1-SNAPSHOT'
+group = 'com.carrental.api'
+version = 'HEAD-SNAPSHOT'
 sourceCompatibility = '11'
 targetCompatibility = '11'
 
@@ -19,19 +19,17 @@ repositories {
 }
 
 dependencies {
-    compile project(':api:commons')
+    implementation 'com.carrental.shared:auth-commons'
+    implementation 'com.carrental.shared:config-commons'
     implementation 'org.springframework.boot:spring-boot-starter:2.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-validation:2.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.3'
     implementation 'org.modelmapper:modelmapper:3.0.0'
-    implementation 'io.springfox:springfox-swagger2:3.0.0'
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
-    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
     implementation 'org.springframework.boot:spring-boot-starter-parent:2.6.3'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
     compileOnly 'org.projectlombok:lombok:1.18.22'
-    runtime 'com.h2database:h2:2.1.210'
+    implementation 'com.h2database:h2:2.1.210'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
     implementation 'javax.validation:validation-api:2.0.1.Final'
 }

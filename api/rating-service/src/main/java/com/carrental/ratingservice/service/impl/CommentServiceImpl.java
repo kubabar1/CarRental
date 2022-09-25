@@ -21,18 +21,16 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Service
 public class CommentServiceImpl implements CommentService {
 
-    @Autowired
     private CommentRepository commentRepository;
 
-    @Autowired
-    private RateRepository rateRepository;
-
-    @Autowired
     private ModelMapper modelMapper;
 
+    public CommentServiceImpl(CommentRepository commentRepository, ModelMapper modelMapper) {
+        this.commentRepository = commentRepository;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public Set<CommentWithRateResponseDTO> getComments() {

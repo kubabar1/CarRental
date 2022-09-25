@@ -10,15 +10,16 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Service
 public class LocationsServiceImpl implements LocationsService {
 
-    @Autowired
     private LocationsRepository locationsRepository;
 
-    @Autowired
     private ModelMapper modelMapper;
 
+    public LocationsServiceImpl(ModelMapper modelMapper, LocationsRepository locationsRepository) {
+        this.modelMapper = modelMapper;
+        this.locationsRepository = locationsRepository;
+    }
 
     @Override
     public Set<LocationResponseDTO> getLocations() {

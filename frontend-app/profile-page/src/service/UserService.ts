@@ -13,6 +13,8 @@ import {
     UPDATE_USER_PATH,
 } from '../constants/PathsAPI';
 import { RoleAddDTO } from '../model/RoleAddDTO';
+import Page from '../../../main-page/src/model/Page';
+import { PAGE_REQUEST } from '../../../main-page/src/constants/PathsAPI';
 
 export const getAuthorizedUserData = (): Promise<UserResponseDTO> => {
     return fetchGet<UserResponseDTO>(GET_AUTHORIZED_USER_PATH);
@@ -22,8 +24,8 @@ export const getUserById = (userId: string): Promise<UserResponseDTO> => {
     return fetchGet<UserResponseDTO>(GET_USER_BY_ID_PATH(userId));
 };
 
-export const getUsersList = (): Promise<UserResponseDTO[]> => {
-    return fetchGet<UserResponseDTO[]>(GET_USERS_PATH);
+export const getUsersList = (page?: number, size?: number): Promise<Page<UserResponseDTO>> => {
+    return fetchGet<Page<UserResponseDTO>>(PAGE_REQUEST(GET_USERS_PATH, page, size));
 };
 
 export const getAllUserRoles = (): Promise<UserRoleResponseDTO[]> => {

@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Set;
 
 @CrossOrigin
-@RestController
 @RequestMapping(value = "/bookings-audit-logs")
 public class BookingsAuditLogsController {
 
-    @Autowired
     private BookingAuditLogService bookingAuditLogService;
+
+    public BookingsAuditLogsController(BookingAuditLogService bookingAuditLogService) {
+        this.bookingAuditLogService = bookingAuditLogService;
+    }
 
     @GetMapping
     public ResponseEntity<Set<BookingAuditLogResponseDTO>> getBookingsAuditLogsController() {

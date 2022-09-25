@@ -5,7 +5,6 @@ import com.carrental.bookingservice.model.constants.BookingStateCodeEnum;
 import com.carrental.bookingservice.model.entity.BookingEntity;
 import org.springframework.stereotype.Component;
 
-@Component
 public class BookingStateValidator {
 
     public void validateBookingStateDuringUpdate(BookingEntity bookingEntity, BookingStateCodeEnum newBookingState) throws BookingStateException {

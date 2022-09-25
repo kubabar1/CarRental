@@ -14,13 +14,14 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 @CrossOrigin
-@RestController
 @RequestMapping("/comments")
 public class CommentController {
 
-    @Autowired
     private CommentService commentService;
 
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
+    }
 
     @GetMapping
     public ResponseEntity<Set<CommentWithRateResponseDTO>> getCommentsController() {

@@ -32,9 +32,4 @@ public class RateEntity implements Serializable {
 
     @Column(name = "creation_date", nullable = false)
     private LocalDateTime creationDate;
-//
-//    @MapsId
-//    @OneToOne(mappedBy = "rate")
-//    @JoinColumn(name = "id")
-//    private CommentEntity commentEntity;
 }

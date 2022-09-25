@@ -1,0 +1,4 @@
+rootProject.name = 'vehicle-service'
+
+includeBuild '../shared/auth-commons'
+includeBuild '../shared/config-commons'

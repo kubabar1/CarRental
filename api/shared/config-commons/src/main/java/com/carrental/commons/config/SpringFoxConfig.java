@@ -1,4 +1,4 @@
-package com.carrental.bookingservice.config;
+package com.carrental.commons.config;
 
 import org.springframework.context.annotation.Bean;
 import springfox.documentation.builders.PathSelectors;
@@ -14,8 +14,8 @@ public class SpringFoxConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .paths(PathSelectors.ant("/**"))
-                .apis(RequestHandlerSelectors.basePackage("com.carrental.bookingservice"))
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
                 .build();
     }
 }

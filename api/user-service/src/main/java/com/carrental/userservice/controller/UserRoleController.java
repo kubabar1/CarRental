@@ -9,13 +9,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @CrossOrigin
-@RestController
 @RequestMapping("/users-roles")
 public class UserRoleController {
 
-    @Autowired
     private UserRoleService userRoleService;
 
+    public UserRoleController(UserRoleService userRoleService) {
+        this.userRoleService = userRoleService;
+    }
 
     @GetMapping
     public ResponseEntity<Set<UserRoleResponseDTO>> getUsersRolesController() {

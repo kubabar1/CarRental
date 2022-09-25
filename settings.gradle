@@ -1,14 +1,24 @@
-rootProject.name = 'CarRental'
-include ':api'
-include ':api:commons'
-//include ':api:authorization-service'
-include ':api:booking-service'
-include ':api:vehicle-service'
-include ':api:user-service'
-include ':api:rating-service'
+rootProject.name = 'car-rental'
+
+//include ':api:setup'
+
+include ':setup'
 include ':frontend-app'
 include ':frontend-app:main-page'
 include ':frontend-app:profile-page'
 include ':frontend-app:registration-page'
 include ':frontend-app:login-page'
 include ':frontend-app:reservation-page'
+
+def projectsToInclude = [
+        'api/rating-service',
+        'api/user-service',
+        'api/booking-service',
+        'api/vehicle-service',
+        'api/shared/auth-commons',
+        'api/shared/config-commons',
+]
+
+projectsToInclude.each {
+    includeBuild it
+}

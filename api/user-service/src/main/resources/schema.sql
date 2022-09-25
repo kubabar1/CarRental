@@ -1,4 +1,4 @@
-CREATE TABLE users
+CREATE TABLE IF NOT EXISTS users
 (
     id         INT         NOT NULL AUTO_INCREMENT,
     name       NVARCHAR(40) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE users
     UNIQUE (email)
 );
 
-CREATE TABLE user_roles
+CREATE TABLE IF NOT EXISTS user_roles
 (
     id   INT         NOT NULL AUTO_INCREMENT,
     type VARCHAR(30) NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE user_roles
     UNIQUE (type)
 );
 
-CREATE TABLE app_users_roles
+CREATE TABLE IF NOT EXISTS app_users_roles
 (
     user_id      INT NOT NULL,
     user_role_id INT NOT NULL,

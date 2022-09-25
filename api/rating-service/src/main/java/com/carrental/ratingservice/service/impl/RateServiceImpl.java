@@ -9,15 +9,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 
-@Service
 public class RateServiceImpl implements RateService {
 
-    @Autowired
     private RateRepository rateRepository;
 
-    @Autowired
     private ModelMapper modelMapper;
 
+    public RateServiceImpl(RateRepository rateRepository, ModelMapper modelMapper) {
+        this.rateRepository = rateRepository;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public AverageRateResponseDTO getAverageRateForVehicle(Long vehicleId) throws NoSuchElementException {

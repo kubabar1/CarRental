@@ -1,11 +1,11 @@
-CREATE TABLE booking_states
+CREATE TABLE IF NOT EXISTS booking_states
 (
     booking_code NVARCHAR(3)  NOT NULL,
     description  NVARCHAR(50) NOT NULL,
     PRIMARY KEY (booking_code)
 );
 
-CREATE TABLE locations
+CREATE TABLE IF NOT EXISTS locations
 (
     id            BIGINT        NOT NULL AUTO_INCREMENT,
     country       NVARCHAR(50)  NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE locations
     PRIMARY KEY (id)
 );
 
-CREATE TABLE bookings
+CREATE TABLE IF NOT EXISTS bookings
 (
     id                 BIGINT         NOT NULL AUTO_INCREMENT,
     user_id            BIGINT         NOT NULL,

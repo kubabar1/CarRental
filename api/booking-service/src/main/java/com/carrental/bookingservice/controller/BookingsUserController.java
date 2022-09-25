@@ -14,12 +14,14 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 @CrossOrigin
-@RestController
 @RequestMapping(value = "/user/bookings")
 public class BookingsUserController implements BookingsController {
 
-    @Autowired
     private BookingUserService bookingUserService;
+
+    public BookingsUserController(BookingUserService bookingUserService) {
+        this.bookingUserService = bookingUserService;
+    }
 
     @Override
     public ResponseEntity<Set<BookingResponseDTO>> getBookingsController() {

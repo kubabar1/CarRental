@@ -1,0 +1,8 @@
+${AnsiColor.GREEN}  ___     _     ___         ___   ___   _  _   _____     _     _
+${AnsiColor.GREEN} / __|   /_\   | _ \  ___  | _ \ | __| | \| | |_   _|   /_\   | |
+${AnsiColor.GREEN}| (__   / _ \  |   / |___| |   / | _|  | .` |   | |    / _ \  | |__
+${AnsiColor.GREEN} \___| /_/ \_\ |_|_\       |_|_\ |___| |_|\_|   |_|   /_/ \_\ |____|
+
+${AnsiColor.BLUE}${application.title}
+${AnsiColor.WHITE}VEHICLE-SERVICE version: ${AnsiColor.GREEN}${applications.vehicle-service.version}
+${AnsiColor.WHITE}Powered by Spring Boot ${spring-boot.version}
