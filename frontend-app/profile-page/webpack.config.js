@@ -5,28 +5,25 @@ const path = require('path');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const mainConfig = require('../webpack.config');
 
-const dist = path.join(__dirname, 'dist');
-
 module.exports = Object.assign({}, mainConfig, {
+    name: 'profile-page',
     entry: {
-        index: './src/index.tsx',
+        profile: path.join(__dirname, 'src/index.tsx'),
     },
     output: {
         ...mainConfig.output,
-        path: dist,
     },
     plugins: [
         ...mainConfig.plugins,
         new HtmlWebpackPlugin({
             template: path.join(__dirname, 'public/index.html'),
-            chunks: ['index'],
-            favicon: './src/images/car_rental_page_logo.png',
-            path: dist,
-            filename: 'index.html',
+            chunks: ['profile'],
+            favicon: path.join(__dirname, 'src/images/car_rental_page_logo.png'),
+            filename: '../profile-page/profile.html',
         }),
     ],
     devServer: {
         ...mainConfig.devServer,
-        index: 'index.html',
+        index: 'profile.html',
     },
 });

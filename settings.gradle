@@ -1,16 +1,9 @@
 rootProject.name = 'car-rental'
 
-//include ':api:setup'
-
 include ':setup'
-include ':frontend-app'
-include ':frontend-app:main-page'
-include ':frontend-app:profile-page'
-include ':frontend-app:registration-page'
-include ':frontend-app:login-page'
-include ':frontend-app:reservation-page'
 
 def projectsToInclude = [
+        'frontend-app',
         'api/rating-service',
         'api/user-service',
         'api/booking-service',

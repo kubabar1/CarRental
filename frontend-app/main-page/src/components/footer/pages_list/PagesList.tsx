@@ -7,7 +7,7 @@ export function PagesList(): JSX.Element {
     const renderLink = (name: string, target: string): JSX.Element => {
         return (
             <li>
-                <Link to={target} className="linkstyle_black">
+                <Link to={target} className="link-style-black">
                     {name}
                 </Link>
             </li>

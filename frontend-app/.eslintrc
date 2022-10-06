@@ -17,11 +17,14 @@
   },
   "extends": [
     "plugin:prettier/recommended",
-    "prettier/flowtype",
-    "prettier/react",
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/recommended"
-  ]
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
 }

@@ -16,7 +16,7 @@ export class RoundedImagesPanel extends React.Component {
     ): JSX.Element => {
         return (
             <div className="car-item col-sm-6 col-md-3">
-                <Link to={link} className="linkstyle_black">
+                <Link to={link} className="link-style-black">
                     <img src={image} className="img-responsive" alt={imageAlt} />
                     <div className="text-under-round-image">
                         <h2>{carCategoryName}</h2>

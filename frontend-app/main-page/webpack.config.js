@@ -2,28 +2,25 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const mainConfig = require('../webpack.config');
 
-const dist = path.join(__dirname, 'dist');
-
 module.exports = Object.assign({}, mainConfig, {
+    name: 'main-page',
     entry: {
-        index: './src/index.tsx',
+        main: path.join(__dirname, 'src/index.tsx'),
     },
     output: {
         ...mainConfig.output,
-        path: dist,
     },
     plugins: [
         ...mainConfig.plugins,
         new HtmlWebpackPlugin({
             template: path.join(__dirname, 'public/index.html'),
-            chunks: ['index'],
-            favicon: './src/images/car_rental_page_logo.png',
-            path: dist,
-            filename: 'index.html',
+            chunks: ['main'],
+            favicon: path.join(__dirname, 'src/images/car_rental_page_logo.png'),
+            filename: '../main-page/main.html',
         }),
     ],
     devServer: {
         ...mainConfig.devServer,
-        index: 'index.html',
+        index: 'main.html',
     },
 });

@@ -8,7 +8,7 @@ export function RegistrationComponent(): JSX.Element {
     };
 
     return (
-        <div id="register-page-container" className="container my-5 full_body_register">
+        <div id="register-page-container" className="container my-5 full-body-register">
             <div className="col-md-6 offset-md-3 card-body shadow-lg">
                 <form onSubmit={handleSubmit}>
                     <img className="mb-4" src={carRentalLogo} alt="" width="100%" />
@@ -93,7 +93,7 @@ export function RegistrationComponent(): JSX.Element {
                         Register
                     </button>
                 </form>
-                <p className="mt-3 login_link pl-3">
+                <p className="mt-3 login-link pl-3">
                     <a href={'http://localhost:3000/'} className="linkstyle">
                         Home
                     </a>
@@ -184,6 +184,6 @@ export function RegistrationComponent(): JSX.Element {
 //         <button className="btn btn-lg btn-primary btn-block mt-5" type="submit">Register</button>
 //
 //       </form>
-//       <p className="mt-3 login_link pl-3"><a th:href="@{/}">Home</a></p>
+//       <p className="mt-3 login-link pl-3"><a th:href="@{/}">Home</a></p>
 //   </div>
 // </div>

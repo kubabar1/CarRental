@@ -1,25 +1,25 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const mainConfig = require('../webpack.config');
 
-const dist = path.join(__dirname, 'dist');
-
 module.exports = Object.assign({}, mainConfig, {
+    name: 'registration-page',
     entry: {
-        registration: './src/registration.tsx',
+        registration: path.join(__dirname, 'src/registration.tsx'),
     },
     output: {
         ...mainConfig.output,
-        path: dist,
     },
     plugins: [
         ...mainConfig.plugins,
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, 'public/registration.html'),
+            template: path.join(__dirname, 'public/index.html'),
             chunks: ['registration'],
-            favicon: './src/images/car_rental_page_logo.png',
-            path: dist,
-            filename: 'registration.html',
+            favicon: path.join(__dirname, 'src/images/car_rental_page_logo.png'),
+            filename: '../registration-page/registration.html',
         }),
     ],
     devServer: {

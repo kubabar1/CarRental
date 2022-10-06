@@ -1,5 +1,6 @@
 {
   "extends": "stylelint-config-standard",
+  "customSyntax": "postcss-less",
   "rules": {
     "comment-empty-line-before": [
       "always",
@@ -11,6 +12,7 @@
       }
     ],
     "indentation": 4,
-    "max-empty-lines": 1
+    "max-empty-lines": 1,
+    "color-function-notation": "legacy"
   }
 }

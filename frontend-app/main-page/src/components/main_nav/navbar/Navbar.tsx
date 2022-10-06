@@ -18,7 +18,7 @@ export class Navbar extends React.Component<NavbarProps> {
 
         return (
             <div
-                id="collapsibleNavbar"
+                id="collapsible-navbar"
                 className={active ? 'collapse navbar-collapse show' : 'collapse navbar-collapse'}
             >
                 <ul className="navbar-nav pr-3 ml-auto">

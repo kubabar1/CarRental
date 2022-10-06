@@ -1,5 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const ESLintPlugin = require('eslint-webpack-plugin');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const StylelintPlugin = require('stylelint-webpack-plugin');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const path = require('path');
 
 process.env.NODE_ENV = 'development';
 
@@ -7,7 +11,7 @@ const host = process.env.HOST || 'localhost';
 
 const eslintOptions = {
     extensions: ['ts', 'tsx', 'js', 'json'],
-    exclude: 'node_modules',
+    exclude: ['**/node_modules/**', '**/build/**', '**/dist/**'],
     failOnError: true,
     failOnWarning: true,
     fix: true,
@@ -24,6 +28,7 @@ const stylelintOptions = {
 module.exports = {
     output: {
         filename: '[name].js',
+        path: path.join(__dirname, 'dist', 'static'),
         publicPath: '/',
     },
     resolve: {
@@ -44,11 +49,7 @@ module.exports = {
             },
             {
                 test: /\.(gif|svg|jpe?g|png)$/,
-                loader: 'file-loader',
-                options: {
-                    esModule: false,
-                    outputPath: 'images',
-                },
+                type: 'asset/resource',
             },
             {
                 test: /\.(woff|woff2|eot|ttf)(\?.*$|$)/,

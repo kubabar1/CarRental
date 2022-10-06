@@ -9,7 +9,7 @@ export function LoginComponent(): JSX.Element {
     };
 
     return (
-        <div id="login-page-container" className="container full_body_login">
+        <div id="login-page-container" className="container full-body-login">
             <div className="col-md-4 offset-md-4 card-body shadow-lg">
                 <form onSubmit={handleSubmit}>
                     <img className="mb-4" src={carRentalLogo} alt="" width="100%" />
@@ -48,12 +48,12 @@ export function LoginComponent(): JSX.Element {
                     </button>
                 </form>
                 <div className="row">
-                    <p className="mt-3 login_link pl-3">
+                    <p className="mt-3 login-link pl-3">
                         <a href={'http://localhost:3000/'} className="linkstyle">
                             Home
                         </a>
                     </p>
-                    <p className="mt-3 ml-auto login_link pr-3">
+                    <p className="mt-3 ml-auto login-link pr-3">
                         <a href={'http://localhost:3000/registration'} className="linkstyle">
                             Register
                         </a>
@@ -89,8 +89,8 @@ export function LoginComponent(): JSX.Element {
 //                 <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 //             </form>
 //             <div className="row">
-//                 <p className="mt-3 login_link pl-3"><a th:href="@{/}">Home</a></p>
-//                 <p className="mt-3 ml-auto login_link pr-3"><a th:href="@{/registration}">Sign up</a></p>
+//                 <p className="mt-3 login-link pl-3"><a th:href="@{/}">Home</a></p>
+//                 <p className="mt-3 ml-auto login-link pr-3"><a th:href="@{/registration}">Sign up</a></p>
 //             </div>
 //     </div>
 // </div>
