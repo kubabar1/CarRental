@@ -3,6 +3,8 @@ package com.carrental.bookingservice.controller;
 import com.carrental.bookingservice.model.dto.BookingAuditLogResponseDTO;
 import com.carrental.bookingservice.service.BookingAuditLogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,19 +17,14 @@ import java.util.Set;
 @RequestMapping(value = "/bookings-audit-logs")
 public class BookingsAuditLogsController {
 
-    private BookingAuditLogService bookingAuditLogService;
+    private final BookingAuditLogService bookingAuditLogService;
 
     public BookingsAuditLogsController(BookingAuditLogService bookingAuditLogService) {
         this.bookingAuditLogService = bookingAuditLogService;
     }
 
     @GetMapping
-    public ResponseEntity<Set<BookingAuditLogResponseDTO>> getBookingsAuditLogsController() {
-        Set<BookingAuditLogResponseDTO> bookingAuditLogResponseDTOS = bookingAuditLogService.getBookingsAuditLogs();
-        bookingAuditLogResponseDTOS.forEach(System.out::println);
-        if (bookingAuditLogResponseDTOS.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok().body(bookingAuditLogResponseDTOS);
+    public ResponseEntity<Page<BookingAuditLogResponseDTO>> getBookingsAuditLogsController(Pageable pageable) {
+        return ResponseEntity.ok().body(bookingAuditLogService.getBookingsAuditLogs(pageable));
     }
 }

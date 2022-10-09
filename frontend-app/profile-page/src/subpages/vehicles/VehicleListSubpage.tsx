@@ -7,15 +7,32 @@ import { Column } from 'react-table';
 import { VehicleResponseDTO } from '../../model/VehicleResponseDTO';
 import { getVehiclesList } from '../../service/VehicleService';
 import { ButtonTableItem } from '../../components/table/tab_items/ButtonTableItem';
+import { SubpagePagination } from '../../components/subpage/pagination/SubpagePagination';
+import { useLocation } from 'react-router-dom';
+import { getCountFromUrl, getPageFromUrl } from '../../../../main-page/src/utils/UrlUtil';
+import Page from '../../../../main-page/src/model/Page';
 
 export function VehicleListSubpage(): JSX.Element {
-    const [vehiclesList, setVehiclesList] = useState<VehicleResponseDTO[]>([]);
+    const location = useLocation();
+    const DEFAULT_PER_PAGE_COUNT = 10;
+    const page: number = getPageFromUrl(location.search);
+    const count: number = getCountFromUrl(location.search);
+
+    const [perPageCount, setPerPageCount] = useState<number>(count <= 0 ? DEFAULT_PER_PAGE_COUNT : count);
+    const [currentPage, setCurrentPage] = useState<number>(page);
+    const [vehiclesList, setVehiclesList] = useState<Page<VehicleResponseDTO> | undefined>(undefined);
+    const [totalPagesCount, setTotalPagesCount] = useState<number>(0);
 
     useEffect(() => {
-        getVehiclesList().then((vehicleResponseDTOS: VehicleResponseDTO[]) => {
-            setVehiclesList(vehicleResponseDTOS);
+        getVehiclesList(currentPage, perPageCount).then((vehicleResponseDTOS: Page<VehicleResponseDTO>) => {
+            if (currentPage > vehicleResponseDTOS.totalPages) {
+                setCurrentPage(vehicleResponseDTOS.totalPages - 1);
+            } else {
+                setVehiclesList(vehicleResponseDTOS);
+                setTotalPagesCount(vehicleResponseDTOS.totalPages);
+            }
         });
-    }, []);
+    }, [currentPage, perPageCount]);
 
     const columns = React.useMemo<Column<VehicleResponseDTO>[]>(
         () => [
@@ -70,12 +87,12 @@ export function VehicleListSubpage(): JSX.Element {
             {
                 Header: 'Edit',
                 accessor: (vehicleResponseDTO: VehicleResponseDTO) =>
-                    ButtonTableItem('Edit', `/vehicles/${vehicleResponseDTO.id}/edit`, 'success'),
+                    ButtonTableItem('Edit', `/profile/vehicles/${vehicleResponseDTO.id}/edit`, 'success'),
             },
             {
                 Header: 'Equipment',
                 accessor: (vehicleResponseDTO: VehicleResponseDTO) =>
-                    ButtonTableItem('Equipment', `/vehicles/${vehicleResponseDTO.id}/equipment`, 'info'),
+                    ButtonTableItem('Equipment', `/profile/vehicles/${vehicleResponseDTO.id}/equipment`, 'info'),
             },
         ],
         []
@@ -85,8 +102,15 @@ export function VehicleListSubpage(): JSX.Element {
         <SubpageContainer>
             <SubpageHeader title={'Vehicles list'} />
             <SubpageContent>
-                <Table<VehicleResponseDTO> columns={columns} data={vehiclesList} />
+                {vehiclesList && <Table<VehicleResponseDTO> columns={columns} data={vehiclesList.content} />}
             </SubpageContent>
+            <SubpagePagination
+                totalPagesCount={totalPagesCount}
+                perPageCount={perPageCount}
+                setPerPageCount={setPerPageCount}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+            />
         </SubpageContainer>
     );
 }

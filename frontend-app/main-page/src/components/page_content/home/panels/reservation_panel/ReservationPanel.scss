@@ -1,5 +1,6 @@
 #register-panel-image-container {
-    background: url("../../../../../images/front_image.jpg") no-repeat fixed center;
-    background-size: cover;
+    background: url("../../../../../images/front_image.jpg") no-repeat fixed;
+    background-size: 100%;
+    background-position: 0 90px;
     min-height: 450px;
 }

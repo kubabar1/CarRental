@@ -58,6 +58,8 @@ export async function fetchGet<T>(getPath: string): Promise<T> {
     }).then((res: Response) => {
         if (res.status >= 200 && res.status < 300) {
             console.log('GET OK');
+            console.log(res.status);
+            console.log(res);
         } else {
             console.log('GET NOK');
         }

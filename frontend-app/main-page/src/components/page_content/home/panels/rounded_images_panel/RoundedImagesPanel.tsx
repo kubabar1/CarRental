@@ -29,7 +29,7 @@ export class RoundedImagesPanel extends React.Component {
     render(): JSX.Element {
         return (
             <div id="car-types-round-images">
-                <div className="container mt-5 mb-4">
+                <div className="container car-types-round-images-container">
                     <div className="row">
                         {this.renderRoundedImage('Coupe', coupeCarRound, `${carListLink}?bodyType=Coupe`)}
                         {this.renderRoundedImage('Sedan', sedanCarRound, `${carListLink}?bodyType=Sedan`)}

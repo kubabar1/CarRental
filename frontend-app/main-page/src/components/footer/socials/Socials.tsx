@@ -15,9 +15,8 @@ export function Socials(): JSX.Element {
     };
 
     return (
-        <div id="footer-socials" className="col-lg-6 col-md-12 mt-3">
-            <h5>Socials:</h5>
-            <div className="row">
+        <div id="footer-socials" className="col-lg-4 col-md-12 mt-3">
+            <div className="footer-socials-row">
                 {renderSocialIcon('https://www.facebook.com', faFacebook, ['facebook-icon'])}
                 <br />
                 {renderSocialIcon('https://www.twitter.com', faTwitter, ['twitter-icon'])}

@@ -6,6 +6,8 @@ import com.carrental.vehicleservice.model.dto.EquipmentResponseDTO;
 import com.carrental.vehicleservice.model.dto.VehicleResponseDTO;
 import com.carrental.vehicleservice.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,12 +26,8 @@ public class EquipmentController {
     }
 
     @GetMapping
-    public ResponseEntity<Set<EquipmentResponseDTO>> getAllEquipmentsController() {
-        Set<EquipmentResponseDTO> equipmentResponseDTOS = equipmentService.getAllEquipments();
-        if (equipmentResponseDTOS.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok().body(equipmentResponseDTOS);
+    public ResponseEntity<Page<EquipmentResponseDTO>> getAllEquipmentsController(Pageable pageable) {
+        return ResponseEntity.ok().body(equipmentService.getAllEquipments(pageable));
     }
 
     @GetMapping(value = "/{vehicleId}")

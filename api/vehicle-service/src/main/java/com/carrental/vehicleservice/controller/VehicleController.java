@@ -30,29 +30,17 @@ public class VehicleController {
 
     @GetMapping
     public ResponseEntity<Page<VehicleResponseDTO>> getVehiclesController(Pageable pageable) {
-        Page<VehicleResponseDTO> vehicleResponseDTOPage = vehicleService.getVehicles(pageable);
-        if (vehicleResponseDTOPage.getContent().isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok().body(vehicleResponseDTOPage);
+        return ResponseEntity.ok().body(vehicleService.getVehicles(pageable));
     }
 
     @GetMapping(value = "/available")
     public ResponseEntity<Set<VehicleResponseDTO>> getAvailableVehiclesController() {
-        Set<VehicleResponseDTO> availableVehicles = vehicleService.getAvailableVehicles();
-        if (availableVehicles.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok().body(availableVehicles);
+        return ResponseEntity.ok().body(vehicleService.getAvailableVehicles());
     }
 
     @GetMapping(value = "/unavailable")
-    public ResponseEntity<Set<VehicleResponseDTO>> getUnavailableVehiclesController() {
-        Set<VehicleResponseDTO> unavailableVehicles = vehicleService.getUnavailableVehicles();
-        if (unavailableVehicles.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok().body(unavailableVehicles);
+    public ResponseEntity<Page<VehicleResponseDTO>> getUnavailableVehiclesController(Pageable pageable) {
+        return ResponseEntity.ok().body(vehicleService.getUnavailableVehicles(pageable));
     }
 
     @GetMapping(value = "/{vehicleId}")

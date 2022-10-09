@@ -4,6 +4,8 @@ import com.carrental.bookingservice.exception.BookingStateException;
 import com.carrental.bookingservice.model.dto.BookingResponseDTO;
 import com.carrental.bookingservice.service.BookingUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,19 +19,15 @@ import java.util.Set;
 @RequestMapping(value = "/user/bookings")
 public class BookingsUserController implements BookingsController {
 
-    private BookingUserService bookingUserService;
+    private final BookingUserService bookingUserService;
 
     public BookingsUserController(BookingUserService bookingUserService) {
         this.bookingUserService = bookingUserService;
     }
 
     @Override
-    public ResponseEntity<Set<BookingResponseDTO>> getBookingsController() {
-        Set<BookingResponseDTO> bookingResponseDTOSet = bookingUserService.getBookings();
-        if (bookingResponseDTOSet.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok().body(bookingResponseDTOSet);
+    public ResponseEntity<Page<BookingResponseDTO>> getBookingsController(Pageable pageable) {
+        return ResponseEntity.ok().body(bookingUserService.getBookings(pageable));
     }
 
     @Override
@@ -43,21 +41,13 @@ public class BookingsUserController implements BookingsController {
     }
 
     @Override
-    public ResponseEntity<Set<BookingResponseDTO>> getReservedBookingsController() {
-        Set<BookingResponseDTO> bookingResponseDTOSet = bookingUserService.getReservedBookings();
-        if (bookingResponseDTOSet.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok().body(bookingResponseDTOSet);
+    public ResponseEntity<Page<BookingResponseDTO>> getReservedBookingsController(Pageable pageable) {
+        return ResponseEntity.ok().body(bookingUserService.getReservedBookings(pageable));
     }
 
     @Override
-    public ResponseEntity<Set<BookingResponseDTO>> getRentedBookingsController() {
-        Set<BookingResponseDTO> bookingResponseDTOSet = bookingUserService.getRentedBookings();
-        if (bookingResponseDTOSet.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok().body(bookingResponseDTOSet);
+    public ResponseEntity<Page<BookingResponseDTO>> getRentedBookingsController(Pageable pageable) {
+        return ResponseEntity.ok().body(bookingUserService.getRentedBookings(pageable));
     }
 
     @Override

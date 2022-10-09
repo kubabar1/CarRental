@@ -13,8 +13,8 @@ const compilationHandler = (err, stats) => {
 
             const compilationStatus = !errors.length
                 ? !warnings.length
-                    ? chalk.yellow('success')
-                    : chalk.green('warnings')
+                    ? chalk.green('success')
+                    : chalk.yellow('warnings')
                 : chalk.red('errors');
 
             console.log(chalk.blue(moduleName.toUpperCase()));
@@ -46,9 +46,11 @@ const compilationHandler = (err, stats) => {
 
 function formatErrorOutput(error) {
     if (error.error && error.details) {
-        return error.error + '\n' + error.details;
+        return `${error.error} ${error.details}`;
     } else if (error.error) {
         return error.error;
+    } else if (error.message) {
+        return error.message;
     } else {
         return error;
     }

@@ -9,24 +9,31 @@ import { UserResponseDTO } from '../../model/UserResponseDTO';
 import { ButtonTableItem } from '../../components/table/tab_items/ButtonTableItem';
 import { UserRolesTableItem } from './tab_items/UserRolesTableItem';
 import Page from '../../../../main-page/src/model/Page';
-import ReactPaginate from 'react-paginate';
-import qs, { ParsedQs } from 'qs';
-import { useHistory } from 'react-router-dom';
+import { SubpagePagination } from '../../components/subpage/pagination/SubpagePagination';
+import { useLocation } from 'react-router-dom';
+import { getCountFromUrl, getPageFromUrl } from '../../../../main-page/src/utils/UrlUtil';
 
 export function UsersListSubpage(): JSX.Element {
-    const history = useHistory();
-    const DEFAULT_START_PAGE = 0;
-    // const DEFAULT_USERS_COUNT = 5;
-    const [currentPage, setCurrentPage] = useState<number>(DEFAULT_START_PAGE);
+    const location = useLocation();
+    const DEFAULT_PER_PAGE_COUNT = 10;
+    const page: number = getPageFromUrl(location.search);
+    const count: number = getCountFromUrl(location.search);
+
+    const [perPageCount, setPerPageCount] = useState<number>(count <= 0 ? DEFAULT_PER_PAGE_COUNT : count);
+    const [currentPage, setCurrentPage] = useState<number>(page);
     const [usersPage, setUsersPage] = useState<Page<UserResponseDTO> | undefined>(undefined);
     const [totalPagesCount, setTotalPagesCount] = useState<number>(0);
 
     useEffect(() => {
-        getUsersList().then((usersPageResponse: Page<UserResponseDTO>) => {
-            setUsersPage(usersPageResponse);
-            setTotalPagesCount(usersPageResponse.totalPages);
+        getUsersList(currentPage, perPageCount).then((usersPageResponse: Page<UserResponseDTO>) => {
+            if (currentPage > usersPageResponse.totalPages) {
+                setCurrentPage(usersPageResponse.totalPages - 1);
+            } else {
+                setUsersPage(usersPageResponse);
+                setTotalPagesCount(usersPageResponse.totalPages);
+            }
         });
-    }, []);
+    }, [currentPage, perPageCount]);
 
     const columns = React.useMemo<Column<UserResponseDTO>[]>(
         () => [
@@ -68,12 +75,13 @@ export function UsersListSubpage(): JSX.Element {
             },
             {
                 Header: 'Edit',
-                accessor: (user: UserResponseDTO) => ButtonTableItem('Edit', `/users/${user.id}/edit`, 'success'),
+                accessor: (user: UserResponseDTO) =>
+                    ButtonTableItem('Edit', `/profile/users/${user.id}/edit`, 'success'),
             },
             {
                 Header: 'Add role',
                 accessor: (user: UserResponseDTO) =>
-                    ButtonTableItem('+ Add role', `/user-roles/add/${user.id}`, 'success'),
+                    ButtonTableItem('+ Add role', `/profile/user-roles/add/${user.id}`, 'success'),
             },
         ],
         []
@@ -84,56 +92,14 @@ export function UsersListSubpage(): JSX.Element {
             <SubpageHeader title={'Users list'} />
             <SubpageContent>
                 {usersPage && <Table<UserResponseDTO> columns={columns} data={usersPage.content} />}
-                <div className="pagination-and-counter-container">
-                    <ReactPaginate
-                        previousLabel="Previous"
-                        nextLabel="Next"
-                        pageClassName="page-item"
-                        pageLinkClassName="page-link"
-                        previousClassName="page-item"
-                        previousLinkClassName="page-link"
-                        nextClassName="page-item"
-                        nextLinkClassName="page-link"
-                        breakLabel="..."
-                        breakClassName="page-item"
-                        breakLinkClassName="page-link"
-                        pageCount={totalPagesCount}
-                        marginPagesDisplayed={2}
-                        pageRangeDisplayed={5}
-                        onPageChange={(selectedItem: { selected: number }) => {
-                            setCurrentPage(selectedItem.selected);
-                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                            const currentParams: ParsedQs = qs.parse(location.search, {
-                                ignoreQueryPrefix: true,
-                            });
-                            currentParams['page'] = `${selectedItem.selected}`;
-                            history.push({
-                                search: `?${qs.stringify(currentParams)}`,
-                            });
-                        }}
-                        containerClassName="pagination"
-                        activeClassName="active"
-                        forcePage={currentPage}
-                    />
-                    {/*<Select*/}
-                    {/*    className="count-per-page-select"*/}
-                    {/*    value={mapToOptionType(perPageCount)}*/}
-                    {/*    options={VEHICLES_PER_PAGE_COUNTS.map(mapToOptionType)}*/}
-                    {/*    onChange={(newValue: SingleValue<OptionType>) => {*/}
-                    {/*        if (newValue && newValue.value) {*/}
-                    {/*            setPerPageCount(parseInt(newValue.value));*/}
-                    {/*            const currentParams: ParsedQs = qs.parse(location.search, {*/}
-                    {/*                ignoreQueryPrefix: true,*/}
-                    {/*            });*/}
-                    {/*            currentParams['count'] = newValue.value;*/}
-                    {/*            history.push({*/}
-                    {/*                search: `?${qs.stringify(currentParams)}`,*/}
-                    {/*            });*/}
-                    {/*        }*/}
-                    {/*    }}*/}
-                    {/*/>*/}
-                </div>
             </SubpageContent>
+            <SubpagePagination
+                totalPagesCount={totalPagesCount}
+                perPageCount={perPageCount}
+                setPerPageCount={setPerPageCount}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+            />
         </SubpageContainer>
     );
 }

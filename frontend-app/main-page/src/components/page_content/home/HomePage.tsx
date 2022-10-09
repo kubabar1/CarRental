@@ -2,6 +2,7 @@ import React from 'react';
 import LocalisationResponseDTO from '../../../model/LocalisationResponseDTO';
 import { ReservationPanel } from './panels/reservation_panel/ReservationPanel';
 import { RoundedImagesPanel } from './panels/rounded_images_panel/RoundedImagesPanel';
+import { MobilePagePanel } from './panels/mobile_page_panel/MobilePagePanel';
 
 interface HomeProperties {
     isAuthenticated: boolean;
@@ -19,6 +20,7 @@ export class HomePage extends React.Component<HomeProperties> {
             <div>
                 <ReservationPanel isAuthenticated={isAuthenticated} localisations={localisations} />
                 <RoundedImagesPanel />
+                <MobilePagePanel />
             </div>
         );
     }

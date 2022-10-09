@@ -4,13 +4,15 @@ import com.carrental.vehicleservice.model.dto.EquipmentPersistDTO;
 import com.carrental.vehicleservice.model.dto.EquipmentResponseDTO;
 import com.carrental.vehicleservice.model.dto.EquipmentSetPersistDTO;
 import com.carrental.vehicleservice.model.dto.VehicleResponseDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.NoSuchElementException;
 import java.util.Set;
 
 public interface EquipmentService {
 
-    Set<EquipmentResponseDTO> getAllEquipments();
+    Page<EquipmentResponseDTO> getAllEquipments(Pageable pageable);
 
     Set<EquipmentResponseDTO> getVehicleEquipments(Long vehicleId) throws NoSuchElementException;
 

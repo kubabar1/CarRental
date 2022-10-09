@@ -10,7 +10,11 @@ import com.carrental.vehicleservice.repository.EquipmentRepository;
 import com.carrental.vehicleservice.repository.VehicleRepository;
 import com.carrental.vehicleservice.service.EquipmentService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,12 +38,14 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public Set<EquipmentResponseDTO> getAllEquipments() {
-        return equipmentRepository
-                .findAll()
+    public Page<EquipmentResponseDTO> getAllEquipments(Pageable pageable) {
+        Page<EquipmentEntity> equipmentEntities = equipmentRepository.findAll(pageable);
+        List<EquipmentResponseDTO> equipmentResponseDTOS = equipmentEntities
+                .getContent()
                 .stream()
-                .map(equipmentEntity -> modelMapper.map(equipmentEntity, EquipmentResponseDTO.class))
-                .collect(Collectors.toSet());
+                .map(equipment -> modelMapper.map(equipment, EquipmentResponseDTO.class))
+                .collect(Collectors.toList());
+        return new PageImpl<>(equipmentResponseDTOS, pageable, equipmentEntities.getTotalElements());
     }
 
     @Override

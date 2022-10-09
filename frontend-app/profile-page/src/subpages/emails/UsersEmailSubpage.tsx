@@ -8,15 +8,31 @@ import { Column } from 'react-table';
 import { UserResponseDTO } from '../../model/UserResponseDTO';
 import { ButtonTableItem } from '../../components/table/tab_items/ButtonTableItem';
 import Page from '../../../../main-page/src/model/Page';
+import { useLocation } from 'react-router-dom';
+import { getCountFromUrl, getPageFromUrl } from '../../../../main-page/src/utils/UrlUtil';
+import { SubpagePagination } from '../../components/subpage/pagination/SubpagePagination';
 
 export function UsersEmailSubpage(): JSX.Element {
+    const location = useLocation();
+    const DEFAULT_PER_PAGE_COUNT = 10;
+    const page: number = getPageFromUrl(location.search);
+    const count: number = getCountFromUrl(location.search);
+
+    const [perPageCount, setPerPageCount] = useState<number>(count <= 0 ? DEFAULT_PER_PAGE_COUNT : count);
+    const [currentPage, setCurrentPage] = useState<number>(page);
     const [usersPage, setUsersPage] = useState<Page<UserResponseDTO> | undefined>(undefined);
+    const [totalPagesCount, setTotalPagesCount] = useState<number>(0);
 
     useEffect(() => {
-        getUsersList().then((usersListResponse: Page<UserResponseDTO>) => {
-            setUsersPage(usersListResponse);
+        getUsersList(currentPage, perPageCount).then((usersListResponse: Page<UserResponseDTO>) => {
+            if (currentPage > usersListResponse.totalPages) {
+                setCurrentPage(usersListResponse.totalPages - 1);
+            } else {
+                setUsersPage(usersListResponse);
+                setTotalPagesCount(usersListResponse.totalPages);
+            }
         });
-    }, []);
+    }, [currentPage, perPageCount]);
 
     const columns = React.useMemo<Column<UserResponseDTO>[]>(
         () => [
@@ -42,7 +58,8 @@ export function UsersEmailSubpage(): JSX.Element {
             },
             {
                 Header: 'Action',
-                accessor: (user: UserResponseDTO) => ButtonTableItem('Send email', `/email-send/${user.id}`, 'success'),
+                accessor: (user: UserResponseDTO) =>
+                    ButtonTableItem('Send email', `/profile/email-send/${user.id}`, 'success'),
             },
         ],
         []
@@ -54,6 +71,13 @@ export function UsersEmailSubpage(): JSX.Element {
             <SubpageContent>
                 {usersPage && <Table<UserResponseDTO> columns={columns} data={usersPage.content} />}
             </SubpageContent>
+            <SubpagePagination
+                totalPagesCount={totalPagesCount}
+                perPageCount={perPageCount}
+                setPerPageCount={setPerPageCount}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+            />
         </SubpageContainer>
     );
 }

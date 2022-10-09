@@ -48,12 +48,14 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public Set<VehicleResponseDTO> getUnavailableVehicles() {
-        return vehicleRepository
-                .findAllUnavailable()
+    public Page<VehicleResponseDTO> getUnavailableVehicles(Pageable pageable) {
+        Page<VehicleEntity> vehicleEntities = vehicleRepository.findAllUnavailable(pageable);
+        List<VehicleResponseDTO> vehicleResponseDTOS = vehicleEntities
+                .getContent()
                 .stream()
                 .map(vehicleEntity -> modelMapper.map(vehicleEntity, VehicleResponseDTO.class))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
+        return new PageImpl<>(vehicleResponseDTOS, pageable, vehicleEntities.getTotalElements());
     }
 
     @Override

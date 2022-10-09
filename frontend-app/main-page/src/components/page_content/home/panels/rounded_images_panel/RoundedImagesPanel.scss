@@ -1,4 +1,13 @@
 #car-types-round-images {
+    min-height: 450px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .car-types-round-images-container {
+        min-height: 320px;
+    }
+
     .text-under-round-image {
         text-align: center;
         margin-top: 10px;

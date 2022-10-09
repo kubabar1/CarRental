@@ -1,26 +1,33 @@
 #footer-socials {
-    color: black;
+    color: #636363;
 
-    .socials-icons {
-        color: #000;
-        text-decoration: none;
-        padding: 0 25px;
-        font-size: 40px;
-    }
+    .footer-socials-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
 
-    .facebook-icon:hover {
-        color: #3b5998 !important;
-    }
+        .socials-icons {
+            color: #636363;
+            text-decoration: none;
+            padding: 0 25px;
+            font-size: 40px;
+        }
 
-    .youtube-icon:hover {
-        color: #cc181e !important;
-    }
+        .facebook-icon:hover {
+            color: #3b5998 !important;
+        }
 
-    .instagram-icon:hover {
-        color: #8a3ab9 !important;
-    }
+        .youtube-icon:hover {
+            color: #cc181e !important;
+        }
 
-    .twitter-icon:hover {
-        color: #1dcaff !important;
+        .instagram-icon:hover {
+            color: #8a3ab9 !important;
+        }
+
+        .twitter-icon:hover {
+            color: #1dcaff !important;
+        }
     }
 }

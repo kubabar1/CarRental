@@ -1,0 +1,89 @@
+.mobile-page-panel-container {
+    min-height: 450px;
+    background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+
+    .mobile-image-container {
+        min-width: 600px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 50px;
+        margin-right: 50px;
+
+        img {
+            height: 380px;
+        }
+    }
+
+    .download-app-container {
+        margin: 50px;
+
+        .download-app-text-container {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .download-app-description-container {
+            margin-top: 25px;
+        }
+
+        .download-app-links-qr-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-top: 25px;
+
+            .download-app-links-container {
+                .download-app-link {
+                    background-color: #000;
+                    color: #fff;
+                    min-width: 200px;
+                    height: 50px;
+                    border-radius: 10px;
+                    margin: 10px 0;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: stretch;
+                    text-decoration: none;
+
+                    .download-app-link-icon {
+                        font-size: 32px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin: 0 10px;
+                        min-width: 35px;
+                    }
+
+                    .download-app-link-text {
+                        font-size: 15px;
+                        padding: 5px;
+                        line-height: 20px;
+
+                        .download-app-link-download-on-text {
+                            font-size: 12px;
+                        }
+
+                        .download-app-link-shop-name {
+                            font-weight: bold;
+                        }
+                    }
+                }
+
+                .download-app-link:hover {
+                    background-color: #222;
+                }
+            }
+
+            .download-app-qr-container {
+                img {
+                    height: 140px;
+                    margin-left: 50px;
+                }
+            }
+        }
+    }
+}

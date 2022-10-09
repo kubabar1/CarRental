@@ -10,21 +10,25 @@ import com.carrental.bookingservice.repository.BookingStateRepository;
 import com.carrental.bookingservice.service.BookingAdminService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class BookingAdminServiceImpl implements BookingAdminService {
 
-    private BookingRepository bookingRepository;
+    private final BookingRepository bookingRepository;
 
-    private BookingStateRepository bookingStateRepository;
+    private final BookingStateRepository bookingStateRepository;
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
-    private BookingStateValidator bookingStateValidator;
+    private final BookingStateValidator bookingStateValidator;
 
     public BookingAdminServiceImpl(
             BookingRepository bookingRepository,
@@ -39,30 +43,41 @@ public class BookingAdminServiceImpl implements BookingAdminService {
     }
 
     @Override
-    public Set<BookingResponseDTO> getBookings() {
-        return bookingRepository.findAll().stream()
+    public Page<BookingResponseDTO> getBookings(Pageable pageable) {
+        Page<BookingEntity> bookingEntities = bookingRepository.findAll(pageable);
+        List<BookingResponseDTO> bookingResponseDTOS = bookingEntities
+                .getContent()
+                .stream()
                 .map(bookingEntity -> modelMapper.map(bookingEntity, BookingResponseDTO.class))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());;
+        return new PageImpl<>(bookingResponseDTOS, pageable, bookingEntities.getTotalElements());
     }
 
     @Override
     public BookingResponseDTO getBookingById(Long bookingId) throws NoSuchElementException {
-        return modelMapper.map(
-                bookingRepository.findById(bookingId).orElseThrow(), BookingResponseDTO.class);
+        return modelMapper.map(bookingRepository.findById(bookingId).orElseThrow(), BookingResponseDTO.class);
     }
 
     @Override
-    public Set<BookingResponseDTO> getReservedBookings() {
-        return bookingRepository.findAllReservedBookings().stream()
+    public Page<BookingResponseDTO> getReservedBookings(Pageable pageable) {
+        Page<BookingEntity> bookingEntities = bookingRepository.findAllReservedBookings(pageable);
+        List<BookingResponseDTO> bookingResponseDTOList = bookingEntities
+                .getContent()
+                .stream()
                 .map(bookingEntity -> modelMapper.map(bookingEntity, BookingResponseDTO.class))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
+        return new PageImpl<>(bookingResponseDTOList, pageable, bookingEntities.getTotalElements());
     }
 
     @Override
-    public Set<BookingResponseDTO> getRentedBookings() {
-        return bookingRepository.findAllRentedBookings().stream()
+    public Page<BookingResponseDTO> getRentedBookings(Pageable pageable) {
+        Page<BookingEntity> bookingEntities = bookingRepository.findAllRentedBookings(pageable);
+        List<BookingResponseDTO> bookingResponseDTOList = bookingEntities
+                .getContent()
+                .stream()
                 .map(bookingEntity -> modelMapper.map(bookingEntity, BookingResponseDTO.class))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
+        return new PageImpl<>(bookingResponseDTOList, pageable, bookingEntities.getTotalElements());
     }
 
     @Override

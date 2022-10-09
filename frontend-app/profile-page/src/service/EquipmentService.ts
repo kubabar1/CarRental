@@ -9,9 +9,11 @@ import {
 import { VehicleResponseDTO } from '../model/VehicleResponseDTO';
 import { EquipmentPersistDTO } from '../model/EquipmentPersistDTO';
 import { EquipmentSetPersistDTO } from '../model/EquipmentSetPersistDTO';
+import { PAGE_REQUEST } from '../../../main-page/src/constants/PathsAPI';
+import Page from '../../../main-page/src/model/Page';
 
-export const getAllEquipmentsList = (): Promise<EquipmentResponseDTO[]> => {
-    return fetchGet<EquipmentResponseDTO[]>(GET_EQUIPMENTS_PATH);
+export const getAllEquipmentsList = (page?: number, size?: number): Promise<Page<EquipmentResponseDTO>> => {
+    return fetchGet<Page<EquipmentResponseDTO>>(PAGE_REQUEST(GET_EQUIPMENTS_PATH, page, size));
 };
 
 export const getAllEquipmentsNotAssignedToVehicleList = (vehicleId: string): Promise<EquipmentResponseDTO[]> => {

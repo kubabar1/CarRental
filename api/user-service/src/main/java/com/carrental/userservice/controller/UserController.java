@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 @RequestMapping("/users")
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -26,11 +26,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<Page<UserResponseDTO>> getUsersController(Pageable pageable) {
-        Page<UserResponseDTO> userResponseDTOS = userService.getUsers(pageable);
-        if (userResponseDTOS.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok().body(userResponseDTOS);
+        return ResponseEntity.ok().body(userService.getUsers(pageable));
     }
 
     @GetMapping("/authorized")

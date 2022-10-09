@@ -15,7 +15,7 @@ public interface VehicleService {
 
     Set<VehicleResponseDTO> getAvailableVehicles();
 
-    Set<VehicleResponseDTO> getUnavailableVehicles();
+    Page<VehicleResponseDTO> getUnavailableVehicles(Pageable pageable);
 
     VehicleResponseDTO getVehicleById(Long vehicleId) throws NoSuchElementException;
 

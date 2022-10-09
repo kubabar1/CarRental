@@ -1,6 +1,8 @@
 package com.carrental.bookingservice.controller;
 
 import com.carrental.bookingservice.model.dto.BookingResponseDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,16 +12,16 @@ import java.util.Set;
 public interface BookingsController {
 
     @GetMapping
-    ResponseEntity<Set<BookingResponseDTO>> getBookingsController();
+    ResponseEntity<Page<BookingResponseDTO>> getBookingsController(Pageable pageable);
 
     @GetMapping(value = "/{bookingId}")
     ResponseEntity<BookingResponseDTO> getBookingByIdController(@PathVariable(name = "bookingId") Long bookingId);
 
     @GetMapping(value = "/reserved")
-    ResponseEntity<Set<BookingResponseDTO>> getReservedBookingsController();
+    ResponseEntity<Page<BookingResponseDTO>> getReservedBookingsController(Pageable pageable);
 
     @GetMapping(value = "/rented")
-    ResponseEntity<Set<BookingResponseDTO>> getRentedBookingsController();
+    ResponseEntity<Page<BookingResponseDTO>> getRentedBookingsController(Pageable pageable);
 
     @PostMapping(value = "/cancel/{bookingId}")
     ResponseEntity<BookingResponseDTO> cancelBookingController(@PathVariable(name = "bookingId") Long bookingId);

@@ -13,23 +13,27 @@ import com.carrental.commons.authentication.model.AuthenticatedUserData;
 import com.carrental.commons.authentication.service.AuthenticatedUserDataService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class BookingUserServiceImpl implements BookingUserService {
 
-    private AuthenticatedUserDataService authenticatedUserDataService;
+    private final AuthenticatedUserDataService authenticatedUserDataService;
 
-    private BookingRepository bookingRepository;
+    private final BookingRepository bookingRepository;
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
-    private BookingStateValidator bookingStateValidator;
+    private final BookingStateValidator bookingStateValidator;
 
-    private BookingStateRepository bookingStateRepository;
+    private final BookingStateRepository bookingStateRepository;
 
     public BookingUserServiceImpl(
             AuthenticatedUserDataService authenticatedUserDataService,
@@ -46,14 +50,15 @@ public class BookingUserServiceImpl implements BookingUserService {
     }
 
     @Override
-    public Set<BookingResponseDTO> getBookings() throws AuthorizationException, NoSuchElementException {
+    public Page<BookingResponseDTO> getBookings(Pageable pageable) throws AuthorizationException, NoSuchElementException {
         AuthenticatedUserData authenticatedUserData = authenticatedUserDataService.getAuthenticatedUserData();
-        return bookingRepository
-                .findAllByUserId(authenticatedUserData.getId())
-                .orElseThrow()
+        Page<BookingEntity> bookingEntities = bookingRepository.findAllByUserId(authenticatedUserData.getId(), pageable).orElseThrow();
+        List<BookingResponseDTO> bookingResponseDTOS = bookingEntities
+                .getContent()
                 .stream()
                 .map(booking -> modelMapper.map(booking, BookingResponseDTO.class))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
+        return new PageImpl<>(bookingResponseDTOS, pageable, bookingEntities.getTotalElements());
     }
 
     @Override
@@ -65,23 +70,27 @@ public class BookingUserServiceImpl implements BookingUserService {
     }
 
     @Override
-    public Set<BookingResponseDTO> getReservedBookings() throws AuthorizationException {
+    public Page<BookingResponseDTO> getReservedBookings(Pageable pageable) throws AuthorizationException {
         AuthenticatedUserData authenticatedUserData = authenticatedUserDataService.getAuthenticatedUserData();
-        return bookingRepository
-                .findAllReservedByUserId(authenticatedUserData.getId())
+        Page<BookingEntity> bookingEntities = bookingRepository.findAllReservedByUserId(authenticatedUserData.getId(), pageable);
+        List<BookingResponseDTO> bookingResponseDTOList = bookingEntities
+                .getContent()
                 .stream()
                 .map(booking -> modelMapper.map(booking, BookingResponseDTO.class))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
+        return new PageImpl<>(bookingResponseDTOList, pageable, bookingEntities.getTotalElements());
     }
 
     @Override
-    public Set<BookingResponseDTO> getRentedBookings() throws AuthorizationException {
+    public Page<BookingResponseDTO> getRentedBookings(Pageable pageable) throws AuthorizationException {
         AuthenticatedUserData authenticatedUserData = authenticatedUserDataService.getAuthenticatedUserData();
-        return bookingRepository
-                .findAllRentedByUserId(authenticatedUserData.getId())
+        Page<BookingEntity> bookingEntities = bookingRepository.findAllRentedByUserId(authenticatedUserData.getId(), pageable);
+        List<BookingResponseDTO> bookingResponseDTOList = bookingEntities
+                .getContent()
                 .stream()
                 .map(booking -> modelMapper.map(booking, BookingResponseDTO.class))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
+        return new PageImpl<>(bookingResponseDTOList, pageable, bookingEntities.getTotalElements());
     }
 
     @Override

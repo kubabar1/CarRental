@@ -8,17 +8,19 @@ import {
     RETURN_ADMIN_BOOKING,
 } from '../constants/PathsAPI';
 import { fetchGet, fetchPost } from './FetchUtil';
+import Page from '../../../main-page/src/model/Page';
+import { PAGE_REQUEST } from '../../../main-page/src/constants/PathsAPI';
 
-export const getAllBookingsList = (): Promise<BookingResponseDTO[]> => {
-    return fetchGet<BookingResponseDTO[]>(GET_ADMIN_BOOKINGS_PATH);
+export const getAllBookingsList = (page?: number, size?: number): Promise<Page<BookingResponseDTO>> => {
+    return fetchGet<Page<BookingResponseDTO>>(PAGE_REQUEST(GET_ADMIN_BOOKINGS_PATH, page, size));
 };
 
-export const getAllReservedBookingsList = (): Promise<BookingResponseDTO[]> => {
-    return fetchGet<BookingResponseDTO[]>(GET_ADMIN_BOOKINGS_RESERVED_PATH);
+export const getAllReservedBookingsList = (page?: number, size?: number): Promise<Page<BookingResponseDTO>> => {
+    return fetchGet<Page<BookingResponseDTO>>(PAGE_REQUEST(GET_ADMIN_BOOKINGS_RESERVED_PATH, page, size));
 };
 
-export const getAllRentedBookingsList = (): Promise<BookingResponseDTO[]> => {
-    return fetchGet<BookingResponseDTO[]>(GET_ADMIN_BOOKINGS_RENTED_PATH);
+export const getAllRentedBookingsList = (page?: number, size?: number): Promise<Page<BookingResponseDTO>> => {
+    return fetchGet<Page<BookingResponseDTO>>(PAGE_REQUEST(GET_ADMIN_BOOKINGS_RENTED_PATH, page, size));
 };
 
 export const rentBooking = (bookingId: string): Promise<BookingResponseDTO> => {

@@ -1,9 +1,12 @@
 #footer-contacts {
     margin-left: 10px;
-    color: #000;
+    color: #636363;
+    display: flex;
+    justify-content: center;
 
     a {
-        color: #000;
+        color: #636363;
+        text-decoration: none;
     }
 
     i {
@@ -11,21 +14,39 @@
     }
 
     .contacts-container {
-        width: 140px;
-        height: 40px;
         display: flex;
-        align-items: center;
+        flex-direction: column;
+        width: 50%;
+
+        .contact-container {
+            width: 200px;
+            line-height: 40px;
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            justify-content: center;
+            margin-left: auto !important;
+            margin-right: auto !important;
+
+            .contacts-container-icon {
+                width: 20%;
+            }
+
+            .contacts-container-text {
+                width: 80%;
+            }
+        }
     }
 
     .font-awesome-additional-styles {
         float: left;
-        font-size: 24px;
+        font-size: 20px;
         width: 30px;
     }
 
     .contact-text {
-        float: right;
         margin-bottom: 0;
         margin-left: 10px;
+        font-size: 15px;
     }
 }

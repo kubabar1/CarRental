@@ -6,17 +6,25 @@ import {
     GET_USER_BOOKINGS_RENTED_PATH,
     GET_USER_BOOKINGS_RESERVED_PATH,
 } from '../constants/PathsAPI';
+import Page from '../../../main-page/src/model/Page';
+import { PAGE_REQUEST } from '../../../main-page/src/constants/PathsAPI';
 
-export const getAuthenticatedUserBookingsList = (): Promise<BookingResponseDTO[]> => {
-    return fetchGet<BookingResponseDTO[]>(GET_USER_BOOKINGS_PATH);
+export const getAuthenticatedUserBookingsList = (page?: number, size?: number): Promise<Page<BookingResponseDTO>> => {
+    return fetchGet<Page<BookingResponseDTO>>(PAGE_REQUEST(GET_USER_BOOKINGS_PATH, page, size));
 };
 
-export const getAuthenticatedUserReservedBookingsList = (): Promise<BookingResponseDTO[]> => {
-    return fetchGet<BookingResponseDTO[]>(GET_USER_BOOKINGS_RESERVED_PATH);
+export const getAuthenticatedUserReservedBookingsList = (
+    page?: number,
+    size?: number
+): Promise<Page<BookingResponseDTO>> => {
+    return fetchGet<Page<BookingResponseDTO>>(PAGE_REQUEST(GET_USER_BOOKINGS_RESERVED_PATH, page, size));
 };
 
-export const getAuthenticatedUserRentedBookingsList = (): Promise<BookingResponseDTO[]> => {
-    return fetchGet<BookingResponseDTO[]>(GET_USER_BOOKINGS_RENTED_PATH);
+export const getAuthenticatedUserRentedBookingsList = (
+    page?: number,
+    size?: number
+): Promise<Page<BookingResponseDTO>> => {
+    return fetchGet<Page<BookingResponseDTO>>(PAGE_REQUEST(GET_USER_BOOKINGS_RENTED_PATH, page, size));
 };
 
 export const cancelAuthorizedUserBooking = (bookingId: string): Promise<BookingResponseDTO> => {

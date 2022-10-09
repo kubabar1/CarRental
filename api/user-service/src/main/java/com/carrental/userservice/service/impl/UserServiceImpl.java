@@ -25,13 +25,13 @@ import java.util.stream.Collectors;
 
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private UserRoleRepository userRoleRepository;
+    private final UserRoleRepository userRoleRepository;
 
-    private AuthenticatedUserDataService authenticatedUserDataService;
+    private final AuthenticatedUserDataService authenticatedUserDataService;
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public UserServiceImpl(
             UserRepository userRepository,
@@ -64,7 +64,6 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .map(userEntity -> modelMapper.map(userEntity, UserResponseDTO.class))
                 .collect(Collectors.toList());
-
         return new PageImpl<>(userResponseDTOList, pageable, userEntityPage.getTotalElements());
     }
 

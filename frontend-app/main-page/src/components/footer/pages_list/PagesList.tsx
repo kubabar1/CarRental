@@ -15,7 +15,7 @@ export function PagesList(): JSX.Element {
     };
 
     return (
-        <div id="pages-list" className="col-lg-2 col-md-12">
+        <div id="pages-list" className="col-lg-4 col-md-12">
             <ul>
                 {renderLink('Home', homeLink)}
                 {renderLink('Car list', carListLink)}
