@@ -7,27 +7,35 @@ export function ContactData(): JSX.Element {
     return (
         <div className="container col-md-3">
             <div id="contacts-data" className="card shadow">
-                <div className="card-header bg-secondary text-white mb-2">
+                <div className="card-header bg-secondary text-white">
                     <h3>Contact:</h3>
                 </div>
                 <div className="card-body">
                     <div className="contacts-container">
-                        <FontAwesomeIcon className="link-style-black font-awesome-style" icon={faMapMarkerAlt} />
-                        <p className="contacts-container-text">
+                        <div className="contacts-container-icon">
+                            <FontAwesomeIcon className="link-style-black font-awesome-style" icon={faMapMarkerAlt} />
+                        </div>
+                        <div className="contacts-container-text">
                             Warszawa 12-345 <br /> ul. Piękna 888
-                        </p>
+                        </div>
                     </div>
                     <div className="contacts-container">
-                        <FontAwesomeIcon className="link-style-black font-awesome-style" icon={faPhone} />
-                        <p className="contacts-container-text">123 456 789</p>
+                        <div className="contacts-container-icon">
+                            <FontAwesomeIcon className="link-style-black font-awesome-style" icon={faPhone} />
+                        </div>
+                        <div className="contacts-container-text">123 456 789</div>
                     </div>
                     <div className="contacts-container">
-                        <FontAwesomeIcon className="link-style-black font-awesome-style" icon={faMobile} />
-                        <p className="contacts-container-text">123 456 789</p>
+                        <div className="contacts-container-icon">
+                            <FontAwesomeIcon className="link-style-black font-awesome-style" icon={faMobile} />
+                        </div>
+                        <div className="contacts-container-text">123 456 789</div>
                     </div>
                     <div className="contacts-container">
-                        <FontAwesomeIcon className="link-style-black font-awesome-style" icon={faEnvelope} />
-                        <p className="contacts-container-text">car.rental@gmail.com</p>
+                        <div className="contacts-container-icon">
+                            <FontAwesomeIcon className="link-style-black font-awesome-style" icon={faEnvelope} />
+                        </div>
+                        <div className="contacts-container-text">car.rental@gmail.com</div>
                     </div>
                 </div>
             </div>

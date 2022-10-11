@@ -1,10 +1,11 @@
 import React from 'react';
+import './SendMessage.scss';
 
 export function SendMessage(): JSX.Element {
     return (
         <div className="container col-md-8 ml-auto">
             <div id="contacts-send-message" className="card shadow ">
-                <div className="card-header bg-secondary text-white mb-4">
+                <div className="card-header bg-secondary text-white">
                     <h3>Send e-mail:</h3>
                 </div>
                 <div className="card-body">
@@ -43,7 +44,12 @@ export function SendMessage(): JSX.Element {
                             <label>Message:</label>
                             <textarea className="form-control" rows={5} id="message-contacts-email" />
                         </div>
-                        <input type="submit" value="Send" className="btn btn-primary" name="send-message-button" />
+                        <input
+                            type="submit"
+                            value="Send"
+                            className="btn btn-primary send-message-button"
+                            name="send-message-button"
+                        />
                     </form>
                 </div>
             </div>
