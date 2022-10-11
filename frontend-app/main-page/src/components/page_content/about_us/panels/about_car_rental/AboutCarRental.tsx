@@ -2,14 +2,16 @@ import React from 'react';
 import './AboutCarRental.scss';
 import shelby from '../../../../../images/shelby_gt500.jpg';
 
-export class AboutCarRental extends React.Component {
-    render(): JSX.Element {
-        return (
-            <div id="about-car-rental" className="container">
-                <h1 className="mt-4">ABOUT CAR RENTAL</h1>
-                <div className="row mb-5">
-                    <img src={shelby} className="mt-4  col-md-6" alt={'CarImage'} />
-                    <p className="mt-4 col-md-6">
+export function AboutCarRental(): JSX.Element {
+    return (
+        <div id="about-car-rental" className="container">
+            <h1 className="mt-4">About us</h1>
+            <div className="row mb-5">
+                <div className="mt-4 col-md-6 car-image-container">
+                    <img src={shelby} alt={'CarImage'} />
+                </div>
+                <div className="mt-4 col-md-6">
+                    <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget finibus turpis, in
                         rhoncus ex. Cras hendrerit blandit ligula, at tempus dolor ultrices id. Sed porta justo ligula.
                         Donec pellentesque ornare blandit. Nam porta massa nec lorem cursus, facilisis tristique neque
@@ -22,6 +24,6 @@ export class AboutCarRental extends React.Component {
                     </p>
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
 }

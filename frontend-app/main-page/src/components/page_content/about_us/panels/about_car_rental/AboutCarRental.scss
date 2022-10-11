@@ -1,12 +1,13 @@
 #about-car-rental {
+    color: #222;
+
+    .car-image-container img {
+        box-shadow: 0 10px 6px -6px #777;
+        width: 100%;
+    }
+
     h1 {
         text-align: center;
         font-weight: bold;
-    }
-
-    div {
-        img {
-            max-height: 300px;
-        }
     }
 }

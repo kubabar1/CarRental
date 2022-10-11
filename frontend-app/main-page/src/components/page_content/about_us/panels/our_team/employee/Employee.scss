@@ -1,0 +1,30 @@
+.employee-container {
+    flex-direction: column;
+    padding: 30px;
+    display: block;
+
+    .employee-image {
+        text-align: center;
+        margin-bottom: 20px;
+
+        img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            border: #222 1px solid;
+            box-shadow: 0 0 25px #aaa;
+        }
+    }
+
+    .employee-description {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: #222;
+
+        .employee-name {
+            font-weight: bold;
+            font-size: 18px;
+        }
+    }
+}
