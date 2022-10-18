@@ -3,6 +3,7 @@ import { CitySelection } from './components/CitySelection';
 import { ReceptionDateHour } from './components/ReceptionDateHour';
 import { ReturnDateHour } from './components/ReturnDateHour';
 import LocalisationResponseDTO from '../../../../../../model/LocalisationResponseDTO';
+import './ReservationWidget.scss';
 
 interface ReservationWidgetProperties {
     isAuthenticated: boolean;
@@ -112,7 +113,7 @@ export class ReservationWidget extends React.Component<ReservationWidgetProperti
                             receptionDate={this.state.receptionDate}
                         />
                         {this.renderAuthError()}
-                        <input type="submit" value="Reserve" className="btn btn-primary" />
+                        <input type="submit" value="Reserve" className="btn btn-primary reserve-widget-submit-button" />
                     </form>
                 </div>
             </div>

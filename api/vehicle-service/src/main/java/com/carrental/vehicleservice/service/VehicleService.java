@@ -13,6 +13,8 @@ public interface VehicleService {
 
     Page<VehicleResponseDTO> getVehicles(Pageable pageable);
 
+    Page<VehicleResponseDTO> getBestOffersVehicles(Pageable pageable);
+
     Set<VehicleResponseDTO> getAvailableVehicles();
 
     Page<VehicleResponseDTO> getUnavailableVehicles(Pageable pageable);

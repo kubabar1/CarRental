@@ -39,6 +39,16 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    public Page<VehicleResponseDTO> getBestOffersVehicles(Pageable pageable) {
+        Page<VehicleEntity> vehicles = vehicleRepository.findByBestOfferTrue(pageable);
+        List<VehicleResponseDTO> vehicleResponseDTOList = vehicles.getContent()
+                .stream()
+                .map(vehicleEntity -> modelMapper.map(vehicleEntity, VehicleResponseDTO.class))
+                .collect(Collectors.toList());
+        return new PageImpl<>(vehicleResponseDTOList, pageable, vehicles.getTotalElements());
+    }
+
+    @Override
     public Set<VehicleResponseDTO> getAvailableVehicles() {
         return vehicleRepository
                 .findAllAvailable()

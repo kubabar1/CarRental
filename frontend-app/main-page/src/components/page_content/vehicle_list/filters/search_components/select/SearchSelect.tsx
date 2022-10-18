@@ -7,6 +7,24 @@ interface SearchItemProperties extends Props<SearchSelectOption, false> {
 
 export type SearchSelectOption = { value: string | null; label: string | null };
 
+export const mapToOptionType = (val?: string): SearchSelectOption => {
+    if (val) {
+        return {
+            value: val,
+            label: translate(val),
+        };
+    } else {
+        return {
+            value: null,
+            label: null,
+        };
+    }
+};
+
+const translate = (val: string): string | null => {
+    return val;
+};
+
 export function SearchSelect(props: SearchItemProperties): JSX.Element {
     return (
         <div className="form-group">

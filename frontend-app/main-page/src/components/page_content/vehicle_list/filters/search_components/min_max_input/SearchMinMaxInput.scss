@@ -6,6 +6,14 @@
 
         .search-min-max-input-group {
             margin-bottom: 25px;
+
+            .input-group-text {
+                background-color: #636363;
+                color: #fff;
+                border-radius: 8px;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
         }
     }
 }

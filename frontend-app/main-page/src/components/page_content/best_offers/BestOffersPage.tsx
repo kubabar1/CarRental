@@ -1,118 +1,129 @@
-import React from 'react';
-import LocalisationResponseDTO from '../../../model/LocalisationResponseDTO';
+import React, { useCallback, useEffect, useState } from 'react';
 import { VehicleResponseDTO } from '../../../model/VehicleResponseDTO';
 import ReactPaginate from 'react-paginate';
-import ClipLoader from 'react-spinners/ClipLoader';
-import { getPageFromUrl } from '../../../utils/UrlUtil';
-import { endpoints } from '../../../constants/PathsAPI';
+import { getCountFromUrl, getPageFromUrl } from '../../../utils/UrlUtil';
 import Page from '../../../model/Page';
 import { VehicleItem } from '../vehicle_list/vehicle_item/VehicleItem';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { useHistory, useLocation, withRouter } from 'react-router-dom';
+import { LoaderContainer } from '../vehicle_list/container/LoaderContainer';
+import qs, { ParsedQs } from 'qs';
+import Select, { SingleValue } from 'react-select';
+import { getBestOffersVehiclesList } from '../../../service/VehicleService';
+import './BestOffersPage.scss';
 
-interface BestOffersPageProperties extends RouteComponentProps {
-    localisations: LocalisationResponseDTO[] | null;
-}
+type OptionType = { value: string | null; label: string | null };
 
-interface BestOffersPageState {
-    activePage: number;
-    totalPages: number;
-    totalElements: number;
-    vehiclesCountOnSinglePage: number;
-    vehicles: VehicleResponseDTO[] | null;
-    loaded: boolean;
-}
+function BestOffersPage(): JSX.Element {
+    const VEHICLES_PER_PAGE_COUNTS: number[] = [5, 10, 25, 50];
+    const DEFAULT_PER_PAGE_COUNT = 10;
+    const history = useHistory();
+    const location = useLocation();
+    const page: number = getPageFromUrl(location.search);
+    const count: number = getCountFromUrl(location.search);
+    const [vehiclesPage, setVehiclesPage] = useState<Page<VehicleResponseDTO> | undefined>(undefined);
+    const [currentPage, setCurrentPage] = useState<number>(page);
+    const [perPageCount, setPerPageCount] = useState<number>(count <= 0 ? DEFAULT_PER_PAGE_COUNT : count);
 
-class BestOffersPage extends React.Component<BestOffersPageProperties, BestOffersPageState> {
-    constructor(props: BestOffersPageProperties) {
-        super(props);
-        this.state = {
-            activePage: 0,
-            totalPages: 0,
-            totalElements: 0,
-            vehiclesCountOnSinglePage: 20,
-            vehicles: null,
-            loaded: false,
-        };
-    }
-
-    componentDidMount(): void {
-        const activePage: number = getPageFromUrl(this.props.location.search);
-        this.setState({ activePage: activePage });
-        this.loadVehicles(activePage);
-    }
-
-    loadVehicles = (activePage: number): void => {
-        const url = endpoints.carsPageableEndpoint(activePage, this.state.vehiclesCountOnSinglePage);
-        fetch(url)
-            .then((response: Response) => {
-                response.json().then((vehiclesPage: Page<VehicleResponseDTO>) => {
-                    this.setState({
-                        vehicles: vehiclesPage.content,
-                        totalPages: vehiclesPage.totalPages,
-                        totalElements: vehiclesPage.totalElements,
-                        loaded: true,
-                    });
-                });
-            })
-            .finally(() => {
-                this.setState({
-                    vehicles: [], // TODO: REMOVE
-                    loaded: true,
-                });
+    const changeUrlPageParam = useCallback(
+        (pageNb: number) => {
+            const currentParams: ParsedQs = qs.parse(location.search, {
+                ignoreQueryPrefix: true,
             });
-    };
+            currentParams['page'] = `${pageNb}`;
+            history.push({
+                search: `?${qs.stringify(currentParams)}`,
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+        [location.search, history]
+    );
 
-    handlePageClick = (data: { selected: number }) => {
-        this.setState({ loaded: false }, () => {
-            this.loadVehicles(data.selected);
+    useEffect(() => {
+        getBestOffersVehiclesList(currentPage, perPageCount).then((vehicleResponseDTOS: Page<VehicleResponseDTO>) => {
+            const maxPage = vehicleResponseDTOS.totalPages - 1;
+            if (currentPage > maxPage) {
+                setCurrentPage(maxPage);
+                changeUrlPageParam(maxPage);
+            } else {
+                setVehiclesPage(vehicleResponseDTOS);
+            }
         });
+    }, [currentPage, perPageCount, changeUrlPageParam]);
+
+    const mapToOptionType = (val: number): OptionType => {
+        return {
+            value: `${val}`,
+            label: `${val}`,
+        };
     };
 
-    vehiclesToTableRow = (vehicle: VehicleResponseDTO) => {
-        return <VehicleItem vehicle={vehicle} key={vehicle.id} />;
-    };
-
-    render(): JSX.Element {
-        const { loaded, vehicles, totalPages } = this.state;
-
-        return (
-            <div id="car-best-offers-list-content">
-                <div className="container-fluid">
-                    <div id="best-offers-car-container" className="container text-center">
-                        {loaded ? (
-                            vehicles ? (
-                                <div id="vehicles-paginate-container">
-                                    {vehicles.map((vehicle: VehicleResponseDTO) => this.vehiclesToTableRow(vehicle))}
-                                    {totalPages > 1 && (
-                                        <ReactPaginate
-                                            pageCount={totalPages}
-                                            pageRangeDisplayed={5}
-                                            marginPagesDisplayed={3}
-                                            onPageChange={this.handlePageClick}
-                                            containerClassName={'pagination'}
-                                            pageClassName={'page-item'}
-                                            pageLinkClassName={'page-link'}
-                                            activeClassName={'active'}
-                                            previousClassName={'page-item'}
-                                            previousLinkClassName={'page-link'}
-                                            nextClassName={'page-item'}
-                                            nextLinkClassName={'page-link'}
-                                            breakClassName={'page-item'}
-                                            breakLinkClassName={'page-link'}
-                                        />
-                                    )}
-                                </div>
-                            ) : (
-                                <div className="search-result-none alert alert-info">Brak ofert specjalnych</div>
-                            )
-                        ) : (
-                            <ClipLoader size={50} />
-                        )}
-                    </div>
+    return (
+        <div id="best-offers-container" className="container mt-4 col-md-9 text-center">
+            <LoaderContainer
+                dataArrayLength={vehiclesPage ? vehiclesPage.content.length : 0}
+                isLoaded={!!vehiclesPage}
+                containerClass={'vehicles-paginate-container'}
+            >
+                <div>
+                    {vehiclesPage &&
+                        vehiclesPage.content.map((vehicle: VehicleResponseDTO) => (
+                            <VehicleItem vehicle={vehicle} key={vehicle.id} showBestOffer />
+                        ))}
+                    {vehiclesPage && (
+                        <div className="pagination-and-counter-container">
+                            <ReactPaginate
+                                previousLabel="Previous"
+                                nextLabel="Next"
+                                pageClassName="page-item"
+                                pageLinkClassName="page-link"
+                                previousClassName="page-item"
+                                previousLinkClassName="page-link"
+                                nextClassName="page-item"
+                                nextLinkClassName="page-link"
+                                breakLabel="..."
+                                breakClassName="page-item"
+                                breakLinkClassName="page-link"
+                                pageCount={vehiclesPage.totalPages}
+                                marginPagesDisplayed={2}
+                                pageRangeDisplayed={5}
+                                onPageChange={(selectedItem: { selected: number }) => {
+                                    setCurrentPage(selectedItem.selected);
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    const currentParams: ParsedQs = qs.parse(location.search, {
+                                        ignoreQueryPrefix: true,
+                                    });
+                                    currentParams['page'] = `${selectedItem.selected}`;
+                                    history.push({
+                                        search: `?${qs.stringify(currentParams)}`,
+                                    });
+                                }}
+                                containerClassName="pagination"
+                                activeClassName="active"
+                                forcePage={currentPage}
+                            />
+                            <Select
+                                className="count-per-page-select"
+                                value={mapToOptionType(perPageCount)}
+                                options={VEHICLES_PER_PAGE_COUNTS.map(mapToOptionType)}
+                                onChange={(newValue: SingleValue<OptionType>) => {
+                                    if (newValue && newValue.value) {
+                                        setPerPageCount(parseInt(newValue.value));
+                                        const currentParams: ParsedQs = qs.parse(location.search, {
+                                            ignoreQueryPrefix: true,
+                                        });
+                                        currentParams['count'] = newValue.value;
+                                        history.push({
+                                            search: `?${qs.stringify(currentParams)}`,
+                                        });
+                                    }
+                                }}
+                            />
+                        </div>
+                    )}
                 </div>
-            </div>
-        );
-    }
+            </LoaderContainer>
+        </div>
+    );
 }
 
 export default withRouter(BestOffersPage);

@@ -5,25 +5,27 @@ import { VehicleResponseDTO } from '../../../../model/VehicleResponseDTO';
 import { carImagesMainPageCarList } from '../../../../constants/PathsServer';
 import StarRatingComponent from 'react-star-rating-component';
 import { carDetailsByIdLink } from '../../../../constants/Links';
+import specialOffer from '../../../../images/special-offer.png';
 
 interface CarItemProperties {
     vehicle: VehicleResponseDTO;
+    showBestOffer?: boolean;
 }
 
-export function VehicleItem(props: CarItemProperties): JSX.Element {
+export function VehicleItem({ vehicle, showBestOffer }: CarItemProperties): JSX.Element {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [averageRate, setAverageRate] = useState<number | undefined>(undefined);
 
     useEffect(() => {
-        // getVehicleRate(props.vehicle.id).then((averageRateResponseDTOS: AverageRateResponseDTO) => {
+        // getVehicleRate(vehicle.id).then((averageRateResponseDTOS: AverageRateResponseDTO) => {
         //     setAverageRate(averageRateResponseDTOS.averageRate);
         // });
-    }, [props.vehicle.id]);
+    }, [vehicle.id]);
 
-    const vehicleImage: string = carImagesMainPageCarList(props.vehicle.vehicleDetails.photoName);
+    const vehicleImage: string = carImagesMainPageCarList(vehicle.vehicleDetails.photoName);
 
     return (
-        <Link to={carDetailsByIdLink(props.vehicle.id)} style={{ textDecoration: 'none' }}>
+        <Link to={carDetailsByIdLink(vehicle.id)} style={{ textDecoration: 'none' }}>
             <div className="item">
                 <div className="container-car-search card card-body shadow-sm my-4">
                     <div className="row">
@@ -42,7 +44,7 @@ export function VehicleItem(props: CarItemProperties): JSX.Element {
                                     <div className="first-tile ml-2">
                                         <div className="car-name">
                                             <h3>
-                                                {props.vehicle.brand} {props.vehicle.model}
+                                                {vehicle.brand} {vehicle.model}
                                             </h3>
                                         </div>
                                         <div className="car-rank text-left">
@@ -58,16 +60,19 @@ export function VehicleItem(props: CarItemProperties): JSX.Element {
                                     </div>
                                     <div className="second-tile ml-auto">
                                         <div className="car-price">
-                                            <h3 className="ml-auto">${props.vehicle.dailyFee}</h3>
+                                            <h3 className="ml-auto">${vehicle.dailyFee}</h3>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="car-description text-left">
-                                <p>{props.vehicle.vehicleDetails.description}</p>
+                                <p>{vehicle.vehicleDetails.description}</p>
                             </div>
                         </div>
                     </div>
+                    {showBestOffer && vehicle.bestOffer && (
+                        <img className="special-offer-vehicle-item" src={specialOffer} />
+                    )}
                 </div>
             </div>
         </Link>

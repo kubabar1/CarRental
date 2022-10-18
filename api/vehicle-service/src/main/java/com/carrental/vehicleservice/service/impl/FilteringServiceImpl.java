@@ -2,6 +2,7 @@ package com.carrental.vehicleservice.service.impl;
 
 import com.carrental.vehicleservice.model.dto.VehicleResponseDTO;
 import com.carrental.vehicleservice.model.entity.VehicleEntity;
+import com.carrental.vehicleservice.repository.VehicleRepository;
 import com.carrental.vehicleservice.service.FilteringService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -29,13 +30,30 @@ public class FilteringServiceImpl implements FilteringService {
 
     private final ModelMapper modelMapper;
 
-    public FilteringServiceImpl(EntityManager entityManager, ModelMapper modelMapper) {
+    private final VehicleRepository vehicleRepository;
+
+    public FilteringServiceImpl(
+            EntityManager entityManager,
+            ModelMapper modelMapper,
+            VehicleRepository vehicleRepository
+    ) {
         this.entityManager = entityManager;
         this.modelMapper = modelMapper;
+        this.vehicleRepository = vehicleRepository;
     }
 
     @Override
     public Page<VehicleResponseDTO> filterVehicles(Map<String, String> filtersMap, Pageable pageable) throws NumberFormatException {
+        if (filtersMap.isEmpty()) {
+            Page<VehicleEntity> vehicleEntityPage = vehicleRepository.findAll(pageable);
+            List<VehicleResponseDTO> vehicleResponseDTOList = vehicleEntityPage
+                    .getContent()
+                    .stream()
+                    .map(vehicleEntity -> modelMapper.map(vehicleEntity, VehicleResponseDTO.class))
+                    .collect(Collectors.toList());
+            return new PageImpl<>(vehicleResponseDTOList, pageable, vehicleEntityPage.getTotalElements());
+        }
+
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<VehicleEntity> cq = cb.createQuery(VehicleEntity.class);

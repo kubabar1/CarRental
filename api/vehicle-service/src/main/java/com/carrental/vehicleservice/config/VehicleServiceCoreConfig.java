@@ -28,8 +28,12 @@ public class VehicleServiceCoreConfig {
     }
 
     @Bean
-    public FilteringService filteringService(EntityManager entityManager, ModelMapper modelMapper) {
-        return new FilteringServiceImpl(entityManager, modelMapper);
+    public FilteringService filteringService(
+            EntityManager entityManager,
+            ModelMapper modelMapper,
+            VehicleRepository vehicleRepository
+    ) {
+        return new FilteringServiceImpl(entityManager, modelMapper, vehicleRepository);
     }
 
     @Bean

@@ -20,6 +20,8 @@ public interface VehicleRepository extends PagingAndSortingRepository<VehicleEnt
     @Query("select v from vehicles v where v.vehicleStatus.vehicleStatusCode = com.carrental.vehicleservice.model.constants.VehicleStatCodeEnum.UAV")
     Page<VehicleEntity> findAllUnavailable(Pageable pageable);
 
+    Page<VehicleEntity> findByBestOfferTrue(Pageable pageable);
+
     @Query("select distinct v.brand from vehicles v")
     Set<String> findAllBrands();
 

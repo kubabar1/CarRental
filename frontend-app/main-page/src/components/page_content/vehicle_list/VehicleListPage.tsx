@@ -1,126 +1,60 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './VehicleListPage.scss';
 import { VehicleSearchFilters } from './filters/VehicleSearchFilters';
-import LocalisationResponseDTO from '../../../model/LocalisationResponseDTO';
 import { VehicleResponseDTO } from '../../../model/VehicleResponseDTO';
-import { RouteComponentProps, useHistory, withRouter, useLocation } from 'react-router-dom';
+import { withRouter, useLocation } from 'react-router-dom';
 import { VehicleItem } from './vehicle_item/VehicleItem';
-import {
-    getVehicleModelsByBrand,
-    getVehiclesFilterParams,
-    getVehiclesList,
-    getVehiclesListWithFiltering,
-} from '../../../service/VehicleService';
+import { getVehiclesListWithFiltering, mapVehicleFiltersToQs } from '../../../service/VehicleService';
 import { LoaderContainer } from './container/LoaderContainer';
-import { VehicleFiltersParamsDTO } from '../../../model/VehicleFiltersParamsDTO';
 import FilteringParamsEnum from '../../../model/FilteringParamsEnum';
-import { getCountFromUrl, getPageFromUrl, getVehicleFilteringParamsUrl } from '../../../utils/UrlUtil';
+import { getCountFromUrl, getPageFromUrl, getVehicleFilteringParamsFromUrl } from '../../../utils/UrlUtil';
 import Page from '../../../model/Page';
 import ReactPaginate from 'react-paginate';
 import Select, { SingleValue } from 'react-select';
 import qs, { ParsedQs } from 'qs';
+import { mapToOptionType, OptionType } from '../../../utils/TypesUtil';
 
-type OptionType = { value: string | null; label: string | null };
-
-interface CarListProperties extends RouteComponentProps {
-    localisations: LocalisationResponseDTO[] | null;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function VehicleListPage(props: CarListProperties): JSX.Element {
+function VehicleListPage(): JSX.Element {
     const VEHICLES_PER_PAGE_COUNTS: number[] = [5, 10, 25, 50];
     const DEFAULT_PER_PAGE_COUNT = 10;
-    const DEFAULT_START_PAGE = 0;
-    const history = useHistory();
     const location = useLocation();
     const [vehiclesPage, setVehiclesPage] = useState<Page<VehicleResponseDTO> | undefined>(undefined);
-    const [vehicleFiltersParams, setVehicleFiltersParams] = useState<VehicleFiltersParamsDTO | undefined>(undefined);
-    const [vehicleFilterModelsParam, setVehicleFilterModelsParam] = useState<string[]>([]);
     const [vehicleFilters, setVehicleFilters] = useState<Map<FilteringParamsEnum, string | undefined>>(
-        new Map<FilteringParamsEnum, string | undefined>()
+        getVehicleFilteringParamsFromUrl(location.search)
     );
-    const [currentPage, setCurrentPage] = useState<number>(DEFAULT_START_PAGE);
-    const [perPageCount, setPerPageCount] = useState<number>(DEFAULT_PER_PAGE_COUNT);
+    const [currentPage, setCurrentPage] = useState<number>(getPageFromUrl(location.search));
+    const [perPageCount, setPerPageCount] = useState<number>(
+        getCountFromUrl(location.search) <= 0 ? DEFAULT_PER_PAGE_COUNT : getCountFromUrl(location.search)
+    );
 
-    const getVehicleFiltersParamsUrl = (vehicleFiltersMap: Map<FilteringParamsEnum, string | undefined>): string => {
-        return Array.from(vehicleFiltersMap)
-            .reduce((o: string[], [key, value]: [string, string | undefined]) => {
-                if (value) {
-                    o.push(`${key}=${value}`);
-                }
-                return o;
-            }, [])
-            .join('&');
-    };
-
-    const mapToOptionType = (val: number): OptionType => {
-        return {
-            value: `${val}`,
-            label: `${val}`,
-        };
-    };
-
-    useEffect(() => {
-        const vehicleFilteringParamsUrl: Map<FilteringParamsEnum, string | undefined> = getVehicleFilteringParamsUrl(
-            location.search
-        );
-        const page: number = getPageFromUrl(location.search);
-        let count: number = getCountFromUrl(location.search);
-        setVehicleFilters(vehicleFilteringParamsUrl);
-        setCurrentPage(page);
-        if (count <= 0) {
-            count = DEFAULT_PER_PAGE_COUNT;
-        }
-        setPerPageCount(count);
-        if (vehicleFilteringParamsUrl.size == 0) {
-            getVehiclesList(page, count).then((vehicleResponseDTOS: Page<VehicleResponseDTO>) => {
-                setVehiclesPage(vehicleResponseDTOS);
-            });
-        } else {
-            getVehiclesListWithFiltering(getVehicleFiltersParamsUrl(vehicleFilteringParamsUrl), page, count).then(
+    const getVehiclesWithFiltering = useCallback(
+        (vehicleFilters: Map<FilteringParamsEnum, string | undefined>) =>
+            getVehiclesListWithFiltering(vehicleFilters, currentPage, perPageCount).then(
                 (vehicleResponseDTOPage: Page<VehicleResponseDTO>) => {
-                    setVehiclesPage(vehicleResponseDTOPage);
+                    const maxPage = vehicleResponseDTOPage.totalPages - 1;
+                    if (currentPage > maxPage) {
+                        setCurrentPage(maxPage);
+                    } else {
+                        setVehiclesPage(vehicleResponseDTOPage);
+                    }
                 }
-            );
-        }
-        getVehiclesFilterParams().then((vehicleFilterParams: VehicleFiltersParamsDTO) => {
-            setVehicleFiltersParams(vehicleFilterParams);
-        });
-    }, [location.search]);
+            ),
+        [currentPage, perPageCount]
+    );
 
     useEffect(() => {
-        const brand = vehicleFilters.get(FilteringParamsEnum.BRAND_FIELD_FILTER);
-        if (brand) {
-            getVehicleModelsByBrand(brand).then((models: string[]) => {
-                setVehicleFilterModelsParam(models);
-            });
-        } else {
-            setVehicleFilterModelsParam([]);
-        }
-    }, [vehicleFilters]);
+        getVehiclesWithFiltering(vehicleFilters);
+    }, [getVehiclesWithFiltering, vehicleFilters]);
 
-    const handleFilterSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    const handleFilterSubmit = (
+        event: React.FormEvent<HTMLFormElement>,
+        vehicleFilters: Map<FilteringParamsEnum, string | undefined>
+    ): void => {
         event.preventDefault();
-        const vehicleFiltersParamsUrl: string = getVehicleFiltersParamsUrl(vehicleFilters);
-        if (vehicleFiltersParamsUrl != '') {
-            history.push({
-                search: `?${vehicleFiltersParamsUrl}`,
-            });
-            setCurrentPage(DEFAULT_START_PAGE);
-            setPerPageCount(DEFAULT_PER_PAGE_COUNT);
-            getVehiclesListWithFiltering(vehicleFiltersParamsUrl, currentPage, perPageCount).then(
-                (vehicleResponseDTOPage: Page<VehicleResponseDTO>) => {
-                    setVehiclesPage(vehicleResponseDTOPage);
-                }
-            );
-        } else {
-            history.push({
-                search: ``,
-            });
-            getVehiclesList(currentPage, perPageCount).then((vehicleResponseDTOS: Page<VehicleResponseDTO>) => {
-                setVehiclesPage(vehicleResponseDTOS);
-            });
-        }
+        setVehicleFilters(vehicleFilters);
+        const vehicleFiltersParamsUrl: ParsedQs = mapVehicleFiltersToQs(vehicleFilters);
+        window.history.replaceState(null, '', `?${qs.stringify(vehicleFiltersParamsUrl)}`);
+        setCurrentPage(0);
     };
 
     return (
@@ -128,15 +62,7 @@ export function VehicleListPage(props: CarListProperties): JSX.Element {
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-md-3 container mb-5 mt-3">
-                        {vehicleFiltersParams && vehicleFilters && (
-                            <VehicleSearchFilters
-                                vehicleFiltersParams={vehicleFiltersParams}
-                                setVehicleFilters={setVehicleFilters}
-                                vehicleFilters={vehicleFilters}
-                                handleFilterSubmit={handleFilterSubmit}
-                                vehicleFilterModelsParam={vehicleFilterModelsParam}
-                            />
-                        )}
+                        <VehicleSearchFilters handleFilterSubmit={handleFilterSubmit} />
                     </div>
                     <div id="search-results-container" className="col-md-9 text-center">
                         <LoaderContainer
@@ -173,9 +99,11 @@ export function VehicleListPage(props: CarListProperties): JSX.Element {
                                                     ignoreQueryPrefix: true,
                                                 });
                                                 currentParams['page'] = `${selectedItem.selected}`;
-                                                history.push({
-                                                    search: `?${qs.stringify(currentParams)}`,
-                                                });
+                                                window.history.replaceState(
+                                                    null,
+                                                    '',
+                                                    `?${qs.stringify(currentParams)}`
+                                                );
                                             }}
                                             containerClassName="pagination"
                                             activeClassName="active"
@@ -191,10 +119,12 @@ export function VehicleListPage(props: CarListProperties): JSX.Element {
                                                     const currentParams: ParsedQs = qs.parse(location.search, {
                                                         ignoreQueryPrefix: true,
                                                     });
-                                                    currentParams['count'] = newValue.value;
-                                                    history.push({
-                                                        search: `?${qs.stringify(currentParams)}`,
-                                                    });
+                                                    currentParams['size'] = newValue.value;
+                                                    window.history.replaceState(
+                                                        null,
+                                                        '',
+                                                        `?${qs.stringify(currentParams)}`
+                                                    );
                                                 }
                                             }}
                                         />

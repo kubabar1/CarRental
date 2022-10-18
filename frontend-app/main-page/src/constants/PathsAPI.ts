@@ -18,6 +18,8 @@ const withId = (basePath: string, id: string): string => {
 
 export const GET_VEHICLES_PATH = `${APP_ADDR}/vehicles`;
 
+export const GET_BEST_OFFERS_VEHICLES_PATH = `${APP_ADDR}/vehicles/best-offers`;
+
 export const GET_VEHICLES_FILTER_PARAMS_PATH = `${APP_ADDR}/vehicles/filter-params`;
 
 export const PAGE_REQUEST = (

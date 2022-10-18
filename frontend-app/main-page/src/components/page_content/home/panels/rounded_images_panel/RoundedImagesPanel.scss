@@ -17,6 +17,13 @@
         transition: 0.3s;
         opacity: 0.9;
 
+        a img {
+            height: 250px;
+            border-radius: 50%;
+            width: 100%;
+            box-shadow: rgba(0, 0, 0, 35%) 0 5px 15px;
+        }
+
         h2 {
             opacity: 0.9;
         }
@@ -29,14 +36,6 @@
         a:hover {
             text-decoration: none;
             color: #000;
-        }
-    }
-
-    div {
-        img {
-            border-radius: 50%;
-            width: 100%;
-            box-shadow: rgba(0, 0, 0, 35%) 0 5px 15px;
         }
     }
 }
