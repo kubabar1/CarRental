@@ -1,7 +1,7 @@
 import React from 'react';
 import './OurTeam.scss';
 import { Employee, EmployeeProperties } from './employee/Employee';
-import userImage from '../../../../../images/user_images/user.png';
+import userImage from '../../../../../images/user_images/user_image.png';
 
 const employees: EmployeeProperties[] = [
     {
