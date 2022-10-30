@@ -23,5 +23,6 @@ dependencies {
     implementation 'com.carrental.api:rating-service'
     implementation 'com.carrental.api:user-service'
     implementation 'com.carrental.api:vehicle-service'
+    implementation 'com.carrental.api:auth-service'
     implementation 'org.springframework.boot:spring-boot-starter:2.6.3'
 }

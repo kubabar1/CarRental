@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.carrental.shared:config-commons'
+    implementation 'com.carrental.shared:shared-config-commons'
     implementation 'org.hibernate:hibernate-envers:5.6.7.Final'
     implementation 'org.springframework.boot:spring-boot-starter:2.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'

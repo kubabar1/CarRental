@@ -41,11 +41,14 @@ public class UserEntity implements Serializable {
     @Column(name = "pesel", nullable = false, length = 15)
     private String pesel;
 
+    @Column(name = "enabled")
+    private boolean enabled = false;
+
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "app_users_roles",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_role_id")}
     )
-    Set<UserRoleEntity> roles = new HashSet<>();
+    private Set<UserRoleEntity> roles = new HashSet<>();
 }

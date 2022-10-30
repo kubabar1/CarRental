@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS users
     phone      VARCHAR(20) NOT NULL,
     birth_date DATE        NOT NULL,
     pesel      VARCHAR(15) NOT NULL,
+    enabled    boolean NOT NULL,
     PRIMARY KEY (id),
     UNIQUE (login),
     UNIQUE (email)

@@ -45,3 +45,14 @@ services:
         ports:
             - "8084:8080"
         mem_limit: 160m
+    auth-service:
+        image: auth-service
+        container_name: auth-service
+        build:
+            context: ./api
+            dockerfile: Dockerfile
+            args:
+                - APP_DIR=auth-service
+        ports:
+            - "8085:8080"
+        mem_limit: 160m

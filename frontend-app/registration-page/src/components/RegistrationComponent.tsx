@@ -1,10 +1,28 @@
-import React from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import carRentalLogo from '../images/car_rental_logo_name.png';
 import './RegistrationComponent.scss';
+import { homePath } from '../constants/PathsApi';
+import { registerUser } from '../service/RegistrationService';
+import { CreateUserDTO } from '../model/CreateUserDTO';
+import { UserResponseDTO } from '../model/UserResponseDTO';
 
 export function RegistrationComponent(): JSX.Element {
+    const [firstName, setFirstName] = useState<string | undefined>(undefined);
+    const [lastName, setLastName] = useState<string | undefined>(undefined);
+    const [userName, setUserName] = useState<string | undefined>(undefined);
+    const [email, setEmail] = useState<string | undefined>(undefined);
+    const [password, setPassword] = useState<string | undefined>(undefined);
+    const [matchingPassword, setMatchingPassword] = useState<string | undefined>(undefined);
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (firstName && lastName && userName && email && password && matchingPassword) {
+            registerUser(new CreateUserDTO(firstName, lastName, userName, email, password, matchingPassword)).then(
+                (userResponseDTO: UserResponseDTO) => {
+                    console.log(userResponseDTO);
+                }
+            );
+        }
     };
 
     return (
@@ -24,6 +42,10 @@ export function RegistrationComponent(): JSX.Element {
                             placeholder="Name"
                             required
                             autoFocus
+                            value={firstName}
+                            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                setFirstName(event.target.value);
+                            }}
                         />
                     </div>
 
@@ -36,6 +58,10 @@ export function RegistrationComponent(): JSX.Element {
                             name="inputLastName"
                             placeholder="Last Name"
                             required
+                            value={lastName}
+                            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                setLastName(event.target.value);
+                            }}
                         />
                     </div>
 
@@ -48,6 +74,10 @@ export function RegistrationComponent(): JSX.Element {
                             name="inputUsername"
                             placeholder="Username"
                             required
+                            value={userName}
+                            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                setUserName(event.target.value);
+                            }}
                         />
                     </div>
 
@@ -60,6 +90,10 @@ export function RegistrationComponent(): JSX.Element {
                             name="inputEmail"
                             placeholder="Email"
                             required
+                            value={email}
+                            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                setEmail(event.target.value);
+                            }}
                         />
                     </div>
 
@@ -73,6 +107,10 @@ export function RegistrationComponent(): JSX.Element {
                             placeholder="Password"
                             required
                             autoComplete="off"
+                            value={password}
+                            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                setPassword(event.target.value);
+                            }}
                         />
                     </div>
 
@@ -86,6 +124,10 @@ export function RegistrationComponent(): JSX.Element {
                             placeholder="Password"
                             required
                             autoComplete="off"
+                            value={matchingPassword}
+                            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                setMatchingPassword(event.target.value);
+                            }}
                         />
                     </div>
 
@@ -94,7 +136,7 @@ export function RegistrationComponent(): JSX.Element {
                     </button>
                 </form>
                 <p className="mt-3 login-link pl-3">
-                    <a href={'http://localhost:3000/'} className="linkstyle">
+                    <a href={homePath} className="linkstyle">
                         Home
                     </a>
                 </p>

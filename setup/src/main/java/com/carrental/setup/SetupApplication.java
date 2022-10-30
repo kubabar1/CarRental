@@ -1,5 +1,6 @@
 package com.carrental.setup;
 
+import com.carrental.authservice.config.AuthServiceCoreConfig;
 import com.carrental.bookingservice.config.BookingServiceCoreConfig;
 import com.carrental.ratingservice.config.RatingServiceCoreConfig;
 import com.carrental.userservice.config.UserServiceCoreConfig;
@@ -13,14 +14,16 @@ import org.springframework.context.annotation.Import;
                 "com.carrental.bookingservice",
                 "com.carrental.ratingservice",
                 "com.carrental.userservice",
-                "com.carrental.vehicleservice"
+                "com.carrental.vehicleservice",
+                "com.carrental.authservice"
         }
 )
 @Import({
         BookingServiceCoreConfig.class,
         RatingServiceCoreConfig.class,
         UserServiceCoreConfig.class,
-        VehicleServiceCoreConfig.class
+        VehicleServiceCoreConfig.class,
+        AuthServiceCoreConfig.class
 })
 public class SetupApplication {
 
