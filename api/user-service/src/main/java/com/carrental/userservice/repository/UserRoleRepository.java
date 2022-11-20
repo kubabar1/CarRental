@@ -5,12 +5,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
 import java.util.Set;
 
 public interface UserRoleRepository extends PagingAndSortingRepository<UserRoleEntity, Long> {
 
     Set<UserRoleEntity> findAll();
 
+    Optional<UserRoleEntity> findByType(String type);
 
     @Query("SELECT ur FROM user_roles ur WHERE ur.id NOT IN (" +
             "SELECT urs.id FROM users u " +

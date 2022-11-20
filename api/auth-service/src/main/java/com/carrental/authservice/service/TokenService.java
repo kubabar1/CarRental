@@ -1,11 +1,11 @@
 package com.carrental.authservice.service;
 
-import com.carrental.authservice.exceptions.VerificationTokenException;
-import com.carrental.authservice.model.entity.VerificationToken;
+import com.carrental.authservice.exception.VerificationTokenException;
+import com.carrental.authservice.model.dto.VerificationTokenDTO;
 
 public interface TokenService {
 
-    VerificationToken createVerificationToken(Long userId);
+    VerificationTokenDTO createVerificationToken(Long userId);
 
-    VerificationToken verifyToken(String token) throws VerificationTokenException;
+    VerificationTokenDTO verifyToken(String token) throws VerificationTokenException;
 }

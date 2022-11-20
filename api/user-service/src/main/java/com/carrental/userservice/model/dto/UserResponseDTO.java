@@ -2,10 +2,11 @@ package com.carrental.userservice.model.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class UserResponseDTO {
+public class UserResponseDTO implements Serializable {
 
     private Long id;
 
@@ -13,15 +14,11 @@ public class UserResponseDTO {
 
     private String surname;
 
-    private String login;
-
     private String email;
 
     private String phone;
 
     private String birthDate;
 
-    private String pesel;
-
-    private List<UserRoleResponseDTO> userRoles;
+//    private List<UserRoleResponseDTO> userRoles;
 }

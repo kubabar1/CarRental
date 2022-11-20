@@ -1,65 +1,47 @@
 package com.carrental.authservice.config;
 
-import com.carrental.authservice.controller.RegistrationController;
+import com.carrental.authservice.listener.TokenListener;
 import com.carrental.authservice.repository.TokenRepository;
-import com.carrental.authservice.service.MailService;
-import com.carrental.authservice.service.RegistrationService;
 import com.carrental.authservice.service.TokenService;
-import com.carrental.authservice.event.listener.RegistrationListener;
-import com.carrental.authservice.service.impl.MailServiceImpl;
-import com.carrental.authservice.service.impl.RegistrationServiceImpl;
 import com.carrental.authservice.service.impl.TokenServiceImpl;
-import org.springframework.context.ApplicationEventPublisher;
+import com.carrental.authservice.service.impl.UserDetailsServiceImpl;
+import org.modelmapper.ModelMapper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-
-import java.util.ArrayList;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Import({
-        SecurityConfig.class,
-        MailConfig.class
+        SecurityConfig.class
 })
 @EnableWebSecurity
 public class AuthServiceCoreConfig {
 
     @Bean
-    public RegistrationService registrationService(EmbeddedUsersDBStub embeddedUsersDBStub) {
-        return new RegistrationServiceImpl(embeddedUsersDBStub);
+    public RestAuthenticationEntryPoint restAuthenticationEntryPoint() {
+        return new RestAuthenticationEntryPoint();
     }
 
     @Bean
-    public RegistrationController registrationController(
-            RegistrationService registrationService,
-            ApplicationEventPublisher eventPublisher,
-            TokenService tokenService
-    ) {
-        return new RegistrationController(registrationService, eventPublisher, tokenService);
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public EmbeddedUsersDBStub embeddedUserDB() {
-        return new EmbeddedUsersDBStub(new ArrayList<>());
+    public UserDetailsService userDetailsService(RabbitTemplate rabbitTemplate) {
+        return new UserDetailsServiceImpl(rabbitTemplate);
     }
 
     @Bean
-    public TokenService tokenService(TokenRepository tokenRepository) {
-        return new TokenServiceImpl(tokenRepository);
+    public TokenService tokenService(TokenRepository tokenRepository, ModelMapper modelMapper) {
+        return new TokenServiceImpl(tokenRepository, modelMapper);
     }
 
     @Bean
-    public MailService mailService() {
-        return new MailServiceImpl();
-    }
-
-    @Bean
-    public RegistrationListener registrationListener(
-            TokenService tokenService,
-            JavaMailSender mailSender,
-            EmbeddedUsersDBStub embeddedUserDB,
-            MailService mailService
-    ) {
-        return new RegistrationListener(tokenService, mailSender, embeddedUserDB, mailService);
+    public TokenListener tokenListener(TokenService tokenService) {
+        return new TokenListener(tokenService);
     }
 }

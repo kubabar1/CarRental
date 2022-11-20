@@ -9,19 +9,20 @@ import { UserResponseDTO } from '../model/UserResponseDTO';
 export function RegistrationComponent(): JSX.Element {
     const [firstName, setFirstName] = useState<string | undefined>(undefined);
     const [lastName, setLastName] = useState<string | undefined>(undefined);
-    const [userName, setUserName] = useState<string | undefined>(undefined);
+    const [phone, setPhone] = useState<string | undefined>(undefined);
+    const [birthDate, setBirthDate] = useState<string | undefined>(undefined);
     const [email, setEmail] = useState<string | undefined>(undefined);
     const [password, setPassword] = useState<string | undefined>(undefined);
     const [matchingPassword, setMatchingPassword] = useState<string | undefined>(undefined);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (firstName && lastName && userName && email && password && matchingPassword) {
-            registerUser(new CreateUserDTO(firstName, lastName, userName, email, password, matchingPassword)).then(
-                (userResponseDTO: UserResponseDTO) => {
-                    console.log(userResponseDTO);
-                }
-            );
+        if (firstName && lastName && phone && birthDate && email && password && matchingPassword) {
+            registerUser(
+                new CreateUserDTO(firstName, lastName, email, phone, birthDate, password, matchingPassword)
+            ).then((userResponseDTO: UserResponseDTO) => {
+                console.log(userResponseDTO);
+            });
         }
     };
 
@@ -66,17 +67,33 @@ export function RegistrationComponent(): JSX.Element {
                     </div>
 
                     <div className="form-group">
-                        <label>Username:</label>
+                        <label>Phone:</label>
                         <input
                             type="text"
                             className="form-control"
-                            id="inputUsername"
-                            name="inputUsername"
-                            placeholder="Username"
+                            id="inputPhone"
+                            name="inputPhone"
+                            placeholder="Phone"
                             required
-                            value={userName}
+                            value={phone}
                             onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                                setUserName(event.target.value);
+                                setPhone(event.target.value);
+                            }}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Birth date:</label>
+                        <input
+                            type="date"
+                            className="form-control"
+                            id="inputBirthDate"
+                            name="inputBirthDate"
+                            placeholder="Birth date"
+                            required
+                            value={birthDate}
+                            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                setBirthDate(event.target.value);
                             }}
                         />
                     </div>
@@ -199,13 +216,6 @@ export function RegistrationComponent(): JSX.Element {
 //              th:errors="*{birthDate}">Birth date error</p>
 //         </div>
 //
-//         <div className="form-group">
-//           <label>Pesel:</label>
-//           <input type="number" className="form-control" id="inputPesel" th:field="*{pesel}" placeholder="Pesel" required
-//                  size="11">
-//             <p className="alert alert-danger my-2" th:if="${#fields.hasErrors('pesel')}" th:errors="*{pesel}">Pesel
-//               error</p>
-//         </div>
 //
 //         <div className="form-group">
 //           <label>Password:</label>

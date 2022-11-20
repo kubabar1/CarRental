@@ -25,6 +25,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-validation:2.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp:2.6.3'
     implementation 'org.modelmapper:modelmapper:3.0.0'
     implementation 'org.springframework.boot:spring-boot-starter-parent:2.6.3'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
@@ -32,8 +33,6 @@ dependencies {
     implementation 'com.h2database:h2:2.1.210'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
     implementation 'javax.validation:validation-api:2.0.1.Final'
-    implementation 'org.springframework.boot:spring-boot-starter-mail:2.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-security:2.6.3'
-    implementation 'com.icegreen:greenmail-spring:1.6.11'
     implementation 'javax.inject:javax.inject:1'
 }

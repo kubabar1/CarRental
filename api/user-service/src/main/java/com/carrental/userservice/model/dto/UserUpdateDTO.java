@@ -18,7 +18,4 @@ public class UserUpdateDTO {
 
     @NotEmpty
     private String birthDate;
-
-    @NotEmpty
-    private String pesel;
 }

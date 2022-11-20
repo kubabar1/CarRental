@@ -66,10 +66,6 @@ export function UsersListSubpage(): JSX.Element {
                 accessor: 'birthDate',
             },
             {
-                Header: 'Pesel',
-                accessor: 'pesel',
-            },
-            {
                 Header: 'User roles',
                 accessor: UserRolesTableItem,
             },

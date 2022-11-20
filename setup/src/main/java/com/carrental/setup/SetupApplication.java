@@ -1,7 +1,9 @@
 package com.carrental.setup;
 
+import com.carrental.amqpbroker.config.AmqpBrokerCoreConfig;
 import com.carrental.authservice.config.AuthServiceCoreConfig;
 import com.carrental.bookingservice.config.BookingServiceCoreConfig;
+import com.carrental.mailservice.config.MailServiceCoreConfig;
 import com.carrental.ratingservice.config.RatingServiceCoreConfig;
 import com.carrental.userservice.config.UserServiceCoreConfig;
 import com.carrental.vehicleservice.config.VehicleServiceCoreConfig;
@@ -15,7 +17,9 @@ import org.springframework.context.annotation.Import;
                 "com.carrental.ratingservice",
                 "com.carrental.userservice",
                 "com.carrental.vehicleservice",
-                "com.carrental.authservice"
+                "com.carrental.authservice",
+                "com.carrental.mailservice",
+                "com.carrental.amqpbroker"
         }
 )
 @Import({
@@ -23,7 +27,9 @@ import org.springframework.context.annotation.Import;
         RatingServiceCoreConfig.class,
         UserServiceCoreConfig.class,
         VehicleServiceCoreConfig.class,
-        AuthServiceCoreConfig.class
+        AuthServiceCoreConfig.class,
+        MailServiceCoreConfig.class,
+        AmqpBrokerCoreConfig.class
 })
 public class SetupApplication {
 

@@ -3,15 +3,12 @@ CREATE TABLE IF NOT EXISTS users
     id         INT         NOT NULL AUTO_INCREMENT,
     name       NVARCHAR(40) NOT NULL,
     surname    NVARCHAR(40) NOT NULL,
-    login      NVARCHAR(40) NOT NULL,
     password   NVARCHAR(100) NOT NULL,
     email      NVARCHAR(255) NOT NULL,
     phone      VARCHAR(20) NOT NULL,
     birth_date DATE        NOT NULL,
-    pesel      VARCHAR(15) NOT NULL,
     enabled    boolean NOT NULL,
     PRIMARY KEY (id),
-    UNIQUE (login),
     UNIQUE (email)
 );
 

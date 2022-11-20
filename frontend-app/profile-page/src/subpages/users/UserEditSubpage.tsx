@@ -17,7 +17,6 @@ export function UsersEditSubpage(): JSX.Element {
     const [name, setName] = useState<string | undefined>(undefined);
     const [surname, setSurname] = useState<string | undefined>(undefined);
     const [phone, setPhone] = useState<string | undefined>(undefined);
-    const [pesel, setPesel] = useState<string | undefined>(undefined);
     const [birthDate, setBirthDate] = useState<string | undefined>(undefined);
 
     useEffect(() => {
@@ -25,7 +24,6 @@ export function UsersEditSubpage(): JSX.Element {
             setName(authorizedUser.name);
             setSurname(authorizedUser.surname);
             setPhone(authorizedUser.phone);
-            setPesel(authorizedUser.pesel);
             setBirthDate(authorizedUser.birthDate);
         });
     }, [userId]);
@@ -36,8 +34,8 @@ export function UsersEditSubpage(): JSX.Element {
             <SubpageContent>
                 <FormContainer
                     onSubmit={() => {
-                        if (name && surname && phone && birthDate && pesel) {
-                            updateUserData(userId, new UserUpdateDTO(name, surname, phone, birthDate, pesel));
+                        if (name && surname && phone && birthDate) {
+                            updateUserData(userId, new UserUpdateDTO(name, surname, phone, birthDate));
                             history.push(usersListPath);
                         }
                     }}
@@ -64,14 +62,6 @@ export function UsersEditSubpage(): JSX.Element {
                         value={phone}
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             setPhone(event.target.value);
-                        }}
-                    />
-                    <InputFormGroup
-                        label={'Pesel:'}
-                        name={'user_pesel'}
-                        value={pesel}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                            setPesel(event.target.value);
                         }}
                     />
                     {/*// TODO: Add constrain for max date*/}

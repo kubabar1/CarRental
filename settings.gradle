@@ -9,6 +9,8 @@ def projectsToInclude = [
         'api/booking-service',
         'api/vehicle-service',
         'api/auth-service',
+        'api/mail-service',
+        'api/amqp-broker',
         'api/shared/auth-commons',
         'api/shared/config-commons',
 ]

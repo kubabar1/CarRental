@@ -24,5 +24,7 @@ dependencies {
     implementation 'com.carrental.api:user-service'
     implementation 'com.carrental.api:vehicle-service'
     implementation 'com.carrental.api:auth-service'
+    implementation 'com.carrental.api:mail-service'
+    implementation 'com.carrental.api:amqp-broker'
     implementation 'org.springframework.boot:spring-boot-starter:2.6.3'
 }

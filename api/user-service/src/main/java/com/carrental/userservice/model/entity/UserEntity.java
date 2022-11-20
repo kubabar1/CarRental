@@ -14,7 +14,7 @@ public class UserEntity implements Serializable {
 
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name", nullable = false, length = 40)
@@ -22,9 +22,6 @@ public class UserEntity implements Serializable {
 
     @Column(name = "surname", nullable = false, length = 40)
     private String surname;
-
-    @Column(name = "login", nullable = false, length = 40, unique = true)
-    private String login;
 
     @Column(name = "password", nullable = false, length = 100)
     private String password;
@@ -38,13 +35,10 @@ public class UserEntity implements Serializable {
     @Column(name = "birth_date", nullable = false)
     private String birthDate;
 
-    @Column(name = "pesel", nullable = false, length = 15)
-    private String pesel;
-
     @Column(name = "enabled")
     private boolean enabled = false;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany
     @JoinTable(
             name = "app_users_roles",
             joinColumns = {@JoinColumn(name = "user_id")},

@@ -8,7 +8,6 @@ export class UserResponseDTO {
     email: string;
     phone: string;
     birthDate: string;
-    pesel: string;
     userRoles: UserRoleResponseDTO[];
 
     constructor(
@@ -19,7 +18,6 @@ export class UserResponseDTO {
         email: string,
         phone: string,
         birthDate: string,
-        pesel: string,
         userRoles: UserRoleResponseDTO[]
     ) {
         this.id = id;
@@ -29,7 +27,6 @@ export class UserResponseDTO {
         this.email = email;
         this.phone = phone;
         this.birthDate = birthDate;
-        this.pesel = pesel;
         this.userRoles = userRoles;
     }
 }

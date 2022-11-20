@@ -1,8 +1,9 @@
 package com.carrental.authservice.service.impl;
 
 
-import com.carrental.authservice.config.EmbeddedUsersDBStub;
-import com.carrental.authservice.model.dto.UserResponseDTO;
+import com.carrental.authservice.model.dto.UserDetailsDTO;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,20 +15,21 @@ import java.util.List;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final EmbeddedUsersDBStub embeddedUsersDBStub;
+    private final RabbitTemplate rabbitTemplate;
 
-    public UserDetailsServiceImpl(EmbeddedUsersDBStub embeddedUsersDBStub) {
-        this.embeddedUsersDBStub = embeddedUsersDBStub;
+    public UserDetailsServiceImpl(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
     }
 
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserResponseDTO user = embeddedUsersDBStub.getUserByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        UserDetailsDTO user = rabbitTemplate.convertSendAndReceiveAsType(
+                "getUserByEmailQueue", email, new ParameterizedTypeReference<>() {});
 
         if (user == null) {
-            throw new UsernameNotFoundException("No user found with username: " + username);
+            throw new UsernameNotFoundException("No user found with email: " + email);
         }
 
-        boolean enabled = true;
+        boolean enabled = user.isEnabled();
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
@@ -35,7 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         List<String> roles = new ArrayList<>();
 
         return new org.springframework.security.core.userdetails.User(
-                username, "qwerty", enabled, accountNonExpired,
+                email, user.getPassword(), enabled, accountNonExpired,
                 credentialsNonExpired, accountNonLocked, getAuthorities(roles));
     }
 
@@ -44,6 +46,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         for (String role : roles) {
             authorities.add(new SimpleGrantedAuthority(role));
         }
+        authorities.add(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
         return authorities;
     }
 }
