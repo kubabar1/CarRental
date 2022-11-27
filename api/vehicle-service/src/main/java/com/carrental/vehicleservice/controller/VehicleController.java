@@ -8,6 +8,7 @@ import com.carrental.vehicleservice.service.VehicleService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -38,17 +39,14 @@ public class VehicleController {
         return ResponseEntity.ok().body(vehicleService.getBestOffersVehicles(pageable));
     }
 
-    @GetMapping(value = "/available")
-    public ResponseEntity<Set<VehicleResponseDTO>> getAvailableVehiclesController() {
-        return ResponseEntity.ok().body(vehicleService.getAvailableVehicles());
-    }
-
     @GetMapping(value = "/unavailable")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Page<VehicleResponseDTO>> getUnavailableVehiclesController(Pageable pageable) {
         return ResponseEntity.ok().body(vehicleService.getUnavailableVehicles(pageable));
     }
 
     @GetMapping(value = "/{vehicleId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_RENTING_EMPLOYEE')")
     public ResponseEntity<VehicleResponseDTO> getVehicleByIdController(@PathVariable(name = "vehicleId") Long vehicleId) {
         try {
             VehicleResponseDTO vehicleResponseDTO = vehicleService.getVehicleById(vehicleId);
@@ -59,11 +57,13 @@ public class VehicleController {
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_RENTING_EMPLOYEE')")
     public ResponseEntity<VehicleResponseDTO> addVehicleController(@Valid @RequestBody VehiclePersistDTO vehiclePersistDTO) {
         return ResponseEntity.ok().body(vehicleService.addVehicle(vehiclePersistDTO));
     }
 
     @PostMapping(value = "/{vehicleId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_RENTING_EMPLOYEE')")
     public ResponseEntity<VehicleResponseDTO> updateVehicleByIdController(@PathVariable(name = "vehicleId") Long vehicleId,
                                                                           @Valid @RequestBody VehiclePersistDTO vehiclePersistDTO) {
         return ResponseEntity.ok().body(vehicleService.updateVehicleById(vehicleId, vehiclePersistDTO));

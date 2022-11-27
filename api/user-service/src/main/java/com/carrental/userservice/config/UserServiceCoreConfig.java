@@ -5,6 +5,7 @@ import com.carrental.userservice.controller.RegistrationController;
 import com.carrental.userservice.controller.UserController;
 import com.carrental.userservice.controller.UserRoleController;
 import com.carrental.userservice.listener.RegistrationCompleteListener;
+import com.carrental.userservice.listener.UserListener;
 import com.carrental.userservice.repository.UserRepository;
 import com.carrental.userservice.repository.UserRoleRepository;
 import com.carrental.userservice.service.UserRoleService;
@@ -83,5 +84,10 @@ public class UserServiceCoreConfig {
     @Bean
     public Jackson2JsonMessageConverter producerJackson2MessageConverter() {
         return new Jackson2JsonMessageConverter();
+    }
+
+    @Bean
+    public UserListener userListener(UserService userService) {
+        return new UserListener(userService);
     }
 }

@@ -3,4 +3,18 @@
     justify-content: space-between;
     padding: 0 30px;
     margin: 10px;
+
+    .page-link {
+        color: #636363;
+    }
+
+    .page-link:focus {
+        box-shadow: 0 0 0 0.2rem #dadada;
+    }
+
+    .page-item.active .page-link {
+        background-color: #636363;
+        border-color: #636363;
+        color: #fff;
+    }
 }

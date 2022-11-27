@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,4 +25,6 @@ public class UserDetailsDTO implements Serializable {
     private String password;
 
     private boolean enabled;
+
+    private List<UserRoleResponseDTO> roles;
 }

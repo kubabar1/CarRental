@@ -13,14 +13,13 @@ import { getVehicleComments } from '../../../service/RatingService';
 import { getVehicleById } from '../../../service/VehicleService';
 import Page from '../../../model/Page';
 import './VehicleDetailsPage.scss';
-import { UserResponseDTO } from '../../../../../profile-page/src/model/UserResponseDTO';
+import { AuthenticatedUserDTO } from '../../../model/AuthenticatedUserDTO';
 
 interface CarDetailsProperties extends RouteComponentProps<{ carId: string }> {
-    isAuthenticated: boolean;
-    currentUser: UserResponseDTO | undefined;
+    authenticatedUser: AuthenticatedUserDTO | undefined;
 }
 
-export function VehicleDetailsPage({ currentUser, isAuthenticated, match }: CarDetailsProperties): JSX.Element {
+export function VehicleDetailsPage({ authenticatedUser, match }: CarDetailsProperties): JSX.Element {
     const DEFAULT_START_COMMENTS_PAGE = 0;
     const DEFAULT_COMMENTS_COUNT = 5;
     const vehicleId = match.params.carId;
@@ -52,6 +51,8 @@ export function VehicleDetailsPage({ currentUser, isAuthenticated, match }: CarD
         );
     };
 
+    const isAuthenticated = !!authenticatedUser && authenticatedUser.authenticated;
+
     return (
         <div className="vehicle-details-page">
             <div className="container col-md-8 offset-md-2 mt-4">
@@ -76,7 +77,7 @@ export function VehicleDetailsPage({ currentUser, isAuthenticated, match }: CarD
                             {isAuthenticated && (
                                 <AddComment
                                     setComments={setComments}
-                                    currentUser={currentUser}
+                                    authenticatedUser={authenticatedUser}
                                     vehicleId={vehicleId}
                                     comments={comments}
                                 />

@@ -27,6 +27,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.3'
     implementation 'org.modelmapper:modelmapper:3.0.0'
     implementation 'org.springframework.boot:spring-boot-starter-parent:2.6.3'
+    implementation 'org.springframework.security:spring-security-core:5.6.1'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
     compileOnly 'org.projectlombok:lombok:1.18.22'
     implementation 'com.h2database:h2:2.1.210'

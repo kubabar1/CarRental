@@ -38,7 +38,7 @@ public class UserEntity implements Serializable {
     @Column(name = "enabled")
     private boolean enabled = false;
 
-    @ManyToMany
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name = "app_users_roles",
             joinColumns = {@JoinColumn(name = "user_id")},

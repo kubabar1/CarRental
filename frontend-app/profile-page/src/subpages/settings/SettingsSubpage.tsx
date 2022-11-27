@@ -4,9 +4,9 @@ import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { InputFormGroup } from '../../components/form/InputFormGroup';
 import { getAuthorizedUserData, updateAuthorizedUserData } from '../../service/UserService';
-import { UserResponseDTO } from '../../model/UserResponseDTO';
 import { FormContainer } from '../../components/form/FormContainer';
 import { UserUpdateDTO } from '../../model/UserUpdateDTO';
+import { AuthenticatedUserDTO } from '../../model/AuthenticatedUserDTO';
 
 export function SettingsSubpage(): JSX.Element {
     const [name, setName] = useState<string | undefined>(undefined);
@@ -15,11 +15,11 @@ export function SettingsSubpage(): JSX.Element {
     const [birthDate, setBirthDate] = useState<string | undefined>(undefined);
 
     useEffect(() => {
-        getAuthorizedUserData().then((authorizedUser: UserResponseDTO) => {
-            setName(authorizedUser.name);
-            setSurname(authorizedUser.surname);
-            setPhone(authorizedUser.phone);
-            setBirthDate(authorizedUser.birthDate);
+        getAuthorizedUserData().then((authenticatedUserDTO: AuthenticatedUserDTO) => {
+            setName(authenticatedUserDTO.name);
+            setSurname(authenticatedUserDTO.surname);
+            setPhone(authenticatedUserDTO.phone);
+            setBirthDate(authenticatedUserDTO.birthDate);
         });
     }, []);
 

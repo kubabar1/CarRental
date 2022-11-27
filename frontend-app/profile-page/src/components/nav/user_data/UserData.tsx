@@ -1,13 +1,13 @@
 import React from 'react';
 import carRentalLogoName from '../../../images/car_rental_logo_name.png';
 import { userImagesProfilePage } from '../../../constants/PathsServer';
-import { UserResponseDTO } from '../../../model/UserResponseDTO';
+import { AuthenticatedUserDTO } from '../../../model/AuthenticatedUserDTO';
 
 interface UserDataProperties {
-    currentUser: UserResponseDTO;
+    authenticatedUser: AuthenticatedUserDTO;
 }
 
-export function UserData({ currentUser: { name, surname, email } }: UserDataProperties): JSX.Element {
+export function UserData({ authenticatedUser: { name, surname, email } }: UserDataProperties): JSX.Element {
     return (
         <div className="card">
             <div className="card-header text-center">

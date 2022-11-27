@@ -32,7 +32,7 @@ export function EmailSubpage(): JSX.Element {
                     onSubmit={() => {
                         if (!!emailSubject && !!emailMessage) {
                             sendEmail(userId, emailSubject, emailMessage);
-                            history.push(sendEmailPath);
+                            history.push(sendEmailPath.link);
                         }
                     }}
                     isSubmitButtonDisabled={isSubmitButtonDisabled}

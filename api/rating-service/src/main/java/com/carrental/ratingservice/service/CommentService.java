@@ -10,10 +10,6 @@ import java.util.Set;
 
 public interface CommentService {
 
-    Set<CommentWithRateResponseDTO> getComments();
-
-    Set<CommentWithRateResponseDTO> getCommentsByUserId(Long userId) throws NoSuchElementException;
-
     Page<CommentWithRateResponseDTO> getCommentsByVehicleId(Long vehicleId, Pageable pageable) throws NoSuchElementException;
 
     CommentWithRateResponseDTO addCommentWithRate(CommentWithRateAddDTO commentWithRateAddDTO);

@@ -1,7 +1,7 @@
 package com.carrental.userservice.service.impl;
 
 import com.carrental.commons.authentication.exception.AuthorizationException;
-import com.carrental.commons.authentication.model.AuthenticatedUserData;
+import com.carrental.commons.authentication.model.AuthenticatedUserDTO;
 import com.carrental.commons.authentication.service.AuthenticatedUserDataService;
 import com.carrental.userservice.exception.UserAlreadyExistException;
 import com.carrental.userservice.model.dto.*;
@@ -11,17 +11,12 @@ import com.carrental.userservice.repository.UserRepository;
 import com.carrental.userservice.repository.UserRoleRepository;
 import com.carrental.userservice.service.UserService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class UserServiceImpl implements UserService {
@@ -52,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDTO getAuthorizedUser() throws AuthorizationException, NoSuchElementException {
-        AuthenticatedUserData authenticatedUserData = authenticatedUserDataService.getAuthenticatedUserData();
+        AuthenticatedUserDTO authenticatedUserData = authenticatedUserDataService.getAuthenticatedUserData();
         return modelMapper.map(userRepository.findById(authenticatedUserData.getId()).orElseThrow(), UserResponseDTO.class);
     }
 
@@ -94,7 +89,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDTO createUser(CreateUserDTO createUserDTO) throws UserAlreadyExistException {
-        UserRoleEntity userRoleEntity = userRoleRepository.findByType("ROLE_CUSTOMER").orElseThrow(NoSuchElementException::new);
         validateUserEmail(createUserDTO);
 
         UserEntity userEntity = new UserEntity();
@@ -104,7 +98,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setSurname(createUserDTO.getLastName());
         userEntity.setBirthDate(createUserDTO.getBirthDate());
         userEntity.setPhone(createUserDTO.getPhone());
-        userEntity.setRoles(Collections.singleton(userRoleEntity));
+        userEntity.setRoles(Collections.emptySet());
 
         return modelMapper.map(userRepository.save(userEntity), UserResponseDTO.class);
     }

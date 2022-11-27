@@ -42,7 +42,7 @@ export function AddRoleSubpage(): JSX.Element {
                                 userRolesToAddList.map((userRole: RoleAddEquipmentSelectOption) => userRole.value),
                                 userId
                             );
-                            history.push(usersListPath);
+                            history.push(usersListPath.link);
                         }
                     }}
                     isSubmitButtonDisabled={!userRolesToAddList.length}

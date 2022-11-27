@@ -7,6 +7,7 @@ import com.carrental.userservice.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,21 +25,13 @@ public class UserController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Page<UserResponseDTO>> getUsersController(Pageable pageable) {
         return ResponseEntity.ok().body(userService.getUsers(pageable));
     }
 
-    @GetMapping("/authorized")
-    public ResponseEntity<UserResponseDTO> getAuthorisedUserController() {
-        try {
-            UserResponseDTO userResponseDTO = userService.getAuthorizedUser();
-            return ResponseEntity.ok().body(userResponseDTO);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserResponseDTO> getUserByIdController(@PathVariable("id") Long userId) {
         try {
             UserResponseDTO userResponseDTO = userService.getUserById(userId);
@@ -49,12 +42,14 @@ public class UserController {
     }
 
     @PostMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserResponseDTO> updateUserController(@PathVariable("id") Long userId,
                                                                 @Valid @RequestBody UserUpdateDTO userUpdateDTO) {
         return ResponseEntity.ok().body(userService.updateUser(userId, userUpdateDTO));
     }
 
     @PostMapping("/{userId}/roles")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserResponseDTO> addRoleToUserController(@PathVariable("userId") Long userId,
                                                                    @Valid @RequestBody List<RoleAddDTO> roleAddDTOs) {
         try {

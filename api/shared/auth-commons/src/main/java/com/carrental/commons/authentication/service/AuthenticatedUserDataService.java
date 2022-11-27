@@ -1,10 +1,10 @@
 package com.carrental.commons.authentication.service;
 
 import com.carrental.commons.authentication.exception.AuthorizationException;
-import com.carrental.commons.authentication.model.AuthenticatedUserData;
+import com.carrental.commons.authentication.model.AuthenticatedUserDTO;
 
 public interface AuthenticatedUserDataService {
 
-    AuthenticatedUserData getAuthenticatedUserData() throws AuthorizationException;
+    AuthenticatedUserDTO getAuthenticatedUserData() throws AuthorizationException;
 
 }

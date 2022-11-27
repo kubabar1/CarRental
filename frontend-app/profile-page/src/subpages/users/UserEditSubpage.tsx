@@ -36,7 +36,7 @@ export function UsersEditSubpage(): JSX.Element {
                     onSubmit={() => {
                         if (name && surname && phone && birthDate) {
                             updateUserData(userId, new UserUpdateDTO(name, surname, phone, birthDate));
-                            history.push(usersListPath);
+                            history.push(usersListPath.link);
                         }
                     }}
                 >

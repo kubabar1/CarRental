@@ -4,13 +4,13 @@ import './AddComment.scss';
 import { CommentWithRateResponseDTO } from '../../../../../../model/CommentWithRateResponseDTO';
 import { addComment } from '../../../../../../service/RatingService';
 import { CommentWithRateAddDTO } from '../../../../../../model/CommentWithRateAddDTO';
-import { UserResponseDTO } from '../../../../../../../../profile-page/src/model/UserResponseDTO';
+import { AuthenticatedUserDTO } from '../../../../../../model/AuthenticatedUserDTO';
 
 interface AddCommentProperties {
     setComments: (comments: CommentWithRateResponseDTO[]) => void;
     comments: CommentWithRateResponseDTO[];
     vehicleId: string;
-    currentUser: UserResponseDTO | undefined;
+    authenticatedUser: AuthenticatedUserDTO | undefined;
 }
 
 export function AddComment({ vehicleId, comments, setComments }: AddCommentProperties): JSX.Element {

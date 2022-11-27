@@ -66,6 +66,17 @@ export function SubpagePagination({
             />
             <Select
                 className="count-per-page-select"
+                theme={(theme) => ({
+                    ...theme,
+                    borderRadius: 0,
+                    colors: {
+                        ...theme.colors,
+                        primary25: '#cccccc',
+                        primary50: '#999999',
+                        primary70: '#666666',
+                        primary: '#333333',
+                    },
+                })}
                 value={mapToOptionType(perPageCount)}
                 options={VEHICLES_PER_PAGE_COUNTS.map(mapToOptionType)}
                 onChange={(newValue: SingleValue<OptionType>) => {

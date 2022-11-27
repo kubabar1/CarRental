@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { UserData } from './user_data/UserData';
 import { SideNav } from './side_nav/SideNav';
-import { UserResponseDTO } from '../../model/UserResponseDTO';
-import { mapUserRolesDtoToStringArray } from '../../utils/UserUtils';
+import { AuthenticatedUserDTO } from '../../model/AuthenticatedUserDTO';
 
 interface NavContainerProperties {
-    currentUser: UserResponseDTO;
+    authenticatedUser: AuthenticatedUserDTO;
+    runLogout: (e: MouseEvent) => void;
 }
 
-export const Navigation = ({ currentUser }: NavContainerProperties): JSX.Element => (
+export const Navigation = ({ authenticatedUser, runLogout }: NavContainerProperties): JSX.Element => (
     <div className="col-md-4 col-lg-3 col-xl-2 px-0">
         <div id="accordion">
-            <UserData currentUser={currentUser} />
-            <SideNav userRoles={mapUserRolesDtoToStringArray(currentUser.userRoles)} />
+            <UserData authenticatedUser={authenticatedUser} />
+            <SideNav userRoles={authenticatedUser.userRoles} runLogout={runLogout} />
         </div>
     </div>
 );

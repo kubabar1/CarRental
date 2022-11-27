@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import NavLink from './nav_links/NavLink';
 import NavSubLink from './nav_links/NavSubLink';
 import {
@@ -32,86 +32,112 @@ import {
     usersListPath,
     myReservedBookingsListPath,
 } from '../../../constants/Links';
-import { userHasAnyRole, userHasRole } from '../../../utils/UserUtils';
-import { UserRolesEnum } from '../../../utils/UserRolesEnum';
+import { userHasAnyRole } from '../../../utils/UserUtils';
 
 interface SideNavProperties {
     userRoles: string[];
+    runLogout: (e: MouseEvent) => void;
 }
 
-export function SideNav({ userRoles = [] }: SideNavProperties): JSX.Element {
+export function SideNav({ userRoles = [], runLogout }: SideNavProperties): JSX.Element {
     return (
         <section id="menu-panel" className="mb-5">
             <NavLink navItemName={'Booking'} iconName={faListUl}>
-                {userHasAnyRole(userRoles, [
-                    UserRolesEnum.ROLE_ADMIN,
-                    UserRolesEnum.ROLE_RENTING_EMPLOYEE,
-                    UserRolesEnum.ROLE_OFFICE_EMPLOYEE,
-                ]) ? (
-                    <NavSubLink navItemName={'Bookings list'} linkPath={bookingsListPath} />
-                ) : (
-                    <></>
-                )}
-                {userHasAnyRole(userRoles, [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE]) ? (
-                    <NavSubLink navItemName={'Reserved bookings list'} linkPath={reservedBookingsListPath} />
-                ) : (
-                    <></>
-                )}
-                {userHasAnyRole(userRoles, [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE]) ? (
-                    <NavSubLink navItemName={'Rented bookings list'} linkPath={rentedBookingsListPath} />
-                ) : (
-                    <></>
-                )}
-                <NavSubLink navItemName={'My bookings list'} linkPath={myBookingsListPath} />
-                <NavSubLink navItemName={'My reserved bookings list'} linkPath={myReservedBookingsListPath} />
-                <NavSubLink navItemName={'My rented bookings list'} linkPath={myRentedBookingsListPath} />
-                {userHasAnyRole(userRoles, [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE]) ? (
-                    <NavSubLink navItemName={'Bookings audit logs'} linkPath={bookingsAuditLogsListPath} />
-                ) : (
-                    <></>
-                )}
+                <NavSubLink
+                    navItemName={'Bookings list'}
+                    linkPath={bookingsListPath.link}
+                    authorized={userHasAnyRole(userRoles, bookingsListPath.permittedRoles)}
+                />
+                <NavSubLink
+                    navItemName={'Reserved bookings list'}
+                    linkPath={reservedBookingsListPath.link}
+                    authorized={userHasAnyRole(userRoles, reservedBookingsListPath.permittedRoles)}
+                />
+                <NavSubLink
+                    navItemName={'Rented bookings list'}
+                    linkPath={rentedBookingsListPath.link}
+                    authorized={userHasAnyRole(userRoles, rentedBookingsListPath.permittedRoles)}
+                />
+                <NavSubLink
+                    navItemName={'My bookings list'}
+                    linkPath={myBookingsListPath.link}
+                    authorized={userHasAnyRole(userRoles, myBookingsListPath.permittedRoles)}
+                />
+                <NavSubLink
+                    navItemName={'My reserved bookings list'}
+                    linkPath={myReservedBookingsListPath.link}
+                    authorized={userHasAnyRole(userRoles, myReservedBookingsListPath.permittedRoles)}
+                />
+                <NavSubLink
+                    navItemName={'My rented bookings list'}
+                    linkPath={myRentedBookingsListPath.link}
+                    authorized={userHasAnyRole(userRoles, myRentedBookingsListPath.permittedRoles)}
+                />
+                <NavSubLink
+                    navItemName={'Bookings audit logs'}
+                    linkPath={bookingsAuditLogsListPath.link}
+                    authorized={userHasAnyRole(userRoles, bookingsAuditLogsListPath.permittedRoles)}
+                />
             </NavLink>
 
-            {userHasRole(userRoles, UserRolesEnum.ROLE_ADMIN) && (
+            {userHasAnyRole(userRoles, usersListPath.permittedRoles) && (
                 <NavLink navItemName={'Users'} iconName={faUser}>
-                    <NavSubLink navItemName={'Users list'} linkPath={usersListPath} />
+                    <NavSubLink navItemName={'Users list'} linkPath={usersListPath.link} />
                 </NavLink>
             )}
 
-            {userHasAnyRole(userRoles, [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE]) && (
-                <NavLink navItemName={'Vehicles'} iconName={faCar}>
-                    <NavSubLink navItemName={'Vehicles list'} linkPath={vehiclesListPath} />
-                    <NavSubLink navItemName={'Reserved vehicles list'} linkPath={reservedVehiclesListPath} />
-                    <NavSubLink navItemName={'Add vehicle'} linkPath={vehicleAddPath} />
-                    <NavSubLink navItemName={'Equipment list'} linkPath={equipmentListPath} />
-                </NavLink>
-            )}
-
-            {userHasRole(userRoles, UserRolesEnum.ROLE_ADMIN) && (
-                <NavLink navItemName={'User roles'} iconName={faUserLock}>
-                    <NavSubLink navItemName={'User roles'} linkPath={userRolesListPath} />
-                </NavLink>
-            )}
-
-            <NavLink navItemName={'Locations'} iconName={faMapMarkedAlt}>
-                <NavSubLink navItemName={'Locations list'} linkPath={locationsListPath} />
+            <NavLink navItemName={'Vehicles'} iconName={faCar}>
+                <NavSubLink
+                    navItemName={'Vehicles list'}
+                    linkPath={vehiclesListPath.link}
+                    authorized={userHasAnyRole(userRoles, vehiclesListPath.permittedRoles)}
+                />
+                <NavSubLink
+                    navItemName={'Reserved vehicles list'}
+                    linkPath={reservedVehiclesListPath.link}
+                    authorized={userHasAnyRole(userRoles, reservedVehiclesListPath.permittedRoles)}
+                />
+                <NavSubLink
+                    navItemName={'Add vehicle'}
+                    linkPath={vehicleAddPath.link}
+                    authorized={userHasAnyRole(userRoles, vehicleAddPath.permittedRoles)}
+                />
+                <NavSubLink
+                    navItemName={'Equipment list'}
+                    linkPath={equipmentListPath.link}
+                    authorized={userHasAnyRole(userRoles, equipmentListPath.permittedRoles)}
+                />
             </NavLink>
 
-            {userHasAnyRole(userRoles, [
-                UserRolesEnum.ROLE_ADMIN,
-                UserRolesEnum.ROLE_OFFICE_EMPLOYEE,
-                UserRolesEnum.ROLE_RENTING_EMPLOYEE,
-            ]) && (
-                <NavLink navItemName={'Mails'} iconName={faEnvelope}>
-                    <NavSubLink navItemName={'Send email'} linkPath={sendEmailPath} />
+            {userHasAnyRole(userRoles, userRolesListPath.permittedRoles) && (
+                <NavLink navItemName={'User roles'} iconName={faUserLock}>
+                    <NavSubLink navItemName={'User roles'} linkPath={userRolesListPath.link} />
                 </NavLink>
             )}
 
-            <NavLink navItemName={'Settings'} iconName={faCog} linkPath={settingsPath} disableRefresh={true} />
+            {userHasAnyRole(userRoles, locationsListPath.permittedRoles) && (
+                <NavLink navItemName={'Locations'} iconName={faMapMarkedAlt}>
+                    <NavSubLink navItemName={'Locations list'} linkPath={locationsListPath.link} />
+                </NavLink>
+            )}
+
+            {userHasAnyRole(userRoles, sendEmailPath.permittedRoles) && (
+                <NavLink navItemName={'Mails'} iconName={faEnvelope}>
+                    <NavSubLink navItemName={'Send email'} linkPath={sendEmailPath.link} />
+                </NavLink>
+            )}
+
+            <NavLink navItemName={'Settings'} iconName={faCog} linkPath={settingsPath.link} disableRefresh={true} />
 
             <NavLink navItemName={'Home'} iconName={faHome} linkPath={homeLink} />
 
-            <NavLink navItemName={'Log out'} iconName={faSignOutAlt} linkPath={logoutLink} />
+            <NavLink
+                navItemName={'Log out'}
+                iconName={faSignOutAlt}
+                linkPath={logoutLink}
+                disableRefresh={true}
+                onClick={runLogout}
+            />
         </section>
     );
 }

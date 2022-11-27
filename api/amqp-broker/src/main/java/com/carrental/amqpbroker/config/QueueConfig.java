@@ -8,18 +8,27 @@ public class QueueConfig {
 
     @Bean
     public Queue sendEmailQueue() {
-        return new Queue("sendEmailQueue", false, false, true);
+        return buildQueue("sendEmailQueue");
     }
 
     @Bean
     public Queue generateTokenQueue() {
-        return new Queue("generateTokenQueue", false, false, true);
+        return buildQueue("generateTokenQueue");
     }
 
     @Bean
     public Queue verifyTokenQueue() {
+        return buildQueue("verifyTokenQueue");
+    }
+
+    @Bean
+    public Queue getUserByEmailQueue() {
+        return buildQueue("getUserByEmailQueue");
+    }
+
+    private Queue buildQueue(String queueName) {
         return QueueBuilder
-                .nonDurable("verifyTokenQueue")
+                .nonDurable(queueName)
                 .autoDelete()
 //                .withArgument("x-dead-letter-exchange", "")
 //                .withArgument("x-dead-letter-routing-key", "verifyTokenQueueDLQ")

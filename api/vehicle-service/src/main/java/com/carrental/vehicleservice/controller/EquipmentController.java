@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,6 +27,7 @@ public class EquipmentController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_RENTING_EMPLOYEE')")
     public ResponseEntity<Page<EquipmentResponseDTO>> getAllEquipmentsController(Pageable pageable) {
         return ResponseEntity.ok().body(equipmentService.getAllEquipments(pageable));
     }
@@ -45,6 +47,7 @@ public class EquipmentController {
     }
 
     @GetMapping(value = "/not-assigned/{vehicleId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_RENTING_EMPLOYEE')")
     public ResponseEntity<Set<EquipmentResponseDTO>> getAllEquipmentsNotAssignedToVehicleController(
             @PathVariable(name = "vehicleId") Long vehicleId) {
         try {
@@ -56,6 +59,7 @@ public class EquipmentController {
     }
 
     @PostMapping(value = "/add/{vehicleId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_RENTING_EMPLOYEE')")
     public ResponseEntity<VehicleResponseDTO> addEquipmentsToVehicleController(
             @PathVariable(name = "vehicleId") Long vehicleId,
             @Valid @RequestBody EquipmentSetPersistDTO equipmentPersistDTO) {
@@ -67,6 +71,7 @@ public class EquipmentController {
     }
 
     @PostMapping(value = "/remove/{vehicleId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_RENTING_EMPLOYEE')")
     public ResponseEntity<VehicleResponseDTO> removeEquipmentFromVehicleController(
             @PathVariable(name = "vehicleId") Long vehicleId,
             @Valid @RequestBody EquipmentPersistDTO equipmentPersistDTO) {

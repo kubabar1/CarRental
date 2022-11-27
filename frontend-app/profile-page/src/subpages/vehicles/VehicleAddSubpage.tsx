@@ -13,7 +13,7 @@ export function VehicleAddSubpage(): JSX.Element {
 
     const addVehicleForm = async (vehiclePersistDTO: VehiclePersistDTO): Promise<void> => {
         addVehicle(vehiclePersistDTO).then(() => {
-            history.push(vehiclesListPath);
+            history.push(vehiclesListPath.link);
         });
     };
 

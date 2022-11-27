@@ -68,7 +68,7 @@ export const GET_USER_ROLES_NOT_ASSIGNED_TO_USER_PATH = (userId: string): string
 
 export const GET_USERS_PATH = `${APP_ADDR}/users`;
 
-export const GET_AUTHORIZED_USER_PATH = `${APP_ADDR}/users/authorized`;
+export const GET_AUTHORIZED_USER_PATH = `${APP_ADDR}/authentication/user-data`;
 
 export const UPDATE_USER_PATH = (userId: string): string => withId(`${APP_ADDR}/users`, userId);
 
@@ -77,3 +77,7 @@ export const UPDATE_AUTHORIZED_USER_PATH = `${APP_ADDR}/users/authorized`;
 export const GET_USER_BY_ID_PATH = (userId: string): string => withId(`${APP_ADDR}/users`, userId);
 
 export const ADD_ROLE_TO_USER_PATH = (userId: string): string => `${withId(`${APP_ADDR}/users`, userId)}/roles`;
+
+export const GET_AUTHENTICATED_USER_DATA_PATH = `${APP_ADDR}/authentication/user-data`;
+
+export const LOGOUT_PATH = `${APP_ADDR}/logout`;

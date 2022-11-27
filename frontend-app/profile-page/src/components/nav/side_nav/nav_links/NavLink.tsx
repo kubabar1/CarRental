@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { MouseEvent, useEffect } from 'react';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './NavLink.scss';
@@ -12,6 +12,7 @@ interface NavLinkProperties extends RouteComponentProps {
     children?: React.ReactElement<NavSubLinkProperties> | React.ReactElement<NavSubLinkProperties>[];
     linkPath?: string;
     disableRefresh?: boolean;
+    onClick?: (event: MouseEvent) => void;
 }
 
 const checkIsCollapsed = (
@@ -33,6 +34,7 @@ function NavLink({
     children,
     linkPath,
     location,
+    onClick,
     disableRefresh = false,
 }: NavLinkProperties): JSX.Element {
     const history = useHistory();
@@ -49,10 +51,12 @@ function NavLink({
             {...(linkPath
                 ? disableRefresh
                     ? {
-                          onClick: (e) => {
-                              e.preventDefault();
-                              history.push(linkPath);
-                          },
+                          onClick: onClick
+                              ? onClick
+                              : (e) => {
+                                    e.preventDefault();
+                                    history.push(linkPath);
+                                },
                       }
                     : { href: linkPath }
                 : {})}

@@ -5,7 +5,6 @@ import { VehicleResponseDTO } from '../../../../model/VehicleResponseDTO';
 import { carImagesMainPageCarList } from '../../../../constants/PathsServer';
 import StarRatingComponent from 'react-star-rating-component';
 import { carDetailsByIdLink } from '../../../../constants/Links';
-import specialOffer from '../../../../images/special-offer.png';
 
 interface CarItemProperties {
     vehicle: VehicleResponseDTO;
@@ -71,7 +70,9 @@ export function VehicleItem({ vehicle, showBestOffer }: CarItemProperties): JSX.
                         </div>
                     </div>
                     {showBestOffer && vehicle.bestOffer && (
-                        <img className="special-offer-vehicle-item" src={specialOffer} />
+                        <div className="alert alert-danger special-offer-vehicle-item" role="alert">
+                            BEST OFFER
+                        </div>
                     )}
                 </div>
             </div>

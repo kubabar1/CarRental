@@ -3,6 +3,15 @@ a {
     color: #000;
 }
 
+.center-div-vertically-and-horizontally {
+    text-align: center;
+    display: flex;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
 /* Turn off parallax scrolling for tablets and phones. */
 @media only screen and (max-device-width: 1366px) {
     .parallax {

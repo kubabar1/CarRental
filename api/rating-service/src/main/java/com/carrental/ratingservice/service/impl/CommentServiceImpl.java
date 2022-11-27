@@ -23,31 +23,13 @@ import java.util.stream.Collectors;
 
 public class CommentServiceImpl implements CommentService {
 
-    private CommentRepository commentRepository;
+    private final CommentRepository commentRepository;
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public CommentServiceImpl(CommentRepository commentRepository, ModelMapper modelMapper) {
         this.commentRepository = commentRepository;
         this.modelMapper = modelMapper;
-    }
-
-    @Override
-    public Set<CommentWithRateResponseDTO> getComments() {
-        return commentRepository
-                .findAll()
-                .stream()
-                .map(comment -> modelMapper.map(comment, CommentWithRateResponseDTO.class))
-                .collect(Collectors.toSet());
-    }
-
-    @Override
-    public Set<CommentWithRateResponseDTO> getCommentsByUserId(Long userId) throws NoSuchElementException {
-        return commentRepository
-                .findCommentEntitiesByUserIdOrderByCreationDateDesc(userId)
-                .stream()
-                .map(comment -> modelMapper.map(comment, CommentWithRateResponseDTO.class))
-                .collect(Collectors.toSet());
     }
 
     @Override

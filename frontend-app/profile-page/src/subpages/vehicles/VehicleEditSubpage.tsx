@@ -23,7 +23,7 @@ export function VehicleEditSubpage(): JSX.Element {
     const updateVehicleForm = (vehiclePersistDTO: VehiclePersistDTO): void => {
         updateVehicleData(vehicleId, vehiclePersistDTO).then((vehicleResp: VehicleResponseDTO) => {
             setVehicleResponseDTO(vehicleResp);
-            history.push(vehiclesListPath);
+            history.push(vehiclesListPath.link);
         });
     };
 

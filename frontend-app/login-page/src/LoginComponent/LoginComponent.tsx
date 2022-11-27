@@ -1,12 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 import carRentalLogo from '../images/car_rental_logo_name.png';
 import './LoginComponent.scss';
 import { homePath, registrationPath } from '../constants/Paths';
+import { endpoints } from '../constants/PathsApi';
 
 export function LoginComponent(): JSX.Element {
+    const [username, setUsername] = useState<string | undefined>(undefined);
+    const [password, setPassword] = useState<string | undefined>(undefined);
+    const [usernameError, setUsernameError] = useState<boolean>(false);
+    const [passwordError, setPasswordError] = useState<boolean>(false);
+    const [loginError, setLoginError] = useState<boolean>(false);
+    const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState<boolean>(false);
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
-        window.location.href = homePath;
+        const data = new URLSearchParams();
+        if (!!username && !!password) {
+            setUsernameError(false);
+            setPasswordError(false);
+            data.append('username', username);
+            data.append('password', password);
+            setIsSubmitButtonDisabled(true);
+            fetch(endpoints.login, {
+                method: 'POST',
+                // mode: 'cors',
+                // cache: 'no-cache',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                // redirect: 'follow',
+                // referrerPolicy: 'no-referrer',
+                body: data,
+            }).then((res: Response) => {
+                if (res.status == 200) {
+                    setLoginError(false);
+                    window.location.href = homePath;
+                } else {
+                    setLoginError(true);
+                }
+                setIsSubmitButtonDisabled(false);
+            });
+        } else {
+            if (username) {
+                setUsernameError(false);
+            } else {
+                setUsernameError(true);
+            }
+            if (password) {
+                setPasswordError(false);
+            } else {
+                setPasswordError(true);
+            }
+        }
     };
 
     return (
@@ -14,7 +60,6 @@ export function LoginComponent(): JSX.Element {
             <div className="col-md-4 offset-md-4 card-body shadow-lg">
                 <form onSubmit={handleSubmit}>
                     <img className="mb-4" src={carRentalLogo} alt="" width="100%" />
-                    <h1 className="h3 mb-3 font-weight-normal">Sign in</h1>
 
                     <div className="form-group">
                         <input
@@ -22,9 +67,15 @@ export function LoginComponent(): JSX.Element {
                             className="form-control"
                             id="inputLogin"
                             placeholder="Username"
-                            required
+                            // required
                             autoFocus
+                            onChange={(event) => setUsername(event.target.value)}
                         />
+                        {usernameError && (
+                            <div className="alert alert-danger custom-alert" role="alert">
+                                Username cannot be empty
+                            </div>
+                        )}
                     </div>
 
                     <div className="form-group">
@@ -33,9 +84,15 @@ export function LoginComponent(): JSX.Element {
                             className="form-control"
                             id="inputPassword"
                             placeholder="Password"
-                            required
+                            // required
                             autoComplete="off"
+                            onChange={(event) => setPassword(event.target.value)}
                         />
+                        {passwordError && (
+                            <div className="alert alert-danger custom-alert" role="alert">
+                                Password cannot be empty
+                            </div>
+                        )}
                     </div>
 
                     <div className="checkbox mb-3">
@@ -44,9 +101,18 @@ export function LoginComponent(): JSX.Element {
                         </label>
                     </div>
 
-                    <button className="btn btn-lg btn-primary btn-block" type="submit">
+                    <button
+                        className="btn btn-lg btn-primary btn-block"
+                        type="submit"
+                        disabled={isSubmitButtonDisabled}
+                    >
                         Sign in
                     </button>
+                    {loginError && (
+                        <div className="alert alert-danger custom-alert" role="alert">
+                            Incorrect username or password
+                        </div>
+                    )}
                 </form>
                 <div className="row">
                     <p className="mt-3 login-link pl-3">

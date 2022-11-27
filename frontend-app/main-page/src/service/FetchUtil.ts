@@ -4,7 +4,7 @@ export async function fetchPost<T>(getPath: string, data?: any): Promise<T> {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
-        credentials: 'same-origin',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -27,7 +27,7 @@ export async function fetchPut<T>(getPath: string, data?: any): Promise<T> {
         method: 'PUT',
         mode: 'cors',
         cache: 'no-cache',
-        credentials: 'same-origin',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -49,7 +49,7 @@ export async function fetchGet<T>(getPath: string): Promise<T> {
         method: 'GET',
         mode: 'cors',
         cache: 'no-cache',
-        credentials: 'same-origin',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },

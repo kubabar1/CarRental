@@ -15,9 +15,10 @@ import {
 import { RoleAddDTO } from '../model/RoleAddDTO';
 import Page from '../../../main-page/src/model/Page';
 import { PAGE_REQUEST } from '../../../main-page/src/constants/PathsAPI';
+import { AuthenticatedUserDTO } from '../model/AuthenticatedUserDTO';
 
-export const getAuthorizedUserData = (): Promise<UserResponseDTO> => {
-    return fetchGet<UserResponseDTO>(GET_AUTHORIZED_USER_PATH);
+export const getAuthorizedUserData = (): Promise<AuthenticatedUserDTO> => {
+    return fetchGet<AuthenticatedUserDTO>(GET_AUTHORIZED_USER_PATH);
 };
 
 export const getUserById = (userId: string): Promise<UserResponseDTO> => {

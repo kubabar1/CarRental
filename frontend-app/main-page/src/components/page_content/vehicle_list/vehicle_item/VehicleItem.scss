@@ -20,15 +20,16 @@
         }
 
         .special-offer-vehicle-item {
-            height: 90px;
-            width: 80px;
+            height: 40px;
+            width: 140px;
             position: absolute;
             top: -20px;
             left: -30px;
-        }
-
-        .special-offer-vehicle-item:hover {
-            background-color: transparent;
+            padding: 0.5rem 0.25rem;
+            border-radius: 0.25rem;
+            background-color: #faf9fc;
+            color: #cd3737;
+            border-color: #cd3737;
         }
     }
 

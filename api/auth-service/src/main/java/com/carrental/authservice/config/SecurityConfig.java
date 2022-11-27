@@ -1,6 +1,5 @@
 package com.carrental.authservice.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,55 +8,30 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.util.Collections;
-
-import static java.util.Arrays.asList;
 
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Inject
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
-    @Inject
-    private UserDetailsService userDetailsService;
 
     @Inject
-    private PasswordEncoder encoder;
+    private CorsConfigurationSource corsConfigurationSource;
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3030"));
-        configuration.setAllowedMethods(asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
-        configuration.setAllowCredentials(true);
-        configuration.setAllowedHeaders(asList("Authorization", "Cache-Control", "Content-Type", "credentials", "X-XSRF-TOKEN"));
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+    @Inject
+    private DaoAuthenticationProvider authProvider;
 
-    @Bean
-    public DaoAuthenticationProvider authProvider(PasswordEncoder encoder) {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(encoder);
-        return authProvider;
-    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authProvider(encoder));
+        auth.authenticationProvider(authProvider);
     }
 
     @Override
@@ -68,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable() // TODO: fix
                 // CORS
                 .cors()
-                .configurationSource(corsConfigurationSource())
+                .configurationSource(corsConfigurationSource)
                 .and()
                 // login
                 .formLogin()
@@ -79,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll()
                 .logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)))
-                .deleteCookies("JSESSIONID", "XSRF-TOKEN")
+                .deleteCookies("JSESSIONID") //  "XSRF-TOKEN"
                 .invalidateHttpSession(true)
                 .permitAll()
                 .and()
@@ -98,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // request authorization
                 .authorizeRequests()
-                .antMatchers("/**")
-                .permitAll();
+                .antMatchers("/login", "/authentication/**", "/locations", "/vehicles/**", "/comments/**", "/registration/**").permitAll()
+                .anyRequest().authenticated();
     }
 }
