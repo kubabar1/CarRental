@@ -7,6 +7,7 @@ export class VehicleResponseDTO {
     registration: string;
     brand: string;
     model: string;
+    averageRate: number;
     dailyFee: number;
     locationId: string;
     bestOffer: boolean;
@@ -18,6 +19,7 @@ export class VehicleResponseDTO {
         id: string,
         brand: string,
         model: string,
+        averageRate: number,
         dailyFee: number,
         registration: string,
         locationId: string,
@@ -29,6 +31,7 @@ export class VehicleResponseDTO {
         this.id = id;
         this.brand = brand;
         this.model = model;
+        this.averageRate = averageRate;
         this.dailyFee = dailyFee;
         this.registration = registration;
         this.locationId = locationId;

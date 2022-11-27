@@ -3,27 +3,27 @@ package com.carrental.ratingservice.service.impl;
 import com.carrental.ratingservice.model.dto.AverageRateResponseDTO;
 import com.carrental.ratingservice.repository.RateRepository;
 import com.carrental.ratingservice.service.RateService;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
+import java.util.List;
 
 public class RateServiceImpl implements RateService {
 
-    private RateRepository rateRepository;
+    private final RateRepository rateRepository;
 
-    private ModelMapper modelMapper;
-
-    public RateServiceImpl(RateRepository rateRepository, ModelMapper modelMapper) {
+    public RateServiceImpl(RateRepository rateRepository) {
         this.rateRepository = rateRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Override
-    public AverageRateResponseDTO getAverageRateForVehicle(Long vehicleId) throws NoSuchElementException {
+    public AverageRateResponseDTO getAverageRateForVehicle(Long vehicleId) {
         AverageRateResponseDTO averageRateResponseDTO = new AverageRateResponseDTO();
+        averageRateResponseDTO.setVehicleId(vehicleId);
         averageRateResponseDTO.setAverageRate(rateRepository.findAverageRatingByVehicleId(vehicleId));
-        return modelMapper.map(averageRateResponseDTO, AverageRateResponseDTO.class);
+        return averageRateResponseDTO;
+    }
+
+    @Override
+    public List<AverageRateResponseDTO> getAverageRateForVehicles(List<Long> vehiclesId) {
+        return rateRepository.findAverageRatingListByVehiclesId(vehiclesId);
     }
 }

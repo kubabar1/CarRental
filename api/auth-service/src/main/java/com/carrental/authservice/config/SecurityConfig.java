@@ -72,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // request authorization
                 .authorizeRequests()
-                .antMatchers("/login", "/authentication/**", "/locations", "/vehicles/**", "/comments/**", "/registration/**").permitAll()
+                .antMatchers("/login", "/authentication/**", "/locations", "/vehicles/**", "/comments/**", "/registration/**", "/h2-console/**").permitAll()
                 .anyRequest().authenticated();
     }
 }

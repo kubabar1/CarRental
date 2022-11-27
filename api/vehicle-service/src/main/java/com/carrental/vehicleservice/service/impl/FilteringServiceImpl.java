@@ -1,10 +1,14 @@
 package com.carrental.vehicleservice.service.impl;
 
+import com.carrental.vehicleservice.model.dto.AverageRateResponseDTO;
 import com.carrental.vehicleservice.model.dto.VehicleResponseDTO;
 import com.carrental.vehicleservice.model.entity.VehicleEntity;
 import com.carrental.vehicleservice.repository.VehicleRepository;
 import com.carrental.vehicleservice.service.FilteringService;
+import com.carrental.vehicleservice.service.VehicleRatingService;
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -32,14 +36,18 @@ public class FilteringServiceImpl implements FilteringService {
 
     private final VehicleRepository vehicleRepository;
 
+    private final VehicleRatingService vehicleRatingService;
+
     public FilteringServiceImpl(
             EntityManager entityManager,
             ModelMapper modelMapper,
-            VehicleRepository vehicleRepository
+            VehicleRepository vehicleRepository,
+            VehicleRatingService vehicleRatingService
     ) {
         this.entityManager = entityManager;
         this.modelMapper = modelMapper;
         this.vehicleRepository = vehicleRepository;
+        this.vehicleRatingService = vehicleRatingService;
     }
 
     @Override
@@ -80,6 +88,8 @@ public class FilteringServiceImpl implements FilteringService {
         criteriaQueryCount.where(countPredicates);
         criteriaQueryCount.select(cb.count(vehiclesCount));
         long totalVehiclesCount = entityManager.createQuery(criteriaQueryCount).getSingleResult();
+
+        vehicleRatingService.setVehiclesAverageRating(vehicles);
 
         return new PageImpl<>(vehicles, pageable, totalVehiclesCount);
     }

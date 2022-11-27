@@ -26,6 +26,11 @@ public class QueueConfig {
         return buildQueue("getUserByEmailQueue");
     }
 
+    @Bean
+    public Queue getAverageVehiclesRatingQueue() {
+        return buildQueue("getAverageVehiclesRatingQueue");
+    }
+
     private Queue buildQueue(String queueName) {
         return QueueBuilder
                 .nonDurable(queueName)

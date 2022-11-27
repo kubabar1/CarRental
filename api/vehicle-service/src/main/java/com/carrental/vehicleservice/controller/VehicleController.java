@@ -23,8 +23,10 @@ public class VehicleController {
     private final VehicleService vehicleService;
 
     private final FilteringService filteringService;
-
-    public VehicleController(VehicleService vehicleService, FilteringService filteringService) {
+    public VehicleController(
+            VehicleService vehicleService,
+            FilteringService filteringService
+    ) {
         this.vehicleService = vehicleService;
         this.filteringService = filteringService;
     }
@@ -46,7 +48,6 @@ public class VehicleController {
     }
 
     @GetMapping(value = "/{vehicleId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_RENTING_EMPLOYEE')")
     public ResponseEntity<VehicleResponseDTO> getVehicleByIdController(@PathVariable(name = "vehicleId") Long vehicleId) {
         try {
             VehicleResponseDTO vehicleResponseDTO = vehicleService.getVehicleById(vehicleId);

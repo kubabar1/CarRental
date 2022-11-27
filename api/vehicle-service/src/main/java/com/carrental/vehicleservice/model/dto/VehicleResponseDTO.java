@@ -27,4 +27,6 @@ public class VehicleResponseDTO {
     private VehicleDetailsDTO vehicleDetails;
 
     private Set<EquipmentResponseDTO> equipments;
+
+    private Double averageRate;
 }

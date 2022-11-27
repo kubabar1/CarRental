@@ -1,6 +1,7 @@
 package com.carrental.ratingservice.config;
 
 import com.carrental.ratingservice.controller.CommentController;
+import com.carrental.ratingservice.listener.VehicleRatingListener;
 import com.carrental.ratingservice.repository.CommentRepository;
 import com.carrental.ratingservice.repository.RateRepository;
 import com.carrental.ratingservice.service.CommentService;
@@ -13,8 +14,8 @@ import org.springframework.context.annotation.Bean;
 public class RatingServiceCoreConfig {
 
     @Bean
-    public RateService rateService(RateRepository rateRepository, ModelMapper modelMapper) {
-        return new RateServiceImpl(rateRepository, modelMapper);
+    public RateService rateService(RateRepository rateRepository) {
+        return new RateServiceImpl(rateRepository);
     }
 
     @Bean
@@ -25,5 +26,10 @@ public class RatingServiceCoreConfig {
     @Bean
     public CommentController commentController(CommentService commentService) {
         return new CommentController(commentService);
+    }
+
+    @Bean
+    public VehicleRatingListener vehicleRatingListener(RateService rateService) {
+        return new VehicleRatingListener(rateService);
     }
 }

@@ -1,12 +1,13 @@
 package com.carrental.vehicleservice.service.impl;
 
-import com.carrental.vehicleservice.model.dto.VehicleFilterParamsDTO;
-import com.carrental.vehicleservice.model.dto.VehiclePersistDTO;
-import com.carrental.vehicleservice.model.dto.VehicleResponseDTO;
+import com.carrental.vehicleservice.model.dto.*;
 import com.carrental.vehicleservice.model.entity.VehicleEntity;
 import com.carrental.vehicleservice.repository.VehicleRepository;
+import com.carrental.vehicleservice.service.VehicleRatingService;
 import com.carrental.vehicleservice.service.VehicleService;
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -23,9 +24,17 @@ public class VehicleServiceImpl implements VehicleService {
 
     private final ModelMapper modelMapper;
 
-    public VehicleServiceImpl(VehicleRepository vehicleRepository, ModelMapper modelMapper) {
+    private final VehicleRatingService vehicleRatingService;
+
+
+    public VehicleServiceImpl(
+            VehicleRepository vehicleRepository,
+            ModelMapper modelMapper,
+            VehicleRatingService vehicleRatingService
+    ) {
         this.vehicleRepository = vehicleRepository;
         this.modelMapper = modelMapper;
+        this.vehicleRatingService = vehicleRatingService;
     }
 
     @Override
@@ -35,6 +44,9 @@ public class VehicleServiceImpl implements VehicleService {
                 .stream()
                 .map(vehicleEntity -> modelMapper.map(vehicleEntity, VehicleResponseDTO.class))
                 .collect(Collectors.toList());
+
+        vehicleRatingService.setVehiclesAverageRating(vehicleResponseDTOList);
+
         return new PageImpl<>(vehicleResponseDTOList, pageable, vehicles.getTotalElements());
     }
 

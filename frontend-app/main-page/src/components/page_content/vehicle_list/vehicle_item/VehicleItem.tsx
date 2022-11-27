@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import './VehicleItem.scss';
 import { VehicleResponseDTO } from '../../../../model/VehicleResponseDTO';
@@ -12,16 +12,11 @@ interface CarItemProperties {
 }
 
 export function VehicleItem({ vehicle, showBestOffer }: CarItemProperties): JSX.Element {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [averageRate, setAverageRate] = useState<number | undefined>(undefined);
-
-    useEffect(() => {
-        // getVehicleRate(vehicle.id).then((averageRateResponseDTOS: AverageRateResponseDTO) => {
-        //     setAverageRate(averageRateResponseDTOS.averageRate);
-        // });
-    }, [vehicle.id]);
-
     const vehicleImage: string = carImagesMainPageCarList(vehicle.vehicleDetails.photoName);
+
+    console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLl');
+    console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLl');
+    console.log(vehicle);
 
     return (
         <Link to={carDetailsByIdLink(vehicle.id)} style={{ textDecoration: 'none' }}>
@@ -47,12 +42,12 @@ export function VehicleItem({ vehicle, showBestOffer }: CarItemProperties): JSX.
                                             </h3>
                                         </div>
                                         <div className="car-rank text-left">
-                                            {averageRate && (
+                                            {vehicle.averageRate && (
                                                 <StarRatingComponent
                                                     name="rate2"
                                                     editing={false}
                                                     starCount={5}
-                                                    value={averageRate}
+                                                    value={vehicle.averageRate}
                                                 />
                                             )}
                                         </div>
