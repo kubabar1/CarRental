@@ -1,4 +1,4 @@
-package com.carrental.authservice.config;
+package com.carrental.authservice.config.security;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -8,7 +8,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import javax.inject.Inject;
@@ -21,12 +23,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Inject
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
-
     @Inject
     private CorsConfigurationSource corsConfigurationSource;
 
     @Inject
     private DaoAuthenticationProvider authProvider;
+
+    @Inject
+    private PersistentTokenRepository persistentTokenRepository;
+
+    @Inject
+    private UserDetailsService userDetailsService;
 
 
     @Override
@@ -69,10 +76,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers()
                 .frameOptions()
                 .sameOrigin()
+                // remember me
+                .and()
+                .rememberMe()
+                .key("qwerty") // TODO: fix - move to props
+                .tokenRepository(persistentTokenRepository)
+                .userDetailsService(userDetailsService)
                 .and()
                 // request authorization
                 .authorizeRequests()
-                .antMatchers("/login", "/authentication/**", "/locations", "/vehicles/**", "/comments/**", "/registration/**", "/h2-console/**").permitAll()
+                .antMatchers("/login", "/authentication/**", "/locations", "/vehicles/**", "/comments/**",
+                        "/registration/**", "/h2-console/**").permitAll()
                 .anyRequest().authenticated();
     }
 }

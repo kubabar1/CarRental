@@ -1,5 +1,6 @@
 package com.carrental.authservice.config;
 
+import com.carrental.authservice.config.security.*;
 import com.carrental.authservice.controller.AuthenticatedUserDataController;
 import com.carrental.authservice.listener.TokenListener;
 import com.carrental.authservice.repository.TokenRepository;
@@ -20,7 +21,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Import({
         SecurityConfig.class,
         CorsConfig.class,
-        AuthProviderConfig.class
+        AuthProviderConfig.class,
+        RememberMeConfig.class
 })
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)

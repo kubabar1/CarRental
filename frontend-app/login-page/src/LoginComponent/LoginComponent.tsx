@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, ChangeEventHandler, useState } from 'react';
 import carRentalLogo from '../images/car_rental_logo_name.png';
 import './LoginComponent.scss';
 import { homePath, registrationPath } from '../constants/Paths';
@@ -7,6 +7,7 @@ import { endpoints } from '../constants/PathsApi';
 export function LoginComponent(): JSX.Element {
     const [username, setUsername] = useState<string | undefined>(undefined);
     const [password, setPassword] = useState<string | undefined>(undefined);
+    const [rememberMe, setRememberMe] = useState<boolean>(false);
     const [usernameError, setUsernameError] = useState<boolean>(false);
     const [passwordError, setPasswordError] = useState<boolean>(false);
     const [loginError, setLoginError] = useState<boolean>(false);
@@ -20,6 +21,9 @@ export function LoginComponent(): JSX.Element {
             setPasswordError(false);
             data.append('username', username);
             data.append('password', password);
+            if (rememberMe) {
+                data.append('remember-me', 'true');
+            }
             setIsSubmitButtonDisabled(true);
             fetch(endpoints.login, {
                 method: 'POST',
@@ -53,6 +57,10 @@ export function LoginComponent(): JSX.Element {
                 setPasswordError(true);
             }
         }
+    };
+
+    const handleRememberMe = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRememberMe(event.target.checked);
     };
 
     return (
@@ -97,7 +105,13 @@ export function LoginComponent(): JSX.Element {
 
                     <div className="checkbox mb-3">
                         <label>
-                            <input type="checkbox" value="remember-me" /> Remember me
+                            <input
+                                type="checkbox"
+                                name="remember-me"
+                                checked={rememberMe}
+                                onChange={handleRememberMe}
+                            />{' '}
+                            Remember me
                         </label>
                     </div>
 

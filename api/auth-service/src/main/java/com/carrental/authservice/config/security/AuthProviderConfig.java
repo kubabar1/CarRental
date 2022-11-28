@@ -1,4 +1,4 @@
-package com.carrental.authservice.config;
+package com.carrental.authservice.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
