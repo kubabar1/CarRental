@@ -17,82 +17,35 @@ import { ReservationConfirmation } from './subpages/ReservationConfirmation/Rese
 import { StepsHeader } from './components/StepsHeader/StepsHeader';
 import { ErrorCard } from './components/ErrorCard/ErrorCard';
 
-interface ReservationStepContainerState {
-    step: number;
-    userData?: UserDataResponseDTO;
-    localisations?: LocalisationResponseDTO[];
-    selectedLocalisationId?: string;
-    selectedReceptionDate?: Date;
-    selectedReceptionHour?: string;
-    selectedReturnDate?: Date;
-    selectedReturnHour?: string;
-    selectedVehicleId?: number;
-    validationErrorMessage?: string;
-}
+export function ReservationStepContainer(): JSX.Element {
+    const [step, setStep] = React.useState<number>(1);
+    const [userData, setUserData] = React.useState<UserDataResponseDTO | undefined>(undefined);
+    const [localisations, setLocalisations] = React.useState<LocalisationResponseDTO[] | undefined>(undefined);
+    const [selectedLocalisationId, setSelectedLocalisationId] = React.useState<string | undefined>(undefined);
+    const [selectedReceptionDate, setSelectedReceptionDate] = React.useState<Date | undefined>(undefined);
+    const [selectedReceptionHour, setSelectedReceptionHour] = React.useState<string | undefined>(undefined);
+    const [selectedReturnDate, setSelectedReturnDate] = React.useState<Date | undefined>(undefined);
+    const [selectedReturnHour, setSelectedReturnHour] = React.useState<string | undefined>(undefined);
+    const [selectedVehicleId, setSelectedVehicleId] = React.useState<number | undefined>(undefined);
 
-export class ReservationStepContainer extends React.Component<Record<string, never>, ReservationStepContainerState> {
-    constructor(props: Record<string, never>) {
-        super(props);
-        this.state = {
-            step: 1,
-        };
-    }
-
-    componentDidMount(): void {
+    React.useEffect(() => {
         fetch(endpoints.localisationsEndpoint)
             .then((response: Response) => {
                 response.json().then((localisations: LocalisationResponseDTO[]) => {
-                    this.setState({ localisations: localisations });
+                    setLocalisations(localisations);
                 });
             })
-            .finally(() => this.setState({ localisations: [localisationResponseDTOMock] })); // TODO: Remove
+            .finally(() => setLocalisations([localisationResponseDTOMock])); // TODO: Remove
         fetch(endpoints.currentUserDataEndpoint)
             .then((response: Response) => {
                 response.json().then((userData: UserDataResponseDTO) => {
-                    this.setState({ userData: userData });
+                    setUserData(userData);
                 });
             })
-            .finally(() => this.setState({ userData: currentUserDataResponseDTOMock })); // TODO: Remove
-    }
+            .finally(() => setUserData(currentUserDataResponseDTOMock)); // TODO: Remove
+    }, []);
 
-    setLocalisation = (selectedLocalisationId: string): void => {
-        this.setState({ selectedLocalisationId: selectedLocalisationId });
-    };
-
-    setReceptionDate = (receptionDate: Date): void => {
-        this.setState({ selectedReceptionDate: receptionDate });
-    };
-
-    setReceptionHour = (receptionHour: string): void => {
-        this.setState({ selectedReceptionHour: receptionHour });
-    };
-
-    setReturnDate = (returnDate: Date): void => {
-        this.setState({ selectedReturnDate: returnDate });
-    };
-
-    setReturnHour = (returnHour: string): void => {
-        this.setState({ selectedReturnHour: returnHour });
-    };
-
-    setCar = (vehicleId: number): void => {
-        this.setState({ selectedVehicleId: vehicleId });
-    };
-
-    setStep = (step: number): void => {
-        this.setState({ step: step });
-    };
-
-    renderReservationDataSubpage = (): JSX.Element => {
-        const {
-            localisations,
-            userData,
-            selectedLocalisationId,
-            selectedReceptionDate,
-            selectedReceptionHour,
-            selectedReturnDate,
-            selectedReturnHour,
-        } = this.state;
+    const renderReservationDataSubpage = (): JSX.Element => {
         return (
             <ReservationData
                 localisations={localisations}
@@ -102,25 +55,17 @@ export class ReservationStepContainer extends React.Component<Record<string, nev
                 selectedReceptionHour={selectedReceptionHour}
                 selectedReturnDate={selectedReturnDate}
                 selectedReturnHour={selectedReturnHour}
-                setLocalisation={this.setLocalisation}
-                setReceptionDate={this.setReceptionDate}
-                setReceptionHour={this.setReceptionHour}
-                setReturnDate={this.setReturnDate}
-                setReturnHour={this.setReturnHour}
-                setStep={this.setStep}
+                setLocalisation={setSelectedLocalisationId}
+                setReceptionDate={setSelectedReceptionDate}
+                setReceptionHour={setSelectedReceptionHour}
+                setReturnDate={setSelectedReturnDate}
+                setReturnHour={setSelectedReturnHour}
+                setStep={setStep}
             />
         );
     };
 
-    renderCarSelectSubpage = (): JSX.Element => {
-        const {
-            selectedLocalisationId,
-            selectedReceptionDate,
-            selectedReceptionHour,
-            selectedReturnDate,
-            selectedReturnHour,
-            selectedVehicleId,
-        } = this.state;
+    const renderCarSelectSubpage = (): JSX.Element => {
         return selectedLocalisationId &&
             selectedReceptionDate &&
             selectedReceptionHour &&
@@ -129,24 +74,15 @@ export class ReservationStepContainer extends React.Component<Record<string, nev
             <ReservationCarSelect
                 selectedLocalisationId={selectedLocalisationId}
                 selectedVehicleId={selectedVehicleId}
-                selectCar={this.setCar}
-                setStep={this.setStep}
+                selectCar={setSelectedVehicleId}
+                setStep={setStep}
             />
         ) : (
-            <ErrorCard message={'You need to provide proper data in previous step'} setStep={this.setStep} step={2} />
+            <ErrorCard message={'You need to provide proper data in previous step'} setStep={setStep} step={2} />
         );
     };
 
-    renderConfirmationSubpage = (): JSX.Element => {
-        const {
-            userData,
-            selectedLocalisationId,
-            selectedVehicleId,
-            selectedReceptionDate,
-            selectedReceptionHour,
-            selectedReturnDate,
-            selectedReturnHour,
-        } = this.state;
+    const renderConfirmationSubpage = (): JSX.Element => {
         return userData &&
             selectedLocalisationId &&
             selectedVehicleId &&
@@ -158,34 +94,27 @@ export class ReservationStepContainer extends React.Component<Record<string, nev
                 userData={userData}
                 selectedCityId={selectedLocalisationId}
                 selectedVehicleId={selectedVehicleId}
-                setStep={this.setStep}
+                setStep={setStep}
                 selectedReceptionDate={selectedReceptionDate}
                 selectedReceptionHour={selectedReceptionHour}
                 selectedReturnDate={selectedReturnDate}
                 selectedReturnHour={selectedReturnHour}
             />
         ) : (
-            <ErrorCard message={'You need to provide proper data in previous steps'} setStep={this.setStep} step={3} />
+            <ErrorCard message={'You need to provide proper data in previous steps'} setStep={setStep} step={3} />
         );
     };
 
-    render(): JSX.Element {
-        const { step } = this.state;
-        return (
-            <div>
-                <Logo />
-                <StepsHeader step={step} />
-                <Switch>
-                    <Route
-                        exact
-                        path={reservationRootLink}
-                        render={() => <Redirect to={reservationDataSubpageLink} />}
-                    />
-                    <Route exact path={reservationDataSubpageLink} component={this.renderReservationDataSubpage} />
-                    <Route exact path={carSelectSubpageLink} component={this.renderCarSelectSubpage} />
-                    <Route exact path={confirmationSubpageLink} component={this.renderConfirmationSubpage} />
-                </Switch>
-            </div>
-        );
-    }
+    return (
+        <div>
+            <Logo />
+            <StepsHeader step={step} />
+            <Switch>
+                <Route exact path={reservationRootLink} render={() => <Redirect to={reservationDataSubpageLink} />} />
+                <Route exact path={reservationDataSubpageLink} component={renderReservationDataSubpage} />
+                <Route exact path={carSelectSubpageLink} component={renderCarSelectSubpage} />
+                <Route exact path={confirmationSubpageLink} component={renderConfirmationSubpage} />
+            </Switch>
+        </div>
+    );
 }

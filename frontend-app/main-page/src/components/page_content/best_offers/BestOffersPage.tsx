@@ -67,7 +67,7 @@ function BestOffersPage(): JSX.Element {
                 <div>
                     {vehiclesPage &&
                         vehiclesPage.content.map((vehicle: VehicleResponseDTO) => (
-                            <VehicleItem vehicle={vehicle} key={vehicle.id} showBestOffer />
+                            <VehicleItem vehicle={vehicle} key={vehicle.id} />
                         ))}
                     {vehiclesPage && (
                         <div className="pagination-and-counter-container">

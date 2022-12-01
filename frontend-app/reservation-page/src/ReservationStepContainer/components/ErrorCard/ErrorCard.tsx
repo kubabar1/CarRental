@@ -6,20 +6,12 @@ interface ErrorCardProperties {
     setStep: (step: number) => void;
 }
 
-export class ErrorCard extends React.Component<ErrorCardProperties> {
-    constructor(props: ErrorCardProperties) {
-        super(props);
-    }
+export function ErrorCard({ message, step, setStep }: ErrorCardProperties): JSX.Element {
+    setStep(step);
 
-    componentDidMount(): void {
-        this.props.setStep(this.props.step);
-    }
-
-    render(): JSX.Element {
-        return (
-            <div key="inputError" className="text-center container alert alert-danger my-4">
-                {this.props.message}
-            </div>
-        );
-    }
+    return (
+        <div key="inputError" className="text-center container alert alert-danger my-4">
+            {message}
+        </div>
+    );
 }

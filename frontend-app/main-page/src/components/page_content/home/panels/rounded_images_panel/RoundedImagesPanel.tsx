@@ -7,8 +7,8 @@ import sedanCarRound from '../../../../../images/sedan_car_round.jpeg';
 import suvCarRound from '../../../../../images/suv_car_round.jpeg';
 import hatchbackCarRound from '../../../../../images/hatchback_car_round.jpeg';
 
-export class RoundedImagesPanel extends React.Component {
-    renderRoundedImage = (
+export function RoundedImagesPanel(): JSX.Element {
+    const renderRoundedImage = (
         carCategoryName: string,
         image: string,
         link: string,
@@ -26,18 +26,16 @@ export class RoundedImagesPanel extends React.Component {
         );
     };
 
-    render(): JSX.Element {
-        return (
-            <div id="car-types-round-images">
-                <div className="container car-types-round-images-container">
-                    <div className="row">
-                        {this.renderRoundedImage('Coupe', coupeCarRound, `${carListLink}?bodyType=Coupe`)}
-                        {this.renderRoundedImage('Sedan', sedanCarRound, `${carListLink}?bodyType=Sedan`)}
-                        {this.renderRoundedImage('SUV', suvCarRound, `${carListLink}?bodyType=SUV`)}
-                        {this.renderRoundedImage('Hatchback', hatchbackCarRound, `${carListLink}?bodyType=Hatchback`)}
-                    </div>
+    return (
+        <div id="car-types-round-images">
+            <div className="container car-types-round-images-container">
+                <div className="row">
+                    {renderRoundedImage('Coupe', coupeCarRound, `${carListLink}?bodyType=Coupe`)}
+                    {renderRoundedImage('Sedan', sedanCarRound, `${carListLink}?bodyType=Sedan`)}
+                    {renderRoundedImage('SUV', suvCarRound, `${carListLink}?bodyType=SUV`)}
+                    {renderRoundedImage('Hatchback', hatchbackCarRound, `${carListLink}?bodyType=Hatchback`)}
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
 }

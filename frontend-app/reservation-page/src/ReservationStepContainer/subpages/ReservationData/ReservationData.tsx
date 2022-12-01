@@ -20,54 +20,45 @@ interface ReservationDataProperties {
     setStep: (step: number) => void;
 }
 
-export class ReservationData extends React.Component<ReservationDataProperties> {
-    constructor(props: ReservationDataProperties) {
-        super(props);
-    }
+export function ReservationData({
+    selectedLocalisationId,
+    selectedReceptionDate,
+    selectedReturnDate,
+    localisations,
+    userData,
+    setLocalisation,
+    setReceptionDate,
+    setReceptionHour,
+    setReturnDate,
+    setReturnHour,
+    selectedReceptionHour,
+    selectedReturnHour,
+    setStep,
+}: ReservationDataProperties): JSX.Element {
+    setStep(1);
 
-    componentDidMount(): void {
-        this.props.setStep(1);
-    }
-
-    render(): JSX.Element {
-        const {
-            selectedLocalisationId,
-            selectedReceptionDate,
-            selectedReturnDate,
-            localisations,
-            userData,
-            setLocalisation,
-            setReceptionDate,
-            setReceptionHour,
-            setReturnDate,
-            setReturnHour,
-            selectedReceptionHour,
-            selectedReturnHour,
-        } = this.props;
-
-        return (
-            <main>
-                <div id="reservation-data-container" className="container col-md-6 offset-md-3 my-5 ">
-                    <form>
-                        {userData && <PersonalDataCard userData={userData} />}
-                        {localisations && (
-                            <ReservationDataCard
-                                selectedLocalisationId={selectedLocalisationId}
-                                receptionDate={selectedReceptionDate}
-                                returnDate={selectedReturnDate}
-                                receptionHour={selectedReceptionHour}
-                                returnHour={selectedReturnHour}
-                                localisations={localisations}
-                                setLocalisation={setLocalisation}
-                                setReceptionDate={setReceptionDate}
-                                setReceptionHour={setReceptionHour}
-                                setReturnDate={setReturnDate}
-                                setReturnHour={setReturnHour}
-                            />
-                        )}
-                    </form>
-                </div>
-            </main>
-        );
-    }
+    return (
+        <main>
+            <div id="reservation-data-container" className="container col-md-6 offset-md-3 my-5 ">
+                <form>
+                    {userData && <PersonalDataCard userData={userData} />}
+                    {localisations && (
+                        <ReservationDataCard
+                            selectedLocalisationId={selectedLocalisationId}
+                            receptionDate={selectedReceptionDate}
+                            returnDate={selectedReturnDate}
+                            receptionHour={selectedReceptionHour}
+                            returnHour={selectedReturnHour}
+                            localisations={localisations}
+                            setLocalisation={setLocalisation}
+                            setReceptionDate={setReceptionDate}
+                            setReceptionHour={setReceptionHour}
+                            setReturnDate={setReturnDate}
+                            setReturnHour={setReturnHour}
+                        />
+                    )}
+                </form>
+            </div>
+        </main>
+    );
 }

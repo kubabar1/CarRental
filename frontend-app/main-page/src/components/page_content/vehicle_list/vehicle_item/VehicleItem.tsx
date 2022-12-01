@@ -8,15 +8,10 @@ import { carDetailsByIdLink } from '../../../../constants/Links';
 
 interface CarItemProperties {
     vehicle: VehicleResponseDTO;
-    showBestOffer?: boolean;
 }
 
-export function VehicleItem({ vehicle, showBestOffer }: CarItemProperties): JSX.Element {
+export function VehicleItem({ vehicle }: CarItemProperties): JSX.Element {
     const vehicleImage: string = carImagesMainPageCarList(vehicle.vehicleDetails.photoName);
-
-    console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLl');
-    console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLl');
-    console.log(vehicle);
 
     return (
         <Link to={carDetailsByIdLink(vehicle.id)} style={{ textDecoration: 'none' }}>
@@ -64,7 +59,7 @@ export function VehicleItem({ vehicle, showBestOffer }: CarItemProperties): JSX.
                             </div>
                         </div>
                     </div>
-                    {showBestOffer && vehicle.bestOffer && (
+                    {vehicle.bestOffer && (
                         <div className="alert alert-danger special-offer-vehicle-item" role="alert">
                             BEST OFFER
                         </div>

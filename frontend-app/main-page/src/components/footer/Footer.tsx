@@ -5,19 +5,17 @@ import { Contact } from './contact/Contact';
 import { PagesList } from './pages_list/PagesList';
 import './Footer.scss';
 
-export class Footer extends React.Component {
-    render(): JSX.Element {
-        return (
-            <footer>
-                <div className="container">
-                    <div className="row">
-                        <PagesList />
-                        <Socials />
-                        <Contact />
-                    </div>
+export function Footer(): JSX.Element {
+    return (
+        <footer>
+            <div className="container">
+                <div className="row">
+                    <PagesList />
+                    <Socials />
+                    <Contact />
                 </div>
-                <Copyright />
-            </footer>
-        );
-    }
+            </div>
+            <Copyright />
+        </footer>
+    );
 }

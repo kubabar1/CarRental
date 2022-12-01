@@ -3,39 +3,24 @@ import { Link } from 'react-router-dom';
 import './MainNav.scss';
 import { homeLink } from '../../constants/Links';
 import { Navbar } from './navbar/Navbar';
+import carLogo from '../../images/car_logo.png';
 
-interface MainNavState {
-    active: boolean;
-}
+export function MainNav(): JSX.Element {
+    const [active, setActive] = React.useState<boolean>(false);
 
-export class MainNav extends React.Component<Record<string, never>, MainNavState> {
-    constructor(props: Record<string, never>) {
-        super(props);
-        this.state = {
-            active: false,
-        };
-    }
-
-    toggleClass = (): void => {
-        const currentState = this.state.active;
-        this.setState({ active: !currentState });
+    const toggleClass = (): void => {
+        setActive(!active);
     };
 
-    setTrue = (): void => {
-        this.setState({ active: true });
-    };
-
-    render(): JSX.Element {
-        return (
-            <nav id="main-nav" className="navbar navbar-expand-lg navbar-light sticky-top">
-                <Link to={homeLink} className="navbar-brand pl-5 linkstyle">
-                    <img id="main-nav-logo-img" src={require('../../images/car_logo.png')} alt="Logo" />
-                </Link>
-                <button className="navbar-toggler" type="button" onClick={this.toggleClass}>
-                    <span className="navbar-toggler-icon" />
-                </button>
-                <Navbar active={this.state.active} setTrue={this.setTrue} />
-            </nav>
-        );
-    }
+    return (
+        <nav id="main-nav" className="navbar navbar-expand-lg navbar-light sticky-top">
+            <Link to={homeLink} className="navbar-brand pl-5 linkstyle">
+                <img id="main-nav-logo-img" src={carLogo} alt="Logo" />
+            </Link>
+            <button className="navbar-toggler" type="button" onClick={toggleClass}>
+                <span className="navbar-toggler-icon" />
+            </button>
+            <Navbar active={active} setTrue={() => setActive(true)} />
+        </nav>
+    );
 }
