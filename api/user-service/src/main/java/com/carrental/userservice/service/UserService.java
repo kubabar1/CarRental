@@ -26,4 +26,6 @@ public interface UserService {
     UserResponseDTO enableUser(Long userId) throws NoSuchElementException;
 
     UserDetailsDTO getUserByEmail(String email) throws NoSuchElementException;
+
+    UserEmailUniqueDTO isUserEmailUnique(String email);
 }

@@ -1,11 +1,11 @@
 export class CreateUserDTO {
-    private firstName: string;
-    private lastName: string;
-    private email: string;
-    private phone: string;
-    private birthDate: string;
-    private password: string;
-    private matchingPassword: string;
+    public firstName?: string;
+    public lastName?: string;
+    public email?: string;
+    public phone?: string;
+    public birthDate?: string;
+    public password?: string;
+    public matchingPassword?: string;
 
     constructor(
         firstName: string,

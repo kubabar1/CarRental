@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,7 +34,7 @@ public class UserEntity implements Serializable {
     private String phone;
 
     @Column(name = "birth_date", nullable = false)
-    private String birthDate;
+    private LocalDate birthDate;
 
     @Column(name = "enabled")
     private boolean enabled = false;

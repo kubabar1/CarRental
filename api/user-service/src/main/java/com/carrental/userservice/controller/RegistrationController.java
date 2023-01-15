@@ -8,16 +8,16 @@ import com.carrental.userservice.model.event.OnRegistrationCompleteEvent;
 import com.carrental.userservice.service.UserService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -54,7 +54,8 @@ public class RegistrationController {
 
     @GetMapping(value = "/registration-confirm")
     public ResponseEntity<UserResponseDTO> registrationConfirmController(@RequestParam("token") String token) {
-        VerificationTokenDTO verificationToken = rabbitTemplate.convertSendAndReceiveAsType("verifyTokenQueue", token, new ParameterizedTypeReference<>() {});
+        VerificationTokenDTO verificationToken = rabbitTemplate.convertSendAndReceiveAsType("verifyTokenQueue", token, new ParameterizedTypeReference<>() {
+        });
         if (verificationToken != null) {
             UserResponseDTO userResponseDTO = userService.enableUser(verificationToken.getUserId());
             HttpHeaders headers = new HttpHeaders();
@@ -67,7 +68,8 @@ public class RegistrationController {
 
     @GetMapping(value = "/resend-registration-confirm")
     public ResponseEntity<?> resendRegistrationToken(@RequestParam("token") String token) {
-        VerificationTokenDTO verificationToken = rabbitTemplate.convertSendAndReceiveAsType("verifyTokenQueue", token, new ParameterizedTypeReference<>() {});
+        VerificationTokenDTO verificationToken = rabbitTemplate.convertSendAndReceiveAsType("verifyTokenQueue", token, new ParameterizedTypeReference<>() {
+        });
         if (verificationToken != null) {
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(this, verificationToken.getUserId(), true));
             return ResponseEntity.ok().build();
@@ -78,12 +80,12 @@ public class RegistrationController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        List<String> errors = ex.getBindingResult().getAllErrors().stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .collect(Collectors.toList());
-        return ResponseEntity
-                .badRequest()
-                .body(errors);
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = ex.getBindingResult().getAllErrors().stream()
+            .collect(Collectors.toMap(
+                e -> e instanceof FieldError ? ((FieldError) e).getField() : "",
+                e -> e.getDefaultMessage() == null ? "" : e.getDefaultMessage())
+            );
+        return ResponseEntity.badRequest().body(errors);
     }
 }

@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDTO createUser(CreateUserDTO createUserDTO) throws UserAlreadyExistException {
-        validateUserEmail(createUserDTO);
+        validateUser(createUserDTO);
 
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(createUserDTO.getEmail());
@@ -103,8 +103,11 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(userRepository.save(userEntity), UserResponseDTO.class);
     }
 
-    private void validateUserEmail(CreateUserDTO createUserDTO) throws UserAlreadyExistException {
-        String emailOfUserToCreate = createUserDTO.getEmail();
+    private void validateUser(CreateUserDTO createUserDTO) throws UserAlreadyExistException {
+        validateUserEmail(createUserDTO.getEmail());
+    }
+
+    private void validateUserEmail(String emailOfUserToCreate) throws UserAlreadyExistException {
         UserEntity userWithGivenEmail = userRepository.findByEmail(emailOfUserToCreate).orElse(null);
         if (userWithGivenEmail != null) {
             throw new UserAlreadyExistException("User with given email already exists");
@@ -122,5 +125,11 @@ public class UserServiceImpl implements UserService {
     public UserDetailsDTO getUserByEmail(String email) throws NoSuchElementException {
         UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
         return modelMapper.map(userEntity, UserDetailsDTO.class);
+    }
+
+    @Override
+    public UserEmailUniqueDTO isUserEmailUnique(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email).orElse(null);
+        return new UserEmailUniqueDTO(userEntity == null);
     }
 }

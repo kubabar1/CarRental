@@ -10,14 +10,19 @@
     "start": "webpack serve"
   },
   "devDependencies": {
+    "@types/qs": "^6.9.5",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",
+    "@types/react-router-dom": "^5.1.7",
     "html-webpack-plugin": "^5.1.0",
     "webpack": "^5.21.2"
   },
   "dependencies": {
     "bootstrap": "^4.6.0",
+    "qs": "^6.9.6",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "react-password-strength-bar": "^0.4.1",
+    "react-router-dom": "^5.2.0"
   }
 }

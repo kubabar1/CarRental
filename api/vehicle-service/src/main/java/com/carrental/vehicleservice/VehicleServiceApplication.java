@@ -6,7 +6,9 @@ import com.carrental.commons.config.SpringFoxConfig;
 import com.carrental.vehicleservice.config.VehicleServiceCoreConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.WebApplicationInitializer;
 
 @SpringBootApplication
 @Import({
@@ -15,7 +17,7 @@ import org.springframework.context.annotation.Import;
         SpringFoxConfig.class,
         VehicleServiceCoreConfig.class
 })
-public class VehicleServiceApplication {
+public class VehicleServiceApplication extends SpringBootServletInitializer implements WebApplicationInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(VehicleServiceApplication.class, args);

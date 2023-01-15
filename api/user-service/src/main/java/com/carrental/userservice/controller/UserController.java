@@ -1,6 +1,7 @@
 package com.carrental.userservice.controller;
 
 import com.carrental.userservice.model.dto.RoleAddDTO;
+import com.carrental.userservice.model.dto.UserEmailUniqueDTO;
 import com.carrental.userservice.model.dto.UserUpdateDTO;
 import com.carrental.userservice.model.dto.UserResponseDTO;
 import com.carrental.userservice.service.UserService;
@@ -30,12 +31,16 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getUsers(pageable));
     }
 
+    @GetMapping("/unique-email")
+    public ResponseEntity<UserEmailUniqueDTO> getUserEmailUniqueController(String userEmail) {
+        return ResponseEntity.ok().body(userService.isUserEmailUnique(userEmail));
+    }
+
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserResponseDTO> getUserByIdController(@PathVariable("id") Long userId) {
         try {
-            UserResponseDTO userResponseDTO = userService.getUserById(userId);
-            return ResponseEntity.ok().body(userResponseDTO);
+            return ResponseEntity.ok().body(userService.getUserById(userId));
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
