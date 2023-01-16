@@ -17,6 +17,8 @@ public interface UserService {
 
     UserResponseDTO createUser(CreateUserDTO createUserDTO) throws UserAlreadyExistException;
 
+    UserResponseDTO updateUserPassword(PasswordUpdateDTO passwordUpdateDTO) throws AuthorizationException, NoSuchElementException;
+
     UserResponseDTO addRolesToUser(Long userId, List<RoleAddDTO> roleAddDTOs) throws NoSuchElementException;
 
     Page<UserResponseDTO> getUsers(Pageable pageable) throws NoSuchElementException;

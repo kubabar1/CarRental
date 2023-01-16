@@ -3,6 +3,7 @@ package com.carrental.userservice.annotation.validator;
 
 import com.carrental.userservice.annotation.PasswordMatches;
 import com.carrental.userservice.model.dto.CreateUserDTO;
+import com.carrental.userservice.model.dto.PasswordUpdateDTO;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -15,22 +16,30 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
+        boolean result = false;
         if (value == null) {
             return false;
         }
-
-        CreateUserDTO createUserDTO = (CreateUserDTO) value;
-        boolean result = createUserDTO.getPassword().equals(createUserDTO.getMatchingPassword());
-
-        if (result) {
-            return true;
-        }
-
         context.disableDefaultConstraintViolation();
-        context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+        if (value instanceof CreateUserDTO) {
+            result = validateUserCreationCase((CreateUserDTO) value);
+            context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
                 .addPropertyNode("matchingPassword")
                 .addConstraintViolation();
+        } else if (value instanceof PasswordUpdateDTO) {
+            result = validatePasswordUpdateCase((PasswordUpdateDTO) value);
+            context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                .addPropertyNode("confirmPassword")
+                .addConstraintViolation();
+        }
+        return result;
+    }
 
-        return false;
+    private boolean validateUserCreationCase(CreateUserDTO createUserDTO) {
+        return createUserDTO.getPassword().equals(createUserDTO.getMatchingPassword());
+    }
+
+    private boolean validatePasswordUpdateCase(PasswordUpdateDTO passwordUpdateDTO) {
+        return passwordUpdateDTO.getNewPassword().equals(passwordUpdateDTO.getConfirmPassword());
     }
 }

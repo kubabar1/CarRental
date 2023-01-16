@@ -5,6 +5,7 @@ import com.carrental.userservice.controller.RegistrationController;
 import com.carrental.userservice.controller.UserController;
 import com.carrental.userservice.controller.UserRoleController;
 import com.carrental.userservice.listener.RegistrationCompleteListener;
+import com.carrental.userservice.listener.ResendRegistrationConfirmTokenListener;
 import com.carrental.userservice.listener.UserListener;
 import com.carrental.userservice.repository.UserRepository;
 import com.carrental.userservice.repository.UserRoleRepository;
@@ -64,6 +65,11 @@ public class UserServiceCoreConfig {
     @Bean
     public RegistrationCompleteListener registrationListener(RabbitTemplate rabbitTemplate) {
         return new RegistrationCompleteListener(rabbitTemplate);
+    }
+
+    @Bean
+    public ResendRegistrationConfirmTokenListener resendRegistrationConfirmTokenListener(RabbitTemplate rabbitTemplate) {
+        return new ResendRegistrationConfirmTokenListener(rabbitTemplate);
     }
 
     @Bean

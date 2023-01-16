@@ -3,21 +3,21 @@ package com.carrental.userservice.listener;
 import com.carrental.userservice.model.dto.SendMailDTO;
 import com.carrental.userservice.model.dto.TokenRequestDTO;
 import com.carrental.userservice.model.dto.VerificationTokenDTO;
-import com.carrental.userservice.model.event.OnRegistrationCompleteEvent;
+import com.carrental.userservice.model.event.OnResendRegistrationConfirmTokenEvent;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.ParameterizedTypeReference;
 
-public class RegistrationCompleteListener implements ApplicationListener<OnRegistrationCompleteEvent> {
+public class ResendRegistrationConfirmTokenListener implements ApplicationListener<OnResendRegistrationConfirmTokenEvent> {
 
     private final RabbitTemplate rabbitTemplate;
 
-    public RegistrationCompleteListener(RabbitTemplate rabbitTemplate) {
+    public ResendRegistrationConfirmTokenListener(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 
     @Override
-    public void onApplicationEvent(OnRegistrationCompleteEvent event) {
+    public void onApplicationEvent(OnResendRegistrationConfirmTokenEvent event) {
         VerificationTokenDTO verificationToken = rabbitTemplate.convertSendAndReceiveAsType(
             "generateTokenQueue",
             new TokenRequestDTO(event.getUserId()),
@@ -28,15 +28,15 @@ public class RegistrationCompleteListener implements ApplicationListener<OnRegis
             String recipientAddress = "greenmail@localhost";
             rabbitTemplate.convertAndSend(
                 "sendEmailQueue",
-                createResendVerificationTokenMailText(recipientAddress, verificationToken.getToken())
+                createConfirmRegistrationMailText(recipientAddress, verificationToken.getToken())
             );
         }
     }
 
-    private SendMailDTO createResendVerificationTokenMailText(String recipientAddress, String token) {
+    private SendMailDTO createConfirmRegistrationMailText(String recipientAddress, String token) {
         SendMailDTO sendMailDTO = new SendMailDTO();
         sendMailDTO.setRecipient(recipientAddress);
-        sendMailDTO.setSubject("Resend verification token confirmation");
+        sendMailDTO.setSubject("Registration Confirmation");
         sendMailDTO.setText("Your account was successfully created.\n"
             + "http://localhost:8080/registration/registration-confirm?token="
             + token);

@@ -20,9 +20,10 @@ export function FormContainer({
                 event.preventDefault();
                 onSubmit(event);
             }}
+            className="form-container"
         >
             {children}
-            <div className="ml-4 my-4 text-center">
+            <div className="my-4 text-center">
                 <Button type="submit" disabled={isSubmitButtonDisabled}>
                     {submitButtonValue}
                 </Button>

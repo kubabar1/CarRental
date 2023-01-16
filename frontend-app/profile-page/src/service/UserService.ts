@@ -1,7 +1,7 @@
 import { UserResponseDTO } from '../model/UserResponseDTO';
 import { UserRoleResponseDTO } from '../model/UserRoleResponseDTO';
 import { UserUpdateDTO } from '../model/UserUpdateDTO';
-import { fetchGet, fetchPost } from './FetchUtil';
+import { fetchGet, fetchPost, fetchPut, ResponseData } from './FetchUtil';
 import {
     ADD_ROLE_TO_USER_PATH,
     GET_AUTHORIZED_USER_PATH,
@@ -10,12 +10,14 @@ import {
     GET_USERS_PATH,
     GET_USERS_ROLES_PATH,
     UPDATE_AUTHORIZED_USER_PATH,
+    UPDATE_USER_PASSWORD_PATH,
     UPDATE_USER_PATH,
 } from '../constants/PathsAPI';
 import { RoleAddDTO } from '../model/RoleAddDTO';
 import Page from '../../../main-page/src/model/Page';
 import { PAGE_REQUEST } from '../../../main-page/src/constants/PathsAPI';
 import { AuthenticatedUserDTO } from '../model/AuthenticatedUserDTO';
+import { PasswordUpdateDTO } from '../model/PasswordUpdateDTO';
 
 export const getAuthorizedUserData = (): Promise<AuthenticatedUserDTO> => {
     return fetchGet<AuthenticatedUserDTO>(GET_AUTHORIZED_USER_PATH);
@@ -50,4 +52,10 @@ export const addRolesToUser = (userRolesId: string[], userId: string): Promise<U
         ADD_ROLE_TO_USER_PATH(userId),
         userRolesId.map((userRoleId: string) => new RoleAddDTO(userRoleId))
     );
+};
+
+export const updateUserPassword = (
+    passwordUpdateDRO: PasswordUpdateDTO
+): Promise<ResponseData<UserResponseDTO | PasswordUpdateDTO>> => {
+    return fetchPut<UserResponseDTO | PasswordUpdateDTO>(UPDATE_USER_PASSWORD_PATH, passwordUpdateDRO);
 };

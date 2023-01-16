@@ -1,10 +1,13 @@
 package com.carrental.userservice.controller;
 
+import com.carrental.commons.authentication.exception.AuthorizationException;
 import com.carrental.userservice.exception.UserAlreadyExistException;
 import com.carrental.userservice.model.dto.CreateUserDTO;
+import com.carrental.userservice.model.dto.PasswordUpdateDTO;
 import com.carrental.userservice.model.dto.UserResponseDTO;
 import com.carrental.userservice.model.dto.VerificationTokenDTO;
 import com.carrental.userservice.model.event.OnRegistrationCompleteEvent;
+import com.carrental.userservice.model.event.OnResendRegistrationConfirmTokenEvent;
 import com.carrental.userservice.service.UserService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.ApplicationEventPublisher;
@@ -12,6 +15,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +36,9 @@ public class RegistrationController {
     private final RabbitTemplate rabbitTemplate;
 
     public RegistrationController(
-            UserService userService,
-            ApplicationEventPublisher eventPublisher,
-            RabbitTemplate rabbitTemplate
+        UserService userService,
+        ApplicationEventPublisher eventPublisher,
+        RabbitTemplate rabbitTemplate
     ) {
         this.userService = userService;
         this.eventPublisher = eventPublisher;
@@ -42,20 +46,33 @@ public class RegistrationController {
     }
 
     @PutMapping(value = "/register-user")
-    public ResponseEntity<UserResponseDTO> registerUser(@Valid @RequestBody CreateUserDTO createUserDTO) {
+    public ResponseEntity<UserResponseDTO> registerUserController(@Valid @RequestBody CreateUserDTO createUserDTO) {
         try {
             UserResponseDTO createdUser = userService.createUser(createUserDTO);
-            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(this, createdUser.getId(), false));
+            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(this, createdUser.getId()));
             return ResponseEntity.ok().body(createdUser);
         } catch (UserAlreadyExistException exception) {
             return ResponseEntity.badRequest().build();
         }
     }
 
+    @PutMapping(value = "/update-password")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UserResponseDTO> updatePasswordController(@Valid @RequestBody PasswordUpdateDTO passwordUpdateDTO) {
+        try {
+            return ResponseEntity.ok().body(userService.updateUserPassword(passwordUpdateDTO));
+        } catch (AuthorizationException | UserAlreadyExistException exception) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @GetMapping(value = "/registration-confirm")
     public ResponseEntity<UserResponseDTO> registrationConfirmController(@RequestParam("token") String token) {
-        VerificationTokenDTO verificationToken = rabbitTemplate.convertSendAndReceiveAsType("verifyTokenQueue", token, new ParameterizedTypeReference<>() {
-        });
+        VerificationTokenDTO verificationToken = rabbitTemplate.convertSendAndReceiveAsType(
+            "verifyTokenQueue",
+            token,
+            new ParameterizedTypeReference<>() {}
+        );
         if (verificationToken != null) {
             UserResponseDTO userResponseDTO = userService.enableUser(verificationToken.getUserId());
             HttpHeaders headers = new HttpHeaders();
@@ -68,10 +85,13 @@ public class RegistrationController {
 
     @GetMapping(value = "/resend-registration-confirm")
     public ResponseEntity<?> resendRegistrationToken(@RequestParam("token") String token) {
-        VerificationTokenDTO verificationToken = rabbitTemplate.convertSendAndReceiveAsType("verifyTokenQueue", token, new ParameterizedTypeReference<>() {
-        });
+        VerificationTokenDTO verificationToken = rabbitTemplate.convertSendAndReceiveAsType(
+            "verifyTokenQueue",
+            token,
+            new ParameterizedTypeReference<>() {}
+        );
         if (verificationToken != null) {
-            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(this, verificationToken.getUserId(), true));
+            eventPublisher.publishEvent(new OnResendRegistrationConfirmTokenEvent(this, verificationToken.getUserId()));
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.badRequest().build();

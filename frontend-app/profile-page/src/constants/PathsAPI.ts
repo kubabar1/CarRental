@@ -72,6 +72,8 @@ export const GET_AUTHORIZED_USER_PATH = `${APP_ADDR}/authentication/user-data`;
 
 export const UPDATE_USER_PATH = (userId: string): string => withId(`${APP_ADDR}/users`, userId);
 
+export const UPDATE_USER_PASSWORD_PATH = `${APP_ADDR}/registration/update-password`;
+
 export const UPDATE_AUTHORIZED_USER_PATH = `${APP_ADDR}/users/authorized`;
 
 export const GET_USER_BY_ID_PATH = (userId: string): string => withId(`${APP_ADDR}/users`, userId);

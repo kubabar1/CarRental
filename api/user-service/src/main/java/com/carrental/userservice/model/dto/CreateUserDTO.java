@@ -41,10 +41,10 @@ public class CreateUserDTO implements Serializable {
 
     @NotEmpty
     @ValidPassword
-    @Length(max = 100)
+    @Length(max = 16)
     private String password;
 
     @NotEmpty
-    @Length(max = 100)
+    @Length(max = 16)
     private String matchingPassword;
 }

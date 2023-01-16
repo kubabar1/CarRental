@@ -1,3 +1,8 @@
+export interface ResponseData<T> {
+    statusCode: number;
+    responseBody?: T;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
 export async function fetchPost<T>(getPath: string, data?: any): Promise<T> {
     return fetch(getPath, {
@@ -22,7 +27,7 @@ export async function fetchPost<T>(getPath: string, data?: any): Promise<T> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-export async function fetchPut<T>(getPath: string, data?: any): Promise<T> {
+export async function fetchPut<T>(getPath: string, data?: any): Promise<ResponseData<T>> {
     return fetch(getPath, {
         method: 'PUT',
         mode: 'cors',
@@ -40,7 +45,9 @@ export async function fetchPut<T>(getPath: string, data?: any): Promise<T> {
         } else {
             console.log('PUT NOK');
         }
-        return res.json();
+        return res.json().then((data) => {
+            return { statusCode: res.status, responseBody: data };
+        });
     });
 }
 

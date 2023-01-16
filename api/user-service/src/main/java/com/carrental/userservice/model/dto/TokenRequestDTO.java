@@ -8,4 +8,11 @@ import java.io.Serializable;
 public class TokenRequestDTO implements Serializable {
 
     private Long userId;
+
+    public TokenRequestDTO() {
+    }
+
+    public TokenRequestDTO(Long userId) {
+        this.userId = userId;
+    }
 }

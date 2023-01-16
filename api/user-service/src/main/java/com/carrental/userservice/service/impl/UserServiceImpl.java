@@ -103,6 +103,18 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(userRepository.save(userEntity), UserResponseDTO.class);
     }
 
+    @Override
+    public UserResponseDTO updateUserPassword(PasswordUpdateDTO passwordUpdateDTO) throws AuthorizationException, NoSuchElementException {
+        AuthenticatedUserDTO authenticatedUserData = authenticatedUserDataService.getAuthenticatedUserData();
+        UserEntity userEntity = userRepository.findById(authenticatedUserData.getId()).orElseThrow();
+        boolean isCurrentPasswordCorrect = passwordEncoder.matches(passwordUpdateDTO.getCurrentPassword(), userEntity.getPassword());
+        if (!isCurrentPasswordCorrect) {
+            throw new AuthorizationException("Given current password is not correct.");
+        }
+        userEntity.setPassword(passwordEncoder.encode(passwordUpdateDTO.getNewPassword()));
+        return modelMapper.map(userRepository.save(userEntity), UserResponseDTO.class);
+    }
+
     private void validateUser(CreateUserDTO createUserDTO) throws UserAlreadyExistException {
         validateUserEmail(createUserDTO.getEmail());
     }

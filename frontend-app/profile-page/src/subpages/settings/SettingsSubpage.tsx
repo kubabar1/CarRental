@@ -7,12 +7,16 @@ import { getAuthorizedUserData, updateAuthorizedUserData } from '../../service/U
 import { FormContainer } from '../../components/form/FormContainer';
 import { UserUpdateDTO } from '../../model/UserUpdateDTO';
 import { AuthenticatedUserDTO } from '../../model/AuthenticatedUserDTO';
+import { Button } from 'react-bootstrap';
+import './SettingsSubpage.scss';
+import { ChangePasswordModal } from './modal/ChangePasswordModal';
 
 export function SettingsSubpage(): JSX.Element {
     const [name, setName] = useState<string | undefined>(undefined);
     const [surname, setSurname] = useState<string | undefined>(undefined);
     const [phone, setPhone] = useState<string | undefined>(undefined);
     const [birthDate, setBirthDate] = useState<string | undefined>(undefined);
+    const [modalShow, setModalShow] = React.useState(false);
 
     useEffect(() => {
         getAuthorizedUserData().then((authenticatedUserDTO: AuthenticatedUserDTO) => {
@@ -24,7 +28,7 @@ export function SettingsSubpage(): JSX.Element {
     }, []);
 
     return (
-        <SubpageContainer>
+        <SubpageContainer className="settings-container">
             <SubpageHeader title={'Settings'} />
             <SubpageContent>
                 <FormContainer
@@ -68,6 +72,12 @@ export function SettingsSubpage(): JSX.Element {
                         }}
                         type={'date'}
                     />
+                    <div className="button-container">
+                        <Button variant="primary" onClick={() => setModalShow(true)}>
+                            Change password
+                        </Button>
+                        <ChangePasswordModal show={modalShow} onHide={() => setModalShow(false)} />
+                    </div>
                 </FormContainer>
             </SubpageContent>
         </SubpageContainer>

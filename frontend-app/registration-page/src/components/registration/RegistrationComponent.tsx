@@ -28,8 +28,6 @@ export function RegistrationComponent(): JSX.Element {
     const [passwordError, setPasswordError] = useState<string | undefined>(undefined);
     const [matchingPasswordError, setMatchingPasswordError] = useState<string | undefined>(undefined);
 
-    const [userResponseDTO, setUserResponseDTO] = useState<UserResponseDTO | undefined>(undefined);
-
     const history = useHistory();
 
     const EMAIL_PATTERN = /^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})$/;
@@ -148,8 +146,8 @@ export function RegistrationComponent(): JSX.Element {
             setMatchingPasswordError('Matching password cannot be empty');
             isValid = false;
         }
-        if (!!matchingPassword && matchingPassword.length > 100) {
-            setMatchingPasswordError('Matching password should be shorter than 100 characters');
+        if (!!matchingPassword && matchingPassword.length > 16) {
+            setMatchingPasswordError('Matching password should be shorter than 16 characters');
             isValid = false;
         }
         if (matchingPassword !== password) {
@@ -176,7 +174,6 @@ export function RegistrationComponent(): JSX.Element {
             /* eslint-enable @typescript-eslint/no-non-null-assertion */
             registerUser(createUserDTO).then((userResponse: ResponseData<UserResponseDTO | CreateUserDTO>) => {
                 if (userResponse.statusCode == 200) {
-                    setUserResponseDTO(userResponse.responseBody as UserResponseDTO);
                     history.push('/registration/confirm-mail?status=ok');
                 } else {
                     const userErrors: CreateUserDTO = userResponse.responseBody as CreateUserDTO;
