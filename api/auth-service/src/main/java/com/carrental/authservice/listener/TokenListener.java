@@ -28,4 +28,9 @@ public class TokenListener {
             return null;
         }
     }
+
+    @RabbitListener(queues = {"deleteTokenQueue"})
+    public void deleteTokenQueue(String token) {
+        tokenService.deleteTokenQueue(token);
+    }
 }

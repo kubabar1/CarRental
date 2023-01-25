@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS verification_token
     token               NVARCHAR(255) NOT NULL,
     user_id             INT NOT NULL,
     expiry_date         TIMESTAMP NOT NULL,
-    UNIQUE (user_id)
+    UNIQUE (user_id),
+    UNIQUE (token)
 );
 
 create table if not exists persistent_logins (

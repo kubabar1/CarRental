@@ -2,15 +2,19 @@ package com.carrental.userservice.config;
 
 import com.carrental.commons.authentication.service.AuthenticatedUserDataService;
 import com.carrental.userservice.controller.RegistrationController;
+import com.carrental.userservice.controller.ResetPasswordController;
 import com.carrental.userservice.controller.UserController;
 import com.carrental.userservice.controller.UserRoleController;
 import com.carrental.userservice.listener.RegistrationCompleteListener;
 import com.carrental.userservice.listener.ResendRegistrationConfirmTokenListener;
+import com.carrental.userservice.listener.SendResetPasswordEmailListener;
 import com.carrental.userservice.listener.UserListener;
 import com.carrental.userservice.repository.UserRepository;
 import com.carrental.userservice.repository.UserRoleRepository;
+import com.carrental.userservice.service.ResetPasswordService;
 import com.carrental.userservice.service.UserRoleService;
 import com.carrental.userservice.service.UserService;
+import com.carrental.userservice.service.impl.ResetPasswordServiceImpl;
 import com.carrental.userservice.service.impl.UserRoleServiceImpl;
 import com.carrental.userservice.service.impl.UserServiceImpl;
 import org.modelmapper.ModelMapper;
@@ -41,6 +45,16 @@ public class UserServiceCoreConfig {
     }
 
     @Bean
+    public ResetPasswordService resetPasswordService(
+            UserRepository userRepository,
+            ApplicationEventPublisher eventPublisher,
+            PasswordEncoder passwordEncoder,
+            RabbitTemplate rabbitTemplate
+    ) {
+        return new ResetPasswordServiceImpl(userRepository, eventPublisher, passwordEncoder, rabbitTemplate);
+    }
+
+    @Bean
     public UserRoleService userRoleService(
             UserRoleRepository userRoleRepository,
             ModelMapper modelMapper
@@ -51,6 +65,11 @@ public class UserServiceCoreConfig {
     @Bean
     public UserController userController(UserService userService) {
         return new UserController(userService);
+    }
+
+    @Bean
+    public ResetPasswordController resetPasswordController(RabbitTemplate rabbitTemplate, ResetPasswordService resetPasswordService) {
+        return new ResetPasswordController(rabbitTemplate, resetPasswordService);
     }
 
     @Bean
@@ -70,6 +89,11 @@ public class UserServiceCoreConfig {
     @Bean
     public ResendRegistrationConfirmTokenListener resendRegistrationConfirmTokenListener(RabbitTemplate rabbitTemplate) {
         return new ResendRegistrationConfirmTokenListener(rabbitTemplate);
+    }
+
+    @Bean
+    public SendResetPasswordEmailListener sendResetPasswordEmailListener(RabbitTemplate rabbitTemplate) {
+        return new SendResetPasswordEmailListener(rabbitTemplate);
     }
 
     @Bean

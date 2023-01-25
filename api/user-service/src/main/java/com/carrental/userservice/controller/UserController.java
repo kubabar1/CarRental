@@ -1,19 +1,27 @@
 package com.carrental.userservice.controller;
 
-import com.carrental.userservice.model.dto.RoleAddDTO;
-import com.carrental.userservice.model.dto.UserEmailUniqueDTO;
-import com.carrental.userservice.model.dto.UserUpdateDTO;
-import com.carrental.userservice.model.dto.UserResponseDTO;
+import com.carrental.commons.authentication.exception.AuthorizationException;
+import com.carrental.userservice.exception.UserAlreadyExistException;
+import com.carrental.userservice.model.dto.*;
+import com.carrental.userservice.service.ResetPasswordService;
 import com.carrental.userservice.service.UserService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @CrossOrigin
 @RequestMapping("/users")
@@ -31,9 +39,11 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getUsers(pageable));
     }
 
-    @GetMapping("/unique-email")
-    public ResponseEntity<UserEmailUniqueDTO> getUserEmailUniqueController(String userEmail) {
-        return ResponseEntity.ok().body(userService.isUserEmailUnique(userEmail));
+    @PostMapping("/email-exists")
+    public ResponseEntity<UserEmailExistsDTO> getUserEmailExistsController(
+        @Valid @RequestBody PasswordResetRequestDTO passwordResetRequestDTO
+    ) {
+        return ResponseEntity.ok().body(userService.isUserEmailExists(passwordResetRequestDTO.getEmail()));
     }
 
     @GetMapping("/{id}")
@@ -63,5 +73,26 @@ public class UserController {
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PutMapping(value = "/update-password")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UserResponseDTO> updatePasswordController(@Valid @RequestBody PasswordUpdateDTO passwordUpdateDTO) {
+        try {
+            return ResponseEntity.ok().body(userService.updateUserPassword(passwordUpdateDTO));
+        } catch (AuthorizationException | UserAlreadyExistException exception) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = ex.getBindingResult().getAllErrors().stream()
+            .collect(Collectors.toMap(
+                e -> e instanceof FieldError ? ((FieldError) e).getField() : "",
+                e -> e.getDefaultMessage() == null ? "" : e.getDefaultMessage())
+            );
+        return ResponseEntity.badRequest().body(errors);
     }
 }

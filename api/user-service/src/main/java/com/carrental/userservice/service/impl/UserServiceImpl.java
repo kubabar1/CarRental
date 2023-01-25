@@ -140,8 +140,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEmailUniqueDTO isUserEmailUnique(String email) {
-        UserEntity userEntity = userRepository.findByEmail(email).orElse(null);
-        return new UserEmailUniqueDTO(userEntity == null);
+    public UserEmailExistsDTO isUserEmailExists(String email) {
+        return new UserEmailExistsDTO(userRepository.findByEmail(email).orElse(null) != null);
     }
 }

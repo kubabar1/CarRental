@@ -8,4 +8,6 @@ public interface TokenService {
     VerificationTokenDTO createVerificationToken(Long userId);
 
     VerificationTokenDTO verifyToken(String token) throws VerificationTokenException;
+
+    void deleteTokenQueue(String token);
 }

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ChangeEventHandler, useState } from 'react';
+import React, { useState } from 'react';
 import carRentalLogo from '../images/car_rental_logo_name.png';
 import './LoginComponent.scss';
 import { homePath, registrationPath } from '../constants/Paths';
@@ -36,15 +36,18 @@ export function LoginComponent(): JSX.Element {
                 // redirect: 'follow',
                 // referrerPolicy: 'no-referrer',
                 body: data,
-            }).then((res: Response) => {
-                if (res.status == 200) {
-                    setLoginError(false);
-                    window.location.href = homePath;
-                } else {
-                    setLoginError(true);
-                }
-                setIsSubmitButtonDisabled(false);
-            });
+            })
+                .then((res: Response) => {
+                    if (res.status == 200) {
+                        setLoginError(false);
+                        window.location.href = homePath;
+                    } else {
+                        setLoginError(true);
+                    }
+                })
+                .finally(() => {
+                    setIsSubmitButtonDisabled(false);
+                });
         } else {
             if (username) {
                 setUsernameError(false);
@@ -75,7 +78,7 @@ export function LoginComponent(): JSX.Element {
                             className="form-control"
                             id="inputLogin"
                             placeholder="Username"
-                            // required
+                            required
                             autoFocus
                             onChange={(event) => setUsername(event.target.value)}
                         />
@@ -92,7 +95,7 @@ export function LoginComponent(): JSX.Element {
                             className="form-control"
                             id="inputPassword"
                             placeholder="Password"
-                            // required
+                            required
                             autoComplete="off"
                             onChange={(event) => setPassword(event.target.value)}
                         />
@@ -128,6 +131,9 @@ export function LoginComponent(): JSX.Element {
                         </div>
                     )}
                 </form>
+                <div className="forgot-password">
+                    <a href="/reset-password">Forgot password?</a>
+                </div>
                 <div className="row">
                     <p className="mt-3 login-link pl-3">
                         <a href={homePath} className="linkstyle">

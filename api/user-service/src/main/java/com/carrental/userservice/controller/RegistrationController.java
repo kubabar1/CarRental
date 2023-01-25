@@ -56,16 +56,6 @@ public class RegistrationController {
         }
     }
 
-    @PutMapping(value = "/update-password")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<UserResponseDTO> updatePasswordController(@Valid @RequestBody PasswordUpdateDTO passwordUpdateDTO) {
-        try {
-            return ResponseEntity.ok().body(userService.updateUserPassword(passwordUpdateDTO));
-        } catch (AuthorizationException | UserAlreadyExistException exception) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
     @GetMapping(value = "/registration-confirm")
     public ResponseEntity<UserResponseDTO> registrationConfirmController(@RequestParam("token") String token) {
         VerificationTokenDTO verificationToken = rabbitTemplate.convertSendAndReceiveAsType(

@@ -10,6 +10,8 @@ const profilePageConfig = require('../profile-page/webpack.config.js');
 const registrationPageConfig = require('../registration-page/webpack.config.js');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const reservationPageConfig = require('../reservation-page/webpack.config.js');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const resetPasswordPageConfig = require('../reset-password-page/webpack.config.js');
 
 const compiler = webpack([
     loginPageConfig,
@@ -17,6 +19,7 @@ const compiler = webpack([
     profilePageConfig,
     registrationPageConfig,
     reservationPageConfig,
+    resetPasswordPageConfig,
 ]);
 
 module.exports = compiler;

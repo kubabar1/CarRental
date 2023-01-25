@@ -23,6 +23,7 @@ app.listen(PORT, () => {
 app.use(express.static(static));
 
 app.get('/login*', (req, res) => res.sendFile(path.join(dist, 'login-page', 'login.html')));
+app.get('/reset-password*', (req, res) => res.sendFile(path.join(dist, 'reset-password-page', 'reset-password.html')));
 app.get('/profile*', (req, res) => res.sendFile(path.join(dist, 'profile-page', 'profile.html')));
 app.get('/registration*', (req, res) => res.sendFile(path.join(dist, 'registration-page', 'registration.html')));
 app.get('/reservation-status*', (req, res) =>

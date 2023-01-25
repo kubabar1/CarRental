@@ -22,6 +22,11 @@ public class QueueConfig {
     }
 
     @Bean
+    public Queue deleteTokenQueue() {
+        return buildQueue("deleteTokenQueue");
+    }
+
+    @Bean
     public Queue getUserByEmailQueue() {
         return buildQueue("getUserByEmailQueue");
     }

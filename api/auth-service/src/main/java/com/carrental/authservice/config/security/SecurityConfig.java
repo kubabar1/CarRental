@@ -85,8 +85,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // request authorization
                 .authorizeRequests()
-                .antMatchers("/login", "/authentication/**", "/locations", "/vehicles/**", "/comments/**",
-                        "/registration/**", "/h2-console/**").permitAll()
+                .antMatchers(
+                    "/login", "/authentication/**", "/locations", "/vehicles/**", "/comments/**",
+                    "/registration/**", "/users/email-exists/**", "/reset-password/**", "/h2-console/**"
+                ).permitAll()
                 .anyRequest().authenticated();
     }
 }

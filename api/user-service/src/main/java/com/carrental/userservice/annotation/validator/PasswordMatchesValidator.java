@@ -3,6 +3,7 @@ package com.carrental.userservice.annotation.validator;
 
 import com.carrental.userservice.annotation.PasswordMatches;
 import com.carrental.userservice.model.dto.CreateUserDTO;
+import com.carrental.userservice.model.dto.PasswordResetDTO;
 import com.carrental.userservice.model.dto.PasswordUpdateDTO;
 
 import javax.validation.ConstraintValidator;
@@ -24,13 +25,18 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
         if (value instanceof CreateUserDTO) {
             result = validateUserCreationCase((CreateUserDTO) value);
             context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
-                .addPropertyNode("matchingPassword")
-                .addConstraintViolation();
+                    .addPropertyNode("matchingPassword")
+                    .addConstraintViolation();
         } else if (value instanceof PasswordUpdateDTO) {
             result = validatePasswordUpdateCase((PasswordUpdateDTO) value);
             context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
-                .addPropertyNode("confirmPassword")
-                .addConstraintViolation();
+                    .addPropertyNode("confirmPassword")
+                    .addConstraintViolation();
+        } else if (value instanceof PasswordResetDTO) {
+            result = validatePasswordUpdateCase((PasswordResetDTO) value);
+            context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                    .addPropertyNode("confirmPassword")
+                    .addConstraintViolation();
         }
         return result;
     }
@@ -41,5 +47,9 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
 
     private boolean validatePasswordUpdateCase(PasswordUpdateDTO passwordUpdateDTO) {
         return passwordUpdateDTO.getNewPassword().equals(passwordUpdateDTO.getConfirmPassword());
+    }
+
+    private boolean validatePasswordUpdateCase(PasswordResetDTO passwordResetDTO) {
+        return passwordResetDTO.getNewPassword().equals(passwordResetDTO.getConfirmPassword());
     }
 }

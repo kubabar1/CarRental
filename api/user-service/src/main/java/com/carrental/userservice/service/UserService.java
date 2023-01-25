@@ -29,5 +29,5 @@ public interface UserService {
 
     UserDetailsDTO getUserByEmail(String email) throws NoSuchElementException;
 
-    UserEmailUniqueDTO isUserEmailUnique(String email);
+    UserEmailExistsDTO isUserEmailExists(String email);
 }
