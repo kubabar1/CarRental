@@ -1,4 +1,4 @@
-package com.carrental.userservice.model.dto;
+package com.carrental.commons.authentication.model;
 
 import lombok.Data;
 

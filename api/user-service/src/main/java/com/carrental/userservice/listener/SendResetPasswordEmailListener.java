@@ -1,12 +1,9 @@
 package com.carrental.userservice.listener;
 
+import com.carrental.commons.authentication.model.VerificationTokenDTO;
 import com.carrental.userservice.model.dto.SendMailDTO;
 import com.carrental.userservice.model.dto.TokenRequestDTO;
-import com.carrental.userservice.model.dto.VerificationTokenDTO;
-import com.carrental.userservice.model.entity.UserEntity;
 import com.carrental.userservice.model.event.OnSendResetPasswordEmailEvent;
-import com.carrental.userservice.repository.UserRepository;
-import com.carrental.userservice.service.UserService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.ParameterizedTypeReference;

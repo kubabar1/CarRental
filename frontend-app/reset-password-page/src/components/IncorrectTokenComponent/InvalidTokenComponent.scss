@@ -1,0 +1,19 @@
+.full-body-invalid-token {
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+
+    .login-link {
+        a {
+            color: #000;
+        }
+    }
+
+    .ok-icon-div {
+        text-align: center;
+
+        .ok-icon {
+            width: 125px;
+        }
+    }
+}

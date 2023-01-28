@@ -35,16 +35,26 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public VerificationTokenDTO verifyToken(String token) throws VerificationTokenException {
+    public VerificationTokenDTO getToken(String token) throws VerificationTokenException {
+        VerificationTokenDTO verificationTokenDTO = new VerificationTokenDTO();
+
         VerificationTokenEntity verificationTokenEntity = tokenRepository
                 .findByToken(token)
-                .orElseThrow(() -> new VerificationTokenException("Token with given ID not found"));
+                .orElse(null);
 
-        if (isVerificationTokenExpired(verificationTokenEntity.getExpiryDate())) {
-            throw new VerificationTokenException("Your token expired");
+        if (verificationTokenEntity == null) {
+            return verificationTokenDTO;
         }
 
-        return modelMapper.map(verificationTokenEntity, VerificationTokenDTO.class);
+        verificationTokenDTO.setToken(verificationTokenEntity.getToken());
+        verificationTokenDTO.setUserId(verificationTokenEntity.getUserId());
+        verificationTokenDTO.setExpiryDate(verificationTokenEntity.getExpiryDate());
+
+        if (isVerificationTokenExpired(verificationTokenEntity.getExpiryDate())) {
+            return verificationTokenDTO;
+        }
+
+        return verificationTokenDTO;
     }
 
     @Override

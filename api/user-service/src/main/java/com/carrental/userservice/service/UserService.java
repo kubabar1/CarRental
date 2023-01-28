@@ -25,7 +25,7 @@ public interface UserService {
 
     UserResponseDTO updateUser(Long userId, UserUpdateDTO userUpdateDTO) throws NoSuchElementException;
 
-    UserResponseDTO enableUser(Long userId) throws NoSuchElementException;
+    UserResponseDTO enableUser(Long userId, String token) throws NoSuchElementException;
 
     UserDetailsDTO getUserByEmail(String email) throws NoSuchElementException;
 

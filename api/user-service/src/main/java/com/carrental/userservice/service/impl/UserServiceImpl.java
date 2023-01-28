@@ -11,6 +11,7 @@ import com.carrental.userservice.repository.UserRepository;
 import com.carrental.userservice.repository.UserRoleRepository;
 import com.carrental.userservice.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -31,18 +32,22 @@ public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final RabbitTemplate rabbitTemplate;
+
     public UserServiceImpl(
             UserRepository userRepository,
             UserRoleRepository userRoleRepository,
             AuthenticatedUserDataService authenticatedUserDataService,
             ModelMapper modelMapper,
-            PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder,
+            RabbitTemplate rabbitTemplate
     ) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.authenticatedUserDataService = authenticatedUserDataService;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     @Override
@@ -127,10 +132,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDTO enableUser(Long userId) throws NoSuchElementException {
+    public UserResponseDTO enableUser(Long userId, String token) throws NoSuchElementException {
         UserEntity userEntityToUpdate = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
         userEntityToUpdate.setEnabled(true);
-        return modelMapper.map(userRepository.save(userEntityToUpdate), UserResponseDTO.class);
+        UserEntity userEntityAfterUpdate = userRepository.save(userEntityToUpdate);
+        rabbitTemplate.convertAndSend("deleteTokenQueue", token);
+        return modelMapper.map(userEntityAfterUpdate, UserResponseDTO.class);
     }
 
     @Override

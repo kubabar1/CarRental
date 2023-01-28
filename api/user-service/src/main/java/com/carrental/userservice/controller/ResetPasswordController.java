@@ -1,15 +1,17 @@
 package com.carrental.userservice.controller;
 
+import com.carrental.commons.authentication.model.VerificationTokenDTO;
 import com.carrental.userservice.model.dto.PasswordResetDTO;
 import com.carrental.userservice.model.dto.PasswordResetRequestDTO;
 import com.carrental.userservice.model.dto.PasswordResetResponseDTO;
-import com.carrental.userservice.model.dto.VerificationTokenDTO;
 import com.carrental.userservice.service.ResetPasswordService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,8 @@ import javax.validation.Valid;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+
+import static com.carrental.commons.authentication.utils.VerificationTokenHelper.isTokenValid;
 
 @CrossOrigin
 @RequestMapping("/reset-password")
@@ -44,21 +48,21 @@ public class ResetPasswordController {
     }
 
     @GetMapping("/change-password")
-    public ResponseEntity redirectToUpdatePasswordScreenController(
+    public ResponseEntity<?> redirectToUpdatePasswordScreenController(
             @RequestParam("token") String token
     ) {
         VerificationTokenDTO verificationToken = rabbitTemplate.convertSendAndReceiveAsType(
-                "verifyTokenQueue",
+                "getTokenQueue",
                 token,
                 new ParameterizedTypeReference<>() {}
         );
-        if (verificationToken != null) {
+        if (isTokenValid(verificationToken)) {
             HttpHeaders headers = new HttpHeaders();
             headers.add("Location", "http://localhost:3030/reset-password/update?token=" + verificationToken.getToken());
             return ResponseEntity.status(HttpStatus.FOUND).headers(headers).build();
         } else {
             HttpHeaders headers = new HttpHeaders();
-            headers.add("Location", "http://localhost:3030/login");
+            headers.add("Location", "http://localhost:3030/reset-password/invalid-token");
             return ResponseEntity.status(HttpStatus.FOUND).headers(headers).build();
         }
     }
@@ -66,13 +70,13 @@ public class ResetPasswordController {
     @PostMapping("/save-password")
     public ResponseEntity<PasswordResetResponseDTO> savePassword(
             @Valid @RequestBody PasswordResetDTO passwordResetDTO
-    ) {
+    ) throws NoSuchMethodException, MethodArgumentNotValidException {
         VerificationTokenDTO verificationToken = rabbitTemplate.convertSendAndReceiveAsType(
-                "verifyTokenQueue",
+                "getTokenQueue",
                 passwordResetDTO.getToken(),
                 new ParameterizedTypeReference<>() {}
         );
-        if (verificationToken != null) {
+        if (isTokenValid(verificationToken)) {
             PasswordResetResponseDTO passwordResetResponseDTO;
             try {
                 passwordResetResponseDTO = resetPasswordService.resetPassword(passwordResetDTO, verificationToken);
@@ -81,7 +85,12 @@ public class ResetPasswordController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            MethodArgumentNotValidException methodArgumentNotValidException = new MethodArgumentNotValidException(
+                    new MethodParameter(this.getClass().getMethod("savePassword", PasswordResetDTO.class), 0),
+                    new BeanPropertyBindingResult(passwordResetDTO, "passwordResetDTO")
+            );
+            methodArgumentNotValidException.addError(new FieldError("passwordResetDTO", "token", "Invalid token"));
+            throw methodArgumentNotValidException;
         }
     }
 

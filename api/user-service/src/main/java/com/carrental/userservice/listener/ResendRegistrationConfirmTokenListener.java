@@ -1,8 +1,8 @@
 package com.carrental.userservice.listener;
 
+import com.carrental.commons.authentication.model.VerificationTokenDTO;
 import com.carrental.userservice.model.dto.SendMailDTO;
 import com.carrental.userservice.model.dto.TokenRequestDTO;
-import com.carrental.userservice.model.dto.VerificationTokenDTO;
 import com.carrental.userservice.model.event.OnResendRegistrationConfirmTokenEvent;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.ApplicationListener;
@@ -36,7 +36,7 @@ public class ResendRegistrationConfirmTokenListener implements ApplicationListen
     private SendMailDTO createConfirmRegistrationMailText(String recipientAddress, String token) {
         SendMailDTO sendMailDTO = new SendMailDTO();
         sendMailDTO.setRecipient(recipientAddress);
-        sendMailDTO.setSubject("Registration Confirmation");
+        sendMailDTO.setSubject("Resend registration confirmation");
         sendMailDTO.setText("Your account was successfully created.\n"
             + "http://localhost:8080/registration/registration-confirm?token="
             + token);

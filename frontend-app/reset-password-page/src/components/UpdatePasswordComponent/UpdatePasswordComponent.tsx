@@ -14,6 +14,7 @@ export function UpdatePasswordComponent() {
     const [confirmPassword, setConfirmPassword] = useState<string | undefined>(undefined);
     const [newPasswordError, setNewPasswordError] = useState<string | undefined>(undefined);
     const [confirmPasswordError, setConfirmPasswordError] = useState<string | undefined>(undefined);
+    const [tokenError, setTokenError] = useState<string | undefined>(undefined);
     const [token, setToken] = useState<string | undefined>(undefined);
     const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState<boolean>(false);
     const [passwordScore, setPasswordScore] = useState<number>(0);
@@ -30,8 +31,8 @@ export function UpdatePasswordComponent() {
 
     const cleanAllErrors = () => {
         setNewPasswordError(undefined);
-        setNewPasswordError(undefined);
         setConfirmPasswordError(undefined);
+        setTokenError(undefined);
     };
 
     const hasNumber = (val: string): boolean => {
@@ -133,6 +134,9 @@ export function UpdatePasswordComponent() {
                         if (errors.confirmPassword) {
                             setConfirmPasswordError(errors.confirmPassword);
                         }
+                        if (errors.token) {
+                            setTokenError(errors.token);
+                        }
                     }
                 })
                 .finally(() => {
@@ -190,6 +194,8 @@ export function UpdatePasswordComponent() {
                         />
                         {renderInputAlert(confirmPasswordError)}
                     </div>
+
+                    {renderInputAlert(tokenError)}
 
                     <button
                         className="btn btn-lg btn-primary btn-block"

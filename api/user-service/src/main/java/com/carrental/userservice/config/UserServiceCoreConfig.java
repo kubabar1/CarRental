@@ -39,9 +39,10 @@ public class UserServiceCoreConfig {
             UserRoleRepository userRoleRepository,
             AuthenticatedUserDataService authenticatedUserDataService,
             ModelMapper modelMapper,
-            PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder,
+            RabbitTemplate rabbitTemplate
     ) {
-        return new UserServiceImpl(userRepository, userRoleRepository, authenticatedUserDataService, modelMapper, passwordEncoder);
+        return new UserServiceImpl(userRepository, userRoleRepository, authenticatedUserDataService, modelMapper, passwordEncoder, rabbitTemplate);
     }
 
     @Bean

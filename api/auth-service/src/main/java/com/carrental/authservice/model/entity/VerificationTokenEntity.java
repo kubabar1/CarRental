@@ -12,7 +12,7 @@ import java.util.Date;
 @Table(name = "verification_token")
 public class VerificationTokenEntity {
 
-    public static final int VERIFICATION_TOKEN_EXPIRATION_SEC = 60 * 60 * 24;
+    public static final int VERIFICATION_TOKEN_EXPIRATION_SEC = 60 * 60 * 1;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

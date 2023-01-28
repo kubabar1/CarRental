@@ -17,8 +17,8 @@ public class QueueConfig {
     }
 
     @Bean
-    public Queue verifyTokenQueue() {
-        return buildQueue("verifyTokenQueue");
+    public Queue getTokenQueue() {
+        return buildQueue("getTokenQueue");
     }
 
     @Bean
@@ -41,7 +41,7 @@ public class QueueConfig {
                 .nonDurable(queueName)
                 .autoDelete()
 //                .withArgument("x-dead-letter-exchange", "")
-//                .withArgument("x-dead-letter-routing-key", "verifyTokenQueueDLQ")
+//                .withArgument("x-dead-letter-routing-key", "getTokenQueueDLQ")
                 .build();
     }
 }

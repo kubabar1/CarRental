@@ -1,8 +1,8 @@
 package com.carrental.userservice.service;
 
+import com.carrental.commons.authentication.model.VerificationTokenDTO;
 import com.carrental.userservice.model.dto.PasswordResetDTO;
 import com.carrental.userservice.model.dto.PasswordResetResponseDTO;
-import com.carrental.userservice.model.dto.VerificationTokenDTO;
 
 import java.util.NoSuchElementException;
 
