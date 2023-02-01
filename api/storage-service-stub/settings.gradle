@@ -1,0 +1,3 @@
+rootProject.name = 'storage-service-stub'
+
+includeBuild '../shared/files-commons'

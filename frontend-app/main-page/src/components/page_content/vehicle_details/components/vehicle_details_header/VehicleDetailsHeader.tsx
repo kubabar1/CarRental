@@ -25,7 +25,7 @@ export function VehicleDetailsHeader(props: CarDetailsHeaderProperties): JSX.Ele
             </div>
             <div
                 id="car-details-image"
-                className="car-img-container shadow my-3 col-md-10 offset-md-1"
+                className="car-img-container shadow my-3 offset-md-1"
                 style={{
                     backgroundImage: `url(${vehicleImage})`,
                     backgroundPosition: 'center',

@@ -78,3 +78,14 @@ services:
         ports:
             - "8087:8080"
         mem_limit: 160m
+    storage-service-stub:
+        image: storage-service-stub
+        container_name: storage-service-stub
+        build:
+            context: ./api
+            dockerfile: Dockerfile
+            args:
+                - APP_DIR=storage-service-stub
+        ports:
+            - "8088:8080"
+        mem_limit: 160m

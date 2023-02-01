@@ -11,8 +11,10 @@ def projectsToInclude = [
         'api/auth-service',
         'api/mail-service',
         'api/amqp-broker',
+        'api/storage-service-stub',
         'api/shared/auth-commons',
         'api/shared/config-commons',
+        'api/shared/files-commons',
 ]
 
 projectsToInclude.each {

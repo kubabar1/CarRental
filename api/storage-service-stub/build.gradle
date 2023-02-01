@@ -1,0 +1,30 @@
+plugins {
+    id 'org.springframework.boot' version '2.6.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'application'
+}
+
+group = 'com.carrental.api'
+version = 'HEAD-SNAPSHOT'
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+springBoot {
+    mainClassName = 'com.carrental.storageservicestub.StorageServiceStubApplication'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.carrental.shared:shared-files-commons'
+    implementation 'org.springframework.boot:spring-boot-starter:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-validation:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-parent:2.6.3'
+    implementation 'com.google.guava:guava:31.1-jre'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+}

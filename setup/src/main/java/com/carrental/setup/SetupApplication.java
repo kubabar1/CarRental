@@ -19,7 +19,8 @@ import org.springframework.context.annotation.Import;
                 "com.carrental.vehicleservice",
                 "com.carrental.authservice",
                 "com.carrental.mailservice",
-                "com.carrental.amqpbroker"
+                "com.carrental.amqpbroker",
+                "com.carrental.storageservicestub"
         }
 )
 @Import({
@@ -29,7 +30,8 @@ import org.springframework.context.annotation.Import;
         VehicleServiceCoreConfig.class,
         AuthServiceCoreConfig.class,
         MailServiceCoreConfig.class,
-        AmqpBrokerCoreConfig.class
+        AmqpBrokerCoreConfig.class,
+        MailServiceCoreConfig.class
 })
 public class SetupApplication {
 
