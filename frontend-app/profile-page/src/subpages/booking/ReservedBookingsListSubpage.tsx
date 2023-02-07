@@ -82,17 +82,22 @@ export function ReservedBookingsListSubpage(): JSX.Element {
             },
             {
                 Header: 'Rent',
-                accessor: (row: BookingResponseDTO) =>
-                    ButtonTableItem('Rent', undefined, 'success', () => {
-                        rentBooking(row.id).then(getAllReservedBookings);
-                    }),
+                accessor: (row: BookingResponseDTO) => (
+                    <ButtonTableItem
+                        buttonText={'Rent'}
+                        onClickAction={() => rentBooking(row.id).then(getAllReservedBookings)}
+                    />
+                ),
             },
             {
                 Header: 'Cancel',
-                accessor: (row: BookingResponseDTO) =>
-                    ButtonTableItem('Cancel', undefined, 'danger', () => {
-                        cancelBooking(row.id).then(getAllReservedBookings);
-                    }),
+                accessor: (row: BookingResponseDTO) => (
+                    <ButtonTableItem
+                        buttonText={'Cancel'}
+                        buttonVariant={'danger'}
+                        onClickAction={() => cancelBooking(row.id).then(getAllReservedBookings)}
+                    />
+                ),
             },
         ],
         [getAllReservedBookings]

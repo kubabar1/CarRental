@@ -1,7 +1,7 @@
 package com.carrental.userservice.listener;
 
 import com.carrental.commons.authentication.model.VerificationTokenDTO;
-import com.carrental.userservice.model.dto.SendMailDTO;
+import com.carrental.userservice.model.dto.MailDTO;
 import com.carrental.userservice.model.dto.TokenRequestDTO;
 import com.carrental.userservice.model.event.OnRegistrationCompleteEvent;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -25,6 +25,7 @@ public class RegistrationCompleteListener implements ApplicationListener<OnRegis
         );
 
         if (verificationToken != null) {
+            // TODO: fix
             String recipientAddress = "greenmail@localhost";
             rabbitTemplate.convertAndSend(
                 "sendEmailQueue",
@@ -33,13 +34,13 @@ public class RegistrationCompleteListener implements ApplicationListener<OnRegis
         }
     }
 
-    private SendMailDTO createResendVerificationTokenMailText(String recipientAddress, String token) {
-        SendMailDTO sendMailDTO = new SendMailDTO();
-        sendMailDTO.setRecipient(recipientAddress);
-        sendMailDTO.setSubject("Registration confirmation");
-        sendMailDTO.setText("Your account was successfully created.\n"
+    private MailDTO createResendVerificationTokenMailText(String recipientAddress, String token) {
+        MailDTO mailDTO = new MailDTO();
+        mailDTO.setRecipient(recipientAddress);
+        mailDTO.setSubject("Registration confirmation");
+        mailDTO.setText("Your account was successfully created.\n"
             + "http://localhost:8080/registration/registration-confirm?token="
             + token);
-        return sendMailDTO;
+        return mailDTO;
     }
 }

@@ -4,7 +4,6 @@ export class UserResponseDTO {
     id: string;
     name: string;
     surname: string;
-    login: string;
     email: string;
     phone: string;
     birthDate: string;
@@ -14,7 +13,6 @@ export class UserResponseDTO {
         id: string,
         name: string,
         surname: string,
-        login: string,
         email: string,
         phone: string,
         birthDate: string,
@@ -23,7 +21,6 @@ export class UserResponseDTO {
         this.id = id;
         this.name = name;
         this.surname = surname;
-        this.login = login;
         this.email = email;
         this.phone = phone;
         this.birthDate = birthDate;

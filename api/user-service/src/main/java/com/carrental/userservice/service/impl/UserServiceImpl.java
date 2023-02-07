@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserResponseDTO> getUsers(Pageable pageable) throws NoSuchElementException {
+    public Page<UserResponseDTO> getUsers(Pageable pageable) {
         Page<UserEntity> userEntityPage = userRepository.findAll(pageable);
         List<UserResponseDTO> userResponseDTOList = userEntityPage
                 .getContent()
@@ -70,6 +70,21 @@ public class UserServiceImpl implements UserService {
                 .map(userEntity -> modelMapper.map(userEntity, UserResponseDTO.class))
                 .collect(Collectors.toList());
         return new PageImpl<>(userResponseDTOList, pageable, userEntityPage.getTotalElements());
+    }
+
+    @Override
+    public UsersEmailsResponseDTO getAllUsersEmails() {
+        UsersEmailsResponseDTO usersEmailsResponseDTO = new UsersEmailsResponseDTO();
+        usersEmailsResponseDTO.setEmails(userRepository.findAllEmails());
+        return usersEmailsResponseDTO;
+    }
+
+    @Override
+    public UsersEmailsResponseDTO sendEmailsToMultipleRecipients(MultipleRecipientsMailsDTO multipleRecipientsMailsDTO) {
+        rabbitTemplate.convertAndSend("sendMultipleEmailsQueue", multipleRecipientsMailsDTO);
+        UsersEmailsResponseDTO usersEmailsResponseDTO = new UsersEmailsResponseDTO();
+        usersEmailsResponseDTO.setEmails(multipleRecipientsMailsDTO.getRecipients());
+        return usersEmailsResponseDTO;
     }
 
     @Override

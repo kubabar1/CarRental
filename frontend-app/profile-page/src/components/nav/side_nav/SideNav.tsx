@@ -26,11 +26,11 @@ import {
     rentedBookingsListPath,
     reservedBookingsListPath,
     reservedVehiclesListPath,
-    sendEmailPath,
     settingsPath,
     userRolesListPath,
     usersListPath,
     myReservedBookingsListPath,
+    sendEmailPath,
 } from '../../../constants/Links';
 import { userHasAnyRole } from '../../../utils/UserUtils';
 
@@ -122,9 +122,12 @@ export function SideNav({ userRoles = [], runLogout }: SideNavProperties): JSX.E
             )}
 
             {userHasAnyRole(userRoles, sendEmailPath.permittedRoles) && (
-                <NavLink navItemName={'Mails'} iconName={faEnvelope}>
-                    <NavSubLink navItemName={'Send email'} linkPath={sendEmailPath.link} />
-                </NavLink>
+                <NavLink
+                    navItemName={'Send email'}
+                    iconName={faEnvelope}
+                    linkPath={sendEmailPath.link}
+                    disableRefresh={true}
+                />
             )}
 
             <NavLink navItemName={'Settings'} iconName={faCog} linkPath={settingsPath.link} disableRefresh={true} />

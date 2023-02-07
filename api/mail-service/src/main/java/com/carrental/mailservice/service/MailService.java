@@ -1,9 +1,11 @@
 package com.carrental.mailservice.service;
 
-import com.carrental.mailservice.model.SendMailDTO;
-import org.springframework.mail.SimpleMailMessage;
+import com.carrental.mailservice.model.MailDTO;
+import com.carrental.mailservice.model.MultipleRecipientsMailsDTO;
 
 public interface MailService {
 
-    SimpleMailMessage sendEmail(SendMailDTO sendMailDTO);
+    void sendEmail(MailDTO mailDTO);
+
+    void sendMultipleRecipientsMails(MultipleRecipientsMailsDTO multipleRecipientsMailsDTO);
 }

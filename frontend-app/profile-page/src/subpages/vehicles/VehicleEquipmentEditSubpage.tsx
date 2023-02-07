@@ -41,19 +41,26 @@ export function VehicleEquipmentEditSubpage(): JSX.Element {
             },
             {
                 Header: 'Remove',
-                accessor: (equipmentResponseDTO: EquipmentResponseDTO) =>
-                    ButtonTableItem('Remove', undefined, 'danger', () => {
-                        removeEquipmentFromVehicle(vehicleId, equipmentResponseDTO.equipmentCode).then(
-                            (vehicleResp: VehicleResponseDTO) => {
-                                setVehicleResponseDTO(vehicleResp);
-                                getAllEquipmentsNotAssignedToVehicleList(vehicleId).then(
-                                    (equipmentsResponse: EquipmentResponseDTO[]) => {
-                                        setAllPossibleEquipments(equipmentsResponse.map(mapResponseToSelectOptions));
-                                    }
-                                );
-                            }
-                        );
-                    }),
+                accessor: (equipmentResponseDTO: EquipmentResponseDTO) => (
+                    <ButtonTableItem
+                        buttonText={'Remove'}
+                        buttonVariant={'danger'}
+                        onClickAction={() =>
+                            removeEquipmentFromVehicle(vehicleId, equipmentResponseDTO.equipmentCode).then(
+                                (vehicleResp: VehicleResponseDTO) => {
+                                    setVehicleResponseDTO(vehicleResp);
+                                    getAllEquipmentsNotAssignedToVehicleList(vehicleId).then(
+                                        (equipmentsResponse: EquipmentResponseDTO[]) => {
+                                            setAllPossibleEquipments(
+                                                equipmentsResponse.map(mapResponseToSelectOptions)
+                                            );
+                                        }
+                                    );
+                                }
+                            )
+                        }
+                    />
+                ),
             },
         ],
         [vehicleId]

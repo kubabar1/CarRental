@@ -1,12 +1,9 @@
-import { getAuthorizedUserData } from './UserService';
-import { AuthenticatedUserDTO } from '../model/AuthenticatedUserDTO';
+import { fetchPost } from './FetchUtil';
+import { SEND_EMAILS_TO_USERS } from '../constants/PathsAPI';
+import { MultipleRecipientsMailsDTO } from '../model/MultipleRecipientsMailsDTO';
 
-export const sendEmail = (userId: string, emailSubject: string, emailMessage: string): Promise<void> => {
+export const sendEmails = (multipleRecipientsMailsDTO: MultipleRecipientsMailsDTO): Promise<void> => {
     return new Promise<void>(() => {
-        getAuthorizedUserData().then((authenticatedUserDTO: AuthenticatedUserDTO) => {
-            console.log(
-                `Sending email with subject '${emailSubject}' and message '${emailMessage}' to address '${authenticatedUserDTO.email}'`
-            );
-        });
+        return fetchPost<MultipleRecipientsMailsDTO>(SEND_EMAILS_TO_USERS, multipleRecipientsMailsDTO);
     });
 };

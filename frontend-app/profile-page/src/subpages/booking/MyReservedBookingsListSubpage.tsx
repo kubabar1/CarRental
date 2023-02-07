@@ -87,10 +87,15 @@ export function MyReservedBookingsListSubpage(): JSX.Element {
             },
             {
                 Header: 'Cancel',
-                accessor: (row: BookingResponseDTO) =>
-                    ButtonTableItem('Cancel', undefined, 'danger', () => {
-                        cancelAuthorizedUserBooking(row.id).then(getAuthenticatedUserReservedBookings);
-                    }),
+                accessor: (row: BookingResponseDTO) => (
+                    <ButtonTableItem
+                        buttonText={'Cancel'}
+                        buttonVariant={'danger'}
+                        onClickAction={() =>
+                            cancelAuthorizedUserBooking(row.id).then(getAuthenticatedUserReservedBookings)
+                        }
+                    />
+                ),
             },
         ],
         [getAuthenticatedUserReservedBookings]

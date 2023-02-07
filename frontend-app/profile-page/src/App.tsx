@@ -16,7 +16,6 @@ import {
     reservedVehiclesListPath,
     roleAddPath,
     sendEmailPath,
-    sendEmailToUserPath,
     settingsPath,
     userEditPath,
     userRolesListPath,
@@ -33,7 +32,6 @@ import { LocationsListSubpage } from './subpages/locations/LocationsListSubpage'
 import { UsersRolesListSubpage } from './subpages/users_roles/UsersRolesListSubpage';
 import { AddRoleSubpage } from './subpages/users/AddRoleSubpage';
 import { EmailSubpage } from './subpages/emails/EmailSubpage';
-import { UsersEmailSubpage } from './subpages/emails/UsersEmailSubpage';
 import { UsersEditSubpage } from './subpages/users/UserEditSubpage';
 import { VehicleListSubpage } from './subpages/vehicles/VehicleListSubpage';
 import { VehicleEditSubpage } from './subpages/vehicles/VehicleEditSubpage';
@@ -254,14 +252,6 @@ export function App(): JSX.Element {
                                 isAuthorized={userHasAnyRole(authenticatedUser.userRoles, sendEmailPath.permittedRoles)}
                                 path={sendEmailPath.link}
                                 exact
-                                component={UsersEmailSubpage}
-                            />
-                            <ProtectedRoute
-                                isAuthorized={userHasAnyRole(
-                                    authenticatedUser.userRoles,
-                                    sendEmailToUserPath.permittedRoles
-                                )}
-                                path={sendEmailToUserPath.link}
                                 component={EmailSubpage}
                             />
 

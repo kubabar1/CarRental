@@ -1,6 +1,6 @@
 import { VehicleResponseDTO } from '../model/VehicleResponseDTO';
 import { VehiclePersistDTO } from '../model/VehiclePersistDTO';
-import { fetchGet, fetchPost, fetchPut } from './FetchUtil';
+import { fetchGet, fetchPost, fetchPut, ResponseData } from './FetchUtil';
 import {
     GET_UNAVAILABLE_VEHICLES_PATH,
     GET_VEHICLE_BY_ID_PATH,
@@ -27,6 +27,6 @@ export function updateVehicleData(vehicleId: string, vehicleUpdateDTO: VehiclePe
     return fetchPost<VehicleResponseDTO>(UPDATE_VEHICLE_PATH(vehicleId), vehicleUpdateDTO);
 }
 
-export function addVehicle(vehicleAddDTO: VehiclePersistDTO): Promise<VehicleResponseDTO> {
+export function addVehicle(vehicleAddDTO: VehiclePersistDTO): Promise<ResponseData<VehicleResponseDTO>> {
     return fetchPut<VehicleResponseDTO>(ADD_VEHICLE_PATH, vehicleAddDTO);
 }

@@ -39,6 +39,20 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getUsers(pageable));
     }
 
+    @GetMapping("/all-emails")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<UsersEmailsResponseDTO> getUsersEmailsController() {
+        return ResponseEntity.ok().body(userService.getAllUsersEmails());
+    }
+
+    @PostMapping("/send-emails")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<UsersEmailsResponseDTO> sendEmailsToUsers(
+        @RequestBody MultipleRecipientsMailsDTO multipleRecipientsMailsDTO
+    ) {
+        return ResponseEntity.ok().body(userService.sendEmailsToMultipleRecipients(multipleRecipientsMailsDTO));
+    }
+
     @PostMapping("/email-exists")
     public ResponseEntity<UserEmailExistsDTO> getUserEmailExistsController(
         @Valid @RequestBody PasswordResetRequestDTO passwordResetRequestDTO

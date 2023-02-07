@@ -20,5 +20,5 @@ public class UserResponseDTO implements Serializable {
 
     private String birthDate;
 
-//    private List<UserRoleResponseDTO> userRoles;
+    private List<UserRoleResponseDTO> userRoles;
 }

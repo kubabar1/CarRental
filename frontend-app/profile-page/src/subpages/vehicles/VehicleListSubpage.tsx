@@ -86,13 +86,23 @@ export function VehicleListSubpage(): JSX.Element {
             },
             {
                 Header: 'Edit',
-                accessor: (vehicleResponseDTO: VehicleResponseDTO) =>
-                    ButtonTableItem('Edit', `/profile/vehicles/${vehicleResponseDTO.id}/edit`, 'success'),
+                accessor: (vehicleResponseDTO: VehicleResponseDTO) => (
+                    <ButtonTableItem
+                        buttonText={'Edit'}
+                        buttonVariant={'success'}
+                        buttonRedirectPath={`/profile/vehicles/${vehicleResponseDTO.id}/edit`}
+                    />
+                ),
             },
             {
                 Header: 'Equipment',
-                accessor: (vehicleResponseDTO: VehicleResponseDTO) =>
-                    ButtonTableItem('Equipment', `/profile/vehicles/${vehicleResponseDTO.id}/equipment`, 'info'),
+                accessor: (vehicleResponseDTO: VehicleResponseDTO) => (
+                    <ButtonTableItem
+                        buttonText={'Equipment'}
+                        buttonVariant={'info'}
+                        buttonRedirectPath={`/profile/vehicles/${vehicleResponseDTO.id}/equipment`}
+                    />
+                ),
             },
         ],
         []

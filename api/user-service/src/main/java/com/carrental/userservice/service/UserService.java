@@ -21,7 +21,11 @@ public interface UserService {
 
     UserResponseDTO addRolesToUser(Long userId, List<RoleAddDTO> roleAddDTOs) throws NoSuchElementException;
 
-    Page<UserResponseDTO> getUsers(Pageable pageable) throws NoSuchElementException;
+    Page<UserResponseDTO> getUsers(Pageable pageable);
+
+    UsersEmailsResponseDTO getAllUsersEmails();
+
+    UsersEmailsResponseDTO sendEmailsToMultipleRecipients(MultipleRecipientsMailsDTO multipleRecipientsMailsDTO);
 
     UserResponseDTO updateUser(Long userId, UserUpdateDTO userUpdateDTO) throws NoSuchElementException;
 

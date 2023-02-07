@@ -1,6 +1,7 @@
 package com.carrental.mailservice.listener;
 
-import com.carrental.mailservice.model.SendMailDTO;
+import com.carrental.mailservice.model.MailDTO;
+import com.carrental.mailservice.model.MultipleRecipientsMailsDTO;
 import com.carrental.mailservice.service.MailService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 
@@ -13,7 +14,12 @@ public class SendEmailListener {
     }
 
     @RabbitListener(queues = {"sendEmailQueue"})
-    public void sendEmail(SendMailDTO sendMailDTO) {
-        mailService.sendEmail(sendMailDTO);
+    public void sendEmail(MailDTO mailDTO) {
+        mailService.sendEmail(mailDTO);
+    }
+
+    @RabbitListener(queues = {"sendMultipleEmailsQueue"})
+    public void sendMultipleRecipientsMails(MultipleRecipientsMailsDTO multipleRecipientsMailsDTO) {
+        mailService.sendMultipleRecipientsMails(multipleRecipientsMailsDTO);
     }
 }

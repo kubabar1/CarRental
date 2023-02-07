@@ -12,6 +12,11 @@ public class QueueConfig {
     }
 
     @Bean
+    public Queue sendMultipleEmailsQueue() {
+        return buildQueue("sendMultipleEmailsQueue");
+    }
+
+    @Bean
     public Queue generateTokenQueue() {
         return buildQueue("generateTokenQueue");
     }

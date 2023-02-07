@@ -82,10 +82,13 @@ export function RentedBookingsListSubpage(): JSX.Element {
             },
             {
                 Header: 'Return',
-                accessor: (row: BookingResponseDTO) =>
-                    ButtonTableItem('Return', undefined, 'success', () => {
-                        returnBooking(row.id).then(getAllRentedBookings);
-                    }),
+                accessor: (row: BookingResponseDTO) => (
+                    <ButtonTableItem
+                        buttonText={'Return'}
+                        buttonVariant={'success'}
+                        onClickAction={() => returnBooking(row.id).then(getAllRentedBookings)}
+                    />
+                ),
             },
         ],
         [getAllRentedBookings]
