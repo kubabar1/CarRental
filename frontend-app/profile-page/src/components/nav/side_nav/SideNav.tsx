@@ -26,11 +26,12 @@ import {
     rentedBookingsListPath,
     reservedBookingsListPath,
     reservedVehiclesListPath,
-    settingsPath,
     userRolesListPath,
     usersListPath,
     myReservedBookingsListPath,
     sendEmailPath,
+    settingsChangePasswordPath,
+    settingsUserSettingsPath,
 } from '../../../constants/Links';
 import { userHasAnyRole } from '../../../utils/UserUtils';
 
@@ -130,7 +131,10 @@ export function SideNav({ userRoles = [], runLogout }: SideNavProperties): JSX.E
                 />
             )}
 
-            <NavLink navItemName={'Settings'} iconName={faCog} linkPath={settingsPath.link} disableRefresh={true} />
+            <NavLink navItemName={'Settings'} iconName={faCog}>
+                <NavSubLink navItemName={'User settings'} linkPath={settingsUserSettingsPath.link} />
+                <NavSubLink navItemName={'Change password'} linkPath={settingsChangePasswordPath.link} />
+            </NavLink>
 
             <NavLink navItemName={'Home'} iconName={faHome} linkPath={homeLink} />
 

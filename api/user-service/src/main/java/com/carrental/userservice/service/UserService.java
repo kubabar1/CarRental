@@ -11,8 +11,6 @@ import java.util.NoSuchElementException;
 
 public interface UserService {
 
-    UserResponseDTO getAuthorizedUser() throws AuthorizationException, NoSuchElementException;
-
     UserResponseDTO getUserById(Long userId) throws NoSuchElementException;
 
     UserResponseDTO createUser(CreateUserDTO createUserDTO) throws UserAlreadyExistException;
@@ -34,4 +32,6 @@ public interface UserService {
     UserDetailsDTO getUserByEmail(String email) throws NoSuchElementException;
 
     UserEmailExistsDTO isUserEmailExists(String email);
+
+    UserResponseDTO updateAuthenticatedUser(UserUpdateDTO userUpdateDTO) throws NoSuchElementException;
 }

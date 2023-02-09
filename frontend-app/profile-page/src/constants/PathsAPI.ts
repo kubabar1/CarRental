@@ -78,7 +78,7 @@ export const UPDATE_USER_PATH = (userId: string): string => withId(`${APP_ADDR}/
 
 export const UPDATE_USER_PASSWORD_PATH = `${APP_ADDR}/users/update-password`;
 
-export const UPDATE_AUTHORIZED_USER_PATH = `${APP_ADDR}/users/authorized`;
+export const UPDATE_AUTHORIZED_USER_PATH = `${APP_ADDR}/users/update-authenticated-user`;
 
 export const GET_USER_BY_ID_PATH = (userId: string): string => withId(`${APP_ADDR}/users`, userId);
 

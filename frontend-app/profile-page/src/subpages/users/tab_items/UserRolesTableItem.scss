@@ -1,12 +1,15 @@
 .user-roles-table-item {
-    display: block;
+    display: flex;
     color: #fff;
-    background-color: #cd3d37;
-    padding: 3px;
-    margin: 2px;
-    font-size: 15px;
+    background-color: #28a745;
+    margin: 5px auto;
+    padding: 5px;
+    font-size: 13px;
     border-radius: 10px;
-    text-align: center;
     line-height: 20px;
     font-weight: bold;
+    max-width: 150px;
+    justify-content: center;
+    text-align: center;
+    word-break: break-word;
 }

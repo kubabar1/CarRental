@@ -1,15 +1,16 @@
-INSERT INTO user_roles (id, type)
-VALUES (1, 'ROLE_ADMIN'),
-       (2, 'ROLE_BLOGGER'),
-       (3, 'ROLE_OFFICE_EMPLOYEE'),
-       (4, 'ROLE_RENTING_EMPLOYEE');
+INSERT INTO user_roles (id, type, label)
+VALUES (1, 'ROLE_ADMIN', 'Admin'),
+       (2, 'ROLE_BLOGGER', 'Blogger'),
+       (3, 'ROLE_OFFICE_EMPLOYEE', 'Office employee'),
+       (4, 'ROLE_RENTING_EMPLOYEE', 'Renting employee');
 
 INSERT INTO users (id, name, surname, password, email, phone, birth_date, enabled)
-VALUES (1, 'Rooney', 'Huff', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'lobortis@velnisl.net', '(0181) 760 8925', '2018-10-25', true),
-       (2, 'Eagan', 'Foley', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'ullamcorper.viverra@accumsan.edu', '0966 824 6434', '2019-01-29', true),
-       (3, 'Owen', 'Gamble', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'volutpat.Nulla.facilisis@Crasloremlorem.edu', '(0117) 074 0154', '2017-08-17', true),
-       (4, 'Hanae', 'Hoover', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'Ut@purus.co.uk', '(01758) 79978', '2018-08-31', true),
-       (5, 'Judith', 'Love', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'Quisque@Fusce.com', '(0115) 579 9066', '2019-07-07', true),
+VALUES
+       (1, 'Adam', 'Tomkowski', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'blogger@mail.com', '123 456 321', '1996-02-10', true),
+       (2, 'Marek', 'Adamowski', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'renting@mail.com', '123 321 222', '1995-01-01', true),
+       (3, 'Karol', 'Nowakowski', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'office@mail.com', '312 311 123', '1992-01-27', true),
+       (4, 'Paweł', 'Kowalski', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'admin@mail.com', '342 242 123', '1991-06-17', true),
+       (5, 'Maciek', 'Adamowski', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'user@mail.com', '534 342 112', '1990-02-12', true),
        (6, 'Zelenia', 'Sullivan', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'In.lorem@amet.edu', '0388 513 4393', '2019-03-31', true),
        (7, 'Edan', 'Sanford', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'tincidunt.tempus.risus@enimmitempor.ca', '0800 1111', '2018-01-07', true),
        (8, 'Nicole', 'Guthrie', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'a@auctorveliteget.ca', '055 6381 3457', '2018-03-24', true),
@@ -105,14 +106,14 @@ VALUES (1, 'Rooney', 'Huff', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2
        (98, 'Demetria', 'Gonzalez', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'molestie.tellus.Aenean@Pellentesqueultricies.edu', '(01004) 062095', '2017-10-07', true),
        (99, 'Odette', 'Manning', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'lectus.pede@sociisnatoque.ca', '0348 069 7118', '2018-07-12', true),
        (100, 'Kennan', 'Blanchard', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'lorem.sit@massa.ca', '(0112) 899 2379', '2018-12-09', true),
-       (101, 'Adam', 'Tomkowski', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'blogger@mail.com', '123 456 321', '1996-02-10', true),
-       (102, 'Marek', 'Adamowski', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'renting@mail.com', '123 321 222', '1995-01-01', true),
-       (103, 'Karol', 'Nowakowski', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'office@mail.com', '312 311 123', '1992-01-27', true),
-       (104, 'Paweł', 'Kowalski', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'admin@mail.com', '342 242 123', '1991-06-17', true),
-       (105, 'Maciek', 'Adamowski', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'user@mail.com', '534 342 112', '1990-02-12', true);
+       (101, 'Rooney', 'Huff', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'lobortis@velnisl.net', '(0181) 760 8925', '2018-10-25', true),
+       (102, 'Eagan', 'Foley', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'ullamcorper.viverra@accumsan.edu', '0966 824 6434', '2019-01-29', true),
+       (103, 'Owen', 'Gamble', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'volutpat.Nulla.facilisis@Crasloremlorem.edu', '(0117) 074 0154', '2017-08-17', true),
+       (104, 'Hanae', 'Hoover', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'Ut@purus.co.uk', '(01758) 79978', '2018-08-31', true),
+       (105, 'Judith', 'Love', '$2a$10$YaldkgDhgvPKXYq8.LZpe.J2WVspHnnoUSuchYKVcX2WigglekA62', 'Quisque@Fusce.com', '(0115) 579 9066', '2019-07-07', true);
 
 INSERT INTO app_users_roles (user_id, user_role_id)
-VALUES  (101, 2),
-        (102, 4),
-        (103, 3),
-        (104, 1);
+VALUES  (1, 2),
+        (2, 4),
+        (3, 3),
+        (4, 1);

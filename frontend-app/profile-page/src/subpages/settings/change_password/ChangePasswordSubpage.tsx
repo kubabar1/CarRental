@@ -1,19 +1,16 @@
 import React, { ChangeEvent, useState } from 'react';
-import { Button } from 'react-bootstrap';
-import Modal from 'react-bootstrap/Modal';
-import PasswordStrengthBar from 'react-password-strength-bar';
-import './ChangePasswordModal.scss';
+import { SubpageContainer } from '../../../components/subpage/container/SubpageContainer';
+import { SubpageHeader } from '../../../components/subpage/header/SubpageHeader';
+import { SubpageContent } from '../../../components/subpage/content/SubpageContent';
+import { FormContainer } from '../../../components/form/FormContainer';
 import { PasswordUpdateDTO } from '../../../model/PasswordUpdateDTO';
-import { updateUserPassword } from '../../../service/UserService';
-import { UserResponseDTO } from '../../../model/UserResponseDTO';
 import { ResponseData } from '../../../service/FetchUtil';
+import { UserResponseDTO } from '../../../model/UserResponseDTO';
+import PasswordStrengthBar from 'react-password-strength-bar/dist';
+import { updateUserPassword } from '../../../service/UserService';
+import './ChangePasswordSubpage.scss';
 
-interface ChangePasswordModalProps {
-    show: boolean;
-    onHide: () => void;
-}
-
-export function ChangePasswordModal({ show, onHide }: ChangePasswordModalProps) {
+export function ChangePasswordSubpage(): JSX.Element {
     const [currentPassword, setCurrentPassword] = useState<string | undefined>(undefined);
     const [newPassword, setNewPassword] = useState<string | undefined>(undefined);
     const [confirmPassword, setConfirmPassword] = useState<string | undefined>(undefined);
@@ -123,9 +120,7 @@ export function ChangePasswordModal({ show, onHide }: ChangePasswordModalProps) 
             /* eslint-enable @typescript-eslint/no-non-null-assertion */
             updateUserPassword(passwordUpdateDTO).then(
                 (passwordResponse: ResponseData<UserResponseDTO | PasswordUpdateDTO>) => {
-                    if (passwordResponse.statusCode == 200) {
-                        onHide();
-                    } else {
+                    if (passwordResponse.statusCode != 200) {
                         const passwordResponseErrors: PasswordUpdateDTO = passwordResponse.responseBody as PasswordUpdateDTO;
                         if (passwordResponseErrors.currentPassword) {
                             setCurrentPasswordError(passwordResponseErrors.currentPassword);
@@ -153,18 +148,10 @@ export function ChangePasswordModal({ show, onHide }: ChangePasswordModalProps) 
     };
 
     return (
-        <Modal
-            show={show}
-            size="lg"
-            aria-labelledby="contained-modal-title-vcenter"
-            className="change-password-modal"
-            centered
-        >
-            <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter">Change password</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <form onSubmit={handleSubmit}>
+        <SubpageContainer className="change-password-container">
+            <SubpageHeader title={'Change password'} />
+            <SubpageContent>
+                <FormContainer onSubmit={handleSubmit} submitButtonValue={'Update password'}>
                     <div className="form-group">
                         <label>Current password:</label>
                         <input
@@ -221,15 +208,8 @@ export function ChangePasswordModal({ show, onHide }: ChangePasswordModalProps) 
                         />
                         {renderInputAlert(confirmPasswordError)}
                     </div>
-
-                    <div className="my-4 text-center">
-                        <Button type="submit">Update password</Button>
-                    </div>
-                </form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={onHide}>Close</Button>
-            </Modal.Footer>
-        </Modal>
+                </FormContainer>
+            </SubpageContent>
+        </SubpageContainer>
     );
 }

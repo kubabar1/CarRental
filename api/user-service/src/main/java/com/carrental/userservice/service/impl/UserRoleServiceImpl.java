@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 
 public class UserRoleServiceImpl implements UserRoleService {
 
-    private UserRoleRepository userRoleRepository;
+    private final UserRoleRepository userRoleRepository;
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public UserRoleServiceImpl(UserRoleRepository userRoleRepository, ModelMapper modelMapper) {
         this.userRoleRepository = userRoleRepository;

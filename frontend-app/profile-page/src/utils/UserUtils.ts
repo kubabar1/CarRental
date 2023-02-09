@@ -1,7 +1,7 @@
 import { UserRoleResponseDTO } from '../model/UserRoleResponseDTO';
 
 export const mapUserRolesDtoToStringArray = (userRoles: UserRoleResponseDTO[]): string[] => {
-    return userRoles ? userRoles.map((userRole: UserRoleResponseDTO) => userRole.type) : [];
+    return userRoles ? userRoles.map((userRole: UserRoleResponseDTO) => userRole.label) : [];
 };
 
 export const userHasAnyRole = (userRoles: string[], allowedRoles?: string[]): boolean => {

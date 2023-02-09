@@ -29,8 +29,6 @@ export function UsersListSubpage(): JSX.Element {
 
     useEffect(() => {
         getUsersList(currentPage, perPageCount).then((usersPageResponse: Page<UserResponseDTO>) => {
-            console.log('DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD');
-            console.log(usersPageResponse);
             if (currentPage > usersPageResponse.totalPages) {
                 setCurrentPage(usersPageResponse.totalPages - 1);
             } else {
@@ -69,8 +67,6 @@ export function UsersListSubpage(): JSX.Element {
             {
                 Header: 'User roles',
                 accessor: (user: UserResponseDTO) => {
-                    console.log('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE');
-                    console.log(user);
                     return <UserRolesTableItem userRoles={user.userRoles} />;
                 },
             },

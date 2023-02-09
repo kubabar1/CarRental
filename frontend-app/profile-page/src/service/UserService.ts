@@ -45,8 +45,8 @@ export const getAllUserRolesNotAssignedToUser = (userId: string): Promise<UserRo
     return fetchGet<UserRoleResponseDTO[]>(GET_USER_ROLES_NOT_ASSIGNED_TO_USER_PATH(userId));
 };
 
-export const updateAuthorizedUserData = (settingsUpdateDTO: UserUpdateDTO): Promise<UserResponseDTO> => {
-    return fetchPost<UserResponseDTO>(UPDATE_AUTHORIZED_USER_PATH, settingsUpdateDTO);
+export const updateAuthorizedUserData = (settingsUpdateDTO: UserUpdateDTO): Promise<ResponseData<UserResponseDTO>> => {
+    return fetchPut<UserResponseDTO>(UPDATE_AUTHORIZED_USER_PATH, settingsUpdateDTO);
 };
 
 export const updateUserData = (userId: string, settingsUpdateDTO: UserUpdateDTO): Promise<UserResponseDTO> => {

@@ -16,7 +16,8 @@ import {
     reservedVehiclesListPath,
     roleAddPath,
     sendEmailPath,
-    settingsPath,
+    settingsChangePasswordPath,
+    settingsUserSettingsPath,
     userEditPath,
     userRolesListPath,
     usersListPath,
@@ -26,7 +27,8 @@ import {
     vehiclesListPath,
 } from './constants/Links';
 import { WelcomeSubpage } from './subpages/welcome/WelcomeSubpage';
-import { SettingsSubpage } from './subpages/settings/SettingsSubpage';
+import { UserSettingsSubpage } from './subpages/settings/user_settings/UserSettingsSubpage';
+import { ChangePasswordSubpage } from './subpages/settings/change_password/ChangePasswordSubpage';
 import { UsersListSubpage } from './subpages/users/UsersListSubpage';
 import { LocationsListSubpage } from './subpages/locations/LocationsListSubpage';
 import { UsersRolesListSubpage } from './subpages/users_roles/UsersRolesListSubpage';
@@ -257,10 +259,22 @@ export function App(): JSX.Element {
 
                             {/*SETTINGS_PAGE*/}
                             <ProtectedRoute
-                                isAuthorized={userHasAnyRole(authenticatedUser.userRoles, settingsPath.permittedRoles)}
-                                path={settingsPath.link}
+                                isAuthorized={userHasAnyRole(
+                                    authenticatedUser.userRoles,
+                                    settingsUserSettingsPath.permittedRoles
+                                )}
+                                path={settingsUserSettingsPath.link}
                                 exact
-                                component={SettingsSubpage}
+                                component={() => <UserSettingsSubpage setAuthenticatedUser={setAuthenticatedUser} />}
+                            />
+                            <ProtectedRoute
+                                isAuthorized={userHasAnyRole(
+                                    authenticatedUser.userRoles,
+                                    settingsChangePasswordPath.permittedRoles
+                                )}
+                                path={settingsChangePasswordPath.link}
+                                exact
+                                component={ChangePasswordSubpage}
                             />
                         </Switch>
                     </div>

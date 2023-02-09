@@ -17,4 +17,7 @@ public class UserRoleEntity implements Serializable {
 
     @Column(name = "type", nullable = false, length = 30)
     private String type;
+
+    @Column(name = "label", nullable = false, length = 50)
+    private String label;
 }

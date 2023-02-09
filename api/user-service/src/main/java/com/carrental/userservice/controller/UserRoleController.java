@@ -13,7 +13,7 @@ import java.util.Set;
 @RequestMapping("/users-roles")
 public class UserRoleController {
 
-    private UserRoleService userRoleService;
+    private final UserRoleService userRoleService;
 
     public UserRoleController(UserRoleService userRoleService) {
         this.userRoleService = userRoleService;

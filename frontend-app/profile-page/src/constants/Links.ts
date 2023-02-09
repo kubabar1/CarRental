@@ -75,4 +75,6 @@ export const sendEmailPath: SecureLink = {
     permittedRoles: [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_OFFICE_EMPLOYEE, UserRolesEnum.ROLE_RENTING_EMPLOYEE],
 };
 
-export const settingsPath: SecureLink = { link: `${basePath}/settings` };
+export const settingsUserSettingsPath: SecureLink = { link: `${basePath}/settings/user-settings` };
+
+export const settingsChangePasswordPath: SecureLink = { link: `${basePath}/settings/change-password` };

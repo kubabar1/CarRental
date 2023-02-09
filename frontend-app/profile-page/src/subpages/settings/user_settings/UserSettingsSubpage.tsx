@@ -1,22 +1,25 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
-import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
-import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { InputFormGroup } from '../../components/form/InputFormGroup';
-import { getAuthorizedUserData, updateAuthorizedUserData } from '../../service/UserService';
-import { FormContainer } from '../../components/form/FormContainer';
-import { UserUpdateDTO } from '../../model/UserUpdateDTO';
-import { AuthenticatedUserDTO } from '../../model/AuthenticatedUserDTO';
-import { Button } from 'react-bootstrap';
-import './SettingsSubpage.scss';
-import { ChangePasswordModal } from './modal/ChangePasswordModal';
+import { SubpageContainer } from '../../../components/subpage/container/SubpageContainer';
+import { SubpageHeader } from '../../../components/subpage/header/SubpageHeader';
+import { SubpageContent } from '../../../components/subpage/content/SubpageContent';
+import { InputFormGroup } from '../../../components/form/InputFormGroup';
+import { getAuthorizedUserData, updateAuthorizedUserData } from '../../../service/UserService';
+import { FormContainer } from '../../../components/form/FormContainer';
+import { UserUpdateDTO } from '../../../model/UserUpdateDTO';
+import { AuthenticatedUserDTO } from '../../../model/AuthenticatedUserDTO';
+import './UserSettingsSubpage.scss';
+import { UserResponseDTO } from '../../../model/UserResponseDTO';
+import { ResponseData } from '../../../service/FetchUtil';
 
-export function SettingsSubpage(): JSX.Element {
+interface UserSettingsSubpageProps {
+    setAuthenticatedUser: (authenticatedUserDTO: AuthenticatedUserDTO) => void;
+}
+
+export function UserSettingsSubpage({ setAuthenticatedUser }: UserSettingsSubpageProps): JSX.Element {
     const [name, setName] = useState<string | undefined>(undefined);
     const [surname, setSurname] = useState<string | undefined>(undefined);
     const [phone, setPhone] = useState<string | undefined>(undefined);
     const [birthDate, setBirthDate] = useState<string | undefined>(undefined);
-    const [modalShow, setModalShow] = React.useState(false);
 
     useEffect(() => {
         getAuthorizedUserData().then((authenticatedUserDTO: AuthenticatedUserDTO) => {
@@ -34,7 +37,19 @@ export function SettingsSubpage(): JSX.Element {
                 <FormContainer
                     onSubmit={() => {
                         if (name && surname && phone && birthDate) {
-                            updateAuthorizedUserData(new UserUpdateDTO(name, surname, phone, birthDate));
+                            updateAuthorizedUserData(new UserUpdateDTO(name, surname, phone, birthDate)).then(
+                                (userResponse: ResponseData<UserResponseDTO>) => {
+                                    if (userResponse.statusCode == 200 && !!userResponse.responseBody) {
+                                        setName(userResponse.responseBody.name);
+                                        setSurname(userResponse.responseBody.surname);
+                                        setPhone(userResponse.responseBody.phone);
+                                        setBirthDate(userResponse.responseBody.birthDate);
+                                        getAuthorizedUserData().then((authenticatedUserDTO: AuthenticatedUserDTO) =>
+                                            setAuthenticatedUser(authenticatedUserDTO)
+                                        );
+                                    }
+                                }
+                            );
                         }
                     }}
                 >
@@ -72,12 +87,6 @@ export function SettingsSubpage(): JSX.Element {
                         }}
                         type={'date'}
                     />
-                    <div className="button-container">
-                        <Button variant="primary" onClick={() => setModalShow(true)}>
-                            Change password
-                        </Button>
-                        <ChangePasswordModal show={modalShow} onHide={() => setModalShow(false)} />
-                    </div>
                 </FormContainer>
             </SubpageContent>
         </SubpageContainer>

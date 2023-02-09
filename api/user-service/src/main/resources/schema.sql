@@ -14,8 +14,9 @@ CREATE TABLE IF NOT EXISTS users
 
 CREATE TABLE IF NOT EXISTS user_roles
 (
-    id   INT         NOT NULL AUTO_INCREMENT,
-    type VARCHAR(30) NOT NULL,
+    id      INT         NOT NULL AUTO_INCREMENT,
+    type    VARCHAR(30) NOT NULL,
+    label   VARCHAR(50) NOT NULL,
     PRIMARY KEY (id),
     UNIQUE (type)
 );

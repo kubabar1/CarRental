@@ -41,6 +41,11 @@ public class QueueConfig {
         return buildQueue("getAverageVehiclesRatingQueue");
     }
 
+    @Bean
+    public Queue reloadAuthenticatedUserDataQueue() {
+        return buildQueue("reloadAuthenticatedUserDataQueue");
+    }
+
     private Queue buildQueue(String queueName) {
         return QueueBuilder
                 .nonDurable(queueName)

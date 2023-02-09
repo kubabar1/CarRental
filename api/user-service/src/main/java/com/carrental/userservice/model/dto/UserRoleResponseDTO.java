@@ -8,4 +8,6 @@ public class UserRoleResponseDTO {
     private Long id;
 
     private String type;
+
+    private String label;
 }

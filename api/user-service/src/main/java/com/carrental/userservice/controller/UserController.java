@@ -77,6 +77,18 @@ public class UserController {
         return ResponseEntity.ok().body(userService.updateUser(userId, userUpdateDTO));
     }
 
+    @PutMapping("/update-authenticated-user")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UserResponseDTO> updateAuthenticatedUserController(
+        @Valid @RequestBody UserUpdateDTO userUpdateDTO
+    ) {
+        try {
+            return ResponseEntity.ok().body(userService.updateAuthenticatedUser(userUpdateDTO));
+        } catch (NoSuchElementException exception) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @PostMapping("/{userId}/roles")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserResponseDTO> addRoleToUserController(@PathVariable("userId") Long userId,

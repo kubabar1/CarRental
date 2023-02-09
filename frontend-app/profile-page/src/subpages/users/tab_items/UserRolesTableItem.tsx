@@ -8,8 +8,6 @@ interface UserRolesTableItemProps {
 }
 
 export function UserRolesTableItem({ userRoles }: UserRolesTableItemProps): JSX.Element {
-    console.log('LLLLLLLLLLLLLLLLLLLL');
-    console.log(userRoles);
     return (
         <div>
             {mapUserRolesDtoToStringArray(userRoles).map((userRole: string, id: number) => {

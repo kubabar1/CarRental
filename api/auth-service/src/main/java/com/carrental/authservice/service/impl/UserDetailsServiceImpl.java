@@ -23,6 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.rabbitTemplate = rabbitTemplate;
     }
 
+    @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserDetailsDTO user = rabbitTemplate.convertSendAndReceiveAsType(
                 "getUserByEmailQueue", email, new ParameterizedTypeReference<>() {

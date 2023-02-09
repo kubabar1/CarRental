@@ -9,6 +9,7 @@ import com.carrental.bookingservice.repository.BookingRepository;
 import com.carrental.bookingservice.repository.BookingStateRepository;
 import com.carrental.bookingservice.service.BookingUserService;
 import com.carrental.commons.authentication.exception.AuthorizationException;
+import com.carrental.commons.authentication.model.AuthenticatedUser;
 import com.carrental.commons.authentication.model.AuthenticatedUserDTO;
 import com.carrental.commons.authentication.service.AuthenticatedUserDataService;
 import org.modelmapper.ModelMapper;
@@ -48,8 +49,8 @@ public class BookingUserServiceImpl implements BookingUserService {
 
     @Override
     public Page<BookingResponseDTO> getBookings(Pageable pageable) throws AuthorizationException, NoSuchElementException {
-        AuthenticatedUserDTO authenticatedUserData = authenticatedUserDataService.getAuthenticatedUserData();
-        Page<BookingEntity> bookingEntities = bookingRepository.findAllByUserId(authenticatedUserData.getId(), pageable).orElseThrow();
+        AuthenticatedUser authenticatedUser = authenticatedUserDataService.getAuthenticatedUserData();
+        Page<BookingEntity> bookingEntities = bookingRepository.findAllByUserId(authenticatedUser.getUserId(), pageable).orElseThrow();
         List<BookingResponseDTO> bookingResponseDTOS = bookingEntities
                 .getContent()
                 .stream()
@@ -60,16 +61,16 @@ public class BookingUserServiceImpl implements BookingUserService {
 
     @Override
     public BookingResponseDTO getBookingById(Long bookingId) throws AuthorizationException, NoSuchElementException {
-        AuthenticatedUserDTO authenticatedUserData = authenticatedUserDataService.getAuthenticatedUserData();
+        AuthenticatedUser authenticatedUser = authenticatedUserDataService.getAuthenticatedUserData();
         return modelMapper.map(bookingRepository
-                .findByIdAndUserId(bookingId, authenticatedUserData.getId())
+                .findByIdAndUserId(bookingId, authenticatedUser.getUserId())
                 .orElseThrow(), BookingResponseDTO.class);
     }
 
     @Override
     public Page<BookingResponseDTO> getReservedBookings(Pageable pageable) throws AuthorizationException {
-        AuthenticatedUserDTO authenticatedUserData = authenticatedUserDataService.getAuthenticatedUserData();
-        Page<BookingEntity> bookingEntities = bookingRepository.findAllReservedByUserId(authenticatedUserData.getId(), pageable);
+        AuthenticatedUser authenticatedUser = authenticatedUserDataService.getAuthenticatedUserData();
+        Page<BookingEntity> bookingEntities = bookingRepository.findAllReservedByUserId(authenticatedUser.getUserId(), pageable);
         List<BookingResponseDTO> bookingResponseDTOList = bookingEntities
                 .getContent()
                 .stream()
@@ -80,8 +81,8 @@ public class BookingUserServiceImpl implements BookingUserService {
 
     @Override
     public Page<BookingResponseDTO> getRentedBookings(Pageable pageable) throws AuthorizationException {
-        AuthenticatedUserDTO authenticatedUserData = authenticatedUserDataService.getAuthenticatedUserData();
-        Page<BookingEntity> bookingEntities = bookingRepository.findAllRentedByUserId(authenticatedUserData.getId(), pageable);
+        AuthenticatedUser authenticatedUser = authenticatedUserDataService.getAuthenticatedUserData();
+        Page<BookingEntity> bookingEntities = bookingRepository.findAllRentedByUserId(authenticatedUser.getUserId(), pageable);
         List<BookingResponseDTO> bookingResponseDTOList = bookingEntities
                 .getContent()
                 .stream()
@@ -92,8 +93,8 @@ public class BookingUserServiceImpl implements BookingUserService {
 
     @Override
     public BookingResponseDTO cancelBooking(Long bookingId) throws BookingStateException, AuthorizationException {
-        AuthenticatedUserDTO authenticatedUserData = authenticatedUserDataService.getAuthenticatedUserData();
-        BookingEntity bookingEntity = bookingRepository.findByIdAndUserId(bookingId, authenticatedUserData.getId()).orElseThrow();
+        AuthenticatedUser authenticatedUser = authenticatedUserDataService.getAuthenticatedUserData();
+        BookingEntity bookingEntity = bookingRepository.findByIdAndUserId(bookingId, authenticatedUser.getUserId()).orElseThrow();
         bookingStateValidator.validateBookingStateDuringUpdate(bookingEntity, BookingStateCodeEnum.CAN);
         BookingStateEntity cancelBookingStateEntity = bookingStateRepository
                 .findById(BookingStateCodeEnum.CAN)

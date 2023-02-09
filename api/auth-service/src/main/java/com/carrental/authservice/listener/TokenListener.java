@@ -1,6 +1,5 @@
 package com.carrental.authservice.listener;
 
-import com.carrental.authservice.exception.VerificationTokenException;
 import com.carrental.authservice.model.dto.GenerateTokenRequestDTO;
 import com.carrental.authservice.model.dto.VerificationTokenDTO;
 import com.carrental.authservice.service.TokenService;

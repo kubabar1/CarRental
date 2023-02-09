@@ -1,6 +1,7 @@
 package com.carrental.userservice.service.impl;
 
 import com.carrental.commons.authentication.exception.AuthorizationException;
+import com.carrental.commons.authentication.model.AuthenticatedUser;
 import com.carrental.commons.authentication.model.AuthenticatedUserDTO;
 import com.carrental.commons.authentication.service.AuthenticatedUserDataService;
 import com.carrental.userservice.exception.UserAlreadyExistException;
@@ -11,12 +12,16 @@ import com.carrental.userservice.repository.UserRepository;
 import com.carrental.userservice.repository.UserRoleRepository;
 import com.carrental.userservice.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -48,12 +53,6 @@ public class UserServiceImpl implements UserService {
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
         this.rabbitTemplate = rabbitTemplate;
-    }
-
-    @Override
-    public UserResponseDTO getAuthorizedUser() throws AuthorizationException, NoSuchElementException {
-        AuthenticatedUserDTO authenticatedUserData = authenticatedUserDataService.getAuthenticatedUserData();
-        return modelMapper.map(userRepository.findById(authenticatedUserData.getId()).orElseThrow(), UserResponseDTO.class);
     }
 
     @Override
@@ -125,8 +124,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDTO updateUserPassword(PasswordUpdateDTO passwordUpdateDTO) throws AuthorizationException, NoSuchElementException {
-        AuthenticatedUserDTO authenticatedUserData = authenticatedUserDataService.getAuthenticatedUserData();
-        UserEntity userEntity = userRepository.findById(authenticatedUserData.getId()).orElseThrow();
+        AuthenticatedUser authenticatedUser = authenticatedUserDataService.getAuthenticatedUserData();
+        UserEntity userEntity = userRepository.findById(authenticatedUser.getUserId()).orElseThrow();
         boolean isCurrentPasswordCorrect = passwordEncoder.matches(passwordUpdateDTO.getCurrentPassword(), userEntity.getPassword());
         if (!isCurrentPasswordCorrect) {
             throw new AuthorizationException("Given current password is not correct.");
@@ -164,5 +163,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEmailExistsDTO isUserEmailExists(String email) {
         return new UserEmailExistsDTO(userRepository.findByEmail(email).orElse(null) != null);
+    }
+
+    @Override
+    public UserResponseDTO updateAuthenticatedUser(UserUpdateDTO userUpdateDTO) throws NoSuchElementException {
+        AuthenticatedUser authenticatedUser = authenticatedUserDataService.getAuthenticatedUserData();
+
+        UserEntity userEntity = userRepository.findById(authenticatedUser.getUserId()).orElseThrow(NoSuchElementException::new);
+        userEntity.setName(userUpdateDTO.getName());
+        userEntity.setSurname(userUpdateDTO.getSurname());
+        userEntity.setPhone(userUpdateDTO.getPhone());
+        userEntity.setBirthDate(userUpdateDTO.getBirthDate());
+
+        UserEntity updatedUser = userRepository.save(userEntity);
+
+        authenticatedUser.setName(userUpdateDTO.getName());
+        authenticatedUser.setSurname(userUpdateDTO.getSurname());
+        authenticatedUser.setPhone(userUpdateDTO.getPhone());
+        authenticatedUser.setBirthDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(userUpdateDTO.getBirthDate()));
+
+        return modelMapper.map(updatedUser, UserResponseDTO.class);
     }
 }
