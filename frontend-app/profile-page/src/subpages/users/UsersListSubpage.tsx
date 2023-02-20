@@ -92,7 +92,7 @@ export function UsersListSubpage(): JSX.Element {
                                 buttonRedirectPath={`/profile/email-send`}
                                 buttonVariant={'info'}
                                 buttonRedirectState={{
-                                    emailAddresses: [user.email],
+                                    emailAddress: user.email,
                                 }}
                                 tooltipMessage={'Send email'}
                             />

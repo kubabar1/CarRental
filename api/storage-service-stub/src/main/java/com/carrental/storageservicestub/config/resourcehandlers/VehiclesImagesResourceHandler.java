@@ -1,10 +1,14 @@
 package com.carrental.storageservicestub.config.resourcehandlers;
 
 import com.carrental.storageservicestub.model.BaseTmpDir;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.util.Set;
 
 import static com.carrental.commons.utils.ZipUtils.unzipFile;
 
@@ -14,6 +18,17 @@ public class VehiclesImagesResourceHandler implements WebMvcConfigurer {
 
     public VehiclesImagesResourceHandler(BaseTmpDir baseTmpDir) {
         this.baseTmpDir = baseTmpDir;
+    }
+
+    @RabbitListener(queues = {"uploadVehicleImageQueue"})
+    public void getLocationListener(UploadVehicleImageDTO uploadVehicleImageDTO) {
+        try {
+            File vehicleImagesDir = new File(baseTmpDir.getDir().toFile(), "vehicles_images");
+            File vehicleImage =new File(vehicleImagesDir, uploadVehicleImageDTO.getImageName());
+            Files.write(vehicleImage.toPath(), uploadVehicleImageDTO.getImageFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -28,6 +43,4 @@ public class VehiclesImagesResourceHandler implements WebMvcConfigurer {
             e.printStackTrace();
         }
     }
-
-
 }

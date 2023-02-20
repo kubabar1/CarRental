@@ -36,4 +36,19 @@ public class LocationsServiceImpl implements LocationsService {
                 .collect(Collectors.toList());
         return new PageImpl<>(locationResponseDTOS, pageable, locationEntities.getTotalElements());
     }
+
+    @Override
+    public Set<LocationResponseDTO> getAllLocations(String country) {
+        if (country != null && !country.isEmpty()) {
+            return locationsRepository.findAllByCountry(country)
+                    .stream()
+                    .map(locationEntity -> modelMapper.map(locationEntity, LocationResponseDTO.class))
+                    .collect(Collectors.toSet());
+        } else {
+            return locationsRepository.findAll()
+                    .stream()
+                    .map(locationEntity -> modelMapper.map(locationEntity, LocationResponseDTO.class))
+                    .collect(Collectors.toSet());
+        }
+    }
 }

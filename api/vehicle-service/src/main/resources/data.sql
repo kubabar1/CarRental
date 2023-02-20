@@ -18,6 +18,106 @@ INSERT INTO vehicle_status
 VALUES  ('AVI','available'),
         ('UAV','unavailable');
 
+INSERT INTO colors(color)
+VALUES  ('Beige'),
+        ('Black'),
+        ('Blue'),
+        ('Brown'),
+        ('Claret'),
+        ('Grey'),
+        ('Orange'),
+        ('Red'),
+        ('White');
+
+INSERT INTO body_types(body_type)
+VALUES  ('Coupe'),
+        ('Hatchback'),
+        ('Kombi'),
+        ('Minivan'),
+        ('SUV'),
+        ('Sedan'),
+        ('Van');
+
+INSERT INTO fuel_types(fuel_type)
+VALUES  ('Petrol'),
+        ('LPG');
+
+INSERT INTO brands(brand)
+VALUES  ('Alfa Romeo'),
+        ('Audi'),
+        ('BMW'),
+        ('Citroen'),
+        ('Dacia'),
+        ('Ferrari'),
+        ('Fiat'),
+        ('Ford'),
+        ('Honda'),
+        ('Hyundai'),
+        ('Jeep'),
+        ('Lexus'),
+        ('Mercedes-Benz'),
+        ('Mitsubishi'),
+        ('Nissan'),
+        ('Opel'),
+        ('Porsche'),
+        ('Subaru'),
+        ('Volkswagen'),
+        ('Volvo');
+
+INSERT INTO models(brand, model)
+VALUES  ('Alfa Romeo','4C'),
+        ('Audi','R8'),
+        ('Audi','Q5'),
+        ('Audi','S5'),
+        ('Audi','A3'),
+        ('Audi','80'),
+        ('BMW','I8'),
+        ('BMW','X1'),
+        ('BMW','M5'),
+        ('BMW','M6'),
+        ('Citroen','C4 Cactus'),
+        ('Citroen','Jumpy'),
+        ('Citroen','Xsara Picasso'),
+        ('Dacia','Duster'),
+        ('Dacia','Logan'),
+        ('Fiat','Panda'),
+        ('Fiat','500'),
+        ('Ford','Mustang'),
+        ('Ford','Fiesta'),
+        ('Ford','Crown Victoria'),
+        ('Ford','Transit'),
+        ('Ford','Escape'),
+        ('Honda','Accord'),
+        ('Honda','CR-V'),
+        ('Hyundai','Genesis'),
+        ('Hyundai','i30'),
+        ('Hyundai','Santa Fe'),
+        ('Jeep','Cherokee'),
+        ('Jeep','Renegade'),
+        ('Jeep','Wrangler'),
+        ('Lexus','ES'),
+        ('Lexus','IS'),
+        ('Mercedes-Benz','AMG-GT'),
+        ('Mercedes-Benz','G Class'),
+        ('Mitsubishi','Outlander'),
+        ('Mitsubishi','ASX'),
+        ('Nissan','GTR'),
+        ('Nissan','Juke'),
+        ('Opel','Corsa'),
+        ('Opel','Vectra'),
+        ('Opel','Astra'),
+        ('Porsche','911'),
+        ('Porsche','Panamera'),
+        ('Porsche','Cayenne'),
+        ('Subaru','Impreza'),
+        ('Volkswagen','Passat'),
+        ('Volkswagen','Polo'),
+        ('Volkswagen','Golf'),
+        ('Volvo','V40'),
+        ('Volvo','XC90'),
+        ('Ferrari','Enzo'),
+        ('Ferrari','California');
+
 INSERT INTO vehicles (id, registration, brand, model, daily_fee, location_id, vehicle_status_code, best_offer)
 VALUES  (1, 'AB 12321','Alfa Romeo','4C',183.04,1,'AVI',1),
         (2, 'BC 57843','Audi','R8',124.95,2,'AVI',0),
@@ -126,7 +226,7 @@ VALUES  (1,'AF'),(1,'CB'),(1,'CD'),(1,'CZ'),(1,'ESP'),(1,'EUL'),(1,'PPK'),(1,'SP
         (51,'ABS'),(51,'APS'),(51,'CB'),(51,'CD'),(51,'CZ'),(51,'ESP'),(51,'EUL'),(51,'IM'),(51,'KM'),(51,'PPK'),(51,'RD'),(51,'SP'),(51,'WK'),
         (52,'ABS'),(52,'AF'),(52,'APS'),(52,'CB'),(52,'CZ'),(52,'ESP'),(52,'EUL'),(52,'IM'),(52,'KM'),(52,'PPK'),(52,'RD'),(52,'WK');
 
-INSERT INTO vehicle_details (vehicle_id, body_type, production_year, fuel_type, power, gearbox, front_wheel_drive, doors_number, seats_number, color, metallic, photo_name, description)
+INSERT INTO vehicle_details (vehicle_id, body_type, production_year, fuel_type, power, gearbox, front_wheel_drive, doors_number, seats_number, color, metallic, image_name, description)
 VALUES  (1,'Coupe',2017,'LPG',240,'auto',0,2,2,'Red',1,'alfa_romeo_4_c.png','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget finibus turpis, in rhoncus '),
         (2,'Coupe',2014,'Petrol',500,'man',0,2,2,'White',1,'audi_r_8.png','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget finibus turpis, in rhoncus '),
         (3,'SUV',2008,'LPG',240,'man',1,4,5,'Red',1,'audi_q_5.png','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget finibus turpis, in rhoncus '),

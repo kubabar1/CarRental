@@ -11,7 +11,7 @@ interface CarItemProperties {
 }
 
 export function VehicleItem({ vehicle }: CarItemProperties): JSX.Element {
-    const vehicleImage: string = carImagesMainPageCarList(vehicle.vehicleDetails.photoName);
+    const vehicleImage: string = carImagesMainPageCarList(vehicle.vehicleDetails.imageName);
 
     return (
         <Link to={carDetailsByIdLink(vehicle.id)} style={{ textDecoration: 'none' }}>

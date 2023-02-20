@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { VehicleFiltersParamsDTO } from '../../../../model/VehicleFiltersParamsDTO';
+import { VehicleOptionsDTO } from '../../../../model/VehicleOptionsDTO';
 import { SearchSelectOption, SearchSelect, mapToOptionType } from './search_components/select/SearchSelect';
 import FilteringParamsEnum from '../../../../model/FilteringParamsEnum';
 import { SingleValue } from 'react-select';
 import { SearchMinMaxInput } from './search_components/min_max_input/SearchMinMaxInput';
 import './VehicleSearchFilters.scss';
-import { getVehicleModelsByBrand, getVehiclesFilterParams } from '../../../../service/VehicleService';
+import { getVehicleModelsByBrand, getVehicleOptions } from '../../../../service/VehicleService';
 import qs, { ParsedQs } from 'qs';
 
 interface CarSearchFiltersInterface {
@@ -22,7 +22,7 @@ const getFilterRequestParam = (filteringParam: FilteringParamsEnum) => {
 };
 
 export function VehicleSearchFilters({ handleFilterSubmit }: CarSearchFiltersInterface): JSX.Element {
-    const [vehicleFiltersParams, setVehicleFiltersParams] = useState<VehicleFiltersParamsDTO | undefined>(undefined);
+    const [vehicleFiltersParams, setVehicleFiltersParams] = useState<VehicleOptionsDTO | undefined>(undefined);
     const [vehicleFilterModelsParam, setVehicleFilterModelsParam] = useState<string[]>([]);
     const [brand, setBrand] = useState<string | undefined>(
         getFilterRequestParam(FilteringParamsEnum.BRAND_FIELD_FILTER)
@@ -62,7 +62,7 @@ export function VehicleSearchFilters({ handleFilterSubmit }: CarSearchFiltersInt
     );
 
     useEffect(() => {
-        getVehiclesFilterParams().then((vehicleFilterParams: VehicleFiltersParamsDTO) => {
+        getVehicleOptions().then((vehicleFilterParams: VehicleOptionsDTO) => {
             setVehicleFiltersParams(vehicleFilterParams);
         });
     }, []);
@@ -157,34 +157,30 @@ export function VehicleSearchFilters({ handleFilterSubmit }: CarSearchFiltersInt
                     {/*    vehicleFiltersParams.cities*/}
                     {/*)}*/}
                     {vehicleFiltersParams &&
-                        renderSearchSelect('Body type::', bodyType, setBodyType, vehicleFiltersParams.bodyTypes)}
+                        renderSearchSelect('Body type:', bodyType, setBodyType, vehicleFiltersParams.bodyTypes)}
                     {vehicleFiltersParams && renderSearchSelect('Color:', color, setColor, vehicleFiltersParams.colors)}
-                    {vehicleFiltersParams &&
-                        renderSearchMinMaxInput('Price:', minPrice, maxPrice, setMinPrice, setMaxPrice)}
-                    {vehicleFiltersParams &&
-                        renderSearchMinMaxInput(
-                            'Seats count:',
-                            minSeatsCount,
-                            maxSeatsCount,
-                            setMinSeatsCount,
-                            setMaxSeatsCount
-                        )}
-                    {vehicleFiltersParams &&
-                        renderSearchMinMaxInput(
-                            'Doors count:',
-                            minDoorsCount,
-                            maxDoorsCount,
-                            setMinDoorsCount,
-                            setMaxDoorsCount
-                        )}
-                    {vehicleFiltersParams &&
-                        renderSearchMinMaxInput(
-                            'Doors count:',
-                            minProductionYear,
-                            maxProductionYear,
-                            setMinProductionYear,
-                            setMaxProductionYear
-                        )}
+                    {renderSearchMinMaxInput('Price:', minPrice, maxPrice, setMinPrice, setMaxPrice)}
+                    {renderSearchMinMaxInput(
+                        'Seats count:',
+                        minSeatsCount,
+                        maxSeatsCount,
+                        setMinSeatsCount,
+                        setMaxSeatsCount
+                    )}
+                    {renderSearchMinMaxInput(
+                        'Doors count:',
+                        minDoorsCount,
+                        maxDoorsCount,
+                        setMinDoorsCount,
+                        setMaxDoorsCount
+                    )}
+                    {renderSearchMinMaxInput(
+                        'Doors count:',
+                        minProductionYear,
+                        maxProductionYear,
+                        setMinProductionYear,
+                        setMaxProductionYear
+                    )}
                     <input type="submit" value="Search" className="btn btn-primary search-filter-submit-button" />
                 </form>
             </div>

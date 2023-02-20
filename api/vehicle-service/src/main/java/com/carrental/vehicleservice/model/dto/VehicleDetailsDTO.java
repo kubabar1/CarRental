@@ -10,21 +10,21 @@ import javax.validation.constraints.Size;
 public class VehicleDetailsDTO {
 
     @NotEmpty
-    @Size(max = 30)
+    @Size(max = 50)
     private String bodyType;
 
     @NotNull
     private Integer productionYear;
 
     @NotEmpty
-    @Size(max = 30)
+    @Size(max = 50)
     private String fuelType;
 
     @NotNull
     private Integer power;
 
     @NotEmpty
-    @Size(max = 30)
+    @Size(max = 50)
     private String gearbox;
 
     @NotNull
@@ -37,7 +37,7 @@ public class VehicleDetailsDTO {
     private Integer seatsNumber;
 
     @NotEmpty
-    @Size(max = 30)
+    @Size(max = 50)
     private String color;
 
     @NotNull
@@ -45,7 +45,7 @@ public class VehicleDetailsDTO {
 
     @NotEmpty
     @Size(max = 70)
-    private String photoName;
+    private String imageName;
 
     @NotEmpty
     @Size(max = 100)

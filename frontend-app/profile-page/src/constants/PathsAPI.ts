@@ -1,3 +1,5 @@
+import { DEFAULT_PAGE_SIZE, DEFAULT_START_PAGE } from '../../../main-page/src/constants/PathsAPI';
+
 const PROTOCOL = 'http';
 
 const HOST = 'localhost';
@@ -15,6 +17,12 @@ const USER_PATH = `${APP_ADDR}/user`;
 const withId = (basePath: string, id: string): string => {
     return `${basePath}/${id}`;
 };
+
+export const PAGE_REQUEST = (
+    url: string,
+    page: number = DEFAULT_START_PAGE,
+    size: number = DEFAULT_PAGE_SIZE
+): string => `${url}?page=${page}&size=${size}`;
 
 export const GET_ADMIN_BOOKINGS_PATH = `${ADMIN_PATH}/bookings`;
 
@@ -54,6 +62,23 @@ export const REMOVE_EQUIPMENT_FROM_VEHICLE_PATH = (vehicleId: string): string =>
     withId(`${APP_ADDR}/equipments/remove`, vehicleId);
 
 export const ADD_VEHICLE_PATH = `${APP_ADDR}/vehicles`;
+
+export const GET_VEHICLE_OPTIONS_PATH = `${APP_ADDR}/vehicles/options`;
+
+export const ADD_BRAND_PATH = `${APP_ADDR}/vehicles/brand`;
+
+export const ADD_BODY_TYPE_PATH = `${APP_ADDR}/vehicles/body-type`;
+
+export const ADD_FUEL_TYPE_PATH = `${APP_ADDR}/vehicles/fuel-type`;
+
+export const ADD_GEARBOX_PATH = `${APP_ADDR}/vehicles/gearbox`;
+
+export const ADD_COLOR_PATH = `${APP_ADDR}/vehicles/color`;
+
+export const ADD_VEHICLE_MODEL_PATH = `${APP_ADDR}/vehicles/model`;
+
+export const GET_VEHICLE_MODELS_BY_BRAND_PATH = (brand: string): string =>
+    `${APP_ADDR}/vehicles/filter-params/brand-models/${brand}`;
 
 export const UPDATE_VEHICLE_PATH = (vehicleId: string): string => withId(`${APP_ADDR}/vehicles`, vehicleId);
 

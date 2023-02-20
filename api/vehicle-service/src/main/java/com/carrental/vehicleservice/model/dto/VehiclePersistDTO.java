@@ -33,7 +33,7 @@ public class VehiclePersistDTO {
     @NotNull
     private boolean bestOffer;
 
-    @NotEmpty
+    @Valid
     private VehicleStatCodeEnum vehicleStatus;
 
     @Valid

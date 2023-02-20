@@ -39,4 +39,5 @@ dependencies {
     implementation 'com.h2database:h2:2.1.210'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
     implementation 'javax.validation:validation-api:2.0.1.Final'
+    implementation 'commons-io:commons-io:2.11.0'
 }

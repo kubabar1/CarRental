@@ -1,0 +1,50 @@
+.upload-input-form-group-container {
+    .thumbs-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-top: 16px;
+    }
+
+    .thumb {
+        display: inline-flex;
+        margin-bottom: 8px;
+        max-height: 300px;
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    .thumb-inner {
+        display: flex;
+        border-radius: 0.25rem;
+        border: 1px solid #eaeaea;
+        padding: 5px;
+
+        img {
+            display: block;
+            width: auto;
+            height: 100%;
+        }
+    }
+
+    .dropzone {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        border-width: 2px;
+        border-radius: 2px;
+        border-color: #eee;
+        border-style: dashed;
+        background-color: #fafafa;
+        color: #bdbdbd;
+        outline: none;
+        transition: border 0.24s ease-in-out;
+    }
+
+    .custom-alert {
+        margin: 20px auto;
+        text-align: center;
+    }
+}

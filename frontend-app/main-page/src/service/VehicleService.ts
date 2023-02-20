@@ -3,12 +3,12 @@ import { fetchGet } from './FetchUtil';
 import {
     GET_VEHICLE_BY_ID_PATH,
     GET_VEHICLE_MODELS_BY_BRAND_PATH,
-    GET_VEHICLES_FILTER_PARAMS_PATH,
+    GET_VEHICLE_OPTIONS_PATH,
     GET_BEST_OFFERS_VEHICLES_PATH,
     GET_VEHICLES_PATH,
     PAGE_REQUEST,
 } from '../constants/PathsAPI';
-import { VehicleFiltersParamsDTO } from '../model/VehicleFiltersParamsDTO';
+import { VehicleOptionsDTO } from '../model/VehicleOptionsDTO';
 import Page from '../model/Page';
 import qs, { ParsedQs } from 'qs';
 import FilteringParamsEnum from '../model/FilteringParamsEnum';
@@ -48,6 +48,6 @@ export const getVehicleModelsByBrand = (brand: string): Promise<string[]> => {
     return fetchGet<string[]>(GET_VEHICLE_MODELS_BY_BRAND_PATH(brand));
 };
 
-export const getVehiclesFilterParams = (): Promise<VehicleFiltersParamsDTO> => {
-    return fetchGet<VehicleFiltersParamsDTO>(GET_VEHICLES_FILTER_PARAMS_PATH);
+export const getVehicleOptions = (): Promise<VehicleOptionsDTO> => {
+    return fetchGet<VehicleOptionsDTO>(GET_VEHICLE_OPTIONS_PATH);
 };

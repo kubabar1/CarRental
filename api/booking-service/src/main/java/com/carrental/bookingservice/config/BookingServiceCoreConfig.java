@@ -4,6 +4,7 @@ import com.carrental.bookingservice.controller.BookingsAdminController;
 import com.carrental.bookingservice.controller.BookingsAuditLogsController;
 import com.carrental.bookingservice.controller.BookingsUserController;
 import com.carrental.bookingservice.controller.LocationsController;
+import com.carrental.bookingservice.listener.LocationListener;
 import com.carrental.bookingservice.repository.BookingAuditLogRepository;
 import com.carrental.bookingservice.repository.BookingRepository;
 import com.carrental.bookingservice.repository.BookingStateRepository;
@@ -91,5 +92,10 @@ public class BookingServiceCoreConfig {
     @Bean
     public BookingsAuditLogsController bookingsAuditLogsController(BookingAuditLogService bookingAuditLogService) {
         return new BookingsAuditLogsController(bookingAuditLogService);
+    }
+
+    @Bean
+    public LocationListener locationListener(LocationsService locationsService) {
+        return new LocationListener(locationsService);
     }
 }

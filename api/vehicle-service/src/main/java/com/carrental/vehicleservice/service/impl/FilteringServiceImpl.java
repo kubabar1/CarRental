@@ -1,14 +1,11 @@
 package com.carrental.vehicleservice.service.impl;
 
-import com.carrental.vehicleservice.model.dto.AverageRateResponseDTO;
 import com.carrental.vehicleservice.model.dto.VehicleResponseDTO;
 import com.carrental.vehicleservice.model.entity.VehicleEntity;
 import com.carrental.vehicleservice.repository.VehicleRepository;
 import com.carrental.vehicleservice.service.FilteringService;
 import com.carrental.vehicleservice.service.VehicleRatingService;
 import org.modelmapper.ModelMapper;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +22,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.carrental.vehicleservice.model.constants.FilteringParamsEnum.*;
+import static com.carrental.vehicleservice.model.entity.BodyTypeEntity.BODY_TYPE;
+import static com.carrental.vehicleservice.model.entity.ColorEntity.COLOR;
+import static com.carrental.vehicleservice.model.entity.ModelEntity.MODEL;
 import static com.carrental.vehicleservice.model.entity.VehicleDetailsEntity.*;
 import static com.carrental.vehicleservice.model.entity.VehicleEntity.*;
 
@@ -115,16 +115,16 @@ public class FilteringServiceImpl implements FilteringService {
         List<Predicate> predicates = new ArrayList<>();
 
         if (brand != null) {
-            predicates.add(cb.like(cb.upper(vehicleEntityRoot.get(BRAND_FIELD)), "%" + brand.toUpperCase() + "%"));
+            predicates.add(cb.like(cb.upper(vehicleEntityRoot.get(BRAND_FIELD)), brand.toUpperCase()));
         }
         if (model != null) {
-            predicates.add(cb.like(cb.upper(vehicleEntityRoot.get(MODEL_FIELD)), "%" + model.toUpperCase() + "%"));
+            predicates.add(cb.like(cb.upper(vehicleEntityRoot.get(MODEL_FIELD).get(MODEL)), model.toUpperCase()));
         }
         if (bodyType != null) {
-            predicates.add(cb.like(cb.upper(vehicleEntityRoot.get(VEHICLE_DETAILS_FIELD).get(BODY_TYPE_FIELD)), "%" + bodyType.toUpperCase() + "%"));
+            predicates.add(cb.equal(cb.upper(vehicleEntityRoot.get(VEHICLE_DETAILS_FIELD).get(BODY_TYPE_FIELD).get(BODY_TYPE)), bodyType.toUpperCase()));
         }
         if (color != null) {
-            predicates.add(cb.like(cb.upper(vehicleEntityRoot.get(VEHICLE_DETAILS_FIELD).get(COLOR_FIELD)), "%" + color.toUpperCase() + "%"));
+            predicates.add(cb.equal(cb.upper(vehicleEntityRoot.get(VEHICLE_DETAILS_FIELD).get(COLOR_FIELD).get(COLOR)), color.toUpperCase()));
         }
         if (dailyFeeFrom != null) {
             predicates.add(cb.ge(vehicleEntityRoot.get(DAILY_FEE_FIELD), Double.valueOf(dailyFeeFrom)));

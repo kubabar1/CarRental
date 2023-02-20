@@ -8,7 +8,7 @@ export class VehicleResponseDTO {
     brand: string;
     model: string;
     dailyFee: number;
-    locationId: string;
+    locationId: number;
     bestOffer: boolean;
     vehicleStatus: VehicleStatusResponseDTO;
     vehicleDetails: VehicleDetailsDTO;
@@ -20,7 +20,7 @@ export class VehicleResponseDTO {
         model: string,
         dailyFee: number,
         registration: string,
-        locationId: string,
+        locationId: number,
         bestOffer: boolean,
         vehicleStatus: VehicleStatusResponseDTO,
         vehicleDetails: VehicleDetailsDTO,

@@ -9,7 +9,7 @@ export class VehicleDetailsDTO {
     seatsNumber: number;
     color: string;
     metallic: boolean;
-    photoName: string;
+    imageName: string;
     description: string;
 
     constructor(
@@ -23,7 +23,7 @@ export class VehicleDetailsDTO {
         seatsNumber: number,
         color: string,
         metallic: boolean,
-        photoName: string,
+        imageName: string,
         description: string
     ) {
         this.bodyType = bodyType;
@@ -36,7 +36,7 @@ export class VehicleDetailsDTO {
         this.seatsNumber = seatsNumber;
         this.color = color;
         this.metallic = metallic;
-        this.photoName = photoName;
+        this.imageName = imageName;
         this.description = description;
     }
 }

@@ -1,0 +1,15 @@
+.add-option-modal {
+    .modal-header {
+        justify-content: center;
+    }
+
+    .modal-footer {
+        button:first-of-type {
+            margin-right: auto;
+        }
+
+        button:last-of-type {
+            margin-left: auto;
+        }
+    }
+}

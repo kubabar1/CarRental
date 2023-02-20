@@ -3,7 +3,7 @@ import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { UserRoleResponseDTO } from '../../model/UserRoleResponseDTO';
-import { FormContainer } from '../../components/form/FormContainer';
+import { FormContainer } from '../../components/form/form-group/FormContainer';
 import { useHistory, useParams } from 'react-router-dom';
 import { usersListPath } from '../../constants/Links';
 import Select, { MultiValue } from 'react-select';

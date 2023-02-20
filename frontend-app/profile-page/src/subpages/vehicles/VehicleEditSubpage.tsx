@@ -3,14 +3,14 @@ import { SubpageContainer } from '../../components/subpage/container/SubpageCont
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { VehicleResponseDTO } from '../../model/VehicleResponseDTO';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getVehicleById, updateVehicleData } from '../../service/VehicleService';
 import { VehiclePersistDTO } from '../../model/VehiclePersistDTO';
-import { vehiclesListPath } from '../../constants/Links';
-import { VehicleForm } from './components/vehicle_form/VehicleForm';
+import { VehicleForm, VehicleFormValues } from './components/vehicle_form/VehicleForm';
+import { FileWithPreview } from '../../components/form/form-group/upload/Dropzone';
+import { ResponseData } from '../../service/FetchUtil';
 
 export function VehicleEditSubpage(): JSX.Element {
-    const history = useHistory();
     const { vehicleId } = useParams<{ vehicleId: string }>();
     const [vehicleResponseDTO, setVehicleResponseDTO] = useState<VehicleResponseDTO | undefined>(undefined);
 
@@ -20,18 +20,49 @@ export function VehicleEditSubpage(): JSX.Element {
         });
     }, [vehicleId]);
 
-    const updateVehicleForm = (vehiclePersistDTO: VehiclePersistDTO): void => {
-        updateVehicleData(vehicleId, vehiclePersistDTO).then((vehicleResp: VehicleResponseDTO) => {
-            setVehicleResponseDTO(vehicleResp);
-            history.push(vehiclesListPath.link);
-        });
+    const updateVehicleForm = (vehiclePersistDTO: VehiclePersistDTO, vehicleImage: File): void => {
+        updateVehicleData(vehicleId, vehiclePersistDTO, vehicleImage).then(
+            (vehicleResp: ResponseData<VehicleResponseDTO>) => {
+                setVehicleResponseDTO(vehicleResp.responseBody);
+            }
+        );
+    };
+
+    const mapVehicleResponseToFormValues = (vehicleResponseDTO: VehicleResponseDTO): VehicleFormValues => {
+        return {
+            brand: vehicleResponseDTO.brand,
+            model: vehicleResponseDTO.model,
+            dailyFee: vehicleResponseDTO.dailyFee,
+            registration: vehicleResponseDTO.registration,
+            location: vehicleResponseDTO.locationId,
+            vehicleStatus: vehicleResponseDTO.vehicleStatus.vehicleStatCode,
+            bestOffer: vehicleResponseDTO.bestOffer,
+            bodyType: vehicleResponseDTO.vehicleDetails.bodyType,
+            fuelType: vehicleResponseDTO.vehicleDetails.fuelType,
+            power: vehicleResponseDTO.vehicleDetails.power,
+            gearbox: vehicleResponseDTO.vehicleDetails.gearbox,
+            frontWheelDrive: vehicleResponseDTO.vehicleDetails.frontWheelDrive,
+            doorsCount: vehicleResponseDTO.vehicleDetails.doorsNumber,
+            seatsCount: vehicleResponseDTO.vehicleDetails.seatsNumber,
+            color: vehicleResponseDTO.vehicleDetails.color,
+            metallic: vehicleResponseDTO.vehicleDetails.metallic,
+            description: vehicleResponseDTO.vehicleDetails.description,
+            productionYear: vehicleResponseDTO.vehicleDetails.productionYear,
+            vehicleImage: { name: vehicleResponseDTO.vehicleDetails.imageName } as FileWithPreview,
+        };
     };
 
     return (
         <SubpageContainer>
             <SubpageHeader title={'Vehicle edit'} />
             <SubpageContent>
-                <VehicleForm onSubmitAction={updateVehicleForm} vehicleResponseDTO={vehicleResponseDTO} />
+                {vehicleResponseDTO && (
+                    <VehicleForm
+                        onSubmitAction={updateVehicleForm}
+                        vehicleDefaultValues={mapVehicleResponseToFormValues(vehicleResponseDTO)}
+                        submitButtonValue={'Update'}
+                    />
+                )}
             </SubpageContent>
         </SubpageContainer>
     );

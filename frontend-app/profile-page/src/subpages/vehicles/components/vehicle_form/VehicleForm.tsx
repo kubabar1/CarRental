@@ -1,233 +1,418 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import { InputFormGroup } from '../../../../components/form/InputFormGroup';
+import React, { useEffect, useState } from 'react';
+import { InputFormGroup } from '../../../../components/form/form-group/input/InputFormGroup';
 import { VehicleStatCodeEnum } from '../../../../model/VehicleStatCodeEnum';
-import { TextAreaFormGroup } from '../../../../components/form/TextAreaFormGroup';
-import { FormContainer } from '../../../../components/form/FormContainer';
-import { VehicleResponseDTO } from '../../../../model/VehicleResponseDTO';
+import { TextAreaFormGroup } from '../../../../components/form/form-group/text-area/TextAreaFormGroup';
+import { FormContainer } from '../../../../components/form/form-group/FormContainer';
 import { VehiclePersistDTO } from '../../../../model/VehiclePersistDTO';
 import { VehicleDetailsDTO } from '../../../../model/VehicleDetailsDTO';
+import { useForm } from 'react-hook-form';
+import {
+    mapToOptionType,
+    mapToOptionTypeWithKeys,
+    SelectFormGroup,
+} from '../../../../components/form/form-group/select/SelectFormGroup';
+import {
+    addBodyType,
+    addBrand,
+    addColor,
+    addFuelType,
+    addModel,
+    getVehicleOptions,
+} from '../../../../service/VehicleService';
+import { VehicleOptionsDTO } from '../../../../model/VehicleOptionsDTO';
+import { SwitchFormGroup } from '../../../../components/form/form-group/switch/SwitchFormGroup';
+import { UploadInputFormGroup } from '../../../../components/form/form-group/upload/UploadInputFormGroup';
+import { FileWithPreview } from '../../../../components/form/form-group/upload/Dropzone';
+import { AddOptionModal } from './add_option_modal/AddOptionModal';
+import { OptionDTO } from '../../../../model/OptionDTO';
+import { getVehicleModelsByBrand } from '../../../../../../main-page/src/service/VehicleService';
+import { VehicleModelDTO } from '../../../../model/VehicleModelDTO';
 
 export interface VehicleFormProperties {
-    onSubmitAction: (vehiclePersistDTO: VehiclePersistDTO) => void;
-    vehicleResponseDTO?: VehicleResponseDTO;
+    onSubmitAction: (vehiclePersistDTO: VehiclePersistDTO, vehicleImage: File) => void;
+    vehicleDefaultValues: VehicleFormValues;
+    submitButtonValue: string;
 }
 
-export const VehicleForm = ({ vehicleResponseDTO, onSubmitAction }: VehicleFormProperties): JSX.Element => {
-    const [brand, setBrand] = useState<string | undefined>(undefined);
-    const [model, setModel] = useState<string | undefined>(undefined);
-    const [dailyFee, setDailyFee] = useState<number | undefined>(undefined);
-    const [registration, setRegistration] = useState<string | undefined>(undefined);
-    const [locationId, setLocationId] = useState<string | undefined>(undefined);
-    const [vehicleStatus, setVehicleStatus] = useState<VehicleStatCodeEnum | undefined>(undefined);
-    const [bestOffer, setBestOffer] = useState<boolean>(false);
-    const [bodyType, setBodyType] = useState<string | undefined>(undefined);
-    const [fuelType, setFuelType] = useState<string | undefined>(undefined);
-    const [power, setPower] = useState<number | undefined>(undefined);
-    const [gearbox, setGearbox] = useState<string | undefined>(undefined);
-    const [frontWheelDrive, setFrontWheelDrive] = useState<boolean>(false);
-    const [doorsNumber, setDoorsNumber] = useState<number | undefined>(undefined);
-    const [seatsNumber, setSeatsNumber] = useState<number | undefined>(undefined);
-    const [color, setColor] = useState<string | undefined>(undefined);
-    const [metallic, setMetallic] = useState<boolean>(false);
-    const [description, setDescription] = useState<string | undefined>(undefined);
-    const [productionYear, setProductionYear] = useState<number | undefined>(undefined);
-    const [photoName, setPhotoName] = useState<string | undefined>(undefined);
+export type VehicleFormValues = {
+    brand: string;
+    model: string;
+    dailyFee: number;
+    registration: string;
+    location: number;
+    vehicleStatus: VehicleStatCodeEnum;
+    bestOffer: boolean;
+    bodyType: string;
+    fuelType: string;
+    power: number;
+    gearbox: string;
+    frontWheelDrive: boolean;
+    doorsCount: number;
+    seatsCount: number;
+    color: string;
+    metallic: boolean;
+    description: string;
+    productionYear: number;
+    vehicleImage: FileWithPreview;
+};
+
+type ModalVehicleOptions = {
+    headerTitle: string;
+    optionLabel: string;
+    onSubmit: (value: string) => void;
+};
+
+type VehicleOption = {
+    brand: string;
+    model: string;
+    bodyType: string;
+    fuelType: string;
+    color: string;
+};
+
+export const VehicleForm = ({
+    vehicleDefaultValues,
+    onSubmitAction,
+    submitButtonValue,
+}: VehicleFormProperties): JSX.Element => {
+    const [vehicleOptions, setVehicleOptions] = useState<VehicleOptionsDTO | undefined>(undefined);
+    const [vehicleModels, setVehicleModels] = useState<string[]>([]);
+    const { register, formState, watch, control, handleSubmit } = useForm<VehicleFormValues>({
+        mode: 'onChange',
+        defaultValues: vehicleDefaultValues,
+    });
+    const [modalIsOpen, setIsOpen] = React.useState<boolean>(false);
+    const [selectedModalOption, setSelectedModalOption] = React.useState<ModalVehicleOptions | undefined>(undefined);
+    const vehicleModalOptions: Record<keyof VehicleOption, ModalVehicleOptions> = {
+        brand: {
+            headerTitle: 'Add brand',
+            optionLabel: 'Brand:',
+            onSubmit: (value: string) => {
+                addBrand(new OptionDTO(value)).then(() => {
+                    loadVehicleOptions();
+                    setIsOpen(false);
+                });
+            },
+        },
+        model: {
+            headerTitle: 'Add model',
+            optionLabel: 'Model:',
+            onSubmit: (value: string) => {
+                addModel(new VehicleModelDTO(watchBrand, value)).then(() => {
+                    loadVehicleOptions();
+                    loadVehicleModels();
+                    setIsOpen(false);
+                });
+            },
+        },
+        bodyType: {
+            headerTitle: 'Add body type',
+            optionLabel: 'Body type:',
+            onSubmit: (value: string) => {
+                addBodyType(new OptionDTO(value)).then(() => {
+                    loadVehicleOptions();
+                    setIsOpen(false);
+                });
+            },
+        },
+        fuelType: {
+            headerTitle: 'Add fuel type',
+            optionLabel: 'Fuel type:',
+            onSubmit: (value: string) => {
+                addFuelType(new OptionDTO(value)).then(() => {
+                    loadVehicleOptions();
+                    setIsOpen(false);
+                });
+            },
+        },
+        color: {
+            headerTitle: 'Add color',
+            optionLabel: 'Color:',
+            onSubmit: (value: string) => {
+                addColor(new OptionDTO(value)).then(() => {
+                    loadVehicleOptions();
+                    setIsOpen(false);
+                });
+            },
+        },
+    };
+    const watchBrand: string = watch('brand');
 
     useEffect(() => {
-        if (vehicleResponseDTO) {
-            setBrand(vehicleResponseDTO.brand);
-            setModel(vehicleResponseDTO.model);
-            setDailyFee(vehicleResponseDTO.dailyFee);
-            setRegistration(vehicleResponseDTO.registration);
-            setLocationId(vehicleResponseDTO.locationId);
-            setVehicleStatus(vehicleResponseDTO.vehicleStatus.vehicleStatCode);
-            setBestOffer(vehicleResponseDTO.bestOffer);
-            setBodyType(vehicleResponseDTO.vehicleDetails.bodyType);
-            setFuelType(vehicleResponseDTO.vehicleDetails.fuelType);
-            setPower(vehicleResponseDTO.vehicleDetails.power);
-            setGearbox(vehicleResponseDTO.vehicleDetails.gearbox);
-            setFrontWheelDrive(vehicleResponseDTO.vehicleDetails.frontWheelDrive);
-            setDoorsNumber(vehicleResponseDTO.vehicleDetails.doorsNumber);
-            setSeatsNumber(vehicleResponseDTO.vehicleDetails.seatsNumber);
-            setColor(vehicleResponseDTO.vehicleDetails.color);
-            setMetallic(vehicleResponseDTO.vehicleDetails.metallic);
-            setDescription(vehicleResponseDTO.vehicleDetails.description);
-            setProductionYear(vehicleResponseDTO.vehicleDetails.productionYear);
-            setPhotoName(vehicleResponseDTO.vehicleDetails.photoName);
+        loadVehicleOptions();
+    }, []);
+
+    useEffect(() => {
+        loadVehicleModels();
+    }, [watchBrand]);
+
+    const loadVehicleOptions = (): void => {
+        getVehicleOptions().then((vehicleDefaultParams: VehicleOptionsDTO) => {
+            setVehicleOptions(vehicleDefaultParams);
+        });
+    };
+
+    const loadVehicleModels = () => {
+        if (watchBrand) {
+            getVehicleModelsByBrand(watchBrand).then((models: string[]) => {
+                setVehicleModels(models);
+            });
+        } else {
+            setVehicleModels([]);
         }
-    }, [vehicleResponseDTO]);
+    };
+
+    const onSubmit = (data: VehicleFormValues): void => {
+        onSubmitAction(
+            new VehiclePersistDTO(
+                data.registration,
+                data.brand,
+                data.model,
+                data.dailyFee,
+                data.location,
+                data.bestOffer,
+                data.vehicleStatus,
+                new VehicleDetailsDTO(
+                    data.bodyType,
+                    data.productionYear,
+                    data.fuelType,
+                    data.power,
+                    data.gearbox,
+                    data.frontWheelDrive,
+                    data.doorsCount,
+                    data.seatsCount,
+                    data.color,
+                    data.metallic,
+                    data.vehicleImage.name,
+                    data.description
+                )
+            ),
+            data.vehicleImage
+        );
+    };
 
     return (
-        <FormContainer
-            onSubmit={() => {
-                if (
-                    !!brand &&
-                    !!model &&
-                    !!dailyFee &&
-                    !!registration &&
-                    !!locationId &&
-                    !!vehicleStatus &&
-                    !!bodyType &&
-                    !!fuelType &&
-                    !!power &&
-                    !!gearbox &&
-                    !!doorsNumber &&
-                    !!seatsNumber &&
-                    !!color &&
-                    !!description &&
-                    !!productionYear &&
-                    !!photoName
-                ) {
-                    onSubmitAction(
-                        new VehiclePersistDTO(
-                            registration,
-                            brand,
-                            model,
-                            dailyFee,
-                            locationId,
-                            bestOffer,
-                            vehicleStatus,
-                            new VehicleDetailsDTO(
-                                bodyType,
-                                productionYear,
-                                fuelType,
-                                power,
-                                gearbox,
-                                frontWheelDrive,
-                                doorsNumber,
-                                seatsNumber,
-                                color,
-                                metallic,
-                                photoName,
-                                description
-                            )
-                        )
-                    );
-                }
-            }}
-        >
-            <InputFormGroup
-                label={'Brand:'}
-                name={'vehicle_brand'}
-                value={brand}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setBrand(e.target.value)}
-            />
-            <InputFormGroup
-                label={'Model:'}
-                name={'vehicle_model'}
-                value={model}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setModel(e.target.value)}
-            />
-            <InputFormGroup
+        <FormContainer submitButtonValue={submitButtonValue} onSubmit={handleSubmit(onSubmit)}>
+            {vehicleOptions && (
+                <SelectFormGroup<VehicleFormValues>
+                    label={'Brand:'}
+                    name={'brand'}
+                    control={control}
+                    options={vehicleOptions.brands.map(mapToOptionType)}
+                    error={formState.errors.brand}
+                    displayAddButton
+                    onClickAddButton={() => {
+                        setSelectedModalOption(vehicleModalOptions.brand);
+                        setIsOpen(true);
+                    }}
+                />
+            )}
+            {vehicleOptions && (
+                <SelectFormGroup<VehicleFormValues>
+                    label={'Model:'}
+                    name={'model'}
+                    control={control}
+                    options={vehicleModels.map(mapToOptionType)}
+                    error={formState.errors.model}
+                    rules={{ required: 'Model is required' }}
+                    displayAddButton
+                    onClickAddButton={() => {
+                        setSelectedModalOption(vehicleModalOptions.model);
+                        setIsOpen(true);
+                    }}
+                    isAddButtonDisabled={!watchBrand}
+                />
+            )}
+            <InputFormGroup<VehicleFormValues>
                 label={'Daily fee:'}
-                name={'vehicle_daily_fee'}
-                value={dailyFee}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setDailyFee(parseFloat(e.target.value))}
+                name={'dailyFee'}
                 type={'number'}
+                step={0.01}
+                register={register}
+                registerOptions={{
+                    required: 'Daily fee is required',
+                    valueAsNumber: true,
+                }}
+                error={formState.errors.dailyFee}
             />
-            <InputFormGroup
+            <InputFormGroup<VehicleFormValues>
                 label={'Registration:'}
-                name={'vehicle_registration'}
-                value={registration}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setRegistration(e.target.value)}
+                name={'registration'}
+                register={register}
+                registerOptions={{ required: 'Registration is required' }}
+                error={formState.errors.registration}
             />
-            <InputFormGroup
-                label={'Location:'}
-                name={'vehicle_location'}
-                value={locationId}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setLocationId(e.target.value)}
-            />
-            <InputFormGroup
+            {vehicleOptions && (
+                <SelectFormGroup<VehicleFormValues>
+                    label={'Location:'}
+                    name={'location'}
+                    control={control}
+                    options={vehicleOptions.locations.map((location) =>
+                        mapToOptionTypeWithKeys(
+                            `${location.id}`,
+                            `${location.country}, ${location.city}, ${location.streetAndNb}`
+                        )
+                    )}
+                    error={formState.errors.location}
+                />
+            )}
+            <SelectFormGroup<VehicleFormValues>
                 label={'Status:'}
-                name={'vehicle_status'}
-                value={vehicleStatus}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setVehicleStatus(e.target.value as VehicleStatCodeEnum)}
+                name={'vehicleStatus'}
+                control={control}
+                options={[
+                    mapToOptionTypeWithKeys(VehicleStatCodeEnum.UAV, 'Unavailable'),
+                    mapToOptionTypeWithKeys(VehicleStatCodeEnum.AVI, 'Available'),
+                ]}
+                error={formState.errors.vehicleStatus}
             />
-            <InputFormGroup
+            <SwitchFormGroup<VehicleFormValues>
                 label={'Best offer:'}
-                name={'vehicle_best_offer'}
-                value={bestOffer}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setBestOffer(e.target.checked)}
-                type={'checkbox'}
+                name={'bestOffer'}
+                control={control}
+                error={formState.errors.bestOffer}
             />
-            <InputFormGroup
-                label={'Body type:'}
-                name={'vehicle_body_type'}
-                value={bodyType}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setBodyType(e.target.value)}
-            />
-            <InputFormGroup
-                label={'Fuel type:'}
-                name={'vehicle_fuel_type'}
-                value={fuelType}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setFuelType(e.target.value)}
-            />
-            <InputFormGroup
+            {vehicleOptions && (
+                <SelectFormGroup<VehicleFormValues>
+                    label={'Body type:'}
+                    name={'bodyType'}
+                    control={control}
+                    options={vehicleOptions.bodyTypes.map(mapToOptionType)}
+                    error={formState.errors.bodyType}
+                    displayAddButton
+                    onClickAddButton={() => {
+                        setSelectedModalOption(vehicleModalOptions.bodyType);
+                        setIsOpen(true);
+                    }}
+                />
+            )}
+            {vehicleOptions && (
+                <SelectFormGroup<VehicleFormValues>
+                    label={'Fuel type:'}
+                    name={'fuelType'}
+                    control={control}
+                    options={vehicleOptions.fuelTypes.map(mapToOptionType)}
+                    error={formState.errors.fuelType}
+                    displayAddButton
+                    onClickAddButton={() => {
+                        setSelectedModalOption(vehicleModalOptions.fuelType);
+                        setIsOpen(true);
+                    }}
+                />
+            )}
+            <InputFormGroup<VehicleFormValues>
                 label={'Power:'}
-                name={'vehicle_power'}
-                value={power}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setPower(parseFloat(e.target.value))}
+                name={'power'}
                 type={'number'}
+                step={0.01}
+                register={register}
+                registerOptions={{
+                    required: 'Power is required',
+                    valueAsNumber: true,
+                }}
+                error={formState.errors.power}
             />
-            <InputFormGroup
+            <SelectFormGroup<VehicleFormValues>
                 label={'Gearbox:'}
-                name={'vehicle_gearbox'}
-                value={gearbox}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setGearbox(e.target.value)}
+                name={'gearbox'}
+                control={control}
+                options={[mapToOptionTypeWithKeys('auto', 'Automatic'), mapToOptionTypeWithKeys('man', 'Manual')]}
+                error={formState.errors.gearbox}
+                rules={{ required: 'Gearbox type is required' }}
             />
-            <InputFormGroup
+            <SwitchFormGroup<VehicleFormValues>
                 label={'Front wheel drive:'}
-                name={'vehicle_front_wheel_drive'}
-                value={frontWheelDrive}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setFrontWheelDrive(e.target.checked)}
-                type={'checkbox'}
+                name={'frontWheelDrive'}
+                control={control}
+                error={formState.errors.frontWheelDrive}
             />
-            <InputFormGroup
-                label={'Doors number:'}
-                name={'vehicle_doors_number'}
-                value={doorsNumber}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setDoorsNumber(parseFloat(e.target.value))}
+            <InputFormGroup<VehicleFormValues>
+                label={'Doors count:'}
+                name={'doorsCount'}
                 type={'number'}
+                step={0.01}
+                register={register}
+                registerOptions={{
+                    required: 'Doors count is required',
+                    valueAsNumber: true,
+                }}
+                error={formState.errors.doorsCount}
             />
-            <InputFormGroup
-                label={'Seats number:'}
-                name={'vehicle_seats_number'}
-                value={seatsNumber}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setSeatsNumber(parseFloat(e.target.value))}
+            <InputFormGroup<VehicleFormValues>
+                label={'Seats count:'}
+                name={'seatsCount'}
                 type={'number'}
+                step={0.01}
+                register={register}
+                registerOptions={{
+                    required: 'Seats count is required',
+                    valueAsNumber: true,
+                }}
+                error={formState.errors.seatsCount}
             />
-            <InputFormGroup
-                label={'Color:'}
-                name={'vehicle_color'}
-                value={color}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setColor(e.target.value)}
-            />
-            <InputFormGroup
+            {vehicleOptions && (
+                <SelectFormGroup<VehicleFormValues>
+                    label={'Color:'}
+                    name={'color'}
+                    control={control}
+                    options={vehicleOptions.colors.map(mapToOptionType)}
+                    error={formState.errors.color}
+                    displayAddButton
+                    onClickAddButton={() => {
+                        setSelectedModalOption(vehicleModalOptions.color);
+                        setIsOpen(true);
+                    }}
+                />
+            )}
+            <SwitchFormGroup<VehicleFormValues>
                 label={'Metallic:'}
-                name={'vehicle_metallic'}
-                value={metallic}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setMetallic(e.target.checked)}
-                type={'checkbox'}
+                name={'metallic'}
+                control={control}
+                error={formState.errors.metallic}
             />
-            <TextAreaFormGroup
+            <TextAreaFormGroup<VehicleFormValues>
                 label={'Description:'}
-                name={'vehicle_description'}
-                value={description}
-                onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)}
+                name={'description'}
+                register={register}
+                registerOptions={{ required: 'Description is required' }}
+                error={formState.errors.description}
             />
-            <InputFormGroup
+            <InputFormGroup<VehicleFormValues>
                 label={'Production year:'}
-                name={'vehicle_production_year'}
-                value={productionYear}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setProductionYear(parseInt(e.target.value))}
+                name={'productionYear'}
                 type={'number'}
+                step={0.01}
+                register={register}
+                registerOptions={{
+                    required: 'Production year is required',
+                    valueAsNumber: true,
+                }}
+                error={formState.errors.productionYear}
             />
-            <InputFormGroup
-                label={'Photo name:'}
-                name={'vehicle_photo_name'}
-                value={photoName}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setPhotoName(e.target.value)}
+            <UploadInputFormGroup<VehicleFormValues>
+                label={'Vehicle image:'}
+                name={'vehicleImage'}
+                control={control}
+                error={formState.errors.vehicleImage}
+                rules={{
+                    validate: (value: string | number | boolean | FileWithPreview) => {
+                        if (!value || !(value as FileWithPreview).name) {
+                            return 'File is required';
+                        }
+                        return true;
+                    },
+                }}
             />
+            {selectedModalOption && (
+                <AddOptionModal
+                    headerTitle={selectedModalOption.headerTitle}
+                    optionLabel={selectedModalOption.optionLabel}
+                    onSubmit={selectedModalOption.onSubmit}
+                    loadVehicleOptions={loadVehicleOptions}
+                    isOpen={modalIsOpen}
+                    setIsOpen={setIsOpen}
+                />
+            )}
         </FormContainer>
     );
 };

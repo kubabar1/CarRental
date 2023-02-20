@@ -265,7 +265,12 @@ export function App(): JSX.Element {
                                 )}
                                 path={settingsUserSettingsPath.link}
                                 exact
-                                component={() => <UserSettingsSubpage setAuthenticatedUser={setAuthenticatedUser} />}
+                                component={() => (
+                                    <UserSettingsSubpage
+                                        authenticatedUser={authenticatedUser}
+                                        setAuthenticatedUser={setAuthenticatedUser}
+                                    />
+                                )}
                             />
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(

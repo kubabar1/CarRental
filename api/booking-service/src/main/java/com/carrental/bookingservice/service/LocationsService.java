@@ -10,4 +10,5 @@ public interface LocationsService {
 
     Page<LocationResponseDTO> getLocations(Pageable pageable);
 
+    Set<LocationResponseDTO> getAllLocations(String country);
 }

@@ -2,7 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 import { SubpageContainer } from '../../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../../components/subpage/content/SubpageContent';
-import { FormContainer } from '../../../components/form/FormContainer';
+import { FormContainer } from '../../../components/form/form-group/FormContainer';
 import { PasswordUpdateDTO } from '../../../model/PasswordUpdateDTO';
 import { ResponseData } from '../../../service/FetchUtil';
 import { UserResponseDTO } from '../../../model/UserResponseDTO';

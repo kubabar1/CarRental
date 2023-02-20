@@ -14,15 +14,13 @@ public class VehicleEntity implements Serializable {
 
     public static final String BRAND_FIELD = "brand";
 
-    public static final String MODEL_FIELD = "model";
-
     public static final String DAILY_FEE_FIELD = "dailyFee";
 
     public static final String VEHICLE_DETAILS_FIELD = "vehicleDetails";
 
     @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "registration", nullable = false, length = 20, unique = true)
@@ -31,8 +29,9 @@ public class VehicleEntity implements Serializable {
     @Column(name = "brand", nullable = false, length = 50)
     private String brand;
 
-    @Column(name = "model", nullable = false, length = 50)
-    private String model;
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "model", nullable = false)
+    private ModelEntity model;
 
     @Column(name = "daily_fee", nullable = false)
     private BigDecimal dailyFee;
@@ -47,7 +46,7 @@ public class VehicleEntity implements Serializable {
     @JoinColumn(name = "vehicle_status_code", referencedColumnName = "vehicle_status_code", nullable = false)
     private VehicleStatusEntity vehicleStatus;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST, mappedBy = "vehicle")
     @JoinColumn(name = "id", nullable = false)
     private VehicleDetailsEntity vehicleDetails;
 
@@ -57,4 +56,9 @@ public class VehicleEntity implements Serializable {
             joinColumns = @JoinColumn(name = "vehicle_id"),
             inverseJoinColumns = @JoinColumn(name = "equipment_id"))
     private Set<EquipmentEntity> equipments;
+
+    public void setVehicleDetails(VehicleDetailsEntity vehicleDetails) {
+        this.vehicleDetails = vehicleDetails;
+        this.vehicleDetails.setVehicle(this);
+    }
 }

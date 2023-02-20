@@ -12,6 +12,8 @@ public class VehicleDetailsEntity implements Serializable {
 
     public static final String BODY_TYPE_FIELD = "bodyType";
 
+    public static final String MODEL_FIELD = "model";
+
     public static final String COLOR_FIELD = "color";
 
     public static final String SEATS_NUMBER_FIELD = "seatsNumber";
@@ -24,19 +26,20 @@ public class VehicleDetailsEntity implements Serializable {
     @Column(name = "vehicle_id", nullable = false, unique = true)
     private Long vehicleId;
 
-    @Column(name = "body_type", nullable = false, length = 30)
-    private String bodyType;
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "body_type", nullable = false)
+    private BodyTypeEntity bodyType;
 
     @Column(name = "production_year", nullable = false)
     private Integer productionYear;
 
-    @Column(name = "fuel_type", nullable = false, length = 30)
+    @Column(name = "fuel_type", nullable = false, length = 50)
     private String fuelType;
 
     @Column(name = "power", nullable = false)
     private Integer power;
 
-    @Column(name = "gearbox", nullable = false, length = 30)
+    @Column(name = "gearbox", nullable = false, length = 50)
     private String gearbox;
 
     @Column(name = "front_wheel_drive", nullable = false)
@@ -48,15 +51,21 @@ public class VehicleDetailsEntity implements Serializable {
     @Column(name = "seats_number", nullable = false)
     private Integer seatsNumber;
 
-    @Column(name = "color", nullable = false, length = 30)
-    private String color;
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "color", nullable = false)
+    private ColorEntity color;
 
     @Column(name = "metallic", nullable = false)
     private boolean metallic;
 
-    @Column(name = "photo_name", nullable = false, length = 70)
-    private String photoName;
+    @Column(name = "image_name", nullable = false, length = 70)
+    private String imageName;
 
     @Column(name = "description", nullable = false, length = 100)
     private String description;
+
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "vehicle_id", nullable = false)
+    private VehicleEntity vehicle;
 }

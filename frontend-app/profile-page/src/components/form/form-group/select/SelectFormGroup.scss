@@ -1,0 +1,22 @@
+.select-form-group-container {
+    .select-row {
+        display: flex;
+
+        .select-with-add {
+            width: 95%;
+        }
+
+        .select-default {
+            width: 100%;
+        }
+
+        button {
+            margin-left: auto;
+        }
+    }
+
+    .custom-alert {
+        margin: 20px auto;
+        text-align: center;
+    }
+}

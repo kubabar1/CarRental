@@ -1,99 +1,93 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { FormContainer } from '../../components/form/FormContainer';
+import { FormContainer } from '../../components/form/form-group/FormContainer';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { useHistory } from 'react-router-dom';
-import { InputFormGroup } from '../../components/form/InputFormGroup';
-import { TextAreaFormGroup } from '../../components/form/TextAreaFormGroup';
-import { mapToOptionType, OptionType, SelectFormGroup } from '../../components/form/SelectFormGroup';
-import { OnChangeValue } from 'react-select/dist/declarations/src/types';
+import { InputFormGroup } from '../../components/form/form-group/input/InputFormGroup';
+import { TextAreaFormGroup } from '../../components/form/form-group/text-area/TextAreaFormGroup';
+import { mapToOptionType, OptionType, SelectFormGroup } from '../../components/form/form-group/select/SelectFormGroup';
 import { UsersEmailsResponseDTO } from '../../model/UsersEmailsResponseDTO';
 import { getAllUsersEmails } from '../../service/UserService';
 import { sendEmails } from '../../service/EmailService';
 import { MultipleRecipientsMailsDTO } from '../../model/MultipleRecipientsMailsDTO';
 import { sendEmailPath } from '../../constants/Links';
+import { useForm } from 'react-hook-form';
 
 interface EmailHistoryState {
-    emailAddresses: string[] | undefined;
+    emailAddress: string;
 }
+
+type EmailFormValues = {
+    recipients: string[];
+    emailSubject: string;
+    emailText: string;
+};
 
 export function EmailSubpage(): JSX.Element {
     const history = useHistory<EmailHistoryState>();
     const [allEmailAddresses, setAllEmailAddresses] = useState<OptionType[]>([]);
-    const [recipients, setRecipients] = useState<string[]>([]);
-    const [emailSubject, setEmailSubject] = useState<string>('');
-    const [emailText, setEmailText] = useState<string>('');
-    const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState<boolean>(true);
+    const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState<boolean>(false);
+    const { register, formState, control, handleSubmit } = useForm<EmailFormValues>({
+        mode: 'onChange',
+        defaultValues: React.useMemo(() => {
+            return {
+                recipients:
+                    history.location.state && history.location.state.emailAddress
+                        ? [history.location.state.emailAddress]
+                        : [],
+                emailSubject: '',
+                emailText: '',
+            };
+        }, [allEmailAddresses]),
+    });
 
     useEffect(() => {
-        if (history.location.state && history.location.state.emailAddresses) {
-            setRecipients(history.location.state.emailAddresses);
-        }
         getAllUsersEmails().then((usersEmails: UsersEmailsResponseDTO) => {
             setAllEmailAddresses(usersEmails.emails.map(mapToOptionType));
         });
-    }, [history.location.state]);
+    }, []);
 
-    useEffect(() => {
-        if (!!recipients && !!emailSubject && !!emailText) {
-            setIsSubmitButtonDisabled(false);
-        } else {
+    const onSubmit = (data: EmailFormValues): void => {
+        if (!isSubmitButtonDisabled) {
             setIsSubmitButtonDisabled(true);
+            sendEmails(new MultipleRecipientsMailsDTO(data.recipients, data.emailSubject, data.emailText)).then(() => {
+                setIsSubmitButtonDisabled(false);
+            });
         }
-    }, [recipients, emailSubject, emailText]);
+    };
 
     return (
         <SubpageContainer>
             <SubpageHeader title={'Send email - form'} />
             <SubpageContent>
                 <FormContainer
-                    onSubmit={() => {
-                        if (!isSubmitButtonDisabled) {
-                            setIsSubmitButtonDisabled(true);
-                            sendEmails(new MultipleRecipientsMailsDTO(recipients, emailSubject, emailText)).then(() => {
-                                setIsSubmitButtonDisabled(false);
-                                history.push(sendEmailPath.link);
-                            });
-                        }
-                    }}
+                    onSubmit={handleSubmit(onSubmit)}
                     isSubmitButtonDisabled={isSubmitButtonDisabled}
                     submitButtonValue={'Send'}
                 >
-                    <SelectFormGroup<true>
+                    <SelectFormGroup<EmailFormValues, true>
                         label={'Receivers:'}
-                        name={'email_receivers'}
-                        value={recipients.map(mapToOptionType)}
-                        onChange={(newRecipients: OnChangeValue<OptionType, true>) => {
-                            const newRecipientsArr: string[] = newRecipients
-                                .filter(
-                                    (recipient: OptionType): recipient is { value: string; label: string } =>
-                                        recipient.value !== null
-                                )
-                                .map((recipient) => recipient.value);
-                            setRecipients(newRecipientsArr);
-                        }}
+                        name={'recipients'}
+                        control={control}
                         options={allEmailAddresses}
-                        required
+                        rules={{ required: 'Recipients are required' }}
+                        error={formState.errors.recipients}
                         isMulti={true}
                     />
-                    <InputFormGroup
+                    <InputFormGroup<EmailFormValues>
                         label={'Subject:'}
-                        name={'email_subject'}
-                        value={emailSubject}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                            setEmailSubject(event.target.value);
-                        }}
-                        required
+                        name={'emailSubject'}
+                        register={register}
+                        registerOptions={{ required: 'Subject is required' }}
+                        error={formState.errors.emailSubject}
                     />
-                    <TextAreaFormGroup
+                    <TextAreaFormGroup<EmailFormValues>
                         label={'Message:'}
-                        name={'email_message'}
-                        value={emailText}
-                        onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
-                            setEmailText(event.target.value);
-                        }}
-                        required
+                        name={'emailText'}
+                        register={register}
+                        registerOptions={{ required: 'Description is required' }}
+                        error={formState.errors.emailText}
                     />
                 </FormContainer>
             </SubpageContent>

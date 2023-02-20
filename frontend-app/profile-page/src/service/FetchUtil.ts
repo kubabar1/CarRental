@@ -51,6 +51,30 @@ export async function fetchPut<T>(getPath: string, data?: any): Promise<Response
     });
 }
 
+export async function fetchWithFile<T>(method: string, getPath: string, data: FormData): Promise<ResponseData<T>> {
+    return fetch(getPath, {
+        method: method,
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'include',
+        // headers: {
+        //     'Content-Type': 'multipart/form-data',
+        // },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: data,
+    }).then((res: Response) => {
+        if (res.status >= 200 && res.status < 300) {
+            console.log('PUT OK');
+        } else {
+            console.log('PUT NOK');
+        }
+        return res.json().then((data) => {
+            return { statusCode: res.status, responseBody: data };
+        });
+    });
+}
+
 export async function fetchGet<T>(getPath: string): Promise<T> {
     return fetch(getPath, {
         method: 'GET',

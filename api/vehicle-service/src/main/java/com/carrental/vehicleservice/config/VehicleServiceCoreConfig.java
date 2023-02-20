@@ -2,8 +2,7 @@ package com.carrental.vehicleservice.config;
 
 import com.carrental.vehicleservice.controller.EquipmentController;
 import com.carrental.vehicleservice.controller.VehicleController;
-import com.carrental.vehicleservice.repository.EquipmentRepository;
-import com.carrental.vehicleservice.repository.VehicleRepository;
+import com.carrental.vehicleservice.repository.*;
 import com.carrental.vehicleservice.service.EquipmentService;
 import com.carrental.vehicleservice.service.FilteringService;
 import com.carrental.vehicleservice.service.VehicleRatingService;
@@ -48,10 +47,28 @@ public class VehicleServiceCoreConfig {
     @Bean
     public VehicleService vehicleService(
             VehicleRepository vehicleRepository,
+            ColorRepository colorRepository,
+            BodyTypeRepository bodyTypeRepository,
+            FuelTypeRepository fuelTypeRepository,
+            BrandRepository brandRepository,
+            ModelRepository modelRepository,
+            VehicleStatusRepository vehicleStatusRepository,
             ModelMapper modelMapper,
-            VehicleRatingService vehicleRatingService
+            VehicleRatingService vehicleRatingService,
+            RabbitTemplate rabbitTemplate
     ) {
-        return new VehicleServiceImpl(vehicleRepository, modelMapper, vehicleRatingService);
+        return new VehicleServiceImpl(
+                vehicleRepository,
+                colorRepository,
+                bodyTypeRepository,
+                fuelTypeRepository,
+                brandRepository,
+                modelRepository,
+                vehicleStatusRepository,
+                modelMapper,
+                vehicleRatingService,
+                rabbitTemplate
+        );
     }
 
     @Bean

@@ -9,7 +9,7 @@ interface CarDetailsHeaderProperties {
 
 export function VehicleDetailsHeader(props: CarDetailsHeaderProperties): JSX.Element {
     const vehicle: VehicleResponseDTO = props.vehicle;
-    const vehicleImage: string = carImagesMainPageCarList(vehicle.vehicleDetails.photoName);
+    const vehicleImage: string = carImagesMainPageCarList(vehicle.vehicleDetails.imageName);
 
     return (
         <section>

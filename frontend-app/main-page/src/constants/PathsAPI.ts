@@ -24,7 +24,7 @@ export const LOGOUT_PATH = `${APP_ADDR}/logout`;
 
 export const GET_BEST_OFFERS_VEHICLES_PATH = `${APP_ADDR}/vehicles/best-offers`;
 
-export const GET_VEHICLES_FILTER_PARAMS_PATH = `${APP_ADDR}/vehicles/filter-params`;
+export const GET_VEHICLE_OPTIONS_PATH = `${APP_ADDR}/vehicles/options`;
 
 export const PAGE_REQUEST = (
     url: string,

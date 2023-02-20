@@ -6,7 +6,7 @@ export class VehiclePersistDTO {
     brand: string;
     model: string;
     dailyFee: number;
-    locationId: string;
+    locationId: number;
     bestOffer: boolean;
     vehicleStatus: VehicleStatCodeEnum;
     vehicleDetailsDTO: VehicleDetailsDTO;
@@ -16,7 +16,7 @@ export class VehiclePersistDTO {
         brand: string,
         model: string,
         dailyFee: number,
-        locationId: string,
+        locationId: number,
         bestOffer: boolean,
         vehicleStatus: VehicleStatCodeEnum,
         vehicleDetails: VehicleDetailsDTO
