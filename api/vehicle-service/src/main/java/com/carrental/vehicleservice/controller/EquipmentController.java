@@ -1,9 +1,6 @@
 package com.carrental.vehicleservice.controller;
 
-import com.carrental.vehicleservice.model.dto.EquipmentPersistDTO;
-import com.carrental.vehicleservice.model.dto.EquipmentSetPersistDTO;
-import com.carrental.vehicleservice.model.dto.EquipmentResponseDTO;
-import com.carrental.vehicleservice.model.dto.VehicleResponseDTO;
+import com.carrental.vehicleservice.model.dto.*;
 import com.carrental.vehicleservice.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -44,6 +41,12 @@ public class EquipmentController {
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PutMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_RENTING_EMPLOYEE')")
+    public ResponseEntity<EquipmentResponseDTO> addEquipmentController(@Valid @RequestBody EquipmentAddDTO equipmentAddDTO) {
+        return ResponseEntity.ok().body(equipmentService.addEquipment(equipmentAddDTO));
     }
 
     @GetMapping(value = "/not-assigned/{vehicleId}")

@@ -48,6 +48,6 @@ public class VehicleDetailsDTO {
     private String imageName;
 
     @NotEmpty
-    @Size(max = 100)
+    @Size(max = 255)
     private String description;
 }

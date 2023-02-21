@@ -16,11 +16,14 @@ import {
     ADD_COLOR_PATH,
     GET_VEHICLE_MODELS_BY_BRAND_PATH,
     ADD_VEHICLE_MODEL_PATH,
+    ADD_EQUIPMENT,
 } from '../constants/PathsAPI';
 import Page from '../../../main-page/src/model/Page';
 import { VehicleOptionsDTO } from '../model/VehicleOptionsDTO';
 import { OptionDTO } from '../model/OptionDTO';
 import { VehicleModelDTO } from '../model/VehicleModelDTO';
+import { EquipmentAddDTO } from '../model/EquipmentAddDTO';
+import { EquipmentResponseDTO } from '../model/EquipmentResponseDTO';
 
 export const getVehiclesList = (page?: number, size?: number): Promise<Page<VehicleResponseDTO>> => {
     return fetchGet<Page<VehicleResponseDTO>>(PAGE_REQUEST(GET_VEHICLES_PATH, page, size));
@@ -61,6 +64,10 @@ export function addVehicle(
     data.append('vehiclePersistDTO', vehiclePersistDtoBlob);
     data.append('vehicleImage', vehicleImage);
     return fetchWithFile<VehicleResponseDTO>('PUT', ADD_VEHICLE_PATH, data);
+}
+
+export function addEquipment(equipmentAddDTO: EquipmentAddDTO): Promise<ResponseData<EquipmentResponseDTO>> {
+    return fetchPut<EquipmentResponseDTO>(ADD_EQUIPMENT, equipmentAddDTO);
 }
 
 export const getVehicleOptions = (): Promise<VehicleOptionsDTO> => {

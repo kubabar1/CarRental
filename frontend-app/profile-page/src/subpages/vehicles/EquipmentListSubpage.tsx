@@ -10,8 +10,12 @@ import { Column } from 'react-table';
 import { getCountFromUrl, getPageFromUrl } from '../../../../main-page/src/utils/UrlUtil';
 import Page from '../../../../main-page/src/model/Page';
 import { SubpagePagination } from '../../components/subpage/pagination/SubpagePagination';
+import { Button } from 'react-bootstrap';
+import './EquipmentListSubpage.scss';
+import { AddEquipmentModal } from './components/add_equipment_modal/AddEquipmentModal';
 
 export function EquipmentListSubpage(): JSX.Element {
+    const [isOpen, setIsOpen] = React.useState<boolean>(false);
     const location = useLocation();
     const DEFAULT_PER_PAGE_COUNT = 10;
     const page: number = getPageFromUrl(location.search);
@@ -23,6 +27,10 @@ export function EquipmentListSubpage(): JSX.Element {
     const [totalPagesCount, setTotalPagesCount] = useState<number>(0);
 
     useEffect(() => {
+        loadEquipments();
+    }, [currentPage, perPageCount]);
+
+    const loadEquipments = (): void => {
         getAllEquipmentsList(currentPage, perPageCount).then((vehicleEquipments: Page<EquipmentResponseDTO>) => {
             if (currentPage > vehicleEquipments.totalPages) {
                 setCurrentPage(vehicleEquipments.totalPages - 1);
@@ -31,7 +39,7 @@ export function EquipmentListSubpage(): JSX.Element {
                 setTotalPagesCount(vehicleEquipments.totalPages);
             }
         });
-    }, [currentPage, perPageCount]);
+    };
 
     const columns = React.useMemo<Column<EquipmentResponseDTO>[]>(
         () => [
@@ -51,9 +59,13 @@ export function EquipmentListSubpage(): JSX.Element {
         <SubpageContainer>
             <SubpageHeader title={'Equipments list'} />
             <SubpageContent>
+                <div className="add-equipment-button-container">
+                    <Button onClick={() => setIsOpen(true)}>Add</Button>
+                </div>
                 {vehicleEquipments && (
                     <Table<EquipmentResponseDTO> columns={columns} data={vehicleEquipments.content} />
                 )}
+                <AddEquipmentModal isOpen={isOpen} setIsOpen={setIsOpen} reloadEquipments={loadEquipments} />
             </SubpageContent>
             <SubpagePagination
                 totalPagesCount={totalPagesCount}

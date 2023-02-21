@@ -5,7 +5,7 @@ import { TextAreaFormGroup } from '../../../../components/form/form-group/text-a
 import { FormContainer } from '../../../../components/form/form-group/FormContainer';
 import { VehiclePersistDTO } from '../../../../model/VehiclePersistDTO';
 import { VehicleDetailsDTO } from '../../../../model/VehicleDetailsDTO';
-import { useForm } from 'react-hook-form';
+import { RegisterOptions, useForm } from 'react-hook-form';
 import {
     mapToOptionType,
     mapToOptionTypeWithKeys,
@@ -27,11 +27,20 @@ import { AddOptionModal } from './add_option_modal/AddOptionModal';
 import { OptionDTO } from '../../../../model/OptionDTO';
 import { getVehicleModelsByBrand } from '../../../../../../main-page/src/service/VehicleService';
 import { VehicleModelDTO } from '../../../../model/VehicleModelDTO';
+import { ResponseData } from '../../../../service/FetchUtil';
+import { VehicleResponseDTO } from '../../../../model/VehicleResponseDTO';
+import { useHistory } from 'react-router-dom';
+import { LocationResponseDTO } from '../../../../model/LocationResponseDTO';
 
 export interface VehicleFormProperties {
-    onSubmitAction: (vehiclePersistDTO: VehiclePersistDTO, vehicleImage: File) => void;
+    onSubmitAction: (
+        vehiclePersistDTO: VehiclePersistDTO,
+        vehicleImage: File
+    ) => Promise<ResponseData<VehicleResponseDTO>>;
     vehicleDefaultValues: VehicleFormValues;
     submitButtonValue: string;
+    redirectToEquipmentList?: boolean;
+    isDirtyCheckEnabled?: boolean;
 }
 
 export type VehicleFormValues = {
@@ -60,6 +69,7 @@ type ModalVehicleOptions = {
     headerTitle: string;
     optionLabel: string;
     onSubmit: (value: string) => void;
+    registerOptions?: RegisterOptions;
 };
 
 type VehicleOption = {
@@ -74,7 +84,10 @@ export const VehicleForm = ({
     vehicleDefaultValues,
     onSubmitAction,
     submitButtonValue,
+    redirectToEquipmentList = false,
+    isDirtyCheckEnabled = false,
 }: VehicleFormProperties): JSX.Element => {
+    const history = useHistory();
     const [vehicleOptions, setVehicleOptions] = useState<VehicleOptionsDTO | undefined>(undefined);
     const [vehicleModels, setVehicleModels] = useState<string[]>([]);
     const { register, formState, watch, control, handleSubmit } = useForm<VehicleFormValues>({
@@ -93,6 +106,13 @@ export const VehicleForm = ({
                     setIsOpen(false);
                 });
             },
+            registerOptions: {
+                required: 'Brand cannot be empty',
+                maxLength: {
+                    value: 50,
+                    message: 'Brand name cannot be longer than 50',
+                },
+            },
         },
         model: {
             headerTitle: 'Add model',
@@ -104,6 +124,13 @@ export const VehicleForm = ({
                     setIsOpen(false);
                 });
             },
+            registerOptions: {
+                required: 'Model cannot be empty',
+                maxLength: {
+                    value: 50,
+                    message: 'Model name cannot be longer than 50',
+                },
+            },
         },
         bodyType: {
             headerTitle: 'Add body type',
@@ -113,6 +140,13 @@ export const VehicleForm = ({
                     loadVehicleOptions();
                     setIsOpen(false);
                 });
+            },
+            registerOptions: {
+                required: 'Body type cannot be empty',
+                maxLength: {
+                    value: 50,
+                    message: 'Body type cannot be longer than 50',
+                },
             },
         },
         fuelType: {
@@ -124,6 +158,13 @@ export const VehicleForm = ({
                     setIsOpen(false);
                 });
             },
+            registerOptions: {
+                required: 'Fuel type cannot be empty',
+                maxLength: {
+                    value: 50,
+                    message: 'Fuel type cannot be longer than 50',
+                },
+            },
         },
         color: {
             headerTitle: 'Add color',
@@ -133,6 +174,13 @@ export const VehicleForm = ({
                     loadVehicleOptions();
                     setIsOpen(false);
                 });
+            },
+            registerOptions: {
+                required: 'Color cannot be empty',
+                maxLength: {
+                    value: 50,
+                    message: 'Color name cannot be longer than 50',
+                },
             },
         },
     };
@@ -188,11 +236,19 @@ export const VehicleForm = ({
                 )
             ),
             data.vehicleImage
-        );
+        ).then((response: ResponseData<VehicleResponseDTO>) => {
+            if (redirectToEquipmentList && response.responseBody && response.responseBody.id) {
+                history.push(`/profile/vehicles/${response.responseBody.id}/equipment`);
+            }
+        });
     };
 
     return (
-        <FormContainer submitButtonValue={submitButtonValue} onSubmit={handleSubmit(onSubmit)}>
+        <FormContainer
+            submitButtonValue={submitButtonValue}
+            onSubmit={handleSubmit(onSubmit)}
+            isSubmitButtonDisabled={isDirtyCheckEnabled ? !formState.isValid || !formState.isDirty : !formState.isValid}
+        >
             {vehicleOptions && (
                 <SelectFormGroup<VehicleFormValues>
                     label={'Brand:'}
@@ -204,6 +260,9 @@ export const VehicleForm = ({
                     onClickAddButton={() => {
                         setSelectedModalOption(vehicleModalOptions.brand);
                         setIsOpen(true);
+                    }}
+                    rules={{
+                        required: 'Brand is required',
                     }}
                 />
             )}
@@ -224,14 +283,16 @@ export const VehicleForm = ({
                 />
             )}
             <InputFormGroup<VehicleFormValues>
-                label={'Daily fee:'}
+                label={'Daily fee (USD):'}
                 name={'dailyFee'}
                 type={'number'}
                 step={0.01}
                 register={register}
+                min={0}
                 registerOptions={{
                     required: 'Daily fee is required',
                     valueAsNumber: true,
+                    min: 0,
                 }}
                 error={formState.errors.dailyFee}
             />
@@ -239,7 +300,13 @@ export const VehicleForm = ({
                 label={'Registration:'}
                 name={'registration'}
                 register={register}
-                registerOptions={{ required: 'Registration is required' }}
+                registerOptions={{
+                    required: 'Registration is required',
+                    maxLength: {
+                        value: 20,
+                        message: 'Registration cannot be longer than 50',
+                    },
+                }}
                 error={formState.errors.registration}
             />
             {vehicleOptions && (
@@ -247,13 +314,16 @@ export const VehicleForm = ({
                     label={'Location:'}
                     name={'location'}
                     control={control}
-                    options={vehicleOptions.locations.map((location) =>
+                    options={vehicleOptions.locations.map((location: LocationResponseDTO) =>
                         mapToOptionTypeWithKeys(
-                            `${location.id}`,
+                            location.id,
                             `${location.country}, ${location.city}, ${location.streetAndNb}`
                         )
                     )}
                     error={formState.errors.location}
+                    rules={{
+                        required: 'Registration is required',
+                    }}
                 />
             )}
             <SelectFormGroup<VehicleFormValues>
@@ -265,6 +335,9 @@ export const VehicleForm = ({
                     mapToOptionTypeWithKeys(VehicleStatCodeEnum.AVI, 'Available'),
                 ]}
                 error={formState.errors.vehicleStatus}
+                rules={{
+                    required: 'Vehicle status is required',
+                }}
             />
             <SwitchFormGroup<VehicleFormValues>
                 label={'Best offer:'}
@@ -284,6 +357,9 @@ export const VehicleForm = ({
                         setSelectedModalOption(vehicleModalOptions.bodyType);
                         setIsOpen(true);
                     }}
+                    rules={{
+                        required: 'Body type is required',
+                    }}
                 />
             )}
             {vehicleOptions && (
@@ -298,13 +374,16 @@ export const VehicleForm = ({
                         setSelectedModalOption(vehicleModalOptions.fuelType);
                         setIsOpen(true);
                     }}
+                    rules={{
+                        required: 'Fuel type is required',
+                    }}
                 />
             )}
             <InputFormGroup<VehicleFormValues>
-                label={'Power:'}
+                label={'Power (HP):'}
                 name={'power'}
                 type={'number'}
-                step={0.01}
+                min={0}
                 register={register}
                 registerOptions={{
                     required: 'Power is required',
@@ -330,7 +409,7 @@ export const VehicleForm = ({
                 label={'Doors count:'}
                 name={'doorsCount'}
                 type={'number'}
-                step={0.01}
+                min={0}
                 register={register}
                 registerOptions={{
                     required: 'Doors count is required',
@@ -342,7 +421,7 @@ export const VehicleForm = ({
                 label={'Seats count:'}
                 name={'seatsCount'}
                 type={'number'}
-                step={0.01}
+                min={0}
                 register={register}
                 registerOptions={{
                     required: 'Seats count is required',
@@ -361,6 +440,9 @@ export const VehicleForm = ({
                     onClickAddButton={() => {
                         setSelectedModalOption(vehicleModalOptions.color);
                         setIsOpen(true);
+                    }}
+                    rules={{
+                        required: 'Color is required',
                     }}
                 />
             )}
@@ -381,10 +463,13 @@ export const VehicleForm = ({
                 label={'Production year:'}
                 name={'productionYear'}
                 type={'number'}
-                step={0.01}
                 register={register}
                 registerOptions={{
                     required: 'Production year is required',
+                    min: {
+                        value: 1900,
+                        message: 'Production year cannot be below 1900',
+                    },
                     valueAsNumber: true,
                 }}
                 error={formState.errors.productionYear}
@@ -408,6 +493,7 @@ export const VehicleForm = ({
                     headerTitle={selectedModalOption.headerTitle}
                     optionLabel={selectedModalOption.optionLabel}
                     onSubmit={selectedModalOption.onSubmit}
+                    registerOptions={selectedModalOption.registerOptions}
                     loadVehicleOptions={loadVehicleOptions}
                     isOpen={modalIsOpen}
                     setIsOpen={setIsOpen}

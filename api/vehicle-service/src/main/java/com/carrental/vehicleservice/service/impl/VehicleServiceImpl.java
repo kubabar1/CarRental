@@ -124,9 +124,10 @@ public class VehicleServiceImpl implements VehicleService {
         String vehicleImageName = generateVehicleFileName(vehicleImage);
         VehicleDetailsEntity vehicleDetailsEntityToSave = mapVehicleDetailsDtoToVehicleDetailsEntity(
             vehiclePersistDTO.getVehicleDetailsDTO(),
-            vehicleImageName
+            vehicleImageName,
+            new VehicleDetailsEntity()
         );
-        VehicleEntity vehicleEntityToSave = mapVehicleDtoToVehicleEntity(vehiclePersistDTO);
+        VehicleEntity vehicleEntityToSave = mapVehicleDtoToVehicleEntity(vehiclePersistDTO, new VehicleEntity());
         vehicleEntityToSave.setVehicleDetails(vehicleDetailsEntityToSave);
         VehicleEntity vehicleEntitySaved = vehicleRepository.save(vehicleEntityToSave);
 
@@ -171,14 +172,21 @@ public class VehicleServiceImpl implements VehicleService {
     public VehicleResponseDTO updateVehicleById(Long vehicleId, VehiclePersistDTO vehiclePersistDTO, MultipartFile vehicleImage) throws NoSuchElementException, IOException {
         VehicleEntity vehicleEntityToUpdate = vehicleRepository.findById(vehicleId).orElseThrow();
         String imageName = vehicleEntityToUpdate.getVehicleDetails().getImageName();
-        modelMapper.map(vehiclePersistDTO, vehicleEntityToUpdate);
-        vehicleEntityToUpdate.setId(vehicleId);
-        vehicleEntityToUpdate.getVehicleDetails().setImageName(imageName);
-        VehicleEntity vehicleEntityAfterUpdate = vehicleRepository.save(vehicleEntityToUpdate);
+        VehicleDetailsEntity vehicleDetailsEntityToSave = mapVehicleDetailsDtoToVehicleDetailsEntity(
+                vehiclePersistDTO.getVehicleDetailsDTO(),
+                imageName,
+                vehicleEntityToUpdate.getVehicleDetails()
+        );
+        VehicleEntity vehicleEntityToSave = mapVehicleDtoToVehicleEntity(vehiclePersistDTO, vehicleEntityToUpdate);
+        vehicleEntityToSave.setVehicleDetails(vehicleDetailsEntityToSave);
+
+        VehicleEntity vehicleEntitySaved = vehicleRepository.save(vehicleEntityToSave);
+
         if (vehicleImage != null) {
-            uploadImage(vehicleEntityToUpdate.getVehicleDetails().getImageName(), vehicleImage);
+            uploadImage(imageName, vehicleImage);
         }
-        return modelMapper.map(vehicleEntityAfterUpdate, VehicleResponseDTO.class);
+
+        return modelMapper.map(vehicleEntitySaved, VehicleResponseDTO.class);
     }
 
     @Override
@@ -220,8 +228,7 @@ public class VehicleServiceImpl implements VehicleService {
         return UUID.randomUUID().toString() + "." + FilenameUtils.getExtension(image.getOriginalFilename());
     }
 
-    private VehicleEntity mapVehicleDtoToVehicleEntity(VehiclePersistDTO vehiclePersistDTO) {
-        VehicleEntity vehicleEntity = new VehicleEntity();
+    private VehicleEntity mapVehicleDtoToVehicleEntity(VehiclePersistDTO vehiclePersistDTO, VehicleEntity vehicleEntity) {
         vehicleEntity.setRegistration(vehiclePersistDTO.getRegistration());
         vehicleEntity.setBrand(vehiclePersistDTO.getBrand());
         vehicleEntity.setModel(modelRepository.getById(vehiclePersistDTO.getModel()));
@@ -232,8 +239,7 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicleEntity;
     }
 
-    private VehicleDetailsEntity mapVehicleDetailsDtoToVehicleDetailsEntity(VehicleDetailsDTO vehicleDetailsDTO, String vehicleImageName) {
-        VehicleDetailsEntity vehicleDetailsEntity = new VehicleDetailsEntity();
+    private VehicleDetailsEntity mapVehicleDetailsDtoToVehicleDetailsEntity(VehicleDetailsDTO vehicleDetailsDTO, String vehicleImageName, VehicleDetailsEntity vehicleDetailsEntity) {
         vehicleDetailsEntity.setProductionYear(vehicleDetailsDTO.getProductionYear());
         vehicleDetailsEntity.setFuelType(vehicleDetailsDTO.getFuelType());
         vehicleDetailsEntity.setPower(vehicleDetailsDTO.getPower());

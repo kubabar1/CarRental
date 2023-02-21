@@ -16,4 +16,12 @@ public class EquipmentEntity implements Serializable {
 
     @Column(name = "description", nullable = false, length = 50)
     private String description;
+
+    public EquipmentEntity() {
+    }
+
+    public EquipmentEntity(String equipmentCode, String description) {
+        this.equipmentCode = equipmentCode;
+        this.description = description;
+    }
 }

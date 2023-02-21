@@ -63,6 +63,8 @@ export const REMOVE_EQUIPMENT_FROM_VEHICLE_PATH = (vehicleId: string): string =>
 
 export const ADD_VEHICLE_PATH = `${APP_ADDR}/vehicles`;
 
+export const ADD_EQUIPMENT = `${APP_ADDR}/equipments`;
+
 export const GET_VEHICLE_OPTIONS_PATH = `${APP_ADDR}/vehicles/options`;
 
 export const ADD_BRAND_PATH = `${APP_ADDR}/vehicles/brand`;

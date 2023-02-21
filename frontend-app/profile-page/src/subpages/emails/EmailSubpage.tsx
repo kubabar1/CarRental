@@ -11,7 +11,6 @@ import { UsersEmailsResponseDTO } from '../../model/UsersEmailsResponseDTO';
 import { getAllUsersEmails } from '../../service/UserService';
 import { sendEmails } from '../../service/EmailService';
 import { MultipleRecipientsMailsDTO } from '../../model/MultipleRecipientsMailsDTO';
-import { sendEmailPath } from '../../constants/Links';
 import { useForm } from 'react-hook-form';
 
 interface EmailHistoryState {

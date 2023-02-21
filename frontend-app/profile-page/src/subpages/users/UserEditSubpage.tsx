@@ -22,7 +22,12 @@ export function UsersEditSubpage(): JSX.Element {
     const history = useHistory();
     const { userId } = useParams<{ userId: string }>();
     const [userBeforeUpdate, setUserBeforeUpdate] = useState<UserResponseDTO | undefined>(undefined);
-    const { register, formState, handleSubmit } = useForm<UserEditFormValues>({ mode: 'onChange' });
+    const { register, formState, handleSubmit } = useForm<UserEditFormValues>({
+        mode: 'onChange',
+        defaultValues: {
+            name: userBeforeUpdate?.name,
+        },
+    });
 
     useEffect(() => {
         getUserById(userId).then((userBeforeUpdate: UserResponseDTO) => {
@@ -46,7 +51,6 @@ export function UsersEditSubpage(): JSX.Element {
                         name={'name'}
                         register={register}
                         registerOptions={{ required: 'Name is required' }}
-                        // defaultValue={userBeforeUpdate?.name}
                         error={formState.errors.name}
                     />
                     <InputFormGroup<UserEditFormValues>

@@ -15,6 +15,8 @@ interface FormGroupProperties<FieldValuesType extends FieldValues> {
     isDisabled?: boolean;
     error?: FieldError;
     step?: number;
+    min?: number;
+    max?: number;
 }
 
 export function InputFormGroup<FieldValuesType extends FieldValues>({
@@ -26,6 +28,8 @@ export function InputFormGroup<FieldValuesType extends FieldValues>({
     isDisabled = false,
     error,
     step = 1,
+    min,
+    max,
 }: FormGroupProperties<FieldValuesType>): JSX.Element {
     return (
         <div className="form-group input-form-group-container">
@@ -37,6 +41,8 @@ export function InputFormGroup<FieldValuesType extends FieldValues>({
                         disabled={isDisabled}
                         className="form-control"
                         step={step}
+                        min={min}
+                        max={max}
                         {...register(name, registerOptions)}
                     />
                     {error && (

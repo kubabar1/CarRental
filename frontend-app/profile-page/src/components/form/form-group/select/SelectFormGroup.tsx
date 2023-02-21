@@ -11,7 +11,7 @@ import classNames from 'classnames';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export type OptionType = { value: string | null; label: string | null };
+export type OptionType = { value: string | number | null; label: string | null };
 
 interface FormGroupProperties<FieldValuesType extends FieldValues> {
     label: string;
@@ -49,7 +49,7 @@ export const mapToOptionType = (val?: string): OptionType => {
     }
 };
 
-export const mapToOptionTypeWithKeys = (val: string, label: string): OptionType => {
+export const mapToOptionTypeWithKeys = (val: string | number, label: string): OptionType => {
     return {
         value: val,
         label: label,

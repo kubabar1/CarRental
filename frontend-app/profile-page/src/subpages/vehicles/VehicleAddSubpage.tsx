@@ -2,21 +2,20 @@ import React from 'react';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { useHistory } from 'react-router-dom';
 import { addVehicle } from '../../service/VehicleService';
 import { VehiclePersistDTO } from '../../model/VehiclePersistDTO';
-import { vehiclesListPath } from '../../constants/Links';
 import { VehicleForm, VehicleFormValues } from './components/vehicle_form/VehicleForm';
 import { VehicleStatCodeEnum } from '../../model/VehicleStatCodeEnum';
 import { FileWithPreview } from '../../components/form/form-group/upload/Dropzone';
+import { ResponseData } from '../../service/FetchUtil';
+import { VehicleResponseDTO } from '../../model/VehicleResponseDTO';
 
 export function VehicleAddSubpage(): JSX.Element {
-    const history = useHistory();
-
-    const addVehicleForm = async (vehiclePersistDTO: VehiclePersistDTO, vehicleImage: File): Promise<void> => {
-        addVehicle(vehiclePersistDTO, vehicleImage).then(() => {
-            // history.push(vehiclesListPath.link);
-        });
+    const addVehicleForm = async (
+        vehiclePersistDTO: VehiclePersistDTO,
+        vehicleImage: File
+    ): Promise<ResponseData<VehicleResponseDTO>> => {
+        return addVehicle(vehiclePersistDTO, vehicleImage);
     };
 
     const vehicleDefaultValues: VehicleFormValues = {
@@ -49,6 +48,7 @@ export function VehicleAddSubpage(): JSX.Element {
                     onSubmitAction={addVehicleForm}
                     vehicleDefaultValues={vehicleDefaultValues}
                     submitButtonValue={'Create'}
+                    redirectToEquipmentList
                 />
             </SubpageContent>
         </SubpageContainer>

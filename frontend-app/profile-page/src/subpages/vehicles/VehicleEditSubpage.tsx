@@ -20,12 +20,11 @@ export function VehicleEditSubpage(): JSX.Element {
         });
     }, [vehicleId]);
 
-    const updateVehicleForm = (vehiclePersistDTO: VehiclePersistDTO, vehicleImage: File): void => {
-        updateVehicleData(vehicleId, vehiclePersistDTO, vehicleImage).then(
-            (vehicleResp: ResponseData<VehicleResponseDTO>) => {
-                setVehicleResponseDTO(vehicleResp.responseBody);
-            }
-        );
+    const updateVehicleForm = (
+        vehiclePersistDTO: VehiclePersistDTO,
+        vehicleImage: File
+    ): Promise<ResponseData<VehicleResponseDTO>> => {
+        return updateVehicleData(vehicleId, vehiclePersistDTO, vehicleImage);
     };
 
     const mapVehicleResponseToFormValues = (vehicleResponseDTO: VehicleResponseDTO): VehicleFormValues => {
@@ -61,6 +60,7 @@ export function VehicleEditSubpage(): JSX.Element {
                         onSubmitAction={updateVehicleForm}
                         vehicleDefaultValues={mapVehicleResponseToFormValues(vehicleResponseDTO)}
                         submitButtonValue={'Update'}
+                        isDirtyCheckEnabled
                     />
                 )}
             </SubpageContent>

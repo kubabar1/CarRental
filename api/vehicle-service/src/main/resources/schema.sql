@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS vehicle_status(
   vehicle_status_code NVARCHAR(3) NOT NULL,
-  description NVARCHAR(50) NOT NULL,
+  description NVARCHAR(255) NOT NULL,
   PRIMARY KEY(vehicle_status_code)
 );
 

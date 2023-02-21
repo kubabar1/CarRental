@@ -1,9 +1,7 @@
 package com.carrental.vehicleservice.service.impl;
 
-import com.carrental.vehicleservice.model.dto.EquipmentPersistDTO;
-import com.carrental.vehicleservice.model.dto.EquipmentResponseDTO;
-import com.carrental.vehicleservice.model.dto.EquipmentSetPersistDTO;
-import com.carrental.vehicleservice.model.dto.VehicleResponseDTO;
+import com.carrental.vehicleservice.model.dto.*;
+import com.carrental.vehicleservice.model.entity.ColorEntity;
 import com.carrental.vehicleservice.model.entity.EquipmentEntity;
 import com.carrental.vehicleservice.model.entity.VehicleEntity;
 import com.carrental.vehicleservice.repository.EquipmentRepository;
@@ -85,6 +83,12 @@ public class EquipmentServiceImpl implements EquipmentService {
                 .removeIf(equipmentEntity -> equipmentEntity.getEquipmentCode().equals(equipmentPersistDTO.getEquipmentCode()));
         VehicleEntity vehicleEntityAfterUpdate = vehicleRepository.save(vehicleEntity);
         return modelMapper.map(vehicleEntityAfterUpdate, VehicleResponseDTO.class);
+    }
+
+    @Override
+    public EquipmentResponseDTO addEquipment(EquipmentAddDTO equipmentAddDTO) {
+        EquipmentEntity equipmentEntity = equipmentRepository.save(modelMapper.map(equipmentAddDTO, EquipmentEntity.class));
+        return modelMapper.map(equipmentEntity, EquipmentResponseDTO.class);
     }
 
     private VehicleResponseDTO addEquipmentToVehicle(VehicleEntity vehicleEntity, String equipmentCode) {

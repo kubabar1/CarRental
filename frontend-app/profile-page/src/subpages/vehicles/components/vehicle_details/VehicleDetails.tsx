@@ -1,6 +1,6 @@
 import React from 'react';
 import { VehicleResponseDTO } from '../../../../model/VehicleResponseDTO';
-import { carImagesProfilePage } from '../../../../constants/PathsServer';
+import { carImagesProfilePage, vehicleImageFromServer } from '../../../../constants/PathsServer';
 import './VehicleDetails.scss';
 
 export interface VehicleDetailsProperties {
@@ -13,7 +13,7 @@ export const VehicleDetails = ({ vehicleResponseDTO }: VehicleDetailsProperties)
             <div className={'vehicle-details-container'}>
                 <div className={'vehicle-details-item-image'}>
                     <img
-                        src={carImagesProfilePage('ford_mustang_example.jpg')}
+                        src={vehicleImageFromServer(vehicleResponseDTO.vehicleDetails.imageName)}
                         alt="Vehicle image"
                         className="vehicle-details-image"
                     />

@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { InputFormGroup } from '../../../../../components/form/form-group/input/InputFormGroup';
 import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { FieldValues } from 'react-hook-form/dist/types';
 import './AddOptionModal.scss';
-import { OptionDTO } from '../../../../../model/OptionDTO';
-import { ResponseData } from '../../../../../service/FetchUtil';
+import { RegisterOptions } from 'react-hook-form/dist/types/validator';
 
 type Option = {
     value: string;
@@ -19,6 +18,7 @@ interface AddOptionModalProperties<FieldValuesType extends FieldValues> {
     setIsOpen: (isOpen: boolean) => void;
     onSubmit: (value: string) => void;
     loadVehicleOptions: () => void;
+    registerOptions?: RegisterOptions;
 }
 
 export function AddOptionModal<FieldValuesType extends FieldValues>({
@@ -27,8 +27,9 @@ export function AddOptionModal<FieldValuesType extends FieldValues>({
     isOpen,
     setIsOpen,
     onSubmit,
+    registerOptions,
 }: AddOptionModalProperties<Option>): JSX.Element {
-    const { register, formState, handleSubmit, setValue } = useForm<Option>({
+    const { register, formState, clearErrors, handleSubmit, setValue } = useForm<Option>({
         mode: 'onChange',
         defaultValues: {
             value: '',
@@ -40,10 +41,16 @@ export function AddOptionModal<FieldValuesType extends FieldValues>({
         setValue('value', '');
     };
 
+    const onClose = () => {
+        setIsOpen(false);
+        clearErrors('value');
+        setValue('value', '');
+    };
+
     return (
         <Modal
             show={isOpen}
-            onHide={() => setIsOpen(false)}
+            onHide={onClose}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
@@ -57,15 +64,20 @@ export function AddOptionModal<FieldValuesType extends FieldValues>({
                     label={optionLabel}
                     name={'value'}
                     register={register}
-                    registerOptions={{ required: 'Field cannot be empty' }}
+                    registerOptions={registerOptions}
                     error={formState.errors.value}
                 />
             </Modal.Body>
             <Modal.Footer>
-                <Button type="submit" variant={'outline-primary'} onClick={handleSubmit(addOption)}>
+                <Button
+                    disabled={!formState.isValid}
+                    type="submit"
+                    variant={'outline-primary'}
+                    onClick={handleSubmit(addOption)}
+                >
                     Add
                 </Button>
-                <Button onClick={() => setIsOpen(false)}>Close</Button>
+                <Button onClick={onClose}>Close</Button>
             </Modal.Footer>
         </Modal>
     );

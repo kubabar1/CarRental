@@ -3,6 +3,7 @@ package com.carrental.vehicleservice.model.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 
 @Data
@@ -31,6 +32,7 @@ public class VehicleDetailsEntity implements Serializable {
     private BodyTypeEntity bodyType;
 
     @Column(name = "production_year", nullable = false)
+    @Min(value = 1900)
     private Integer productionYear;
 
     @Column(name = "fuel_type", nullable = false, length = 50)
@@ -61,7 +63,7 @@ public class VehicleDetailsEntity implements Serializable {
     @Column(name = "image_name", nullable = false, length = 70)
     private String imageName;
 
-    @Column(name = "description", nullable = false, length = 100)
+    @Column(name = "description", nullable = false, length = 255)
     private String description;
 
     @MapsId

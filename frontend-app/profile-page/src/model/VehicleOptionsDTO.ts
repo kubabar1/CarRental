@@ -1,18 +1,18 @@
-import LocalisationResponseDTO from '../../../main-page/src/model/LocalisationResponseDTO';
+import { LocationResponseDTO } from './LocationResponseDTO';
 
 export class VehicleOptionsDTO {
     bodyTypes: string[];
     brands: string[];
     colors: string[];
     fuelTypes: string[];
-    locations: LocalisationResponseDTO[];
+    locations: LocationResponseDTO[];
 
     constructor(
         bodyTypes: string[],
         brands: string[],
         colours: string[],
         fuelTypes: string[],
-        locations: LocalisationResponseDTO[]
+        locations: LocationResponseDTO[]
     ) {
         this.bodyTypes = bodyTypes;
         this.brands = brands;
