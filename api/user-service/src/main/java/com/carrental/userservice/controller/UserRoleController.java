@@ -28,14 +28,4 @@ public class UserRoleController {
         }
         return ResponseEntity.ok().body(userRoleResponseDTOS);
     }
-
-    @GetMapping(value = "/not-assigned/{userId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Set<UserRoleResponseDTO>> getAllUserRolesNotAssignedToUser(@PathVariable(value = "userId") Long userId) {
-        Set<UserRoleResponseDTO> userRoleResponseDTOS = userRoleService.getAllUserRolesNotAssignedToUser(userId);
-        if (userRoleResponseDTOS.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok().body(userRoleResponseDTOS);
-    }
 }

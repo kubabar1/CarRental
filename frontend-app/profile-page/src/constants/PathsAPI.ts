@@ -90,9 +90,6 @@ export const GET_VEHICLE_BY_ID_PATH = (vehicleId: string): string => withId(`${A
 
 export const GET_USERS_ROLES_PATH = `${APP_ADDR}/users-roles`;
 
-export const GET_USER_ROLES_NOT_ASSIGNED_TO_USER_PATH = (userId: string): string =>
-    withId(`${APP_ADDR}/users-roles/not-assigned`, userId);
-
 export const GET_USERS_PATH = `${APP_ADDR}/users`;
 
 export const GET_ALL_USERS_EMAILS = `${APP_ADDR}/users/all-emails`;

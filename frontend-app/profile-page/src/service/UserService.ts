@@ -7,7 +7,6 @@ import {
     GET_ALL_USERS_EMAILS,
     GET_AUTHORIZED_USER_PATH,
     GET_USER_BY_ID_PATH,
-    GET_USER_ROLES_NOT_ASSIGNED_TO_USER_PATH,
     GET_USERS_PATH,
     GET_USERS_ROLES_PATH,
     UPDATE_AUTHORIZED_USER_PATH,
@@ -39,10 +38,6 @@ export const getAllUsersEmails = (): Promise<UsersEmailsResponseDTO> => {
 
 export const getAllUserRoles = (): Promise<UserRoleResponseDTO[]> => {
     return fetchGet<UserRoleResponseDTO[]>(GET_USERS_ROLES_PATH);
-};
-
-export const getAllUserRolesNotAssignedToUser = (userId: string): Promise<UserRoleResponseDTO[]> => {
-    return fetchGet<UserRoleResponseDTO[]>(GET_USER_ROLES_NOT_ASSIGNED_TO_USER_PATH(userId));
 };
 
 export const updateAuthorizedUserData = (settingsUpdateDTO: UserUpdateDTO): Promise<ResponseData<UserResponseDTO>> => {

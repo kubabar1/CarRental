@@ -85,7 +85,7 @@ export function UsersListSubpage(): JSX.Element {
                                 buttonText={<FontAwesomeIcon icon={faFingerprint} />}
                                 buttonRedirectPath={`/profile/user-roles/add/${user.id}`}
                                 buttonVariant={'success'}
-                                tooltipMessage={'Add role'}
+                                tooltipMessage={'Update roles'}
                             />
                             <ButtonTableItem
                                 buttonText={<FontAwesomeIcon icon={faEnvelope} />}

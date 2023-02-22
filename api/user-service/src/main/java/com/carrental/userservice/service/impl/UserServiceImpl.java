@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .map(userRole -> userRoleRepository.findById(userRole.getRoleId()).orElseThrow())
                 .collect(Collectors.toSet());
-        userEntity.getRoles().addAll(userRolesEntityToAddList);
+        userEntity.setRoles(userRolesEntityToAddList);
         return modelMapper.map(userRepository.save(userEntity), UserResponseDTO.class);
     }
 

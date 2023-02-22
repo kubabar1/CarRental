@@ -82,13 +82,13 @@ export function SelectFormGroup<FieldValuesType extends FieldValues, IsMulti ext
                             <div className="select-row">
                                 <Select<OptionType, IsMulti>
                                     options={options}
-                                    value={options.find((val: OptionType) => {
-                                        if (value != null && Array.isArray(value)) {
-                                            return value.includes(val.value);
-                                        } else {
-                                            return val.value === value;
-                                        }
-                                    })}
+                                    value={
+                                        value != null && Array.isArray(value)
+                                            ? options.filter((val: OptionType) => {
+                                                  return value.includes(val.value);
+                                              })
+                                            : value
+                                    }
                                     isClearable={isClearable}
                                     onChange={(val: OnChangeValue<OptionType, IsMulti>) => {
                                         if (val != null && Array.isArray(val)) {

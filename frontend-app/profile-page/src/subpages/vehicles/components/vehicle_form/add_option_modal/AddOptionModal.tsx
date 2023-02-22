@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { InputFormGroup } from '../../../../../components/form/form-group/input/InputFormGroup';
 import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap';
