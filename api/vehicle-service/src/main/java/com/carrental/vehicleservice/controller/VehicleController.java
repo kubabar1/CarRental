@@ -3,8 +3,6 @@ package com.carrental.vehicleservice.controller;
 import com.carrental.vehicleservice.model.dto.*;
 import com.carrental.vehicleservice.service.FilteringService;
 import com.carrental.vehicleservice.service.VehicleService;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Encoding;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Map;
@@ -30,6 +29,7 @@ public class VehicleController {
     private final VehicleService vehicleService;
 
     private final FilteringService filteringService;
+
     public VehicleController(
             VehicleService vehicleService,
             FilteringService filteringService
@@ -126,8 +126,64 @@ public class VehicleController {
         return ResponseEntity.ok().body(vehicleService.getVehiclesOptions());
     }
 
+    @GetMapping(value = "/options-with-assoc")
+    public ResponseEntity<VehicleOptionsWithAssocCountDTO> getVehiclesOptionsWithAssocController() {
+        return ResponseEntity.ok().body(vehicleService.getVehiclesOptionsWithAssocCnt());
+    }
+
+    @DeleteMapping(value = "/vehicle-options/brand/{brand}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_RENTING_EMPLOYEE')")
+    public ResponseEntity<OptionDTO> deleteBrandController(@PathVariable(name = "brand") String brand) {
+        try {
+            OptionDTO option = vehicleService.deleteBrand(brand);
+            return ResponseEntity.ok().body(option);
+        } catch (NoSuchElementException exception) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping(value = "/vehicle-options/model/{model}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_RENTING_EMPLOYEE')")
+    public ResponseEntity<OptionDTO> deleteModelController(@PathVariable(name = "model") String model) {
+        try {
+            return ResponseEntity.ok().body(vehicleService.deleteModel(model));
+        } catch (EntityNotFoundException exception) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping(value = "/vehicle-options/body-type/{bodyType}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_RENTING_EMPLOYEE')")
+    public ResponseEntity<OptionDTO> deleteBodyTypeController(@PathVariable(name = "bodyType") String bodyType) {
+        try {
+            return ResponseEntity.ok().body(vehicleService.deleteBodyType(bodyType));
+        } catch (EntityNotFoundException exception) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping(value = "/vehicle-options/fuel-type/{fuelType}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_RENTING_EMPLOYEE')")
+    public ResponseEntity<OptionDTO> deleteFuelTypeController(@PathVariable(name = "fuelType") String fuelType) {
+        try {
+            return ResponseEntity.ok().body(vehicleService.deleteFuelType(fuelType));
+        } catch (EntityNotFoundException exception) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping(value = "/vehicle-options/color/{color}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_RENTING_EMPLOYEE')")
+    public ResponseEntity<OptionDTO> deleteColorController(@PathVariable(name = "color") String color) {
+        try {
+            return ResponseEntity.ok().body(vehicleService.deleteColor(color));
+        } catch (EntityNotFoundException exception) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping(value = "/filter-params/brand-models/{brand}")
-    public ResponseEntity<Set<String>> getVehicleModelsByBrand(@PathVariable(name = "brand") String brand) {
+    public ResponseEntity<Set<String>> getVehicleModelsByBrandController(@PathVariable(name = "brand") String brand) {
         return ResponseEntity.ok().body(vehicleService.getVehicleModelsByBrand(brand));
     }
 

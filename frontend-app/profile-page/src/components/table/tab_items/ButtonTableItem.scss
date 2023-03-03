@@ -1,7 +1,12 @@
 .button-table-item {
     text-align: center;
 
-    button {
+    .disabled-table-button {
+        pointer-events: none;
+        font-weight: bold;
+    }
+
+    .table-button {
         font-weight: bold;
     }
 }

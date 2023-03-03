@@ -1,13 +1,17 @@
 package com.carrental.vehicleservice.model.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "models")
 @Table(name = "models")
-public class ModelEntity {
+public class ModelEntity implements Serializable {
 
     public static final String MODEL = "model";
 
@@ -15,7 +19,10 @@ public class ModelEntity {
     @Column(name = "model", nullable = false, length = 50)
     private String model;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "brand", referencedColumnName = "brand", nullable = false)
     private BrandEntity brand;
+
+    @OneToMany(mappedBy = "model")
+    private Set<VehicleEntity> vehicles;
 }

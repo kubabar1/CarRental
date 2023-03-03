@@ -1,14 +1,14 @@
 package com.carrental.vehicleservice.model.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "fuel_types")
 @Table(name = "fuel_types")
 public class FuelTypeEntity implements Serializable {
@@ -25,4 +25,7 @@ public class FuelTypeEntity implements Serializable {
     @Id
     @Column(name = "fuel_type", nullable = false, length = 50)
     private String fuelType;
+
+    @OneToMany(mappedBy = "fuelType")
+    private Set<VehicleDetailsEntity> vehicleDetails;
 }

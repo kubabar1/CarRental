@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
+import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -38,4 +40,16 @@ public interface VehicleService {
     OptionDTO addColor(OptionDTO optionDTO);
 
     VehicleModelDTO addVehicleModel(VehicleModelDTO vehicleModelDTO);
+
+    VehicleOptionsWithAssocCountDTO getVehiclesOptionsWithAssocCnt();
+
+    OptionDTO deleteBrand(String brand) throws EntityNotFoundException;
+
+    OptionDTO deleteModel(String model) throws EntityNotFoundException;
+
+    OptionDTO deleteBodyType(String bodyType) throws EntityNotFoundException;
+
+    OptionDTO deleteFuelType(String fuelType) throws EntityNotFoundException;
+
+    OptionDTO deleteColor(String color) throws EntityNotFoundException;
 }

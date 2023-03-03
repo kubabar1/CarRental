@@ -67,6 +67,8 @@ export const ADD_EQUIPMENT = `${APP_ADDR}/equipments`;
 
 export const GET_VEHICLE_OPTIONS_PATH = `${APP_ADDR}/vehicles/options`;
 
+export const GET_VEHICLE_OPTIONS_WITH_ASSOC_PATH = `${APP_ADDR}/vehicles/options-with-assoc`;
+
 export const ADD_BRAND_PATH = `${APP_ADDR}/vehicles/brand`;
 
 export const ADD_BODY_TYPE_PATH = `${APP_ADDR}/vehicles/body-type`;
@@ -81,6 +83,9 @@ export const ADD_VEHICLE_MODEL_PATH = `${APP_ADDR}/vehicles/model`;
 
 export const GET_VEHICLE_MODELS_BY_BRAND_PATH = (brand: string): string =>
     `${APP_ADDR}/vehicles/filter-params/brand-models/${brand}`;
+
+export const DELETE_SPECIFIC_VEHICLE_OPTION_PATH = (vehicleOptionType: string, vehicleOption: string): string =>
+    `${APP_ADDR}/vehicles/vehicle-options/${vehicleOptionType}/${vehicleOption}`;
 
 export const UPDATE_VEHICLE_PATH = (vehicleId: string): string => withId(`${APP_ADDR}/vehicles`, vehicleId);
 

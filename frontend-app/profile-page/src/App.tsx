@@ -24,6 +24,7 @@ import {
     vehicleAddPath,
     vehicleEditPath,
     vehicleEquipmentEditPath,
+    vehicleOptionsListPath,
     vehiclesListPath,
 } from './constants/Links';
 import { WelcomeSubpage } from './subpages/welcome/WelcomeSubpage';
@@ -53,6 +54,7 @@ import { ProtectedRoute } from './utils/ProtectedRoute';
 import { userHasAnyRole } from './utils/UserUtils';
 import { logout } from './service/AuthService';
 import { Button } from 'react-bootstrap';
+import { VehicleOptionsSubpage } from './subpages/vehicles/VehicleOptionsSubpage';
 
 export function App(): JSX.Element {
     const [authenticatedUser, setAuthenticatedUser] = useState<AuthenticatedUserDTO | undefined>(undefined);
@@ -220,6 +222,15 @@ export function App(): JSX.Element {
                                 path={equipmentListPath.link}
                                 exact
                                 component={EquipmentListSubpage}
+                            />
+                            <ProtectedRoute
+                                isAuthorized={userHasAnyRole(
+                                    authenticatedUser.userRoles,
+                                    vehicleOptionsListPath.permittedRoles
+                                )}
+                                path={vehicleOptionsListPath.link}
+                                exact
+                                component={VehicleOptionsSubpage}
                             />
 
                             {/*USER_ROLES_PAGE*/}

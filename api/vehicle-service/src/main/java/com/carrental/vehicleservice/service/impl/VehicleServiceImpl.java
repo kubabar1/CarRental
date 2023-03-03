@@ -6,6 +6,7 @@ import com.carrental.vehicleservice.repository.*;
 import com.carrental.vehicleservice.service.VehicleRatingService;
 import com.carrental.vehicleservice.service.VehicleService;
 import org.apache.commons.io.FilenameUtils;
+import org.h2.engine.Mode;
 import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.core.ParameterizedTypeReference;
@@ -14,13 +15,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.Tuple;
+import javax.persistence.criteria.*;
 import java.io.IOException;
-import java.util.UUID;
+import java.math.BigInteger;
+import java.util.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class VehicleServiceImpl implements VehicleService {
@@ -45,6 +47,8 @@ public class VehicleServiceImpl implements VehicleService {
 
     private final RabbitTemplate rabbitTemplate;
 
+    private final EntityManager entityManager;
+
 
     public VehicleServiceImpl(
             VehicleRepository vehicleRepository,
@@ -56,7 +60,8 @@ public class VehicleServiceImpl implements VehicleService {
             VehicleStatusRepository vehicleStatusRepository,
             ModelMapper modelMapper,
             VehicleRatingService vehicleRatingService,
-            RabbitTemplate rabbitTemplate
+            RabbitTemplate rabbitTemplate,
+            EntityManager entityManager
     ) {
         this.vehicleRepository = vehicleRepository;
         this.colorRepository = colorRepository;
@@ -68,6 +73,7 @@ public class VehicleServiceImpl implements VehicleService {
         this.modelMapper = modelMapper;
         this.vehicleRatingService = vehicleRatingService;
         this.rabbitTemplate = rabbitTemplate;
+        this.entityManager = entityManager;
     }
 
     @Override
@@ -123,9 +129,9 @@ public class VehicleServiceImpl implements VehicleService {
     public VehicleResponseDTO addVehicle(VehiclePersistDTO vehiclePersistDTO, MultipartFile vehicleImage) throws IOException {
         String vehicleImageName = generateVehicleFileName(vehicleImage);
         VehicleDetailsEntity vehicleDetailsEntityToSave = mapVehicleDetailsDtoToVehicleDetailsEntity(
-            vehiclePersistDTO.getVehicleDetailsDTO(),
-            vehicleImageName,
-            new VehicleDetailsEntity()
+                vehiclePersistDTO.getVehicleDetailsDTO(),
+                vehicleImageName,
+                new VehicleDetailsEntity()
         );
         VehicleEntity vehicleEntityToSave = mapVehicleDtoToVehicleEntity(vehiclePersistDTO, new VehicleEntity());
         vehicleEntityToSave.setVehicleDetails(vehicleDetailsEntityToSave);
@@ -210,11 +216,57 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    public VehicleOptionsWithAssocCountDTO getVehiclesOptionsWithAssocCnt() {
+        VehicleOptionsWithAssocCountDTO vehicleOptionsWithAssocCountDTO = new VehicleOptionsWithAssocCountDTO();
+        vehicleOptionsWithAssocCountDTO.setBrands(brandRepository.getBrandsWithAssociatedVehiclesCount());
+        vehicleOptionsWithAssocCountDTO.setModels(modelRepository.getModelsWithAssociatedVehicles());
+        vehicleOptionsWithAssocCountDTO.setColors(colorRepository.getColorsWithAssociatedVehiclesCount());
+        vehicleOptionsWithAssocCountDTO.setBodyTypes(bodyTypeRepository.getBodyTypesWithAssociatedVehiclesCount());
+        vehicleOptionsWithAssocCountDTO.setFuelTypes(fuelTypeRepository.getFuelTypesWithAssociatedVehiclesCount());
+        return vehicleOptionsWithAssocCountDTO;
+    }
+
+    @Override
     public Set<String> getVehicleModelsByBrand(String brand) {
         if (brand != null) {
             return modelRepository.findByBrand(brand);
         }
         return new HashSet<>();
+    }
+
+    @Override
+    public OptionDTO deleteBrand(String brand) throws EntityNotFoundException {
+        BrandEntity brandEntity = brandRepository.findById(brand).orElseThrow();
+        brandRepository.delete(brandEntity);
+        return new OptionDTO(brandEntity.getBrand());
+    }
+
+    @Override
+    public OptionDTO deleteModel(String model) throws EntityNotFoundException {
+        ModelEntity modelEntity = modelRepository.findById(model).orElseThrow();
+        modelRepository.delete(modelEntity);
+        return new OptionDTO(modelEntity.getModel());
+    }
+
+    @Override
+    public OptionDTO deleteBodyType(String bodyType) throws EntityNotFoundException {
+        BodyTypeEntity bodyTypeEntity = bodyTypeRepository.findById(bodyType).orElseThrow();
+        bodyTypeRepository.delete(bodyTypeEntity);
+        return new OptionDTO(bodyTypeEntity.getBodyType());
+    }
+
+    @Override
+    public OptionDTO deleteFuelType(String fuelType) throws EntityNotFoundException {
+        FuelTypeEntity fuelTypeEntity = fuelTypeRepository.findById(fuelType).orElseThrow();
+        fuelTypeRepository.delete(fuelTypeEntity);
+        return new OptionDTO(fuelTypeEntity.getFuelType());
+    }
+
+    @Override
+    public OptionDTO deleteColor(String color) throws EntityNotFoundException {
+        ColorEntity colorEntity = colorRepository.findById(color).orElseThrow();
+        colorRepository.delete(colorEntity);
+        return new OptionDTO(colorEntity.getColor());
     }
 
     private void uploadImage(String vehicleImageName, MultipartFile vehicleImage) throws IOException {
@@ -230,7 +282,7 @@ public class VehicleServiceImpl implements VehicleService {
 
     private VehicleEntity mapVehicleDtoToVehicleEntity(VehiclePersistDTO vehiclePersistDTO, VehicleEntity vehicleEntity) {
         vehicleEntity.setRegistration(vehiclePersistDTO.getRegistration());
-        vehicleEntity.setBrand(vehiclePersistDTO.getBrand());
+        vehicleEntity.setBrand(brandRepository.getById(vehiclePersistDTO.getBrand()));
         vehicleEntity.setModel(modelRepository.getById(vehiclePersistDTO.getModel()));
         vehicleEntity.setDailyFee(vehiclePersistDTO.getDailyFee());
         vehicleEntity.setLocationId(vehiclePersistDTO.getLocationId());
@@ -241,7 +293,7 @@ public class VehicleServiceImpl implements VehicleService {
 
     private VehicleDetailsEntity mapVehicleDetailsDtoToVehicleDetailsEntity(VehicleDetailsDTO vehicleDetailsDTO, String vehicleImageName, VehicleDetailsEntity vehicleDetailsEntity) {
         vehicleDetailsEntity.setProductionYear(vehicleDetailsDTO.getProductionYear());
-        vehicleDetailsEntity.setFuelType(vehicleDetailsDTO.getFuelType());
+        vehicleDetailsEntity.setFuelType(fuelTypeRepository.getById(vehicleDetailsDTO.getFuelType()));
         vehicleDetailsEntity.setPower(vehicleDetailsDTO.getPower());
         vehicleDetailsEntity.setGearbox(vehicleDetailsDTO.getGearbox());
         vehicleDetailsEntity.setFrontWheelDrive(vehicleDetailsDTO.isFrontWheelDrive());

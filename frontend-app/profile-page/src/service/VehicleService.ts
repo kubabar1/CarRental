@@ -1,6 +1,6 @@
 import { VehicleResponseDTO } from '../model/VehicleResponseDTO';
 import { VehiclePersistDTO } from '../model/VehiclePersistDTO';
-import { fetchGet, fetchPut, fetchWithFile, ResponseData } from './FetchUtil';
+import { fetchDelete, fetchGet, fetchPut, fetchWithFile, ResponseData } from './FetchUtil';
 import {
     GET_UNAVAILABLE_VEHICLES_PATH,
     GET_VEHICLE_BY_ID_PATH,
@@ -17,6 +17,8 @@ import {
     GET_VEHICLE_MODELS_BY_BRAND_PATH,
     ADD_VEHICLE_MODEL_PATH,
     ADD_EQUIPMENT,
+    GET_VEHICLE_OPTIONS_WITH_ASSOC_PATH,
+    DELETE_SPECIFIC_VEHICLE_OPTION_PATH,
 } from '../constants/PathsAPI';
 import Page from '../../../main-page/src/model/Page';
 import { VehicleOptionsDTO } from '../model/VehicleOptionsDTO';
@@ -24,6 +26,7 @@ import { OptionDTO } from '../model/OptionDTO';
 import { VehicleModelDTO } from '../model/VehicleModelDTO';
 import { EquipmentAddDTO } from '../model/EquipmentAddDTO';
 import { EquipmentResponseDTO } from '../model/EquipmentResponseDTO';
+import { VehicleOptionsWithAssocCountDTO } from '../model/VehicleOptionsWithAssocCountDTO';
 
 export const getVehiclesList = (page?: number, size?: number): Promise<Page<VehicleResponseDTO>> => {
     return fetchGet<Page<VehicleResponseDTO>>(PAGE_REQUEST(GET_VEHICLES_PATH, page, size));
@@ -74,6 +77,10 @@ export const getVehicleOptions = (): Promise<VehicleOptionsDTO> => {
     return fetchGet<VehicleOptionsDTO>(GET_VEHICLE_OPTIONS_PATH);
 };
 
+export const getVehicleOptionsWithAssoc = (): Promise<VehicleOptionsWithAssocCountDTO> => {
+    return fetchGet<VehicleOptionsWithAssocCountDTO>(GET_VEHICLE_OPTIONS_WITH_ASSOC_PATH);
+};
+
 export function addBrand(optionDTO: OptionDTO): Promise<ResponseData<OptionDTO>> {
     return fetchPut<OptionDTO>(ADD_BRAND_PATH, optionDTO);
 }
@@ -96,6 +103,10 @@ export function addColor(optionDTO: OptionDTO): Promise<ResponseData<OptionDTO>>
 
 export function addModel(vehicleModelDTO: VehicleModelDTO): Promise<ResponseData<VehicleModelDTO>> {
     return fetchPut<VehicleModelDTO>(ADD_VEHICLE_MODEL_PATH, vehicleModelDTO);
+}
+
+export function deleteOption(vehicleOptionType: string, vehicleOption: string): Promise<ResponseData<OptionDTO>> {
+    return fetchDelete<OptionDTO>(DELETE_SPECIFIC_VEHICLE_OPTION_PATH(vehicleOptionType, vehicleOption));
 }
 
 export const getVehicleModelsByBrand = (brand: string): Promise<string[]> => {

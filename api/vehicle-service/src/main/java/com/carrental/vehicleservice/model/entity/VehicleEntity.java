@@ -1,13 +1,16 @@
 package com.carrental.vehicleservice.model.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "vehicles")
 @Table(name = "vehicles")
 public class VehicleEntity implements Serializable {
@@ -26,10 +29,11 @@ public class VehicleEntity implements Serializable {
     @Column(name = "registration", nullable = false, length = 20, unique = true)
     private String registration;
 
-    @Column(name = "brand", nullable = false, length = 50)
-    private String brand;
+    @ManyToOne
+    @JoinColumn(name = "brand", nullable = false)
+    private BrandEntity brand;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToOne
     @JoinColumn(name = "model", nullable = false)
     private ModelEntity model;
 

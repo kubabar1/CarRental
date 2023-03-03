@@ -58,6 +58,10 @@ export const equipmentListPath: SecureLink = {
     link: `${basePath}/equipments`,
     permittedRoles: [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE],
 };
+export const vehicleOptionsListPath: SecureLink = {
+    link: `${basePath}/vehicles/options`,
+    permittedRoles: [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE],
+};
 
 export const userRolesListPath: SecureLink = {
     link: `${basePath}/user-roles`,

@@ -55,7 +55,8 @@ public class VehicleServiceCoreConfig {
             VehicleStatusRepository vehicleStatusRepository,
             ModelMapper modelMapper,
             VehicleRatingService vehicleRatingService,
-            RabbitTemplate rabbitTemplate
+            RabbitTemplate rabbitTemplate,
+            EntityManager entityManager
     ) {
         return new VehicleServiceImpl(
                 vehicleRepository,
@@ -67,7 +68,8 @@ public class VehicleServiceCoreConfig {
                 vehicleStatusRepository,
                 modelMapper,
                 vehicleRatingService,
-                rabbitTemplate
+                rabbitTemplate,
+                entityManager
         );
     }
 

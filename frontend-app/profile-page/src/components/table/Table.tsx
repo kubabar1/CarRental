@@ -2,15 +2,23 @@ import React from 'react';
 import BTable from 'react-bootstrap/Table';
 import { TableOptions, useTable } from 'react-table';
 
+interface TableComponentInterface<T extends object> extends TableOptions<T> {
+    tableContainerClassName?: string;
+}
+
 // eslint-disable-next-line @typescript-eslint/ban-types
-export function Table<T extends object>({ columns, data }: TableOptions<T>): JSX.Element {
+export function Table<T extends object>({
+    columns,
+    data,
+    tableContainerClassName,
+}: TableComponentInterface<T>): JSX.Element {
     const { getTableProps, headerGroups, rows, prepareRow } = useTable({
         columns,
         data,
     });
 
     return (
-        <BTable striped bordered hover size="sm" {...getTableProps()}>
+        <BTable className={tableContainerClassName} striped bordered hover size="sm" {...getTableProps()}>
             <thead>
                 {headerGroups.map((headerGroup, headerGroupIdx) => (
                     <tr {...headerGroup.getHeaderGroupProps()} key={headerGroupIdx}>

@@ -83,18 +83,24 @@ export function SelectFormGroup<FieldValuesType extends FieldValues, IsMulti ext
                                 <Select<OptionType, IsMulti>
                                     options={options}
                                     value={
-                                        value != null && Array.isArray(value)
+                                        Array.isArray(value)
                                             ? options.filter((val: OptionType) => {
                                                   return value.includes(val.value);
                                               })
-                                            : value
+                                            : options.filter((val: OptionType) => {
+                                                  return val.value === value;
+                                              })
                                     }
                                     isClearable={isClearable}
                                     onChange={(val: OnChangeValue<OptionType, IsMulti>) => {
-                                        if (val != null && Array.isArray(val)) {
-                                            onChange(val.map((v: OptionType) => v.value));
-                                        } else if (val != null) {
-                                            onChange((val as OptionType).value);
+                                        if (val === null) {
+                                            onChange(val);
+                                        } else {
+                                            if (Array.isArray(val)) {
+                                                onChange(val.map((v: OptionType) => v.value));
+                                            } else {
+                                                onChange((val as OptionType).value);
+                                            }
                                         }
                                     }}
                                     className={classNames({

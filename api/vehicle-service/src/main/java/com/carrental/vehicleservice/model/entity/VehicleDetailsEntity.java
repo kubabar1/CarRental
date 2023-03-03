@@ -1,12 +1,14 @@
 package com.carrental.vehicleservice.model.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "vehicle_details")
 @Table(name = "vehicle_details")
 public class VehicleDetailsEntity implements Serializable {
@@ -27,7 +29,7 @@ public class VehicleDetailsEntity implements Serializable {
     @Column(name = "vehicle_id", nullable = false, unique = true)
     private Long vehicleId;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToOne
     @JoinColumn(name = "body_type", nullable = false)
     private BodyTypeEntity bodyType;
 
@@ -35,8 +37,9 @@ public class VehicleDetailsEntity implements Serializable {
     @Min(value = 1900)
     private Integer productionYear;
 
-    @Column(name = "fuel_type", nullable = false, length = 50)
-    private String fuelType;
+    @ManyToOne
+    @JoinColumn(name = "fuel_type", nullable = false)
+    private FuelTypeEntity fuelType;
 
     @Column(name = "power", nullable = false)
     private Integer power;
@@ -53,7 +56,7 @@ public class VehicleDetailsEntity implements Serializable {
     @Column(name = "seats_number", nullable = false)
     private Integer seatsNumber;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToOne
     @JoinColumn(name = "color", nullable = false)
     private ColorEntity color;
 

@@ -4,14 +4,16 @@ import './ButtonTableItem.scss';
 import { useHistory } from 'react-router-dom';
 import { LocationState } from 'history';
 import { OverlayInjectedProps } from 'react-bootstrap/Overlay';
+import { Variant } from 'react-bootstrap/types';
 
 export interface ButtonTableItemProps {
     buttonText: string | React.ReactNode;
     buttonRedirectPath?: string;
-    buttonVariant?: string;
+    buttonVariant?: Variant;
     buttonRedirectState?: LocationState;
     onClickAction?: () => void;
     tooltipMessage?: string;
+    isDisabled?: boolean;
 }
 
 export function ButtonTableItem({
@@ -21,6 +23,7 @@ export function ButtonTableItem({
     buttonRedirectState,
     onClickAction,
     tooltipMessage,
+    isDisabled = false,
 }: ButtonTableItemProps): JSX.Element {
     const history = useHistory();
 
@@ -28,7 +31,9 @@ export function ButtonTableItem({
 
     const renderTableButton = (): JSX.Element => (
         <Button
+            disabled={isDisabled}
             variant={buttonVariant}
+            className={isDisabled ? 'disabled-table-button' : 'table-button'}
             onClick={() => {
                 if (onClickAction) {
                     onClickAction();
@@ -46,7 +51,7 @@ export function ButtonTableItem({
         <div className="button-table-item">
             {tooltipMessage ? (
                 <OverlayTrigger placement="top" overlay={renderTooltip}>
-                    {renderTableButton()}
+                    <div style={{ display: 'inline-block', cursor: 'not-allowed' }}>{renderTableButton()}</div>
                 </OverlayTrigger>
             ) : (
                 <div>{renderTableButton()}</div>

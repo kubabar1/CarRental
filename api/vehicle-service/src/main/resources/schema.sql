@@ -28,7 +28,8 @@ CREATE TABLE IF NOT EXISTS models(
   model NVARCHAR(50) NOT NULL,
   brand NVARCHAR(50) NOT NULL,
   FOREIGN KEY(brand) REFERENCES brands(brand),
-  PRIMARY KEY(model)
+  PRIMARY KEY(model),
+  UNIQUE (model, brand)
 );
 
 CREATE TABLE IF NOT EXISTS vehicles(

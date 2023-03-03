@@ -32,6 +32,7 @@ import {
     sendEmailPath,
     settingsChangePasswordPath,
     settingsUserSettingsPath,
+    vehicleOptionsListPath,
 } from '../../../constants/Links';
 import { userHasAnyRole } from '../../../utils/UserUtils';
 
@@ -107,6 +108,11 @@ export function SideNav({ userRoles = [], runLogout }: SideNavProperties): JSX.E
                     navItemName={'Equipment list'}
                     linkPath={equipmentListPath.link}
                     authorized={userHasAnyRole(userRoles, equipmentListPath.permittedRoles)}
+                />
+                <NavSubLink
+                    navItemName={'Vehicle options list'}
+                    linkPath={vehicleOptionsListPath.link}
+                    authorized={userHasAnyRole(userRoles, vehicleOptionsListPath.permittedRoles)}
                 />
             </NavLink>
 
