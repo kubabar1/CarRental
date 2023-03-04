@@ -16,7 +16,8 @@ VALUES  ('ABS', 'ABS'),
 
 INSERT INTO vehicle_status
 VALUES  ('AVI','available'),
-        ('UAV','unavailable');
+        ('UAV','unavailable'),
+        ('RMV','removed');
 
 INSERT INTO colors(color)
 VALUES  ('Beige'),

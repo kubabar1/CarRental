@@ -333,6 +333,7 @@ export const VehicleForm = ({
                 options={[
                     mapToOptionTypeWithKeys(VehicleStatCodeEnum.UAV, 'Unavailable'),
                     mapToOptionTypeWithKeys(VehicleStatCodeEnum.AVI, 'Available'),
+                    mapToOptionTypeWithKeys(VehicleStatCodeEnum.RMV, 'Removed'),
                 ]}
                 error={formState.errors.vehicleStatus}
                 rules={{
