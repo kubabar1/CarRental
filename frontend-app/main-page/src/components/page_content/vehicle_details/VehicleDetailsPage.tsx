@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { VehicleResponseDTO } from '../../../model/VehicleResponseDTO';
 import { VehicleDetailsHeader } from './components/vehicle_details_header/VehicleDetailsHeader';
 import { VehicleStatus } from './components/vehicle_status/VehicleStatus';
-import { VehiclerProperties } from './components/details_list/VehiclerProperties';
+import { VehicleProperties } from './components/details_list/VehicleProperties';
 import ReservationButton from './components/reservation_button/ReservationButton';
 import { CommentList } from './components/comments/CommentList';
 import { AddComment } from './components/comments/add_comment/AddComment';
@@ -14,6 +14,7 @@ import { getVehicleById } from '../../../service/VehicleService';
 import Page from '../../../model/Page';
 import './VehicleDetailsPage.scss';
 import { AuthenticatedUserDTO } from '../../../model/AuthenticatedUserDTO';
+import { VehicleEquipment } from './components/vehicle_equipment/VehicleEquipment';
 
 interface CarDetailsProperties extends RouteComponentProps<{ carId: string }> {
     authenticatedUser: AuthenticatedUserDTO | undefined;
@@ -63,7 +64,9 @@ export function VehicleDetailsPage({ authenticatedUser, match }: CarDetailsPrope
                             <hr className="mt-5" />
                             <VehicleStatus vehicle={vehicle} />
                             <hr className="mt-5" />
-                            <VehiclerProperties vehicle={vehicle} />
+                            <VehicleProperties vehicle={vehicle} />
+                            <hr className="mt-5" />
+                            <VehicleEquipment equipments={vehicle.equipments} />
                             <hr className="my-3" />
                             {isAuthenticated && (
                                 <div>

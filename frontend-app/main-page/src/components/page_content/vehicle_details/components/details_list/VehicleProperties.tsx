@@ -13,7 +13,7 @@ function renderProps(name: string, value: string): JSX.Element {
     );
 }
 
-export function VehiclerProperties(props: CarPropertiesProps): JSX.Element {
+export function VehicleProperties(props: CarPropertiesProps): JSX.Element {
     const vehicle = props.vehicle;
     const frontWheelDrive = vehicle.vehicleDetails.frontWheelDrive ? 'Yes' : 'No';
     const metallic = vehicle.vehicleDetails.metallic ? 'Yes' : 'No';
