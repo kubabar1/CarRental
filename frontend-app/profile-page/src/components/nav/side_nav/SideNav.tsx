@@ -33,6 +33,7 @@ import {
     settingsChangePasswordPath,
     settingsUserSettingsPath,
     vehicleOptionsListPath,
+    locationAddPath,
 } from '../../../constants/Links';
 import { userHasAnyRole } from '../../../utils/UserUtils';
 
@@ -125,6 +126,7 @@ export function SideNav({ userRoles = [], runLogout }: SideNavProperties): JSX.E
             {userHasAnyRole(userRoles, locationsListPath.permittedRoles) && (
                 <NavLink navItemName={'Locations'} iconName={faMapMarkedAlt}>
                     <NavSubLink navItemName={'Locations list'} linkPath={locationsListPath.link} />
+                    <NavSubLink navItemName={'Add localisation'} linkPath={locationAddPath.link} />
                 </NavLink>
             )}
 

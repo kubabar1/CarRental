@@ -6,6 +6,7 @@ import {
     bookingsAuditLogsListPath,
     bookingsListPath,
     equipmentListPath,
+    locationAddPath,
     locationsListPath,
     myBookingsListPath,
     myRentedBookingsListPath,
@@ -55,6 +56,7 @@ import { userHasAnyRole } from './utils/UserUtils';
 import { logout } from './service/AuthService';
 import { Button } from 'react-bootstrap';
 import { VehicleOptionsSubpage } from './subpages/vehicles/VehicleOptionsSubpage';
+import { LocationAddSubpage } from './subpages/locations/LocationAddSubpage';
 
 export function App(): JSX.Element {
     const [authenticatedUser, setAuthenticatedUser] = useState<AuthenticatedUserDTO | undefined>(undefined);
@@ -258,6 +260,15 @@ export function App(): JSX.Element {
                                 path={locationsListPath.link}
                                 exact
                                 component={LocationsListSubpage}
+                            />
+                            <ProtectedRoute
+                                isAuthorized={userHasAnyRole(
+                                    authenticatedUser.userRoles,
+                                    settingsUserSettingsPath.permittedRoles
+                                )}
+                                path={locationAddPath.link}
+                                exact
+                                component={LocationAddSubpage}
                             />
 
                             {/*EMAIL_PAGE*/}

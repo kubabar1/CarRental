@@ -17,7 +17,7 @@ export function UserSettingsSubpage({
 }: UserSettingsSubpageProps): JSX.Element {
     return (
         <SubpageContainer className="settings-container">
-            <SubpageHeader title={'Settings'} />
+            <SubpageHeader title={'User settings'} />
             <SubpageContent>
                 {authenticatedUser && (
                     <UserSettingsForm

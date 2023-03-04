@@ -50,6 +50,8 @@ export const GET_VEHICLES_PATH = `${APP_ADDR}/vehicles`;
 
 export const GET_LOCATIONS_PATH = `${APP_ADDR}/locations`;
 
+export const ADD_LOCATION_PATH = `${APP_ADDR}/locations`;
+
 export const GET_EQUIPMENTS_PATH = `${APP_ADDR}/equipments`;
 
 export const GET_EQUIPMENTS_NOT_ASSIGNED_TO_VEHICLE_PATH = (vehicleId: string): string =>

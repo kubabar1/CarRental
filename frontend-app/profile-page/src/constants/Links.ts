@@ -74,6 +74,8 @@ export const roleAddPath: SecureLink = {
 
 export const locationsListPath: SecureLink = { link: `${basePath}/locations` };
 
+export const locationAddPath: SecureLink = { link: `${basePath}/locations/add` };
+
 export const sendEmailPath: SecureLink = {
     link: `${basePath}/email-send`,
     permittedRoles: [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_OFFICE_EMPLOYEE, UserRolesEnum.ROLE_RENTING_EMPLOYEE],

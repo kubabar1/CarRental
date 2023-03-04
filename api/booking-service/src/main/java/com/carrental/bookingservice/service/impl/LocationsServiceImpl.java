@@ -1,5 +1,6 @@
 package com.carrental.bookingservice.service.impl;
 
+import com.carrental.bookingservice.model.dto.LocationAddDTO;
 import com.carrental.bookingservice.model.dto.LocationResponseDTO;
 import com.carrental.bookingservice.model.entity.LocationEntity;
 import com.carrental.bookingservice.repository.LocationsRepository;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Set;
@@ -50,5 +52,18 @@ public class LocationsServiceImpl implements LocationsService {
                     .map(locationEntity -> modelMapper.map(locationEntity, LocationResponseDTO.class))
                     .collect(Collectors.toSet());
         }
+    }
+
+    @Override
+    public LocationResponseDTO addLocation(LocationAddDTO locationAddDTO) {
+        LocationEntity locationEntity = new LocationEntity();
+        locationEntity.setCountry(locationAddDTO.getCountry());
+        locationEntity.setCity(locationAddDTO.getCity());
+        locationEntity.setStreetAndNb(locationAddDTO.getStreetAndNb());
+        locationEntity.setCode(locationAddDTO.getCode());
+        locationEntity.setEmail(locationAddDTO.getEmail());
+        locationEntity.setPhone(locationAddDTO.getPhone());
+        LocationEntity createdLocation  = locationsRepository.save(modelMapper.map(locationAddDTO, LocationEntity.class));
+        return modelMapper.map(createdLocation, LocationResponseDTO.class);
     }
 }
