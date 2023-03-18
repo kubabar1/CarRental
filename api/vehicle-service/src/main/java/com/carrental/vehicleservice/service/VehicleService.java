@@ -23,6 +23,8 @@ public interface VehicleService {
 
     VehicleResponseDTO getVehicleById(Long vehicleId) throws NoSuchElementException;
 
+    Set<VehicleResponseDTO> getAvailableVehiclesByLocation(Long locationId);
+
     VehicleResponseDTO addVehicle(VehiclePersistDTO vehiclePersistDTO, MultipartFile vehicleImage) throws IOException;
 
     VehicleResponseDTO updateVehicleById(Long vehicleId, VehiclePersistDTO vehiclePersistDTO, MultipartFile vehicleImage) throws NoSuchElementException, IOException;

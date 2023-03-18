@@ -1,0 +1,56 @@
+.car-single-item-reservation {
+    background-color: #1b283f;
+    color: #fff;
+    border-radius: 10px;
+    opacity: 0.9;
+
+    .vehicle-item-header {
+        font-weight: bold;
+    }
+
+    .car-img-container {
+        width: 100%;
+        padding: 0 10px;
+        margin: 5px auto;
+
+        .car-img {
+            min-height: 180px;
+            border-radius: 10px;
+        }
+
+        .car-img:hover {
+            min-height: 180px;
+            border-radius: 10px;
+        }
+    }
+
+    .vehicle-details-footer {
+        margin-top: 15px;
+
+        h5 {
+            margin-right: auto;
+            margin-left: 25px;
+            vertical-align: middle;
+            line-height: 50px;
+            padding: 0;
+            margin-bottom: 0;
+        }
+
+        button {
+            margin-left: auto;
+            margin-right: 25px;
+            height: 50px;
+            width: 100px;
+        }
+    }
+}
+
+.car-single-item-reservation:hover {
+    cursor: pointer;
+    opacity: 1;
+}
+
+.selected-car {
+    background-color: #eb545b;
+    border-color: #eb545b;
+}

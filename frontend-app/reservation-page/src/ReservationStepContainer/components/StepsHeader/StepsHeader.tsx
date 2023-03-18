@@ -1,16 +1,17 @@
 import React from 'react';
+import './StepsHeader.scss';
 
 interface StepsHeaderProperties {
     step: number;
 }
 
 export function StepsHeader(props: StepsHeaderProperties): JSX.Element {
-    const activePageClassBg = 'bg-primary';
-    const donePageClassBg = 'bg-secondary';
+    const activePageClassBg = 'active-step';
+    const donePageClassBg = 'done-step';
     const activePageClassText = 'text-white';
 
     return (
-        <div className="container my-5">
+        <div className="container my-5 step-container">
             <div className="card-deck">
                 <div
                     className={

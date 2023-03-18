@@ -8,6 +8,7 @@ import org.hibernate.envers.RelationTargetAuditMode;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -18,7 +19,7 @@ public class BookingEntity implements Serializable {
 
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "user_id", nullable = false)
@@ -28,10 +29,10 @@ public class BookingEntity implements Serializable {
     private Long vehicleId;
 
     @Column(name = "receipt_date", nullable = false)
-    private LocalDateTime receiptDate;
+    private LocalDate receiptDate;
 
     @Column(name = "return_date", nullable = false)
-    private LocalDateTime returnDate;
+    private LocalDate returnDate;
 
     @NotAudited
     @ManyToOne(cascade = CascadeType.ALL)

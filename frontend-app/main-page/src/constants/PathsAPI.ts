@@ -26,6 +26,8 @@ export const GET_BEST_OFFERS_VEHICLES_PATH = `${APP_ADDR}/vehicles/best-offers`;
 
 export const GET_VEHICLE_OPTIONS_PATH = `${APP_ADDR}/vehicles/options`;
 
+export const GET_ALL_LOCATIONS_PATH = `${APP_ADDR}/locations/all`;
+
 export const PAGE_REQUEST = (
     url: string,
     page: number = DEFAULT_START_PAGE,

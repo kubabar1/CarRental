@@ -1,109 +1,94 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { carSelectSubpageLink } from '../../../constants/Links';
-import { endpoints } from '../../../constants/PathsAPI';
-import VehicleResponseDTO from '../../../model/VehicleResponseDTO';
-import UserDataResponseDTO from '../../../model/UserDataResponseDTO';
-import date from 'date-and-time';
-import { localisationResponseDTOMock, vehicleResponseDTOMock } from '../../../constants/MockData';
-import LocalisationResponseDTO from '../../../model/LocalisationResponseDTO';
+import { carSelectSubpageLink, confirmationSubpageLink } from '../../../constants/Links';
+import { AuthenticatedUserDTO } from '../../../model/AuthenticatedUserDTO';
+import { PersonalData } from './components/PersonalData';
+import { Control, FieldPath, FieldValues, SubmitHandler, useWatch } from 'react-hook-form';
+import { ReservationData } from './components/ReservationData';
+import { SelectedVehicleData } from './components/SelectedVehicleData';
+import './ReservationConfirmation.scss';
+import { ReservationCost } from './components/ReservationCost';
+import { UseFormHandleSubmit } from 'react-hook-form/dist/types/form';
+import { sendEmails } from '../../../../../profile-page/src/service/EmailService';
+import { MultipleRecipientsMailsDTO } from '../../../../../profile-page/src/model/MultipleRecipientsMailsDTO';
+import { createBooking } from '../../../service/BookingService';
+import BookingAddRequestDTO from '../../../model/BookingAddRequestDTO';
+import { homePath } from '../../../../../login-page/src/constants/Paths';
 
-interface ReservationConfirmationProperties {
-    userData: UserDataResponseDTO;
-    selectedCityId: string;
-    selectedVehicleId: number;
-    setStep: (step: number) => void;
-    selectedReceptionDate: Date;
-    selectedReceptionHour: string;
-    selectedReturnDate: Date;
-    selectedReturnHour: string;
+interface ReservationConfirmationProperties<FieldValuesType extends FieldValues> {
+    control: Control<FieldValuesType>;
+    authenticatedUser: AuthenticatedUserDTO;
+    clearReservationSessionStorage: () => void;
+    vehicleSelectName: FieldPath<FieldValuesType>;
+    receptionDateSelectName: FieldPath<FieldValuesType>;
+    returnDateSelectName: FieldPath<FieldValuesType>;
+    locationSelectName: FieldPath<FieldValuesType>;
+    onClickReserve: UseFormHandleSubmit<FieldValuesType>;
 }
 
-export function ReservationConfirmation({
-    userData,
-    selectedCityId,
-    selectedVehicleId,
-    setStep,
-    selectedReceptionDate,
-    selectedReceptionHour,
-    selectedReturnDate,
-    selectedReturnHour,
-}: ReservationConfirmationProperties): JSX.Element {
-    const [fullCost] = React.useState<string | undefined>(undefined);
-    const [selectedVehicle, setSelectedVehicle] = React.useState<VehicleResponseDTO | undefined>(undefined);
-    const [selectedLocalisation, setSelectedLocalisation] = React.useState<LocalisationResponseDTO | undefined>(
-        undefined
-    );
+export function ReservationConfirmation<FieldValuesType extends FieldValues>({
+    authenticatedUser,
+    control,
+    clearReservationSessionStorage,
+    vehicleSelectName,
+    receptionDateSelectName,
+    returnDateSelectName,
+    locationSelectName,
+    onClickReserve,
+}: ReservationConfirmationProperties<FieldValuesType>): JSX.Element {
+    const selectedVehicleId = useWatch({ name: vehicleSelectName, control: control });
+    const receptionDate = useWatch({ name: receptionDateSelectName, control: control });
+    const returnDate = useWatch({ name: returnDateSelectName, control: control });
+    const selectedLocalisationId = useWatch({ name: locationSelectName, control: control });
 
-    const { userName, userSurname, phone, email } = userData;
-    setStep(3);
-
-    useEffect(() => {
-        fetch(endpoints.carByIdEndpoint(selectedVehicleId))
-            .then((response: Response) => {
-                response.json().then((vehicle: VehicleResponseDTO) => {
-                    setSelectedVehicle(vehicle);
-                });
-            })
-            .finally(() => {
-                // TODO: Remove
-                setSelectedVehicle(vehicleResponseDTOMock);
-            });
-        fetch(endpoints.localisationByIdEndpoint(selectedCityId))
-            .then((response: Response) => {
-                response.json().then((localisation: LocalisationResponseDTO) => {
-                    setSelectedLocalisation(localisation);
-                });
-            })
-            .finally(() => {
-                // TODO: Remove
-                setSelectedLocalisation(localisationResponseDTOMock);
-            });
-    }, [selectedCityId, selectedVehicleId]);
-
-    const onClickNext = (event: React.MouseEvent<HTMLButtonElement>): void => {
-        event.preventDefault();
-        // fetch to add reservation eg. '/reservation/add' - it will return reservationId
-        const reservationId = 'axd2awd4s1';
-        window.location.href = endpoints.orderStatusById(reservationId);
+    const handleFormSubmit: SubmitHandler<FieldValuesType> = (): any | Promise<any> => {
+        createBooking(
+            new BookingAddRequestDTO(selectedLocalisationId, selectedVehicleId, receptionDate, returnDate)
+        ).then(() => {
+            clearReservationSessionStorage();
+            window.location.href = homePath;
+        });
     };
 
     const renderFormGroupItem = (label: string, value: string): JSX.Element => {
         return (
             <div className="form-group">
                 <label>{label}</label>
-                <strong>{value}</strong>
+                <strong className="ml-2">{value}</strong>
             </div>
         );
     };
 
     return (
         <main>
-            <div id="reservation-data-container" className="container col-md-6 offset-md-3 my-5 ">
-                <form>
+            <div className="reservation-confirmation-container container col-md-6 offset-md-3 my-5 ">
+                <form onSubmit={onClickReserve(handleFormSubmit)}>
                     <div className="shadow card">
                         <div className="card-header">
-                            <h1>Confirm reservation</h1>
+                            <h2 className="text-center">Confirm reservation</h2>
                         </div>
                         <div className="card-body">
-                            {renderFormGroupItem('Name: ', userName)}
-                            {renderFormGroupItem('Surname: ', userSurname)}
-                            {renderFormGroupItem('Phone: ', phone)}
-                            {renderFormGroupItem('E-mail: ', email)}
-                            <hr />
-                            {selectedLocalisation &&
-                                renderFormGroupItem('City: ', selectedLocalisation.city.toString())}
-                            {renderFormGroupItem('Reception date: ', date.format(selectedReceptionDate, 'YYYY-MM-DD'))}
-                            {renderFormGroupItem('Reception hour: ', selectedReceptionHour.toString())}
-                            {renderFormGroupItem('Return date: ', date.format(selectedReturnDate, 'YYYY-MM-DD'))}
-                            {renderFormGroupItem('Return hour: ', selectedReturnHour.toString())}
-                            {selectedVehicle &&
-                                renderFormGroupItem(
-                                    'Selected car: ',
-                                    selectedVehicle.brand + ' ' + selectedVehicle.model
-                                )}
-                            {fullCost && renderFormGroupItem('Cost: ', fullCost.toString())}
-                            <hr />
+                            <PersonalData
+                                authenticatedUser={authenticatedUser}
+                                renderFormGroupItem={renderFormGroupItem}
+                            />
+                            <SelectedVehicleData
+                                renderFormGroupItem={renderFormGroupItem}
+                                selectedLocalisationId={selectedLocalisationId}
+                                selectedVehicleId={selectedVehicleId}
+                            />
+                            <ReservationData
+                                renderFormGroupItem={renderFormGroupItem}
+                                selectedLocalisationId={selectedLocalisationId}
+                                receptionDate={receptionDate}
+                                returnDate={returnDate}
+                            />
+                            <ReservationCost
+                                selectedVehicleId={selectedVehicleId}
+                                receptionDate={receptionDate}
+                                returnDate={returnDate}
+                                renderFormGroupItem={renderFormGroupItem}
+                            />
                             <div className="row mt-4">
                                 <Link
                                     to={carSelectSubpageLink}
@@ -112,8 +97,8 @@ export function ReservationConfirmation({
                                     Back
                                 </Link>
                                 <button
-                                    className="btn btn-lg btn-success btn-block  col-md-2 ml-auto mr-5"
-                                    onClick={onClickNext}
+                                    className="btn btn-lg btn-success btn-block  col-md-2 ml-auto mr-5 mt-0"
+                                    type="submit"
                                 >
                                     Rent car
                                 </button>

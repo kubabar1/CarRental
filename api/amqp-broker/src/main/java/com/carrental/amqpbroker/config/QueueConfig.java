@@ -47,6 +47,11 @@ public class QueueConfig {
     }
 
     @Bean
+    public Queue getVehicleById() {
+        return buildQueue("getVehicleByIdQueue");
+    }
+
+    @Bean
     public Queue getAverageVehiclesRatingQueue() {
         return buildQueue("getAverageVehiclesRatingQueue");
     }

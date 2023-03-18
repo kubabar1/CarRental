@@ -25,8 +25,6 @@ import { AuthenticatedUserDTO } from './model/AuthenticatedUserDTO';
 
 export function App(): JSX.Element {
     const [authenticatedUser, setAuthenticatedUser] = useState<AuthenticatedUserDTO | undefined>(undefined);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [localisations, setLocalisations] = useState<LocalisationResponseDTO[]>([]);
 
     useEffect(() => {
         getAuthenticatedUserData().then((authorizedUser: AuthenticatedUserDTO) => setAuthenticatedUser(authorizedUser));
@@ -41,7 +39,7 @@ export function App(): JSX.Element {
     };
 
     const renderHomePage = (): JSX.Element => {
-        return <HomePage authenticatedUser={authenticatedUser} localisations={localisations} />;
+        return <HomePage authenticatedUser={authenticatedUser} />;
     };
 
     const renderVehicleListPage = (): JSX.Element => {

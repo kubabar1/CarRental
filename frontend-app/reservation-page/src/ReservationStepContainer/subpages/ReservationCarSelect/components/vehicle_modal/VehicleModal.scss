@@ -1,0 +1,18 @@
+.vehicle-details-modal {
+    .modal-title {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .modal-footer {
+        button {
+            background-color: #c93239;
+            border-color: #c93239;
+        }
+
+        button:hover {
+            background-color: #eb545b;
+            border-color: #eb545b;
+        }
+    }
+}

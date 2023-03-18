@@ -7,13 +7,12 @@ import { AuthenticatedUserDTO } from '../../../model/AuthenticatedUserDTO';
 
 interface HomeProperties {
     authenticatedUser: AuthenticatedUserDTO | undefined;
-    localisations: LocalisationResponseDTO[] | null;
 }
 
-export function HomePage({ authenticatedUser, localisations }: HomeProperties): JSX.Element {
+export function HomePage({ authenticatedUser }: HomeProperties): JSX.Element {
     return (
         <div>
-            <ReservationPanel authenticatedUser={authenticatedUser} localisations={localisations} />
+            <ReservationPanel authenticatedUser={authenticatedUser} />
             <RoundedImagesPanel />
             <MobilePagePanel />
         </div>

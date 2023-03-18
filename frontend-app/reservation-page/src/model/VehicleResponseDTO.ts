@@ -1,39 +1,40 @@
-import LocalisationResponseDTO from './LocalisationResponseDTO';
 import VehicleStatusResponseDTO from './VehicleStatusResponseDTO';
-import VehicleParametersResponseDTO from './VehicleParametersResponseDTO';
+import { VehicleDetailsDTO } from './VehicleDetailsDTO';
+import { EquipmentResponseDTO } from './EquipmentResponseDTO';
 
-class VehicleResponseDTO {
-    id: number;
+export class VehicleResponseDTO {
+    id: string;
     registration: string;
     brand: string;
     model: string;
     dailyFee: number;
-    location: LocalisationResponseDTO;
-    vehicleStatus: VehicleStatusResponseDTO;
-    vehicleParameters: VehicleParametersResponseDTO;
+    locationId: number;
     bestOffer: boolean;
+    vehicleStatus: VehicleStatusResponseDTO;
+    vehicleDetails: VehicleDetailsDTO;
+    equipments: EquipmentResponseDTO[];
 
     constructor(
-        id: number,
-        registration: string,
+        id: string,
         brand: string,
         model: string,
         dailyFee: number,
-        location: LocalisationResponseDTO,
+        registration: string,
+        locationId: number,
+        bestOffer: boolean,
         vehicleStatus: VehicleStatusResponseDTO,
-        vehicleParameters: VehicleParametersResponseDTO,
-        bestOffer: boolean
+        vehicleDetails: VehicleDetailsDTO,
+        equipments: EquipmentResponseDTO[]
     ) {
         this.id = id;
-        this.registration = registration;
         this.brand = brand;
         this.model = model;
         this.dailyFee = dailyFee;
-        this.location = location;
-        this.vehicleStatus = vehicleStatus;
-        this.vehicleParameters = vehicleParameters;
+        this.registration = registration;
+        this.locationId = locationId;
         this.bestOffer = bestOffer;
+        this.vehicleStatus = vehicleStatus;
+        this.vehicleDetails = vehicleDetails;
+        this.equipments = equipments;
     }
 }
-
-export default VehicleResponseDTO;

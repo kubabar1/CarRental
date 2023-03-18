@@ -29,3 +29,10 @@ dependencies {
     implementation 'com.carrental.api:storage-service-stub'
     implementation 'org.springframework.boot:spring-boot-starter:2.6.3'
 }
+
+bootRun {
+    debug true
+    debugOptions {
+        suspend.set(false)
+    }
+}

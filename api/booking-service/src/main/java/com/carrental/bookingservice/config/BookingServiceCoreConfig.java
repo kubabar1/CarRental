@@ -20,6 +20,7 @@ import com.carrental.bookingservice.service.impl.LocationsServiceImpl;
 import com.carrental.bookingservice.service.impl.BookingUserServiceImpl;
 import com.carrental.commons.authentication.service.AuthenticatedUserDataService;
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 
 public class BookingServiceCoreConfig {
@@ -63,14 +64,18 @@ public class BookingServiceCoreConfig {
             BookingRepository bookingRepository,
             ModelMapper modelMapper,
             BookingStateValidator bookingStateValidator,
-            BookingStateRepository bookingStateRepository
+            BookingStateRepository bookingStateRepository,
+            LocationsRepository locationsRepository,
+            RabbitTemplate rabbitTemplate
     ) {
         return new BookingUserServiceImpl(
                 authenticatedUserDataService,
                 bookingRepository,
                 modelMapper,
                 bookingStateValidator,
-                bookingStateRepository
+                bookingStateRepository,
+                locationsRepository,
+                rabbitTemplate
         );
     }
 

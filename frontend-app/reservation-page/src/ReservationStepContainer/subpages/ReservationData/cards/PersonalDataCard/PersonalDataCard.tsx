@@ -1,30 +1,31 @@
 import React from 'react';
-import UserDataResponseDTO from '../../../../../model/UserDataResponseDTO';
+import { AuthenticatedUserDTO } from '../../../../../model/AuthenticatedUserDTO';
+import './PersonalDataCard.scss';
 
 interface PersonalDataCardProperties {
-    userData: UserDataResponseDTO;
+    authenticatedUser: AuthenticatedUserDTO;
 }
 
-export function PersonalDataCard(props: PersonalDataCardProperties): JSX.Element {
+export function PersonalDataCard({ authenticatedUser }: PersonalDataCardProperties): JSX.Element {
     const renderFormGroup = (label: string, value: string): JSX.Element => {
         return (
             <div className="form-group">
                 <label>{label}:</label>
-                <strong>{value}</strong>
+                <strong className="form-group-value">{value}</strong>
             </div>
         );
     };
 
     return (
-        <div className="shadow card">
-            <div className="card-header">
-                <h1>Personal data:</h1>
+        <div className="shadow card personal-data-card">
+            <div className="card-header text-center">
+                <h2>{'Personal data'}</h2>
             </div>
             <div className="card-body">
-                {renderFormGroup('Name', props.userData.userName)}
-                {renderFormGroup('Surname', props.userData.userSurname)}
-                {renderFormGroup('Phone', props.userData.phone)}
-                {renderFormGroup('E-mail', props.userData.email)}
+                {renderFormGroup('Name', authenticatedUser.name)}
+                {renderFormGroup('Surname', authenticatedUser.surname)}
+                {renderFormGroup('Phone', authenticatedUser.phone)}
+                {renderFormGroup('E-mail', authenticatedUser.email)}
             </div>
         </div>
     );

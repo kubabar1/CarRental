@@ -1,0 +1,13 @@
+.step-container {
+    .active-step {
+        background-color: #c93239;
+        border-color: #c93239;
+        color: #fff;
+    }
+
+    .done-step {
+        color: #fff;
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+}

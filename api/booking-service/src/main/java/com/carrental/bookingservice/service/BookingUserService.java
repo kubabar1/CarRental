@@ -1,6 +1,9 @@
 package com.carrental.bookingservice.service;
 
 import com.carrental.bookingservice.exception.BookingStateException;
+import com.carrental.bookingservice.model.dto.BookingAddRequestDTO;
+import com.carrental.bookingservice.model.dto.BookingCostRequestDTO;
+import com.carrental.bookingservice.model.dto.BookingCostResponseDTO;
 import com.carrental.bookingservice.model.dto.BookingResponseDTO;
 import com.carrental.commons.authentication.exception.AuthorizationException;
 import org.springframework.data.domain.Page;
@@ -20,4 +23,8 @@ public interface BookingUserService extends BookingService {
     Page<BookingResponseDTO> getRentedBookings(Pageable pageable) throws AuthorizationException;
 
     BookingResponseDTO cancelBooking(Long bookingId) throws BookingStateException, AuthorizationException;
+
+    BookingCostResponseDTO calculateBookingCost(BookingCostRequestDTO bookingCostRequestDTO);
+
+    BookingResponseDTO addNewBooking(BookingAddRequestDTO bookingAddRequestDTO) throws AuthorizationException, NoSuchElementException;
 }

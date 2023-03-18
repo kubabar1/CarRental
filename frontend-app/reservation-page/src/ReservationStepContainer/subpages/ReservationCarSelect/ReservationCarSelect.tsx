@@ -1,121 +1,121 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { CarItem } from './CarItem/CarItem';
-import { endpoints } from '../../../constants/PathsAPI';
-import { vehicleResponseDTOMock, vehicleResponseDTOMock2 } from '../../../constants/MockData';
-import VehicleResponseDTO from '../../../model/VehicleResponseDTO';
-import { confirmationSubpageLink, reservationDataSubpageLink } from '../../../constants/Links';
-import ClipLoader from 'react-spinners/ClipLoader';
+import { Link, Redirect, useHistory } from 'react-router-dom';
+import { carSelectSubpageLink, confirmationSubpageLink, reservationDataSubpageLink } from '../../../constants/Links';
 import './ReservationCarSelect.scss';
+import { Control, FieldPath, FieldValues, SubmitHandler, useWatch } from 'react-hook-form';
+import { VehicleResponseDTO } from '../../../model/VehicleResponseDTO';
+import { VehicleSelect } from './components/vehicle_select/VehicleSelect';
+import { UseFormHandleSubmit } from 'react-hook-form/dist/types/form';
+import { FieldError, Merge } from 'react-hook-form/dist/types';
+import { VehicleModal } from './components/vehicle_modal/VehicleModal';
+import { getAvailableVehiclesByLocation } from '../../../service/VehicleService';
 
-interface ReservationCarSelectProperties {
-    selectedLocalisationId: string;
-    selectedVehicleId?: number;
-    selectCar: (carId: number) => void;
-    setStep: (step: number) => void;
+interface ReservationCarSelectProperties<FieldValuesType extends FieldValues> {
+    control: Control<FieldValuesType>;
+    vehicleSelectName: FieldPath<FieldValuesType>;
+    locationSelectName: FieldPath<FieldValuesType>;
+    onClickNext: UseFormHandleSubmit<FieldValuesType>;
+    vehiclesError: Merge<FieldError, (FieldError | undefined)[]> | undefined;
+    modalVehicleDetailsId: string | undefined;
+    setModalVehicleDetailsId: (isOpen: string | undefined) => void;
 }
 
-export function ReservationCarSelect({
-    selectedLocalisationId,
-    selectedVehicleId,
-    selectCar,
-    setStep,
-}: ReservationCarSelectProperties): JSX.Element {
-    const [vehicles, setVehicles] = React.useState<VehicleResponseDTO[] | undefined>(undefined);
-    const [inputError] = React.useState<string | undefined>(undefined);
-    const [redirect, setRedirect] = React.useState<boolean>(false);
+export function ReservationCarSelect<FieldValuesType extends FieldValues>({
+    control,
+    vehicleSelectName,
+    locationSelectName,
+    onClickNext,
+    vehiclesError,
+    modalVehicleDetailsId,
+    setModalVehicleDetailsId,
+}: ReservationCarSelectProperties<FieldValuesType>): JSX.Element {
+    const selectedVehicleId = useWatch({ name: vehicleSelectName, control: control });
+    const selectedLocalisationId = useWatch({ name: locationSelectName, control: control });
+    const history = useHistory();
+    const [vehicles, setVehicles] = React.useState<VehicleResponseDTO[]>([]);
 
-    setStep(2);
     React.useEffect(() => {
-        fetch(endpoints.carListByCityEndpoint(selectedLocalisationId))
-            .then((response: Response) => {
-                response.json().then((vehicles: VehicleResponseDTO[]) => {
-                    setVehicles(vehicles);
-                });
-            })
-            .finally(() => setVehicles([vehicleResponseDTOMock, vehicleResponseDTOMock2])); // TODO: Remove
-    }, [selectedLocalisationId]);
-
-    const createCarItem = (vehicle: VehicleResponseDTO): JSX.Element => {
-        let selected = false;
-        if (vehicle.id === selectedVehicleId) {
-            selected = true;
-        }
-        return <CarItem vehicle={vehicle} key={vehicle.id} selectCar={selectCar} selected={selected} />;
-    };
-
-    const onClickNext = (event: React.MouseEvent<HTMLButtonElement>): void => {
-        event.preventDefault();
-        setRedirect(true);
-    };
-
-    const getVehicleById = (vehicles?: VehicleResponseDTO[], vehicleId?: number): VehicleResponseDTO | undefined => {
-        if (vehicles && vehicleId) {
-            return vehicles.find((vehicle: VehicleResponseDTO) => {
-                return vehicle.id === vehicleId;
+        if (selectedLocalisationId) {
+            getAvailableVehiclesByLocation(selectedLocalisationId).then((v: VehicleResponseDTO[]) => {
+                setVehicles(v);
             });
         }
+    }, [selectedLocalisationId]);
+
+    const handleClickNext: SubmitHandler<FieldValuesType> = (): any | Promise<any> => {
+        history.push(confirmationSubpageLink);
     };
 
-    const selectedVehicle = getVehicleById(vehicles, selectedVehicleId);
+    const selectedVehicleModalDetails: VehicleResponseDTO | undefined = vehicles.find(
+        (vehicle: VehicleResponseDTO) => vehicle.id === modalVehicleDetailsId
+    );
 
-    if (!selectedLocalisationId) {
-        return (
-            <div key="inputError" className="text-center container alert alert-danger my-4">
-                {'Error: Incorrect data'}
-            </div>
-        );
-    }
-
-    if (redirect && !inputError) {
-        return <Redirect to={confirmationSubpageLink} push />;
-    }
+    const selectedVehicle: VehicleResponseDTO | undefined = selectedVehicleId
+        ? vehicles.find((vehicle: VehicleResponseDTO) => vehicle.id === selectedVehicleId)
+        : undefined;
 
     return (
         <main>
-            <div className="container col-md-8 offset-md-2 my-5 ">
-                <form>
+            <div className="select-vehicle-container container col-md-8 offset-md-2 my-5 ">
+                <form onSubmit={onClickNext(handleClickNext)}>
                     <div className="shadow card">
-                        <div className="card-header">
-                            <h1>Select car:</h1>
+                        <div className="card-header text-center">
+                            <h2>{'Select vehicle'}</h2>
                         </div>
-                        <div id="car-item-container" className="card-body">
-                            <div className="row justify-content-center">
-                                {vehicles ? vehicles.map(createCarItem) : <ClipLoader size={50} />}
-                            </div>
+                        <div className="car-item-container card-body">
+                            {vehicles && (
+                                <VehicleSelect
+                                    name={vehicleSelectName}
+                                    control={control}
+                                    vehicles={vehicles}
+                                    setModalVehicleDetailsId={setModalVehicleDetailsId}
+                                />
+                            )}
                         </div>
                         <div className="shadow card mt-3">
                             <div className="card-body">
                                 <h4 className="ml-4 mt-3">
-                                    Selected car:{' '}
-                                    <strong>
-                                        {selectedVehicle && selectedVehicle.brand + ' ' + selectedVehicle.model}
-                                    </strong>
+                                    <div>
+                                        {'Selected vehicle: '}
+                                        <strong>
+                                            {selectedVehicle && selectedVehicle.brand + ' ' + selectedVehicle.model}
+                                        </strong>
+                                    </div>
+                                    <div className="mt-3">
+                                        {'Price: '}
+                                        <strong>{selectedVehicle && selectedVehicle.dailyFee} $</strong>
+                                    </div>
                                 </h4>
-                                {inputError && (
+                                {vehiclesError && (
                                     <div key="input_Error" className="alert alert-danger my-4">
-                                        Fill all fields with valid values.
+                                        Vehicle need to be selected.
                                     </div>
                                 )}
                                 <div className="row mb-3 mt-5">
                                     <Link
                                         to={reservationDataSubpageLink}
-                                        className="linkstyle btn btn-lg btn-secondary btn-block col-md-2 ml-5"
+                                        className="linkstyle btn btn-lg btn-secondary btn-block col-md-3 ml-5"
                                     >
                                         Back
                                     </Link>
-                                    <button
-                                        className="btn btn-lg btn-primary btn-block  col-md-2 ml-auto mr-5"
-                                        onClick={onClickNext}
-                                    >
-                                        Next
-                                    </button>
+                                    <input
+                                        type="submit"
+                                        value="Next"
+                                        className="next-button btn btn-lg btn-primary btn-block  col-md-3 ml-auto mr-5 mt-0"
+                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
+            {selectedVehicleModalDetails && (
+                <VehicleModal
+                    isOpen={!!selectedVehicleModalDetails}
+                    closeModal={() => setModalVehicleDetailsId(undefined)}
+                    selectedVehicleModalDetails={selectedVehicleModalDetails}
+                />
+            )}
         </main>
     );
 }

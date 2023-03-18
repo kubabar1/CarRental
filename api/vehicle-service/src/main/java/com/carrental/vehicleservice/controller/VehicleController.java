@@ -64,6 +64,11 @@ public class VehicleController {
         }
     }
 
+    @GetMapping(value = "/location/{locationId}")
+    public ResponseEntity<Set<VehicleResponseDTO>> getAvailableVehiclesByLocationController(@PathVariable(name = "locationId") Long locationId) {
+        return ResponseEntity.ok().body(vehicleService.getAvailableVehiclesByLocation(locationId));
+    }
+
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_RENTING_EMPLOYEE')")
     public ResponseEntity<VehicleResponseDTO> addVehicleController(

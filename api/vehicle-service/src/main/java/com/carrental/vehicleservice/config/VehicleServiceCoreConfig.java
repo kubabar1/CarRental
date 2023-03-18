@@ -11,6 +11,7 @@ import com.carrental.vehicleservice.service.impl.EquipmentServiceImpl;
 import com.carrental.vehicleservice.service.impl.FilteringServiceImpl;
 import com.carrental.vehicleservice.service.impl.VehicleRatingServiceImpl;
 import com.carrental.vehicleservice.service.impl.VehicleServiceImpl;
+import com.carrental.vehicleservice.service.listener.VehicleListener;
 import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
@@ -84,5 +85,10 @@ public class VehicleServiceCoreConfig {
     @Bean
     public EquipmentController equipmentController(EquipmentService equipmentService) {
         return new EquipmentController(equipmentService);
+    }
+
+    @Bean
+    public VehicleListener vehicleListener(VehicleRepository vehicleRepository, ModelMapper modelMapper) {
+        return new VehicleListener(vehicleRepository, modelMapper);
     }
 }

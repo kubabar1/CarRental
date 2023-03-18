@@ -269,6 +269,15 @@ public class VehicleServiceImpl implements VehicleService {
         return new OptionDTO(colorEntity.getColor());
     }
 
+    @Override
+    public Set<VehicleResponseDTO> getAvailableVehiclesByLocation(Long locationId) {
+        return vehicleRepository
+                .findAllAvailableByLocationId(locationId)
+                .stream()
+                .map(v -> modelMapper.map(v, VehicleResponseDTO.class))
+                .collect(Collectors.toSet());
+    }
+
     private void uploadImage(String vehicleImageName, MultipartFile vehicleImage) throws IOException {
         UploadVehicleImageDTO uploadVehicleImageDTO = new UploadVehicleImageDTO();
         uploadVehicleImageDTO.setImageName(vehicleImageName);

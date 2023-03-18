@@ -2,6 +2,7 @@ package com.carrental.bookingservice.controller;
 
 import com.carrental.bookingservice.model.dto.LocationAddDTO;
 import com.carrental.bookingservice.model.dto.LocationResponseDTO;
+import com.carrental.bookingservice.model.dto.LocationsResponseDTO;
 import com.carrental.bookingservice.service.LocationsService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,12 @@ public class LocationsController {
     @GetMapping
     public ResponseEntity<Page<LocationResponseDTO>> getLocationsController(Pageable pageable) {
         return ResponseEntity.ok().body(locationsService.getLocations(pageable));
+    }
+
+    @GetMapping
+    @RequestMapping(value = "/all")
+    public ResponseEntity<LocationsResponseDTO> getAllLocationsController() {
+        return ResponseEntity.ok().body(new LocationsResponseDTO(locationsService.getAllLocations(null)));
     }
 
     @PutMapping

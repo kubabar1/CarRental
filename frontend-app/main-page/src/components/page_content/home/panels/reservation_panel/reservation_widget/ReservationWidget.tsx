@@ -1,41 +1,78 @@
-import React, { useState } from 'react';
-import { CitySelection } from './components/CitySelection';
-import { ReceptionDateHour } from './components/ReceptionDateHour';
-import { ReturnDateHour } from './components/ReturnDateHour';
-import LocalisationResponseDTO from '../../../../../../model/LocalisationResponseDTO';
+import React, { useEffect } from 'react';
+import { LocationSelection } from './components/location_select/LocationSelection';
 import './ReservationWidget.scss';
 import { AuthenticatedUserDTO } from '../../../../../../model/AuthenticatedUserDTO';
+import LocalisationResponseDTO from '../../../../../../model/LocalisationResponseDTO';
+import { getAllLocationsList } from '../../../../../../service/LocationService';
+import { LocalisationsResponseDTO } from '../../../../../../model/LocalisationsResponseDTO';
+import { useForm } from 'react-hook-form';
+import { DateInput } from './components/date_input/DateInput';
+import date from 'date-and-time';
 
 interface ReservationWidgetProperties {
     authenticatedUser: AuthenticatedUserDTO | undefined;
-    localisations: LocalisationResponseDTO[] | null;
 }
 
-export function ReservationWidget({ authenticatedUser, localisations }: ReservationWidgetProperties): JSX.Element {
-    const [, setSelectedCityId] = useState<number | null>(null);
-    const [receptionDate, setReceptionDate] = useState<Date | null>(null);
-    const [, setReceptionHour] = useState<number | null>(null);
-    const [returnDate, setReturnDate] = useState<Date | null>(null);
-    const [, setReturnHour] = useState<number | null>(null);
-    const [authError, setAuthError] = useState<boolean>(false);
+type ReservationFormValues = {
+    location: string;
+    receptionDate: Date;
+    receptionHour: number;
+    returnDate: Date;
+    returnHour: number;
+    notAuthenticated: boolean;
+};
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-        e.preventDefault();
+export function ReservationWidget({ authenticatedUser }: ReservationWidgetProperties): JSX.Element {
+    const [allLocations, setAllLocations] = React.useState<LocalisationResponseDTO[]>([]);
+    const {
+        formState,
+        control,
+        handleSubmit,
+        register,
+        watch,
+        setError,
+        clearErrors,
+        getValues,
+    } = useForm<ReservationFormValues>({
+        mode: 'onChange',
+    });
+    const returnDate = watch('returnDate');
+    const receptionDate = watch('receptionDate');
+    const minReceptionDate = date.format(new Date(), 'YYYY-MM-DD');
+    const maxReceptionDate: string = returnDate
+        ? date.format(date.addDays(new Date(returnDate), -1), 'YYYY-MM-DD')
+        : '';
+    const minReturnDate: string = receptionDate
+        ? date.format(date.addDays(new Date(receptionDate), 1), 'YYYY-MM-DD')
+        : '';
+
+    useEffect(() => {
+        getAllLocationsList().then((locations: LocalisationsResponseDTO) => {
+            setAllLocations(locations.locations);
+        });
+    }, []);
+
+    const goToBookingCreationPage = (): void => {
         const isAuthenticated: boolean = !!authenticatedUser && authenticatedUser.authenticated;
         if (!isAuthenticated) {
-            setAuthError(true);
+            setError('notAuthenticated', { message: 'You need to authenticate to make a reservation' });
         } else {
-            setAuthError(false);
+            clearErrors('notAuthenticated');
+            window.location.replace(
+                `http://localhost:3030/reservation?localisationId=${getValues(
+                    'location'
+                )}&receptionDate=${receptionDate}&returnDate=${returnDate}`
+            );
         }
     };
 
-    const renderAuthError = (): JSX.Element => {
-        return authError ? (
-            <div className="alert alert-danger" key="auth_error">
-                You must be authenticated to make a reservation.
-            </div>
-        ) : (
-            <div />
+    const renderAuthError = (): boolean | JSX.Element => {
+        return (
+            !!formState.errors.notAuthenticated && (
+                <div className="alert alert-danger custom-alert" role="alert">
+                    {'You must be authenticated to make a reservation.'}
+                </div>
+            )
         );
     };
 
@@ -45,18 +82,38 @@ export function ReservationWidget({ authenticatedUser, localisations }: Reservat
                 id="car-rent-form-container"
                 className="container col-xl-3 col-lg-4 col-md-5 col-sm-7 card card-body shadow mr-3"
             >
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit(goToBookingCreationPage)}>
                     <h3>Reserve car</h3>
-                    <CitySelection localisations={localisations} setLocalisation={setSelectedCityId} />
-                    <ReceptionDateHour
-                        setReceptionDate={setReceptionDate}
-                        setReceptionHour={setReceptionHour}
-                        returnDate={returnDate}
+                    <LocationSelection<ReservationFormValues>
+                        allLocations={allLocations}
+                        name={'location'}
+                        control={control}
+                        rules={{ required: 'Location is required' }}
+                        error={formState.errors.location}
                     />
-                    <ReturnDateHour
-                        setReturnDate={setReturnDate}
-                        setReturnHour={setReturnHour}
-                        receptionDate={receptionDate}
+                    <DateInput<ReservationFormValues>
+                        label={'Reception date:'}
+                        dateInputName={'receptionDate'}
+                        register={register}
+                        dateInputRegisterOptions={{
+                            required: 'Reception date is required',
+                            min: { value: minReceptionDate, message: 'Incorrect reception date' },
+                            max: { value: maxReceptionDate, message: 'Incorrect reception date' },
+                        }}
+                        dateInputError={formState.errors.receptionDate}
+                        minDate={minReceptionDate}
+                        maxDate={maxReceptionDate}
+                    />
+                    <DateInput<ReservationFormValues>
+                        label={'Return date:'}
+                        dateInputName={'returnDate'}
+                        register={register}
+                        dateInputRegisterOptions={{
+                            required: 'Return date is required',
+                            min: { value: minReturnDate, message: 'Incorrect return date' },
+                        }}
+                        dateInputError={formState.errors.returnDate}
+                        minDate={minReturnDate}
                     />
                     {renderAuthError()}
                     <input type="submit" value="Reserve" className="btn btn-primary reserve-widget-submit-button" />
