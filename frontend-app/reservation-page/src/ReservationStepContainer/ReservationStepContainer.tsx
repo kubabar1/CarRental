@@ -29,6 +29,10 @@ export const getLocalisationIdFromUrl = (url: string): string | undefined => {
     return qs.parse(url, { ignoreQueryPrefix: true }).localisationId as string;
 };
 
+export const getVehicleIdFromUrl = (url: string): string | undefined => {
+    return qs.parse(url, { ignoreQueryPrefix: true }).vehicleId as string;
+};
+
 export const getReceptionDateFromUrl = (url: string): string => {
     return qs.parse(url, { ignoreQueryPrefix: true }).receptionDate as string;
 };
@@ -65,10 +69,17 @@ export function ReservationStepContainer({ authenticatedUser }: ReservationStepC
                     path={reservationRootLink}
                     render={() => {
                         const localisationIdFromUrl = getLocalisationIdFromUrl(location.search);
+                        const vehicleIdFromUrl = getVehicleIdFromUrl(location.search);
                         const receptionDateFromUrl = getReceptionDateFromUrl(location.search);
                         const returnDateFromUrl = getReturnDateFromUrl(location.search);
+                        console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+                        console.log(localisationIdFromUrl);
+                        console.log(vehicleIdFromUrl);
                         if (localisationIdFromUrl) {
                             setValue('localisationId', localisationIdFromUrl);
+                        }
+                        if (vehicleIdFromUrl) {
+                            setValue('vehicleId', vehicleIdFromUrl);
                         }
                         if (receptionDateFromUrl) {
                             setValue('receptionDate', date.format(new Date(receptionDateFromUrl), 'YYYY-MM-DD'));

@@ -51,7 +51,7 @@ export function ReservationCarSelect<FieldValuesType extends FieldValues>({
     );
 
     const selectedVehicle: VehicleResponseDTO | undefined = selectedVehicleId
-        ? vehicles.find((vehicle: VehicleResponseDTO) => vehicle.id === selectedVehicleId)
+        ? vehicles.find((vehicle: VehicleResponseDTO) => vehicle.id == selectedVehicleId)
         : undefined;
 
     return (

@@ -28,7 +28,7 @@ export function VehicleSelect<FieldValuesType extends FieldValues>({
                             <VehicleItem
                                 key={vehicle.id}
                                 vehicle={vehicle}
-                                isSelected={vehicle.id === value}
+                                isSelected={vehicle.id == value}
                                 onClick={() => {
                                     onChange(vehicle.id);
                                 }}
