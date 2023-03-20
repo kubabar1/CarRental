@@ -77,48 +77,43 @@ export function ReservationWidget({ authenticatedUser }: ReservationWidgetProper
     };
 
     return (
-        <div>
-            <div
-                id="car-rent-form-container"
-                className="container col-xl-3 col-lg-4 col-md-5 col-sm-7 card card-body shadow mr-3"
-            >
-                <form onSubmit={handleSubmit(goToBookingCreationPage)}>
-                    <h3>Reserve car</h3>
-                    <LocationSelection<ReservationFormValues>
-                        allLocations={allLocations}
-                        name={'location'}
-                        control={control}
-                        rules={{ required: 'Location is required' }}
-                        error={formState.errors.location}
-                    />
-                    <DateInput<ReservationFormValues>
-                        label={'Reception date:'}
-                        dateInputName={'receptionDate'}
-                        register={register}
-                        dateInputRegisterOptions={{
-                            required: 'Reception date is required',
-                            min: { value: minReceptionDate, message: 'Incorrect reception date' },
-                            max: { value: maxReceptionDate, message: 'Incorrect reception date' },
-                        }}
-                        dateInputError={formState.errors.receptionDate}
-                        minDate={minReceptionDate}
-                        maxDate={maxReceptionDate}
-                    />
-                    <DateInput<ReservationFormValues>
-                        label={'Return date:'}
-                        dateInputName={'returnDate'}
-                        register={register}
-                        dateInputRegisterOptions={{
-                            required: 'Return date is required',
-                            min: { value: minReturnDate, message: 'Incorrect return date' },
-                        }}
-                        dateInputError={formState.errors.returnDate}
-                        minDate={minReturnDate}
-                    />
-                    {renderAuthError()}
-                    <input type="submit" value="Reserve" className="btn btn-primary reserve-widget-submit-button" />
-                </form>
-            </div>
+        <div className="car-rent-form-container container col-xl-3 col-lg-4 col-md-5 col-sm-7 card card-body shadow mr-3">
+            <form onSubmit={handleSubmit(goToBookingCreationPage)}>
+                <h3>Reserve car</h3>
+                <LocationSelection<ReservationFormValues>
+                    allLocations={allLocations}
+                    name={'location'}
+                    control={control}
+                    rules={{ required: 'Location is required' }}
+                    error={formState.errors.location}
+                />
+                <DateInput<ReservationFormValues>
+                    label={'Reception date:'}
+                    dateInputName={'receptionDate'}
+                    register={register}
+                    dateInputRegisterOptions={{
+                        required: 'Reception date is required',
+                        min: { value: minReceptionDate, message: 'Incorrect reception date' },
+                        max: { value: maxReceptionDate, message: 'Incorrect reception date' },
+                    }}
+                    dateInputError={formState.errors.receptionDate}
+                    minDate={minReceptionDate}
+                    maxDate={maxReceptionDate}
+                />
+                <DateInput<ReservationFormValues>
+                    label={'Return date:'}
+                    dateInputName={'returnDate'}
+                    register={register}
+                    dateInputRegisterOptions={{
+                        required: 'Return date is required',
+                        min: { value: minReturnDate, message: 'Incorrect return date' },
+                    }}
+                    dateInputError={formState.errors.returnDate}
+                    minDate={minReturnDate}
+                />
+                {renderAuthError()}
+                <input type="submit" value="Reserve" className="btn btn-primary reserve-widget-submit-button" />
+            </form>
         </div>
     );
 }
