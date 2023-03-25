@@ -24,7 +24,7 @@ export function ReservationPanel({ authenticatedUser }: ReservationPanelProperti
                 showArrows={false}
                 showStatus={false}
                 showThumbs={false}
-                interval={5000}
+                interval={4000}
                 renderIndicator={(
                     clickHandler: (e: React.MouseEvent | React.KeyboardEvent) => void,
                     isSelected: boolean,

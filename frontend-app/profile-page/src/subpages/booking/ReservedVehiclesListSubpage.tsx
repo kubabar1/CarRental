@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Table } from '../../components/table/Table';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
@@ -6,34 +6,18 @@ import { SubpageContent } from '../../components/subpage/content/SubpageContent'
 import { Column } from 'react-table';
 import { getUnavailableVehiclesList } from '../../service/VehicleService';
 import { VehicleResponseDTO } from '../../model/VehicleResponseDTO';
-import { useLocation } from 'react-router-dom';
-import { getCountFromUrl, getPageFromUrl } from '../../../../main-page/src/utils/UrlUtil';
 import Page from '../../../../main-page/src/model/Page';
-import { SubpagePagination } from '../../components/subpage/pagination/SubpagePagination';
 
 export function ReservedVehiclesListSubpage(): JSX.Element {
-    const location = useLocation();
-    const DEFAULT_PER_PAGE_COUNT = 10;
-    const page: number = getPageFromUrl(location.search);
-    const count: number = getCountFromUrl(location.search);
-
-    const [perPageCount, setPerPageCount] = useState<number>(count <= 0 ? DEFAULT_PER_PAGE_COUNT : count);
-    const [currentPage, setCurrentPage] = useState<number>(page);
-    const [unavailableVehiclesList, setUnavailableVehiclesList] = useState<Page<VehicleResponseDTO> | undefined>(
+    const [unavailableVehiclesPage, setUnavailableVehiclesPage] = React.useState<Page<VehicleResponseDTO> | undefined>(
         undefined
     );
-    const [totalPagesCount, setTotalPagesCount] = useState<number>(0);
 
-    useEffect(() => {
-        getUnavailableVehiclesList(currentPage, perPageCount).then((bookingsListResponse: Page<VehicleResponseDTO>) => {
-            if (currentPage > bookingsListResponse.totalPages - 1) {
-                setCurrentPage(bookingsListResponse.totalPages - 1);
-            } else {
-                setUnavailableVehiclesList(bookingsListResponse);
-                setTotalPagesCount(bookingsListResponse.totalPages);
-            }
+    const fetchData = React.useCallback((pageIndex, pageSize) => {
+        getUnavailableVehiclesList(pageIndex, pageSize).then((page: Page<VehicleResponseDTO>) => {
+            setUnavailableVehiclesPage(page);
         });
-    }, [currentPage, perPageCount]);
+    }, []);
 
     const columns = React.useMemo<Column<VehicleResponseDTO>[]>(
         () => [
@@ -93,17 +77,13 @@ export function ReservedVehiclesListSubpage(): JSX.Element {
         <SubpageContainer>
             <SubpageHeader title={'Reserved vehicles list'} />
             <SubpageContent>
-                {unavailableVehiclesList && (
-                    <Table<VehicleResponseDTO> columns={columns} data={unavailableVehiclesList.content} />
-                )}
+                <Table<VehicleResponseDTO>
+                    columns={columns}
+                    data={unavailableVehiclesPage ? unavailableVehiclesPage.content : []}
+                    fetchData={fetchData}
+                    pageCount={unavailableVehiclesPage?.totalPages}
+                />
             </SubpageContent>
-            <SubpagePagination
-                totalPagesCount={totalPagesCount}
-                perPageCount={perPageCount}
-                setPerPageCount={setPerPageCount}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-            />
         </SubpageContainer>
     );
 }

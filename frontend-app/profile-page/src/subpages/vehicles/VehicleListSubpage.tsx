@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Table } from '../../components/table/Table';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
@@ -7,32 +7,16 @@ import { Column } from 'react-table';
 import { VehicleResponseDTO } from '../../model/VehicleResponseDTO';
 import { getVehiclesList } from '../../service/VehicleService';
 import { ButtonTableItem } from '../../components/table/tab_items/ButtonTableItem';
-import { SubpagePagination } from '../../components/subpage/pagination/SubpagePagination';
-import { useLocation } from 'react-router-dom';
-import { getCountFromUrl, getPageFromUrl } from '../../../../main-page/src/utils/UrlUtil';
 import Page from '../../../../main-page/src/model/Page';
 
 export function VehicleListSubpage(): JSX.Element {
-    const location = useLocation();
-    const DEFAULT_PER_PAGE_COUNT = 10;
-    const page: number = getPageFromUrl(location.search);
-    const count: number = getCountFromUrl(location.search);
+    const [vehiclesPage, setVehiclesPage] = useState<Page<VehicleResponseDTO> | undefined>(undefined);
 
-    const [perPageCount, setPerPageCount] = useState<number>(count <= 0 ? DEFAULT_PER_PAGE_COUNT : count);
-    const [currentPage, setCurrentPage] = useState<number>(page);
-    const [vehiclesList, setVehiclesList] = useState<Page<VehicleResponseDTO> | undefined>(undefined);
-    const [totalPagesCount, setTotalPagesCount] = useState<number>(0);
-
-    useEffect(() => {
-        getVehiclesList(currentPage, perPageCount).then((vehicleResponseDTOS: Page<VehicleResponseDTO>) => {
-            if (currentPage > vehicleResponseDTOS.totalPages) {
-                setCurrentPage(vehicleResponseDTOS.totalPages - 1);
-            } else {
-                setVehiclesList(vehicleResponseDTOS);
-                setTotalPagesCount(vehicleResponseDTOS.totalPages);
-            }
+    const fetchData = React.useCallback((pageIndex, pageSize) => {
+        getVehiclesList(pageIndex, pageSize).then((page: Page<VehicleResponseDTO>) => {
+            setVehiclesPage(page);
         });
-    }, [currentPage, perPageCount]);
+    }, []);
 
     const columns = React.useMemo<Column<VehicleResponseDTO>[]>(
         () => [
@@ -112,15 +96,13 @@ export function VehicleListSubpage(): JSX.Element {
         <SubpageContainer>
             <SubpageHeader title={'Vehicles list'} />
             <SubpageContent>
-                {vehiclesList && <Table<VehicleResponseDTO> columns={columns} data={vehiclesList.content} />}
+                <Table<VehicleResponseDTO>
+                    columns={columns}
+                    data={vehiclesPage ? vehiclesPage.content : []}
+                    fetchData={fetchData}
+                    pageCount={vehiclesPage?.totalPages}
+                />
             </SubpageContent>
-            <SubpagePagination
-                totalPagesCount={totalPagesCount}
-                perPageCount={perPageCount}
-                setPerPageCount={setPerPageCount}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-            />
         </SubpageContainer>
     );
 }

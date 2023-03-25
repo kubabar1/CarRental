@@ -4,32 +4,37 @@ import './VehicleAddEquipment.scss';
 import { Button } from 'react-bootstrap';
 import { addEquipmentsToVehicle, getAllEquipmentsNotAssignedToVehicleList } from '../../../../service/EquipmentService';
 import { VehicleResponseDTO } from '../../../../model/VehicleResponseDTO';
-import { VehicleAddEquipmentSelectOption } from '../../VehicleEquipmentEditSubpage';
 import { EquipmentResponseDTO } from '../../../../model/EquipmentResponseDTO';
+
+export type VehicleAddEquipmentSelectOption = { value: string; label: string };
 
 interface VehicleAddEquipmentInterface {
     vehicleId: string;
-    allPossibleEquipments: VehicleAddEquipmentSelectOption[];
-    setVehicleResponseDTO: React.Dispatch<React.SetStateAction<VehicleResponseDTO | undefined>>;
-    mapResponseToSelectOptions: (equipmentResponseDTO: EquipmentResponseDTO) => VehicleAddEquipmentSelectOption;
-    setAllPossibleEquipments: React.Dispatch<VehicleAddEquipmentSelectOption[]>;
+    allPossibleEquipments: EquipmentResponseDTO[];
+    setVehicle: React.Dispatch<React.SetStateAction<VehicleResponseDTO | undefined>>;
+    setAllPossibleEquipments: React.Dispatch<EquipmentResponseDTO[]>;
 }
 
 export const VehicleAddEquipment = ({
     vehicleId,
     allPossibleEquipments,
-    setVehicleResponseDTO,
-    mapResponseToSelectOptions,
+    setVehicle,
     setAllPossibleEquipments,
 }: VehicleAddEquipmentInterface): JSX.Element => {
     const [equipmentsToAddList, setEquipmentsToAddList] = React.useState<VehicleAddEquipmentSelectOption[]>([]);
+
+    const mapResponseToSelectOptions = (
+        equipmentResponseDTO: EquipmentResponseDTO
+    ): VehicleAddEquipmentSelectOption => {
+        return { value: equipmentResponseDTO.equipmentCode, label: equipmentResponseDTO.description };
+    };
 
     return (
         <div className={'vehicle-add-equipment-container'}>
             <div className={'select-container'}>
                 <Select
                     value={equipmentsToAddList}
-                    options={allPossibleEquipments}
+                    options={allPossibleEquipments.map(mapResponseToSelectOptions)}
                     isMulti
                     onChange={(equipments: MultiValue<VehicleAddEquipmentSelectOption>) => {
                         setEquipmentsToAddList(equipments as VehicleAddEquipmentSelectOption[]);
@@ -45,10 +50,10 @@ export const VehicleAddEquipment = ({
                             vehicleId,
                             equipmentsToAddList.map((vehicle: VehicleAddEquipmentSelectOption) => vehicle.value)
                         ).then((vehicleResp: VehicleResponseDTO) => {
-                            setVehicleResponseDTO(vehicleResp);
+                            setVehicle(vehicleResp);
                             getAllEquipmentsNotAssignedToVehicleList(vehicleId).then(
                                 (equipmentsResponse: EquipmentResponseDTO[]) => {
-                                    setAllPossibleEquipments(equipmentsResponse.map(mapResponseToSelectOptions));
+                                    setAllPossibleEquipments(equipmentsResponse);
                                 }
                             );
                         });

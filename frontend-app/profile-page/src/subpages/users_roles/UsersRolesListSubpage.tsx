@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Table } from '../../components/table/Table';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
@@ -9,13 +9,6 @@ import { UserRoleResponseDTO } from '../../model/UserRoleResponseDTO';
 
 export function UsersRolesListSubpage(): JSX.Element {
     const [allUserRoles, setAllUserRoles] = useState<UserRoleResponseDTO[]>([]);
-
-    useEffect(() => {
-        getAllUserRoles().then((userRoleResponseDTOS: UserRoleResponseDTO[]) => {
-            setAllUserRoles(userRoleResponseDTOS);
-        });
-    }, []);
-
     const columns = React.useMemo<Column<UserRoleResponseDTO>[]>(
         () => [
             {
@@ -30,11 +23,17 @@ export function UsersRolesListSubpage(): JSX.Element {
         []
     );
 
+    const fetchData = React.useCallback(() => {
+        getAllUserRoles().then((userRoleResponseDTOS: UserRoleResponseDTO[]) => {
+            setAllUserRoles(userRoleResponseDTOS);
+        });
+    }, []);
+
     return (
         <SubpageContainer>
             <SubpageHeader title={'Users with roles list'} />
             <SubpageContent>
-                <Table<UserRoleResponseDTO> columns={columns} data={allUserRoles} />
+                <Table<UserRoleResponseDTO> columns={columns} data={allUserRoles} fetchData={fetchData} />
             </SubpageContent>
         </SubpageContainer>
     );

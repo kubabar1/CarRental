@@ -7,6 +7,7 @@ import './AddEquipmentModal.scss';
 import { InputFormGroup } from '../../../../components/form/form-group/input/InputFormGroup';
 import { addEquipment } from '../../../../service/VehicleService';
 import { EquipmentAddDTO } from '../../../../model/EquipmentAddDTO';
+import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '../../../../constants/PathsAPI';
 
 type Equipment = {
     equipmentCode: string;
@@ -16,7 +17,7 @@ type Equipment = {
 interface AddEquipmentModalProperties<FieldValuesType extends FieldValues> {
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
-    reloadEquipments: () => void;
+    reloadEquipments: (pageIndex: number, pageSize: number) => void;
 }
 
 export function AddEquipmentModal<FieldValuesType extends FieldValues>({
@@ -37,7 +38,7 @@ export function AddEquipmentModal<FieldValuesType extends FieldValues>({
             setValue('equipmentCode', '');
             setValue('description', '');
             setIsOpen(false);
-            reloadEquipments();
+            reloadEquipments(DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE);
         });
     };
 

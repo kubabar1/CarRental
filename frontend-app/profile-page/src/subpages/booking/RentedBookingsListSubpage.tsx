@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Table } from '../../components/table/Table';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
@@ -7,36 +7,17 @@ import { Column } from 'react-table';
 import { BookingResponseDTO } from '../../model/BookingResponseDTO';
 import { getAllRentedBookingsList, returnBooking } from '../../service/BookingAdminService';
 import { ButtonTableItem } from '../../components/table/tab_items/ButtonTableItem';
-import { SubpagePagination } from '../../components/subpage/pagination/SubpagePagination';
-import { useLocation } from 'react-router-dom';
-import { getCountFromUrl, getPageFromUrl } from '../../../../main-page/src/utils/UrlUtil';
 import Page from '../../../../main-page/src/model/Page';
+import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '../../constants/PathsAPI';
 
 export function RentedBookingsListSubpage(): JSX.Element {
-    const location = useLocation();
-    const DEFAULT_PER_PAGE_COUNT = 10;
-    const page: number = getPageFromUrl(location.search);
-    const count: number = getCountFromUrl(location.search);
+    const [bookingsPage, setBookingsPage] = useState<Page<BookingResponseDTO> | undefined>(undefined);
 
-    const [perPageCount, setPerPageCount] = useState<number>(count <= 0 ? DEFAULT_PER_PAGE_COUNT : count);
-    const [currentPage, setCurrentPage] = useState<number>(page);
-    const [bookingsList, setBookingList] = useState<Page<BookingResponseDTO> | undefined>(undefined);
-    const [totalPagesCount, setTotalPagesCount] = useState<number>(0);
-
-    const getAllRentedBookings = useCallback(() => {
-        getAllRentedBookingsList(currentPage, perPageCount).then((bookingsListResponse: Page<BookingResponseDTO>) => {
-            if (currentPage > bookingsListResponse.totalPages - 1) {
-                setCurrentPage(bookingsListResponse.totalPages - 1);
-            } else {
-                setBookingList(bookingsListResponse);
-                setTotalPagesCount(bookingsListResponse.totalPages);
-            }
+    const fetchData = React.useCallback((pageIndex, pageSize) => {
+        getAllRentedBookingsList(pageIndex, pageSize).then((bookingsListResponse: Page<BookingResponseDTO>) => {
+            setBookingsPage(bookingsListResponse);
         });
-    }, [currentPage, perPageCount]);
-
-    useEffect(() => {
-        getAllRentedBookings();
-    }, [getAllRentedBookings]);
+    }, []);
 
     const columns = React.useMemo<Column<BookingResponseDTO>[]>(
         () => [
@@ -86,27 +67,29 @@ export function RentedBookingsListSubpage(): JSX.Element {
                     <ButtonTableItem
                         buttonText={'Return'}
                         buttonVariant={'success'}
-                        onClickAction={() => returnBooking(row.id).then(getAllRentedBookings)}
+                        onClickAction={() =>
+                            returnBooking(row.id).then(() => {
+                                fetchData(DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE);
+                            })
+                        }
                     />
                 ),
             },
         ],
-        [getAllRentedBookings]
+        [fetchData]
     );
 
     return (
         <SubpageContainer>
             <SubpageHeader title={'Rented bookings list'} />
             <SubpageContent>
-                {bookingsList && <Table<BookingResponseDTO> columns={columns} data={bookingsList.content} />}
+                <Table<BookingResponseDTO>
+                    columns={columns}
+                    data={bookingsPage ? bookingsPage.content : []}
+                    fetchData={fetchData}
+                    pageCount={bookingsPage?.totalPages}
+                />
             </SubpageContent>
-            <SubpagePagination
-                totalPagesCount={totalPagesCount}
-                perPageCount={perPageCount}
-                setPerPageCount={setPerPageCount}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-            />
         </SubpageContainer>
     );
 }

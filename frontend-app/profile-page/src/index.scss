@@ -18,3 +18,15 @@ a {
         background-attachment: scroll;
     }
 }
+
+@font-face {
+    font-family: lato;
+    src: url("fonts/Lato-Regular.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+html,
+body {
+    font-family: lato, sans-serif !important;
+}

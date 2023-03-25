@@ -42,6 +42,8 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "@types/react-toastify": "^4.1.0",
+    "react-toastify": "^9.1.2",
     "zxcvbn": "^4.4.2"
   }
 }

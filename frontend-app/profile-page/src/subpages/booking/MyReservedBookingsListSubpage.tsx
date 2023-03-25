@@ -8,40 +8,23 @@ import { BookingResponseDTO } from '../../model/BookingResponseDTO';
 import { ButtonTableItem } from '../../components/table/tab_items/ButtonTableItem';
 import {
     cancelAuthorizedUserBooking,
+    getAuthenticatedUserRentedBookingsList,
     getAuthenticatedUserReservedBookingsList,
 } from '../../service/BookingUserService';
 import { SubpagePagination } from '../../components/subpage/pagination/SubpagePagination';
 import { useLocation } from 'react-router-dom';
 import { getCountFromUrl, getPageFromUrl } from '../../../../main-page/src/utils/UrlUtil';
 import Page from '../../../../main-page/src/model/Page';
+import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '../../constants/PathsAPI';
 
 export function MyReservedBookingsListSubpage(): JSX.Element {
-    const location = useLocation();
-    const DEFAULT_PER_PAGE_COUNT = 10;
-    const page: number = getPageFromUrl(location.search);
-    const count: number = getCountFromUrl(location.search);
+    const [bookingsPage, setBookingsPage] = useState<Page<BookingResponseDTO> | undefined>(undefined);
 
-    const [perPageCount, setPerPageCount] = useState<number>(count <= 0 ? DEFAULT_PER_PAGE_COUNT : count);
-    const [currentPage, setCurrentPage] = useState<number>(page);
-    const [bookingsList, setBookingList] = useState<Page<BookingResponseDTO> | undefined>(undefined);
-    const [totalPagesCount, setTotalPagesCount] = useState<number>(0);
-
-    const getAuthenticatedUserReservedBookings = useCallback(() => {
-        getAuthenticatedUserReservedBookingsList(currentPage, perPageCount).then(
-            (bookingsListResponse: Page<BookingResponseDTO>) => {
-                if (currentPage > bookingsListResponse.totalPages - 1) {
-                    setCurrentPage(bookingsListResponse.totalPages - 1);
-                } else {
-                    setBookingList(bookingsListResponse);
-                    setTotalPagesCount(bookingsListResponse.totalPages);
-                }
-            }
-        );
-    }, [currentPage, perPageCount]);
-
-    useEffect(() => {
-        getAuthenticatedUserReservedBookings();
-    }, [getAuthenticatedUserReservedBookings]);
+    const fetchData = React.useCallback((pageIndex, pageSize) => {
+        getAuthenticatedUserReservedBookingsList(pageIndex, pageSize).then((page: Page<BookingResponseDTO>) => {
+            setBookingsPage(page);
+        });
+    }, []);
 
     const columns = React.useMemo<Column<BookingResponseDTO>[]>(
         () => [
@@ -92,28 +75,28 @@ export function MyReservedBookingsListSubpage(): JSX.Element {
                         buttonText={'Cancel'}
                         buttonVariant={'danger'}
                         onClickAction={() =>
-                            cancelAuthorizedUserBooking(row.id).then(getAuthenticatedUserReservedBookings)
+                            cancelAuthorizedUserBooking(row.id).then(() => {
+                                fetchData(DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE);
+                            })
                         }
                     />
                 ),
             },
         ],
-        [getAuthenticatedUserReservedBookings]
+        [fetchData]
     );
 
     return (
         <SubpageContainer>
             <SubpageHeader title={'My reserved bookings list'} />
             <SubpageContent>
-                {bookingsList && <Table<BookingResponseDTO> columns={columns} data={bookingsList.content} />}
+                <Table<BookingResponseDTO>
+                    columns={columns}
+                    data={bookingsPage ? bookingsPage.content : []}
+                    fetchData={fetchData}
+                    pageCount={bookingsPage?.totalPages}
+                />
             </SubpageContent>
-            <SubpagePagination
-                totalPagesCount={totalPagesCount}
-                perPageCount={perPageCount}
-                setPerPageCount={setPerPageCount}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-            />
         </SubpageContainer>
     );
 }

@@ -1,45 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { useLocation } from 'react-router-dom';
 import { getAllEquipmentsList } from '../../service/EquipmentService';
 import { EquipmentResponseDTO } from '../../model/EquipmentResponseDTO';
 import { Table } from '../../components/table/Table';
 import { Column } from 'react-table';
-import { getCountFromUrl, getPageFromUrl } from '../../../../main-page/src/utils/UrlUtil';
 import Page from '../../../../main-page/src/model/Page';
-import { SubpagePagination } from '../../components/subpage/pagination/SubpagePagination';
 import { Button } from 'react-bootstrap';
 import './EquipmentListSubpage.scss';
 import { AddEquipmentModal } from './components/add_equipment_modal/AddEquipmentModal';
 
 export function EquipmentListSubpage(): JSX.Element {
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
-    const location = useLocation();
-    const DEFAULT_PER_PAGE_COUNT = 10;
-    const page: number = getPageFromUrl(location.search);
-    const count: number = getCountFromUrl(location.search);
+    const [vehicleEquipmentsPage, setVehicleEquipmentsPage] = useState<Page<EquipmentResponseDTO> | undefined>(
+        undefined
+    );
 
-    const [perPageCount, setPerPageCount] = useState<number>(count <= 0 ? DEFAULT_PER_PAGE_COUNT : count);
-    const [currentPage, setCurrentPage] = useState<number>(page);
-    const [vehicleEquipments, setVehicleEquipments] = useState<Page<EquipmentResponseDTO> | undefined>(undefined);
-    const [totalPagesCount, setTotalPagesCount] = useState<number>(0);
-
-    useEffect(() => {
-        loadEquipments();
-    }, [currentPage, perPageCount]);
-
-    const loadEquipments = (): void => {
-        getAllEquipmentsList(currentPage, perPageCount).then((vehicleEquipments: Page<EquipmentResponseDTO>) => {
-            if (currentPage > vehicleEquipments.totalPages) {
-                setCurrentPage(vehicleEquipments.totalPages - 1);
-            } else {
-                setVehicleEquipments(vehicleEquipments);
-                setTotalPagesCount(vehicleEquipments.totalPages);
-            }
+    const fetchData = React.useCallback((pageIndex, pageSize) => {
+        getAllEquipmentsList(pageIndex, pageSize).then((page: Page<EquipmentResponseDTO>) => {
+            setVehicleEquipmentsPage(page);
         });
-    };
+    }, []);
 
     const columns = React.useMemo<Column<EquipmentResponseDTO>[]>(
         () => [
@@ -62,18 +44,14 @@ export function EquipmentListSubpage(): JSX.Element {
                 <div className="add-equipment-button-container">
                     <Button onClick={() => setIsOpen(true)}>Add</Button>
                 </div>
-                {vehicleEquipments && (
-                    <Table<EquipmentResponseDTO> columns={columns} data={vehicleEquipments.content} />
-                )}
-                <AddEquipmentModal isOpen={isOpen} setIsOpen={setIsOpen} reloadEquipments={loadEquipments} />
+                <Table<EquipmentResponseDTO>
+                    columns={columns}
+                    data={vehicleEquipmentsPage ? vehicleEquipmentsPage.content : []}
+                    fetchData={fetchData}
+                    pageCount={vehicleEquipmentsPage?.totalPages}
+                />
+                <AddEquipmentModal isOpen={isOpen} setIsOpen={setIsOpen} reloadEquipments={fetchData} />
             </SubpageContent>
-            <SubpagePagination
-                totalPagesCount={totalPagesCount}
-                perPageCount={perPageCount}
-                setPerPageCount={setPerPageCount}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-            />
         </SubpageContainer>
     );
 }

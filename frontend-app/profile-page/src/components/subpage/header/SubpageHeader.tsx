@@ -1,4 +1,5 @@
 import React from 'react';
+import './SubpageHeader.scss';
 
 interface SubpageHeaderProperties {
     title: string;
@@ -6,7 +7,7 @@ interface SubpageHeaderProperties {
 
 export function SubpageHeader({ title }: SubpageHeaderProperties): JSX.Element {
     return (
-        <div className="card">
+        <div className="subpage-header card">
             <div className="card-header text-center">
                 <strong>{title}</strong>
             </div>

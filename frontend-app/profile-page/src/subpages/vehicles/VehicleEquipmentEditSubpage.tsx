@@ -13,19 +13,20 @@ import { getVehicleById } from '../../service/VehicleService';
 import { VehicleResponseDTO } from '../../model/VehicleResponseDTO';
 import { VehicleAddEquipment } from './components/vehicle_add_equipment/VehicleAddEquipment';
 
-export type VehicleAddEquipmentSelectOption = { value: string; label: string };
-
 export function VehicleEquipmentEditSubpage(): JSX.Element {
     const { vehicleId } = useParams<{ vehicleId: string }>();
-    const [vehicleResponseDTO, setVehicleResponseDTO] = useState<VehicleResponseDTO | undefined>(undefined);
-    const [allPossibleEquipments, setAllPossibleEquipments] = useState<VehicleAddEquipmentSelectOption[]>([]);
+    const [vehicle, setVehicle] = useState<VehicleResponseDTO | undefined>(undefined);
+    const [allPossibleEquipments, setAllPossibleEquipments] = useState<EquipmentResponseDTO[]>([]);
+
+    const fetchData = React.useCallback(() => {
+        getAllEquipmentsNotAssignedToVehicleList(vehicleId).then((equipmentsResponse: EquipmentResponseDTO[]) => {
+            setAllPossibleEquipments(equipmentsResponse);
+        });
+    }, [vehicleId]);
 
     useEffect(() => {
         getVehicleById(vehicleId).then((vehicleResp: VehicleResponseDTO) => {
-            setVehicleResponseDTO(vehicleResp);
-        });
-        getAllEquipmentsNotAssignedToVehicleList(vehicleId).then((equipmentsResponse: EquipmentResponseDTO[]) => {
-            setAllPossibleEquipments(equipmentsResponse.map(mapResponseToSelectOptions));
+            setVehicle(vehicleResp);
         });
     }, [vehicleId]);
 
@@ -48,12 +49,10 @@ export function VehicleEquipmentEditSubpage(): JSX.Element {
                         onClickAction={() =>
                             removeEquipmentFromVehicle(vehicleId, equipmentResponseDTO.equipmentCode).then(
                                 (vehicleResp: VehicleResponseDTO) => {
-                                    setVehicleResponseDTO(vehicleResp);
+                                    setVehicle(vehicleResp);
                                     getAllEquipmentsNotAssignedToVehicleList(vehicleId).then(
                                         (equipmentsResponse: EquipmentResponseDTO[]) => {
-                                            setAllPossibleEquipments(
-                                                equipmentsResponse.map(mapResponseToSelectOptions)
-                                            );
+                                            setAllPossibleEquipments(equipmentsResponse);
                                         }
                                     );
                                 }
@@ -66,31 +65,24 @@ export function VehicleEquipmentEditSubpage(): JSX.Element {
         [vehicleId]
     );
 
-    const mapResponseToSelectOptions = (
-        equipmentResponseDTO: EquipmentResponseDTO
-    ): VehicleAddEquipmentSelectOption => {
-        return { value: equipmentResponseDTO.equipmentCode, label: equipmentResponseDTO.description };
-    };
-
     return (
         <SubpageContainer>
             <SubpageHeader title={'Vehicle equipment edit'} />
             <SubpageContent>
                 <h5 className={'mb-4 font-weight-bold'}>Vehicle details</h5>
-                {vehicleResponseDTO && <VehicleDetails vehicleResponseDTO={vehicleResponseDTO} />}
+                {vehicle && <VehicleDetails vehicleResponseDTO={vehicle} />}
                 <h5 className={'mt-4 mb-4 font-weight-bold'}>Vehicle add equipment</h5>
-                {vehicleResponseDTO && (
+                {vehicle && (
                     <VehicleAddEquipment
                         vehicleId={vehicleId}
-                        setVehicleResponseDTO={setVehicleResponseDTO}
+                        setVehicle={setVehicle}
                         allPossibleEquipments={allPossibleEquipments}
                         setAllPossibleEquipments={setAllPossibleEquipments}
-                        mapResponseToSelectOptions={mapResponseToSelectOptions}
                     />
                 )}
                 <h5 className={'mt-4 mb-4 font-weight-bold'}>Vehicle equipment</h5>
-                {vehicleResponseDTO && (
-                    <Table<EquipmentResponseDTO> columns={columns} data={vehicleResponseDTO.equipments} />
+                {vehicle && (
+                    <Table<EquipmentResponseDTO> columns={columns} data={vehicle.equipments} fetchData={fetchData} />
                 )}
             </SubpageContent>
         </SubpageContainer>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './SubpagePagination.scss';
 import ReactPaginate from 'react-paginate';
 import Select, { SingleValue } from 'react-select';
@@ -7,23 +7,23 @@ import { useHistory } from 'react-router-dom';
 
 interface SubpagePaginationProperties {
     totalPagesCount: number;
-    currentPage: number;
-    setCurrentPage: (currentPage: number) => void;
+    pageIndex: number;
+    gotoPage: (currentPage: number) => void;
     perPageCount: number;
-    setPerPageCount: (perPageCount: number) => void;
+    setPageSize: (perPageCount: number) => void;
 }
 
 type OptionType = { value: string | null; label: string | null };
 
 export function SubpagePagination({
     totalPagesCount,
-    currentPage,
-    setCurrentPage,
+    pageIndex,
+    gotoPage,
     perPageCount,
-    setPerPageCount,
+    setPageSize,
 }: SubpagePaginationProperties): JSX.Element {
     const history = useHistory();
-    const VEHICLES_PER_PAGE_COUNTS: number[] = [5, 10, 25, 50];
+    const PER_PAGE_COUNTS: number[] = [5, 10, 25, 50];
 
     const mapToOptionType = (val: number): OptionType => {
         return {
@@ -31,6 +31,24 @@ export function SubpagePagination({
             label: `${val}`,
         };
     };
+
+    const changeLocationSearchParam = (locationSearchParam: string, value: string) => {
+        const currentParams: ParsedQs = qs.parse(location.search, {
+            ignoreQueryPrefix: true,
+        });
+        currentParams[locationSearchParam] = value;
+        history.push({
+            search: `?${qs.stringify(currentParams)}`,
+        });
+    };
+
+    useEffect(() => {
+        changeLocationSearchParam('page', `${pageIndex}`);
+    }, [pageIndex]);
+
+    useEffect(() => {
+        changeLocationSearchParam('count', `${perPageCount}`);
+    }, [perPageCount]);
 
     return (
         <div className="subpage-pagination-and-counter-container">
@@ -50,19 +68,12 @@ export function SubpagePagination({
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={5}
                 onPageChange={(selectedItem: { selected: number }) => {
-                    const currentParams: ParsedQs = qs.parse(location.search, {
-                        ignoreQueryPrefix: true,
-                    });
-                    currentParams['page'] = `${selectedItem.selected}`;
-                    history.push({
-                        search: `?${qs.stringify(currentParams)}`,
-                    });
-                    setCurrentPage(selectedItem.selected);
+                    gotoPage(selectedItem.selected);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 containerClassName="pagination"
                 activeClassName="active"
-                forcePage={currentPage}
+                forcePage={pageIndex}
             />
             <Select
                 className="count-per-page-select"
@@ -78,17 +89,10 @@ export function SubpagePagination({
                     },
                 })}
                 value={mapToOptionType(perPageCount)}
-                options={VEHICLES_PER_PAGE_COUNTS.map(mapToOptionType)}
+                options={PER_PAGE_COUNTS.map(mapToOptionType)}
                 onChange={(newValue: SingleValue<OptionType>) => {
                     if (newValue && newValue.value) {
-                        const currentParams: ParsedQs = qs.parse(location.search, {
-                            ignoreQueryPrefix: true,
-                        });
-                        currentParams['count'] = `${newValue.value}`;
-                        history.push({
-                            search: `?${qs.stringify(currentParams)}`,
-                        });
-                        setPerPageCount(parseInt(newValue.value));
+                        setPageSize(parseInt(newValue.value));
                     }
                 }}
             />

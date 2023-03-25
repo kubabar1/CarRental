@@ -14,6 +14,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { AssocDetailsDTO } from '../../model/AssocDetailsDTO';
 import { ModelAssocDetailsDTO } from '../../model/ModelAssocDetailsDTO';
+import { getUsersList } from '../../service/UserService';
+import Page from '../../../../main-page/src/model/Page';
+import { UserResponseDTO } from '../../model/UserResponseDTO';
 
 enum OptionType {
     BRANDS = 'brands',
@@ -36,12 +39,6 @@ export function VehicleOptionsSubpage(): JSX.Element {
     const [vehicleOptions, setVehicleOptions] = useState<VehicleOptionsWithAssocCountDTO | undefined>(undefined);
     const [selectedOption, setSelectedOption] = useState<OptionType>(OptionType.BRANDS);
     const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
-
-    const loadVehicleOptions = (): void => {
-        getVehicleOptionsWithAssoc().then((vehicleDefaultParams: VehicleOptionsWithAssocCountDTO) => {
-            setVehicleOptions({ ...vehicleDefaultParams });
-        });
-    };
 
     const translateOptionTypeHeader = (option: OptionType): string => {
         const translations: Record<OptionType, string> = {
@@ -73,12 +70,18 @@ export function VehicleOptionsSubpage(): JSX.Element {
     };
 
     useEffect(() => {
-        loadVehicleOptions();
+        fetchData();
     }, []);
 
     useEffect(() => {
         setSelectedBrand(null);
     }, [selectedOption]);
+
+    const fetchData = React.useCallback(() => {
+        getVehicleOptionsWithAssoc().then((vehicleDefaultParams: VehicleOptionsWithAssocCountDTO) => {
+            setVehicleOptions({ ...vehicleDefaultParams });
+        });
+    }, []);
 
     const columns = React.useMemo<Column<VehicleOption>[]>(
         () => [
@@ -93,11 +96,9 @@ export function VehicleOptionsSubpage(): JSX.Element {
                         <ButtonTableItem
                             buttonText={<FontAwesomeIcon icon={faTrash} />}
                             onClickAction={() => {
-                                console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
-                                console.log(selectedOption);
                                 deleteOption(getDeleteUrlForVehicleOption(selectedOption), vehicleOption.value).then(
                                     () => {
-                                        loadVehicleOptions();
+                                        fetchData();
                                     }
                                 );
                             }}
@@ -169,6 +170,7 @@ export function VehicleOptionsSubpage(): JSX.Element {
                         ).map((v: AssocDetailsDTO) => {
                             return { value: v.name, count: v.count };
                         })}
+                        fetchData={fetchData}
                     />
                 )}
             </SubpageContent>

@@ -9,7 +9,7 @@ interface UserDataProperties {
 
 export function UserData({ authenticatedUser: { name, surname, email } }: UserDataProperties): JSX.Element {
     return (
-        <div className="card">
+        <div className="card" style={{ borderRadius: 0 }}>
             <div className="card-header text-center">
                 <img src={carRentalLogoName} alt="CarRental logo" style={{ width: '80%' }} />
             </div>

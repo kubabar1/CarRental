@@ -1,9 +1,11 @@
 .card-link {
     margin-left: 0 !important;
+    border-radius: 0 !important;
 
     .card-header {
         color: #333;
         cursor: pointer;
+        border-radius: 0 !important;
     }
 
     .card-header:hover {

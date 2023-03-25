@@ -1,4 +1,6 @@
-import { DEFAULT_PAGE_SIZE, DEFAULT_START_PAGE } from '../../../main-page/src/constants/PathsAPI';
+export const DEFAULT_PAGE_INDEX = 0;
+
+export const DEFAULT_PAGE_SIZE = 10;
 
 const PROTOCOL = 'http';
 
@@ -20,7 +22,7 @@ const withId = (basePath: string, id: string): string => {
 
 export const PAGE_REQUEST = (
     url: string,
-    page: number = DEFAULT_START_PAGE,
+    page: number = DEFAULT_PAGE_INDEX,
     size: number = DEFAULT_PAGE_SIZE
 ): string => `${url}?page=${page}&size=${size}`;
 
