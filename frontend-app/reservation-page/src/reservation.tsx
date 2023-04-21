@@ -13,7 +13,7 @@ ReactDOM.render(
     <BrowserRouter>
         <React.StrictMode>
             <Route
-                path={`${reservationRootLink}/:stepPage`}
+                path={reservationRootLink}
                 component={(): JSX.Element => {
                     const [authenticatedUser, setAuthenticatedUser] = React.useState<AuthenticatedUserDTO | undefined>(
                         undefined
