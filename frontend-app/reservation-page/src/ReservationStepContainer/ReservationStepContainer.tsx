@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Logo } from './components/Logo/Logo';
 import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import {
@@ -12,11 +12,16 @@ import { StepsHeader } from './components/StepsHeader/StepsHeader';
 import { AuthenticatedUserDTO } from '../model/AuthenticatedUserDTO';
 import { useForm } from 'react-hook-form';
 import { ReservationConfirmation } from './subpages/ReservationConfirmation/ReservationConfirmation';
-import useFormPersist from 'react-hook-form-persist';
 import qs from 'qs';
 import date from 'date-and-time';
 import { PersonalDataCard } from './subpages/ReservationData/cards/PersonalDataCard/PersonalDataCard';
 import { ReservationDataCard } from './subpages/ReservationData/cards/ReservationDataCard/ReservationDataCard';
+import { reactHookFormStorage } from '../utils/StorageUtil';
+import { getAllLocationsList } from '../service/LocationService';
+import { LocalisationsResponseDTO } from '../model/LocalisationsResponseDTO';
+import LocalisationResponseDTO from '../model/LocalisationResponseDTO';
+import { getAvailableVehiclesByLocation } from '../service/VehicleService';
+import { VehicleResponseDTO } from '../model/VehicleResponseDTO';
 
 type ReservationFormValues = {
     localisationId: string;
@@ -47,17 +52,37 @@ interface ReservationStepContainerProps {
 
 export function ReservationStepContainer({ authenticatedUser }: ReservationStepContainerProps): JSX.Element {
     const [step, setStep] = React.useState<number>(1);
-    const [modalVehicleDetailsId, setModalVehicleDetailsId] = React.useState<string | undefined>(undefined);
-    const { formState, control, handleSubmit, register, watch, trigger, setValue } = useForm<ReservationFormValues>({
+    const { formState, control, handleSubmit, watch, trigger, setValue } = useForm<ReservationFormValues>({
         mode: 'onChange',
     });
+    const [localisations, setLocalisations] = React.useState<LocalisationResponseDTO[]>([]);
+    const [vehicles, setVehicles] = React.useState<VehicleResponseDTO[]>([]);
     const location = useLocation();
+    const selectedLocalisationId = watch('localisationId');
 
-    const reservationSessionStorage = useFormPersist('reservationSessionStorage', {
-        watch,
+    React.useEffect(() => {
+        getAllLocationsList().then((localisations: LocalisationsResponseDTO) => {
+            setLocalisations(localisations.locations);
+        });
+    }, []);
+
+    React.useEffect(() => {
+        if (selectedLocalisationId) {
+            getAvailableVehiclesByLocation(selectedLocalisationId).then((v: VehicleResponseDTO[]) => {
+                setVehicles(v);
+            });
+        }
+    }, [selectedLocalisationId]);
+
+    const reservationStorage = reactHookFormStorage<ReservationFormValues>(
+        'reservationSessionStorage',
         setValue,
-        storage: window.sessionStorage,
-    });
+        watch
+    );
+
+    useEffect(() => {
+        reservationStorage.setValuesInForm();
+    }, []);
 
     return (
         <div>
@@ -72,20 +97,27 @@ export function ReservationStepContainer({ authenticatedUser }: ReservationStepC
                         const vehicleIdFromUrl = getVehicleIdFromUrl(location.search);
                         const receptionDateFromUrl = getReceptionDateFromUrl(location.search);
                         const returnDateFromUrl = getReturnDateFromUrl(location.search);
-                        console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-                        console.log(localisationIdFromUrl);
-                        console.log(vehicleIdFromUrl);
                         if (localisationIdFromUrl) {
                             setValue('localisationId', localisationIdFromUrl);
+                            reservationStorage.replaceValueInStorage('localisationId', localisationIdFromUrl);
                         }
                         if (vehicleIdFromUrl) {
                             setValue('vehicleId', vehicleIdFromUrl);
+                            reservationStorage.replaceValueInStorage('vehicleId', vehicleIdFromUrl);
                         }
                         if (receptionDateFromUrl) {
                             setValue('receptionDate', date.format(new Date(receptionDateFromUrl), 'YYYY-MM-DD'));
+                            reservationStorage.replaceValueInStorage(
+                                'receptionDate',
+                                date.format(new Date(receptionDateFromUrl), 'YYYY-MM-DD')
+                            );
                         }
                         if (receptionDateFromUrl) {
                             setValue('returnDate', date.format(new Date(returnDateFromUrl), 'YYYY-MM-DD'));
+                            reservationStorage.replaceValueInStorage(
+                                'returnDate',
+                                date.format(new Date(returnDateFromUrl), 'YYYY-MM-DD')
+                            );
                         }
                         return <Redirect to={reservationDataSubpageLink} />;
                     }}
@@ -93,15 +125,16 @@ export function ReservationStepContainer({ authenticatedUser }: ReservationStepC
                 <Route
                     exact
                     path={reservationDataSubpageLink}
-                    component={(): JSX.Element => {
+                    render={(): JSX.Element => {
                         setStep(1);
                         return (
                             <main>
                                 <div id="reservation-data-container" className="container col-md-6 offset-md-3 my-5 ">
                                     <PersonalDataCard authenticatedUser={authenticatedUser} />
                                     <ReservationDataCard<ReservationFormValues>
-                                        register={register}
+                                        setValue={setValue}
                                         locationSelectName={'localisationId'}
+                                        vehicleSelectName={'vehicleId'}
                                         control={control}
                                         localisationError={formState.errors.localisationId}
                                         receptionDateError={formState.errors.receptionDate}
@@ -110,7 +143,8 @@ export function ReservationStepContainer({ authenticatedUser }: ReservationStepC
                                         returnDateSelectName={'returnDate'}
                                         onClickNext={handleSubmit}
                                         trigger={trigger}
-                                        clearReservationSessionStorage={reservationSessionStorage.clear}
+                                        reservationStorage={reservationStorage}
+                                        localisations={localisations}
                                     />
                                 </div>
                             </main>
@@ -120,17 +154,16 @@ export function ReservationStepContainer({ authenticatedUser }: ReservationStepC
                 <Route
                     exact
                     path={carSelectSubpageLink}
-                    component={(): JSX.Element => {
+                    render={(): JSX.Element => {
                         setStep(2);
                         return (
                             <ReservationCarSelect<ReservationFormValues>
                                 control={control}
+                                vehicles={vehicles}
                                 vehicleSelectName={'vehicleId'}
-                                locationSelectName={'localisationId'}
                                 onClickNext={handleSubmit}
                                 vehiclesError={formState.errors.vehicleId}
-                                modalVehicleDetailsId={modalVehicleDetailsId}
-                                setModalVehicleDetailsId={setModalVehicleDetailsId}
+                                reservationStorage={reservationStorage}
                             />
                         );
                     }}
@@ -138,7 +171,7 @@ export function ReservationStepContainer({ authenticatedUser }: ReservationStepC
                 <Route
                     exact
                     path={confirmationSubpageLink}
-                    component={(): JSX.Element => {
+                    render={(): JSX.Element => {
                         setStep(3);
                         return (
                             <ReservationConfirmation<ReservationFormValues>
@@ -148,8 +181,10 @@ export function ReservationStepContainer({ authenticatedUser }: ReservationStepC
                                 receptionDateSelectName={'receptionDate'}
                                 returnDateSelectName={'returnDate'}
                                 locationSelectName={'localisationId'}
-                                clearReservationSessionStorage={reservationSessionStorage.clear}
+                                localisations={localisations}
+                                vehicles={vehicles}
                                 onClickReserve={handleSubmit}
+                                reservationStorage={reservationStorage}
                             />
                         );
                     }}

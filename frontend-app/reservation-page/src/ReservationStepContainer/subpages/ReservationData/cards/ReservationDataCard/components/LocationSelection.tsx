@@ -4,6 +4,7 @@ import { Control, FieldError, FieldPath, FieldValues, Merge, RegisterOptions } f
 import { Controller } from 'react-hook-form';
 import Select from 'react-select';
 import LocalisationResponseDTO from '../../../../../../model/LocalisationResponseDTO';
+import { ReactHookFormStorage } from '../../../../../../utils/StorageUtil';
 
 interface LocationSelectionProps<FieldValuesType extends FieldValues> {
     allLocations: LocalisationResponseDTO[];
@@ -14,6 +15,8 @@ interface LocationSelectionProps<FieldValuesType extends FieldValues> {
         'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
     >;
     error: Merge<FieldError, (FieldError | undefined)[]> | undefined;
+    reservationStorage?: ReactHookFormStorage<FieldValuesType>;
+    afterChange?: () => void;
 }
 
 export type LocationOptionType = { value: string; label: string };
@@ -31,6 +34,8 @@ export function LocationSelection<FieldValuesType extends FieldValues>({
     rules,
     control,
     error,
+    reservationStorage,
+    afterChange,
 }: LocationSelectionProps<FieldValuesType>): JSX.Element {
     const options: LocationOptionType[] = allLocations.map((o: LocalisationResponseDTO) =>
         mapToLocationOptionType(o.id, `${o.city}, ${o.streetAndNb}`)
@@ -50,7 +55,14 @@ export function LocationSelection<FieldValuesType extends FieldValues>({
                                 return val.value == value;
                             })}
                             onChange={(val: SingleValue<LocationOptionType>) => {
-                                onChange(val === null ? val : (val as LocationOptionType).value);
+                                const changedValue = val === null ? val : (val as LocationOptionType).value;
+                                onChange(changedValue);
+                                if (reservationStorage) {
+                                    reservationStorage.replaceValueInStorage(inputName, changedValue);
+                                }
+                                if (afterChange) {
+                                    afterChange();
+                                }
                             }}
                         />
                     </div>

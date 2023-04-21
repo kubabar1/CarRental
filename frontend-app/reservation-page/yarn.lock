@@ -1358,11 +1358,6 @@ react-dom@^17.0.1:
     object-assign "^4.1.1"
     scheduler "^0.20.1"
 
-react-hook-form-persist@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/react-hook-form-persist/-/react-hook-form-persist-3.0.0.tgz#4aa1f7150d3f836408240cbfbfdb0fe4842f31a2"
-  integrity sha512-6nwW65JyFpBem9RjLYAWvIFxOLoCk0E13iB9e5yeF5jeHlwx1ua0M77FvwhPpD8eaCz7hG4ziCdOxRcnJVUSxQ==
-
 react-hook-form@^7.39.6:
   version "7.39.6"
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.39.6.tgz#8e85185046d1f798ef39f3b693bd7f389a9aae09"

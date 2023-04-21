@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import { carSelectSubpageLink, confirmationSubpageLink, reservationDataSubpageLink } from '../../../constants/Links';
 import './ReservationCarSelect.scss';
@@ -8,39 +8,28 @@ import { VehicleSelect } from './components/vehicle_select/VehicleSelect';
 import { UseFormHandleSubmit } from 'react-hook-form/dist/types/form';
 import { FieldError, Merge } from 'react-hook-form/dist/types';
 import { VehicleModal } from './components/vehicle_modal/VehicleModal';
-import { getAvailableVehiclesByLocation } from '../../../service/VehicleService';
+import { ReactHookFormStorage } from '../../../utils/StorageUtil';
 
 interface ReservationCarSelectProperties<FieldValuesType extends FieldValues> {
     control: Control<FieldValuesType>;
     vehicleSelectName: FieldPath<FieldValuesType>;
-    locationSelectName: FieldPath<FieldValuesType>;
+    vehicles: VehicleResponseDTO[];
     onClickNext: UseFormHandleSubmit<FieldValuesType>;
     vehiclesError: Merge<FieldError, (FieldError | undefined)[]> | undefined;
-    modalVehicleDetailsId: string | undefined;
-    setModalVehicleDetailsId: (isOpen: string | undefined) => void;
+    reservationStorage: ReactHookFormStorage<FieldValuesType>;
 }
 
 export function ReservationCarSelect<FieldValuesType extends FieldValues>({
     control,
     vehicleSelectName,
-    locationSelectName,
+    vehicles,
     onClickNext,
+    reservationStorage,
     vehiclesError,
-    modalVehicleDetailsId,
-    setModalVehicleDetailsId,
 }: ReservationCarSelectProperties<FieldValuesType>): JSX.Element {
-    const selectedVehicleId = useWatch({ name: vehicleSelectName, control: control });
-    const selectedLocalisationId = useWatch({ name: locationSelectName, control: control });
+    const [modalVehicleDetailsId, setModalVehicleDetailsId] = React.useState<string | undefined>(undefined);
     const history = useHistory();
-    const [vehicles, setVehicles] = React.useState<VehicleResponseDTO[]>([]);
-
-    React.useEffect(() => {
-        if (selectedLocalisationId) {
-            getAvailableVehiclesByLocation(selectedLocalisationId).then((v: VehicleResponseDTO[]) => {
-                setVehicles(v);
-            });
-        }
-    }, [selectedLocalisationId]);
+    const selectedVehicleId = useWatch({ name: vehicleSelectName, control: control });
 
     const handleClickNext: SubmitHandler<FieldValuesType> = (): any | Promise<any> => {
         history.push(confirmationSubpageLink);
@@ -69,6 +58,7 @@ export function ReservationCarSelect<FieldValuesType extends FieldValues>({
                                     control={control}
                                     vehicles={vehicles}
                                     setModalVehicleDetailsId={setModalVehicleDetailsId}
+                                    reservationStorage={reservationStorage}
                                 />
                             )}
                         </div>

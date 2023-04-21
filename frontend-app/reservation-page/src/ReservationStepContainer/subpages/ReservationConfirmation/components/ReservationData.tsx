@@ -1,32 +1,19 @@
 import React from 'react';
 import LocalisationResponseDTO from '../../../../model/LocalisationResponseDTO';
-import { getAllLocationsList } from '../../../../service/LocationService';
-import { LocalisationsResponseDTO } from '../../../../model/LocalisationsResponseDTO';
 
 interface ReservationConfirmationProperties {
     renderFormGroupItem: (label: string, value: string) => JSX.Element;
-    selectedLocalisationId: string;
     receptionDate: string;
     returnDate: string;
+    selectedLocation: LocalisationResponseDTO | undefined;
 }
 
 export function ReservationData({
     renderFormGroupItem,
-    selectedLocalisationId,
+    selectedLocation,
     receptionDate,
     returnDate,
 }: ReservationConfirmationProperties): JSX.Element {
-    const [localisations, setLocalisations] = React.useState<LocalisationResponseDTO[]>([]);
-    const selectedLocation: LocalisationResponseDTO | undefined = localisations.find(
-        (l) => l.id == selectedLocalisationId
-    );
-
-    React.useEffect(() => {
-        getAllLocationsList().then((localisations: LocalisationsResponseDTO) => {
-            setLocalisations(localisations.locations);
-        });
-    }, []);
-
     return (
         <div>
             <h3>{'Reservation data'}</h3>

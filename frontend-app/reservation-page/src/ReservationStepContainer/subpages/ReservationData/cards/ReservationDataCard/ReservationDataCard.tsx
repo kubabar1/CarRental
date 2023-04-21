@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { LocationSelection } from './components/LocationSelection';
 import './ReservationDataCard.scss';
 import { Link, useHistory } from 'react-router-dom';
@@ -6,18 +6,20 @@ import date from 'date-and-time';
 import LocalisationResponseDTO from '../../../../../model/LocalisationResponseDTO';
 import { carSelectSubpageLink, reservationDataSubpageLink } from '../../../../../constants/Links';
 import { endpoints } from '../../../../../constants/PathsAPI';
-import { FieldValues, SubmitHandler, UseFormRegister, useWatch } from 'react-hook-form';
+import { FieldValues, PathValue, SubmitHandler, UseFormRegister, useWatch } from 'react-hook-form';
 import { Control, FieldError, FieldPath, Merge } from 'react-hook-form/dist/types';
 import { DateInput } from './components/DateInput';
-import { UseFormHandleSubmit, UseFormTrigger } from 'react-hook-form/dist/types/form';
+import { UseFormHandleSubmit, UseFormSetValue, UseFormTrigger } from 'react-hook-form/dist/types/form';
 import { AuthenticatedUserDTO } from '../../../../../model/AuthenticatedUserDTO';
 import { getAuthenticatedUserData } from '../../../../../service/AuthenticationService';
 import { getAllLocationsList } from '../../../../../service/LocationService';
 import { LocalisationsResponseDTO } from '../../../../../model/LocalisationsResponseDTO';
+import { ReactHookFormStorage } from '../../../../../utils/StorageUtil';
 
 interface ReservationDataCardProperties<FieldValuesType extends FieldValues> {
-    register: UseFormRegister<FieldValuesType>;
+    setValue: UseFormSetValue<FieldValuesType>;
     locationSelectName: FieldPath<FieldValuesType>;
+    vehicleSelectName: FieldPath<FieldValuesType>;
     control: Control<FieldValuesType>;
     localisationError: Merge<FieldError, (FieldError | undefined)[]> | undefined;
     receptionDateError: Merge<FieldError, (FieldError | undefined)[]> | undefined;
@@ -26,22 +28,24 @@ interface ReservationDataCardProperties<FieldValuesType extends FieldValues> {
     returnDateSelectName: FieldPath<FieldValuesType>;
     onClickNext: UseFormHandleSubmit<FieldValuesType>;
     trigger: UseFormTrigger<FieldValuesType>;
-    clearReservationSessionStorage: () => void;
+    reservationStorage: ReactHookFormStorage<FieldValuesType>;
+    localisations: LocalisationResponseDTO[];
 }
 
 export function ReservationDataCard<FieldValuesType extends FieldValues>({
     locationSelectName,
+    vehicleSelectName,
     localisationError,
     receptionDateError,
     returnDateError,
     control,
-    register,
+    setValue,
     receptionDateSelectName,
     returnDateSelectName,
     onClickNext,
-    clearReservationSessionStorage,
+    reservationStorage,
+    localisations,
 }: ReservationDataCardProperties<FieldValuesType>): JSX.Element {
-    const [localisations, setLocalisations] = React.useState<LocalisationResponseDTO[]>([]);
     const receptionDate = useWatch({ name: receptionDateSelectName, control: control });
     const returnDate = useWatch({ name: returnDateSelectName, control: control });
     const minReceptionDate = date.format(new Date(), 'YYYY-MM-DD');
@@ -57,12 +61,6 @@ export function ReservationDataCard<FieldValuesType extends FieldValues>({
         history.push(carSelectSubpageLink);
     };
 
-    React.useEffect(() => {
-        getAllLocationsList().then((localisations: LocalisationsResponseDTO) => {
-            setLocalisations(localisations.locations);
-        });
-    }, []);
-
     return (
         <div id="reservation-data-card" className="shadow card mt-2">
             <div className="card-header text-center">
@@ -76,6 +74,11 @@ export function ReservationDataCard<FieldValuesType extends FieldValues>({
                         rules={{ required: 'Location is required' }}
                         error={localisationError}
                         control={control}
+                        reservationStorage={reservationStorage}
+                        afterChange={() => {
+                            setValue(vehicleSelectName, '' as PathValue<FieldValuesType, FieldPath<FieldValuesType>>);
+                            reservationStorage.removeValueFromStorage(vehicleSelectName);
+                        }}
                     />
                     <DateInput<FieldValuesType>
                         label={'Reception date:'}
@@ -88,7 +91,8 @@ export function ReservationDataCard<FieldValuesType extends FieldValues>({
                             max: { value: maxReceptionDate, message: 'Incorrect reception date' },
                         }}
                         inputError={receptionDateError}
-                        register={register}
+                        control={control}
+                        reservationStorage={reservationStorage}
                     />
                     <DateInput<FieldValuesType>
                         label={'Return date:'}
@@ -99,14 +103,15 @@ export function ReservationDataCard<FieldValuesType extends FieldValues>({
                             min: { value: minReturnDate, message: 'Incorrect return date' },
                         }}
                         inputError={returnDateError}
-                        register={register}
+                        control={control}
+                        reservationStorage={reservationStorage}
                     />
                     <div className="row">
                         <a
                             href={endpoints.homeEndpoint}
                             className="linkstyle btn btn-lg btn-secondary btn-block col-md-3 ml-5"
                             onClick={() => {
-                                clearReservationSessionStorage();
+                                reservationStorage.clear();
                             }}
                         >
                             Cancel

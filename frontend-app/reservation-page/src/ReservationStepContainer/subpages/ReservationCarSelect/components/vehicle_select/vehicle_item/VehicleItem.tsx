@@ -42,15 +42,15 @@ export function VehicleItem({
                 </div>
                 <div className="vehicle-details-footer text-center row">
                     <h5>${vehicle.dailyFee}</h5>
-                    <button
-                        className="btn btn-lg btn-secondary btn-block"
+                    <a
+                        className="btn btn-lg btn-secondary"
                         onClick={(e: React.MouseEvent) => {
                             e.stopPropagation();
                             setModalVehicleDetailsId(vehicle.id);
                         }}
                     >
                         Details
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

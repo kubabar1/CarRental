@@ -2,12 +2,14 @@ import React from 'react';
 import { VehicleResponseDTO } from '../../../../../model/VehicleResponseDTO';
 import { VehicleItem } from './vehicle_item/VehicleItem';
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
+import { ReactHookFormStorage } from '../../../../../utils/StorageUtil';
 
 interface VehicleSelectProperties<FieldValuesType extends FieldValues> {
     name: FieldPath<FieldValuesType>;
     control: Control<FieldValuesType>;
     vehicles: VehicleResponseDTO[];
     setModalVehicleDetailsId: (vehicleId: string | undefined) => void;
+    reservationStorage?: ReactHookFormStorage<FieldValuesType>;
 }
 
 export function VehicleSelect<FieldValuesType extends FieldValues>({
@@ -15,6 +17,7 @@ export function VehicleSelect<FieldValuesType extends FieldValues>({
     control,
     vehicles,
     setModalVehicleDetailsId,
+    reservationStorage,
 }: VehicleSelectProperties<FieldValuesType>): JSX.Element {
     return (
         <Controller
@@ -31,6 +34,9 @@ export function VehicleSelect<FieldValuesType extends FieldValues>({
                                 isSelected={vehicle.id == value}
                                 onClick={() => {
                                     onChange(vehicle.id);
+                                    if (reservationStorage) {
+                                        reservationStorage.replaceValueInStorage(name, vehicle.id);
+                                    }
                                 }}
                                 setModalVehicleDetailsId={setModalVehicleDetailsId}
                             />
