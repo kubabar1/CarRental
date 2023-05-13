@@ -47,32 +47,32 @@ export function SideNav({ userRoles = [], runLogout }: SideNavProperties): JSX.E
         <section id="menu-panel" className="mb-5">
             <NavLink navItemName={'Booking'} iconName={faListUl}>
                 <NavSubLink
-                    navItemName={'Bookings list'}
+                    navItemName={'All bookings'}
                     linkPath={bookingsListPath.link}
                     authorized={userHasAnyRole(userRoles, bookingsListPath.permittedRoles)}
                 />
                 <NavSubLink
-                    navItemName={'Reserved bookings list'}
+                    navItemName={'All reservations'}
                     linkPath={reservedBookingsListPath.link}
                     authorized={userHasAnyRole(userRoles, reservedBookingsListPath.permittedRoles)}
                 />
                 <NavSubLink
-                    navItemName={'Rented bookings list'}
+                    navItemName={'All rents'}
                     linkPath={rentedBookingsListPath.link}
                     authorized={userHasAnyRole(userRoles, rentedBookingsListPath.permittedRoles)}
                 />
                 <NavSubLink
-                    navItemName={'My bookings list'}
+                    navItemName={'My bookings'}
                     linkPath={myBookingsListPath.link}
                     authorized={userHasAnyRole(userRoles, myBookingsListPath.permittedRoles)}
                 />
                 <NavSubLink
-                    navItemName={'My reserved bookings list'}
+                    navItemName={'My reservations'}
                     linkPath={myReservedBookingsListPath.link}
                     authorized={userHasAnyRole(userRoles, myReservedBookingsListPath.permittedRoles)}
                 />
                 <NavSubLink
-                    navItemName={'My rented bookings list'}
+                    navItemName={'My rents'}
                     linkPath={myRentedBookingsListPath.link}
                     authorized={userHasAnyRole(userRoles, myRentedBookingsListPath.permittedRoles)}
                 />
@@ -91,14 +91,9 @@ export function SideNav({ userRoles = [], runLogout }: SideNavProperties): JSX.E
 
             <NavLink navItemName={'Vehicles'} iconName={faCar}>
                 <NavSubLink
-                    navItemName={'Vehicles list'}
+                    navItemName={'Vehicles'}
                     linkPath={vehiclesListPath.link}
                     authorized={userHasAnyRole(userRoles, vehiclesListPath.permittedRoles)}
-                />
-                <NavSubLink
-                    navItemName={'Reserved vehicles list'}
-                    linkPath={reservedVehiclesListPath.link}
-                    authorized={userHasAnyRole(userRoles, reservedVehiclesListPath.permittedRoles)}
                 />
                 <NavSubLink
                     navItemName={'Add vehicle'}
@@ -106,12 +101,12 @@ export function SideNav({ userRoles = [], runLogout }: SideNavProperties): JSX.E
                     authorized={userHasAnyRole(userRoles, vehicleAddPath.permittedRoles)}
                 />
                 <NavSubLink
-                    navItemName={'Equipment list'}
+                    navItemName={'Equipments'}
                     linkPath={equipmentListPath.link}
                     authorized={userHasAnyRole(userRoles, equipmentListPath.permittedRoles)}
                 />
                 <NavSubLink
-                    navItemName={'Vehicle options list'}
+                    navItemName={'Vehicle options'}
                     linkPath={vehicleOptionsListPath.link}
                     authorized={userHasAnyRole(userRoles, vehicleOptionsListPath.permittedRoles)}
                 />
@@ -125,7 +120,7 @@ export function SideNav({ userRoles = [], runLogout }: SideNavProperties): JSX.E
 
             {userHasAnyRole(userRoles, locationsListPath.permittedRoles) && (
                 <NavLink navItemName={'Locations'} iconName={faMapMarkedAlt}>
-                    <NavSubLink navItemName={'Locations list'} linkPath={locationsListPath.link} />
+                    <NavSubLink navItemName={'Locations'} linkPath={locationsListPath.link} />
                     <NavSubLink navItemName={'Add localisation'} linkPath={locationAddPath.link} />
                 </NavLink>
             )}

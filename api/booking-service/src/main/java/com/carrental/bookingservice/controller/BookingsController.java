@@ -6,22 +6,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
-
 @RequestMapping(value = "/bookings")
 public interface BookingsController {
 
     @GetMapping
-    ResponseEntity<Page<BookingResponseDTO>> getBookingsController(Pageable pageable);
+    ResponseEntity<Page<BookingResponseDTO>> getBookingsController(Pageable pageable, String filter);
 
     @GetMapping(value = "/{bookingId}")
     ResponseEntity<BookingResponseDTO> getBookingByIdController(@PathVariable(name = "bookingId") Long bookingId);
 
     @GetMapping(value = "/reserved")
-    ResponseEntity<Page<BookingResponseDTO>> getReservedBookingsController(Pageable pageable);
+    ResponseEntity<Page<BookingResponseDTO>> getReservedBookingsController(Pageable pageable, String filterString);
 
     @GetMapping(value = "/rented")
-    ResponseEntity<Page<BookingResponseDTO>> getRentedBookingsController(Pageable pageable);
+    ResponseEntity<Page<BookingResponseDTO>> getRentedBookingsController(Pageable pageable, String filterString);
 
     @PostMapping(value = "/cancel/{bookingId}")
     ResponseEntity<BookingResponseDTO> cancelBookingController(@PathVariable(name = "bookingId") Long bookingId);

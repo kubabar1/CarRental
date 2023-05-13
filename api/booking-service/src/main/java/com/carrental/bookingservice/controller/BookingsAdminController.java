@@ -2,6 +2,7 @@ package com.carrental.bookingservice.controller;
 
 import com.carrental.bookingservice.exception.BookingStateException;
 import com.carrental.bookingservice.model.dto.BookingResponseDTO;
+import com.carrental.bookingservice.model.dto.BookingStateDTO;
 import com.carrental.bookingservice.service.BookingAdminService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 @RequestMapping(value = "/admin/bookings")
 public class BookingsAdminController implements BookingsController {
@@ -23,8 +25,10 @@ public class BookingsAdminController implements BookingsController {
 
     @Override
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Page<BookingResponseDTO>> getBookingsController(Pageable pageable) {
-        return ResponseEntity.ok().body(bookingAdminService.getBookings(pageable));
+    public ResponseEntity<Page<BookingResponseDTO>> getBookingsController(
+            Pageable pageable,
+            @RequestParam(value = "filter", required = false) String filter) {
+        return ResponseEntity.ok().body(bookingAdminService.getBookings(pageable, filter));
     }
 
     @Override
@@ -40,14 +44,20 @@ public class BookingsAdminController implements BookingsController {
 
     @Override
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Page<BookingResponseDTO>> getReservedBookingsController(Pageable pageable) {
-        return ResponseEntity.ok().body(bookingAdminService.getReservedBookings(pageable));
+    public ResponseEntity<Page<BookingResponseDTO>> getReservedBookingsController(
+            Pageable pageable,
+            @RequestParam(value = "filter", required = false) String filterString
+    ) {
+        return ResponseEntity.ok().body(bookingAdminService.getReservedBookings(pageable, filterString));
     }
 
     @Override
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Page<BookingResponseDTO>> getRentedBookingsController(Pageable pageable) {
-        return ResponseEntity.ok().body(bookingAdminService.getRentedBookings(pageable));
+    public ResponseEntity<Page<BookingResponseDTO>> getRentedBookingsController(
+            Pageable pageable,
+            @RequestParam(value = "filter", required = false) String filterString
+    ) {
+        return ResponseEntity.ok().body(bookingAdminService.getRentedBookings(pageable, filterString));
     }
 
     @Override
@@ -84,5 +94,11 @@ public class BookingsAdminController implements BookingsController {
         } catch (BookingStateException exception) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @GetMapping(value = "/states")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Set<BookingStateDTO>> getAllBookingStatesController() {
+        return ResponseEntity.status(HttpStatus.OK).body(bookingAdminService.getBookingStates());
     }
 }

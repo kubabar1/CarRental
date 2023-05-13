@@ -17,7 +17,7 @@ type Equipment = {
 interface AddEquipmentModalProperties<FieldValuesType extends FieldValues> {
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
-    reloadEquipments: (pageIndex: number, pageSize: number) => void;
+    reloadEquipments: (pageIndex: number, pageSize: number, filter?: string, sortBy?: string, desc?: boolean) => void;
 }
 
 export function AddEquipmentModal<FieldValuesType extends FieldValues>({

@@ -47,7 +47,6 @@ import { ReservedBookingsListSubpage } from './subpages/booking/ReservedBookings
 import { RentedBookingsListSubpage } from './subpages/booking/RentedBookingsListSubpage';
 import { MyBookingsListSubpage } from './subpages/booking/MyBookingsListSubpage';
 import { MyRentedBookingsListSubpage } from './subpages/booking/MyRentedBookingsListSubpage';
-import { ReservedVehiclesListSubpage } from './subpages/booking/ReservedVehiclesListSubpage';
 import { BookingsAuditLogsListSubpage } from './subpages/booking/BookingsAuditLogsListSubpage';
 import { MyReservedBookingsListSubpage } from './subpages/booking/MyReservedBookingsListSubpage';
 import { AuthenticatedUserDTO } from './model/AuthenticatedUserDTO';
@@ -57,6 +56,8 @@ import { logout } from './service/AuthService';
 import { Button } from 'react-bootstrap';
 import { VehicleOptionsSubpage } from './subpages/vehicles/VehicleOptionsSubpage';
 import { LocationAddSubpage } from './subpages/locations/LocationAddSubpage';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function App(): JSX.Element {
     const [authenticatedUser, setAuthenticatedUser] = useState<AuthenticatedUserDTO | undefined>(undefined);
@@ -145,15 +146,6 @@ export function App(): JSX.Element {
                                 path={myRentedBookingsListPath.link}
                                 exact
                                 component={MyRentedBookingsListSubpage}
-                            />
-                            <ProtectedRoute
-                                isAuthorized={userHasAnyRole(
-                                    authenticatedUser.userRoles,
-                                    reservedVehiclesListPath.permittedRoles
-                                )}
-                                path={reservedVehiclesListPath.link}
-                                exact
-                                component={ReservedVehiclesListSubpage}
                             />
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(
@@ -321,6 +313,7 @@ export function App(): JSX.Element {
                         </div>
                     </div>
                 ))}
+            <ToastContainer />
         </div>
     );
 }

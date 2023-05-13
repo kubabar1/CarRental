@@ -1,3 +1,5 @@
+import { DEFAULT_START_PAGE } from '../../../main-page/src/constants/PathsAPI';
+
 export const DEFAULT_PAGE_INDEX = 0;
 
 export const DEFAULT_PAGE_SIZE = 10;
@@ -22,9 +24,15 @@ const withId = (basePath: string, id: string): string => {
 
 export const PAGE_REQUEST = (
     url: string,
-    page: number = DEFAULT_PAGE_INDEX,
-    size: number = DEFAULT_PAGE_SIZE
-): string => `${url}?page=${page}&size=${size}`;
+    page: number = DEFAULT_START_PAGE,
+    size: number = DEFAULT_PAGE_SIZE,
+    filter?: string,
+    sortBy?: string,
+    desc = false
+): string =>
+    `${url}?page=${page}&size=${size}${filter ? `&filter=${filter}` : ''}${
+        sortBy ? `&sort=${sortBy},${desc ? 'DESC' : 'ASC'}` : ''
+    }`;
 
 export const GET_ADMIN_BOOKINGS_PATH = `${ADMIN_PATH}/bookings`;
 
@@ -37,6 +45,8 @@ export const RENT_ADMIN_BOOKING = (bookingId: string): string => withId(`${ADMIN
 export const CANCEL_ADMIN_BOOKING = (bookingId: string): string => withId(`${ADMIN_PATH}/bookings/cancel`, bookingId);
 
 export const RETURN_ADMIN_BOOKING = (bookingId: string): string => withId(`${ADMIN_PATH}/bookings/return`, bookingId);
+
+export const BOOKING_STATES = `${ADMIN_PATH}/bookings/states`;
 
 export const GET_BOOKINGS_AUDIT_LOGS_PATH = `${APP_ADDR}/bookings-audit-logs`;
 

@@ -4,8 +4,7 @@ import javax.validation.constraints.NotEmpty;
 
 public enum VehicleStatCodeEnum {
     AVI("AVI"),
-    UAV("UAV"),
-    RMV("RMV");
+    UAV("UAV");
 
     @NotEmpty
     private String code;

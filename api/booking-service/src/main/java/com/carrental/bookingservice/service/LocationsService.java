@@ -9,7 +9,7 @@ import java.util.Set;
 
 public interface LocationsService {
 
-    Page<LocationResponseDTO> getLocations(Pageable pageable);
+    Page<LocationResponseDTO> getLocations(Pageable pageable, String filterString);
 
     LocationResponseDTO addLocation(LocationAddDTO locationAddDTO);
 

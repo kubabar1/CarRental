@@ -25,8 +25,11 @@ public class EquipmentController {
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_RENTING_EMPLOYEE')")
-    public ResponseEntity<Page<EquipmentResponseDTO>> getAllEquipmentsController(Pageable pageable) {
-        return ResponseEntity.ok().body(equipmentService.getAllEquipments(pageable));
+    public ResponseEntity<Page<EquipmentResponseDTO>> getAllEquipmentsController(
+            Pageable pageable,
+            @RequestParam(value = "filter", required = false) String filterString
+    ) {
+        return ResponseEntity.ok().body(equipmentService.getAllEquipments(pageable, filterString));
     }
 
     @GetMapping(value = "/{vehicleId}")

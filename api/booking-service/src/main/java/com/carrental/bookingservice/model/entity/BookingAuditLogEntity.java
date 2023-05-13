@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -23,10 +24,10 @@ public class BookingAuditLogEntity {
     private Long revtype;
 
     @Column(name = "receipt_date", nullable = false)
-    private LocalDateTime receiptDate;
+    private LocalDate receiptDate;
 
     @Column(name = "return_date", nullable = false)
-    private LocalDateTime returnDate;
+    private LocalDate returnDate;
 
     @Column(name = "total_cost", nullable = false)
     private BigDecimal totalCost;

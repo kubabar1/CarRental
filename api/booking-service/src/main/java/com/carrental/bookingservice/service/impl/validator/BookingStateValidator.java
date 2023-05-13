@@ -1,9 +1,8 @@
-package com.carrental.bookingservice.service.impl;
+package com.carrental.bookingservice.service.impl.validator;
 
 import com.carrental.bookingservice.exception.BookingStateException;
 import com.carrental.bookingservice.model.constants.BookingStateCodeEnum;
 import com.carrental.bookingservice.model.entity.BookingEntity;
-import org.springframework.stereotype.Component;
 
 public class BookingStateValidator {
 
@@ -19,5 +18,4 @@ public class BookingStateValidator {
             throw new BookingStateException("After status 'CAN' booking status cannot be updated");
         }
     }
-
 }

@@ -5,14 +5,18 @@ import com.carrental.bookingservice.model.dto.LocationResponseDTO;
 import com.carrental.bookingservice.model.entity.LocationEntity;
 import com.carrental.bookingservice.repository.LocationsRepository;
 import com.carrental.bookingservice.service.LocationsService;
+import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
+import org.apache.commons.collections4.IteratorUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,14 +27,22 @@ public class LocationsServiceImpl implements LocationsService {
 
     private final ModelMapper modelMapper;
 
-    public LocationsServiceImpl(ModelMapper modelMapper, LocationsRepository locationsRepository) {
+    private final FilterSpecificationBuilder<LocationEntity> filterSpecificationBuilder;
+
+    public LocationsServiceImpl(
+            ModelMapper modelMapper,
+            LocationsRepository locationsRepository,
+            FilterSpecificationBuilder<LocationEntity> filterSpecificationBuilder
+    ) {
         this.modelMapper = modelMapper;
         this.locationsRepository = locationsRepository;
+        this.filterSpecificationBuilder = filterSpecificationBuilder;
     }
 
     @Override
-    public Page<LocationResponseDTO> getLocations(Pageable pageable) {
-        Page<LocationEntity> locationEntities = locationsRepository.findAll(pageable);
+    public Page<LocationResponseDTO> getLocations(Pageable pageable, String filterString) {
+        Specification<LocationEntity> spec = filterSpecificationBuilder.build(filterString);
+        Page<LocationEntity> locationEntities = locationsRepository.findAll(spec, pageable);
         List<LocationResponseDTO> locationResponseDTOS = locationEntities
                 .getContent()
                 .stream()
@@ -47,7 +59,7 @@ public class LocationsServiceImpl implements LocationsService {
                     .map(locationEntity -> modelMapper.map(locationEntity, LocationResponseDTO.class))
                     .collect(Collectors.toSet());
         } else {
-            return locationsRepository.findAll()
+            return IteratorUtils.toList(locationsRepository.findAll().iterator())
                     .stream()
                     .map(locationEntity -> modelMapper.map(locationEntity, LocationResponseDTO.class))
                     .collect(Collectors.toSet());
@@ -63,7 +75,7 @@ public class LocationsServiceImpl implements LocationsService {
         locationEntity.setCode(locationAddDTO.getCode());
         locationEntity.setEmail(locationAddDTO.getEmail());
         locationEntity.setPhone(locationAddDTO.getPhone());
-        LocationEntity createdLocation  = locationsRepository.save(modelMapper.map(locationAddDTO, LocationEntity.class));
+        LocationEntity createdLocation = locationsRepository.save(modelMapper.map(locationAddDTO, LocationEntity.class));
         return modelMapper.map(createdLocation, LocationResponseDTO.class);
     }
 }

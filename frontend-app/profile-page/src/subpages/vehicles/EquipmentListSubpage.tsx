@@ -17,19 +17,26 @@ export function EquipmentListSubpage(): JSX.Element {
         undefined
     );
 
-    const fetchData = React.useCallback((pageIndex, pageSize) => {
-        getAllEquipmentsList(pageIndex, pageSize).then((page: Page<EquipmentResponseDTO>) => {
-            setVehicleEquipmentsPage(page);
-        });
-    }, []);
+    const fetchData = React.useCallback(
+        (pageIndex: number, pageSize: number, filter?: string, sortBy?: string, desc?: boolean): Promise<void> => {
+            return getAllEquipmentsList(pageIndex, pageSize, filter, sortBy, desc).then(
+                (page: Page<EquipmentResponseDTO>) => {
+                    setVehicleEquipmentsPage(page);
+                }
+            );
+        },
+        []
+    );
 
     const columns = React.useMemo<Column<EquipmentResponseDTO>[]>(
         () => [
             {
+                id: 'equipmentCode',
                 Header: 'Code',
                 accessor: 'equipmentCode',
             },
             {
+                id: 'description',
                 Header: 'Description',
                 accessor: 'description',
             },
@@ -39,7 +46,7 @@ export function EquipmentListSubpage(): JSX.Element {
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'Equipments list'} />
+            <SubpageHeader title={'Equipments'} />
             <SubpageContent>
                 <div className="add-equipment-button-container">
                     <Button onClick={() => setIsOpen(true)}>Add</Button>

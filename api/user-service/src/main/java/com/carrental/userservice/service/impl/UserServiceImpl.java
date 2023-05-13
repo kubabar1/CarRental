@@ -2,8 +2,8 @@ package com.carrental.userservice.service.impl;
 
 import com.carrental.commons.authentication.exception.AuthorizationException;
 import com.carrental.commons.authentication.model.AuthenticatedUser;
-import com.carrental.commons.authentication.model.AuthenticatedUserDTO;
 import com.carrental.commons.authentication.service.AuthenticatedUserDataService;
+import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
 import com.carrental.userservice.exception.UserAlreadyExistException;
 import com.carrental.userservice.model.dto.*;
 import com.carrental.userservice.model.entity.UserEntity;
@@ -12,13 +12,11 @@ import com.carrental.userservice.repository.UserRepository;
 import com.carrental.userservice.repository.UserRoleRepository;
 import com.carrental.userservice.service.UserService;
 import org.modelmapper.ModelMapper;
-import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.format.DateTimeFormatter;
@@ -39,13 +37,16 @@ public class UserServiceImpl implements UserService {
 
     private final RabbitTemplate rabbitTemplate;
 
+    private final FilterSpecificationBuilder<UserEntity> filterSpecificationBuilder;
+
     public UserServiceImpl(
             UserRepository userRepository,
             UserRoleRepository userRoleRepository,
             AuthenticatedUserDataService authenticatedUserDataService,
             ModelMapper modelMapper,
             PasswordEncoder passwordEncoder,
-            RabbitTemplate rabbitTemplate
+            RabbitTemplate rabbitTemplate,
+            FilterSpecificationBuilder<UserEntity> filterSpecificationBuilder
     ) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
@@ -53,6 +54,7 @@ public class UserServiceImpl implements UserService {
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
         this.rabbitTemplate = rabbitTemplate;
+        this.filterSpecificationBuilder = filterSpecificationBuilder;
     }
 
     @Override
@@ -61,8 +63,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserResponseDTO> getUsers(Pageable pageable) {
-        Page<UserEntity> userEntityPage = userRepository.findAll(pageable);
+    public Page<UserResponseDTO> getUsers(Pageable pageable, String filterString) throws IllegalArgumentException {
+        Specification<UserEntity> spec = filterSpecificationBuilder.build(filterString);
+        Page<UserEntity> userEntityPage = userRepository.findAll(spec, pageable);
         List<UserResponseDTO> userResponseDTOList = userEntityPage
                 .getContent()
                 .stream()

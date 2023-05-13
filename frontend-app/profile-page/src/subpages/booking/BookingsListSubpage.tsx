@@ -3,68 +3,41 @@ import { Table } from '../../components/table/Table';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { Column } from 'react-table';
+import { Column, HeaderProps } from 'react-table';
 import { BookingResponseDTO } from '../../model/BookingResponseDTO';
 import { getAllBookingsList } from '../../service/BookingAdminService';
 import Page from '../../../../main-page/src/model/Page';
+import { bookingListCommonColumns } from './BookingListCommonColumns';
+import { BookingStatesSelectColumnFilter } from '../../components/table/tab_items/booking_states_select_column_filter/BookingStatesSelectColumnFilter';
 
 export function BookingsListSubpage(): JSX.Element {
     const [bookingsPage, setBookingsPage] = useState<Page<BookingResponseDTO> | undefined>(undefined);
     const columns = React.useMemo<Column<BookingResponseDTO>[]>(
         () => [
+            ...bookingListCommonColumns(),
             {
-                Header: 'ID',
-                accessor: 'id',
-            },
-            {
-                Header: 'User ID',
-                accessor: 'userId',
-            },
-            {
-                Header: 'Vehicle ID',
-                accessor: 'vehicleId',
-            },
-            {
-                Header: 'Receipt date',
-                accessor: (row: BookingResponseDTO) => {
-                    return row.receiptDate;
-                },
-            },
-            {
-                Header: 'Return date',
-                accessor: (row: BookingResponseDTO) => {
-                    return row.returnDate;
-                },
-            },
-            {
-                Header: 'Location',
-                accessor: (row: BookingResponseDTO) => {
-                    return `${row.location.country}, ${row.location.city}, ${row.location.streetAndNb}`;
-                },
-            },
-            {
+                id: 'bookingStateCode',
                 Header: 'State',
                 accessor: (row: BookingResponseDTO) => {
                     return row.bookingState.description;
                 },
-            },
-            {
-                Header: 'Total cost',
-                accessor: 'totalCost',
+                Filter: (filterProps: React.PropsWithChildren<HeaderProps<BookingResponseDTO>>) => {
+                    return <BookingStatesSelectColumnFilter {...filterProps} />;
+                },
             },
         ],
         []
     );
 
-    const fetchData = React.useCallback((pageIndex, pageSize) => {
-        getAllBookingsList(pageIndex, pageSize).then((page: Page<BookingResponseDTO>) => {
+    const fetchData = React.useCallback((pageIndex, pageSize, filter, sortBy, desc): Promise<void> => {
+        return getAllBookingsList(pageIndex, pageSize, filter, sortBy, desc).then((page: Page<BookingResponseDTO>) => {
             setBookingsPage(page);
         });
     }, []);
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'Bookings list'} />
+            <SubpageHeader title={'All bookings'} />
             <SubpageContent>
                 <Table<BookingResponseDTO>
                     columns={columns}

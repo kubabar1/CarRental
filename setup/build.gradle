@@ -28,6 +28,7 @@ dependencies {
     implementation 'com.carrental.api:amqp-broker'
     implementation 'com.carrental.api:storage-service-stub'
     implementation 'org.springframework.boot:spring-boot-starter:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-devtools'
 }
 
 bootRun {

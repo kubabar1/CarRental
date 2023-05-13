@@ -51,8 +51,10 @@ public class BookingsUserController implements BookingsController {
 
     @Override
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Page<BookingResponseDTO>> getBookingsController(Pageable pageable) {
-        return ResponseEntity.ok().body(bookingUserService.getBookings(pageable));
+    public ResponseEntity<Page<BookingResponseDTO>> getBookingsController(
+            Pageable pageable,
+            @RequestParam(value = "filter", required = false) String filter) {
+        return ResponseEntity.ok().body(bookingUserService.getBookings(pageable, filter));
     }
 
     @Override
@@ -68,14 +70,20 @@ public class BookingsUserController implements BookingsController {
 
     @Override
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Page<BookingResponseDTO>> getReservedBookingsController(Pageable pageable) {
-        return ResponseEntity.ok().body(bookingUserService.getReservedBookings(pageable));
+    public ResponseEntity<Page<BookingResponseDTO>> getReservedBookingsController(
+            Pageable pageable,
+            @RequestParam(value = "filter", required = false) String filterString
+    ) {
+        return ResponseEntity.ok().body(bookingUserService.getReservedBookings(pageable, filterString));
     }
 
     @Override
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Page<BookingResponseDTO>> getRentedBookingsController(Pageable pageable) {
-        return ResponseEntity.ok().body(bookingUserService.getRentedBookings(pageable));
+    public ResponseEntity<Page<BookingResponseDTO>> getRentedBookingsController(
+            Pageable pageable,
+            @RequestParam(value = "filter", required = false) String filterString
+    ) {
+        return ResponseEntity.ok().body(bookingUserService.getRentedBookings(pageable, filterString));
     }
 
     @Override

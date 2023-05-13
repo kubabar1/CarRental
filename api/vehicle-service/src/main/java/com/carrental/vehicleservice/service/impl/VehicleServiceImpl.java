@@ -1,5 +1,6 @@
 package com.carrental.vehicleservice.service.impl;
 
+import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
 import com.carrental.vehicleservice.model.dto.*;
 import com.carrental.vehicleservice.model.entity.*;
 import com.carrental.vehicleservice.repository.*;
@@ -13,6 +14,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
@@ -47,7 +49,7 @@ public class VehicleServiceImpl implements VehicleService {
 
     private final RabbitTemplate rabbitTemplate;
 
-    private final EntityManager entityManager;
+    private final FilterSpecificationBuilder<VehicleEntity> filterSpecificationBuilder;
 
 
     public VehicleServiceImpl(
@@ -61,7 +63,7 @@ public class VehicleServiceImpl implements VehicleService {
             ModelMapper modelMapper,
             VehicleRatingService vehicleRatingService,
             RabbitTemplate rabbitTemplate,
-            EntityManager entityManager
+            FilterSpecificationBuilder<VehicleEntity> filterSpecificationBuilder
     ) {
         this.vehicleRepository = vehicleRepository;
         this.colorRepository = colorRepository;
@@ -73,12 +75,13 @@ public class VehicleServiceImpl implements VehicleService {
         this.modelMapper = modelMapper;
         this.vehicleRatingService = vehicleRatingService;
         this.rabbitTemplate = rabbitTemplate;
-        this.entityManager = entityManager;
+        this.filterSpecificationBuilder = filterSpecificationBuilder;
     }
 
     @Override
-    public Page<VehicleResponseDTO> getVehicles(Pageable pageable) {
-        Page<VehicleEntity> vehicles = vehicleRepository.findAll(pageable);
+    public Page<VehicleResponseDTO> getVehicles(Pageable pageable, String filterString) {
+        Specification<VehicleEntity> spec = filterSpecificationBuilder.build(filterString);
+        Page<VehicleEntity> vehicles = vehicleRepository.findAll(spec, pageable);
         List<VehicleResponseDTO> vehicleResponseDTOList = vehicles.getContent()
                 .stream()
                 .map(vehicleEntity -> modelMapper.map(vehicleEntity, VehicleResponseDTO.class))

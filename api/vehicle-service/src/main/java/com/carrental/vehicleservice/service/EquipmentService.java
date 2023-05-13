@@ -9,7 +9,7 @@ import java.util.Set;
 
 public interface EquipmentService {
 
-    Page<EquipmentResponseDTO> getAllEquipments(Pageable pageable);
+    Page<EquipmentResponseDTO> getAllEquipments(Pageable pageable, String filterString);
 
     Set<EquipmentResponseDTO> getVehicleEquipments(Long vehicleId) throws NoSuchElementException;
 

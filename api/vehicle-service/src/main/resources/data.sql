@@ -16,8 +16,7 @@ VALUES  ('ABS', 'ABS'),
 
 INSERT INTO vehicle_status
 VALUES  ('AVI','available'),
-        ('UAV','unavailable'),
-        ('RMV','removed');
+        ('UAV','unavailable');
 
 INSERT INTO colors(color)
 VALUES  ('Beige'),
@@ -34,7 +33,6 @@ INSERT INTO body_types(body_type)
 VALUES  ('Coupe'),
         ('Hatchback'),
         ('Kombi'),
-        ('Minivan'),
         ('SUV'),
         ('Sedan'),
         ('Van');
@@ -120,22 +118,22 @@ VALUES  ('Alfa Romeo','4C'),
         ('Ferrari','California');
 
 INSERT INTO vehicles (id, registration, brand, model, daily_fee, location_id, vehicle_status_code, best_offer)
-VALUES  (1, 'AB 12321','Alfa Romeo','4C',183.04,1,'AVI',1),
-        (2, 'BC 57843','Audi','R8',124.95,1,'AVI',0),
-        (3, 'SD 85678','Audi','Q5',153.88,1,'AVI',0),
-        (4, 'QW 32456','Audi','S5',176.41,1,'AVI',0),
-        (5, 'RE 54343','Audi','A3',109.38,1,'AVI',1),
-        (6, 'WE 54545','Audi','80',193.67,1,'AVI',0),
-        (7, 'WY 65656','BMW','I8',200.80,1,'AVI',0),
-        (8, 'AB 74535','BMW','X1',144.43,1,'AVI',0),
-        (9, 'AS 75675','BMW','M5',165.06,1,'AVI',0),
-        (10, 'QW 34546','BMW','M6',169.25,1,'AVI',0),
-        (11, 'EW 75674','Citroen','C4 Cactus',163.55,1,'AVI',0),
-        (12, 'FD 34567','Citroen','Jumpy',192.15,1,'AVI',0),
-        (13, 'SD 64626','Citroen','Xsara Picasso',206.25,1,'AVI',0),
-        (14, 'FD 55678','Dacia','Duster',153.09,1,'AVI',0),
-        (15, 'QW 77654','Dacia','Logan',164.67,1,'AVI',0),
-        (16, 'EW 37658','Fiat','Panda',201.32,1,'AVI',0),
+VALUES  (1, 'AB 12321','Alfa Romeo','4C',183.04,1,'UAV',1),
+        (2, 'BC 57843','Audi','R8',124.95,1,'UAV',0),
+        (3, 'SD 85678','Audi','Q5',153.88,1,'UAV',0),
+        (4, 'QW 32456','Audi','S5',176.41,1,'UAV',0),
+        (5, 'RE 54343','Audi','A3',109.38,1,'UAV',1),
+        (6, 'WE 54545','Audi','80',193.67,1,'UAV',0),
+        (7, 'WY 65656','BMW','I8',200.80,1,'UAV',0),
+        (8, 'AB 74535','BMW','X1',144.43,1,'UAV',0),
+        (9, 'AS 75675','BMW','M5',165.06,1,'UAV',0),
+        (10, 'QW 34546','BMW','M6',169.25,1,'UAV',0),
+        (11, 'EW 75674','Citroen','C4 Cactus',163.55,1,'UAV',0),
+        (12, 'FD 34567','Citroen','Jumpy',192.15,1,'UAV',0),
+        (13, 'SD 64626','Citroen','Xsara Picasso',206.25,1,'UAV',0),
+        (14, 'FD 55678','Dacia','Duster',153.09,1,'UAV',0),
+        (15, 'QW 77654','Dacia','Logan',164.67,1,'UAV',0),
+        (16, 'EW 37658','Fiat','Panda',201.32,1,'UAV',0),
         (17, 'FD 46544','Fiat','500',219.85,1,'AVI',0),
         (18, 'SD 34435','Ford','Mustang',212.32,1,'AVI',0),
         (19, 'AS 55454','Ford','Fiesta',226.59,1,'AVI',0),
@@ -171,7 +169,7 @@ VALUES  (1, 'AB 12321','Alfa Romeo','4C',183.04,1,'AVI',1),
         (49, 'QW 64365','Volvo','V40',199.37,2,'AVI',0),
         (50, 'EW 75675','Volvo','XC90',226.59,2,'AVI',0),
         (51, 'ZZ 21243','Ferrari','Enzo',255.22,2,'AVI',0),
-        (52, 'AS 21214','Ferrari','California',225.22,2,'UAV',0);
+        (52, 'AS 21214','Ferrari','California',225.22,2,'AVI',0);
 
 INSERT INTO eqp (vehicle_id, equipment_id)
 VALUES  (1,'AF'),(1,'CB'),(1,'CD'),(1,'CZ'),(1,'ESP'),(1,'EUL'),(1,'PPK'),(1,'SP'),(1,'WK'),
@@ -240,7 +238,7 @@ VALUES  (1,'Coupe',2017,'LPG',240,'auto',0,2,2,'Red',1,'alfa_romeo_4_c.png','Lor
         (10,'Coupe',2014,'Petrol',560,'auto',1,4,5,'Black',1,'bmw_m_6.png','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget finibus turpis, in rhoncus '),
         (11,'SUV',2016,'Petrol',80,'auto',0,4,5,'White',1,'citroen_c4_cactus.png','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget finibus turpis, in rhoncus '),
         (12,'Van',2013,'Petrol',115,'man',0,3,2,'Red',1,'citroen_jumpy.png','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget finibus turpis, in rhoncus '),
-        (13,'Minivan',2012,'LPG',105,'man',0,5,5,'Beige',0,'citroen_xsara_picasso.png','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget finibus turpis, in rhoncus'),
+        (13,'Van',2012,'LPG',105,'man',0,5,5,'Beige',0,'citroen_xsara_picasso.png','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget finibus turpis, in rhoncus'),
         (14,'SUV',2017,'LPG',95,'man',1,2,2,'Black',1,'dasia_duster.png','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget finibus turpis, in rhoncus '),
         (15,'Sedan',2015,'Petrol',80,'auto',1,2,2,'Brown',1,'dasia_logan.png','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget finibus turpis, in rhoncus '),
         (16,'Hatchback',2017,'Petrol',85,'man',0,2,2,'Red',1,'fiat_panda.png','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget finibus turpis, in rhoncus '),

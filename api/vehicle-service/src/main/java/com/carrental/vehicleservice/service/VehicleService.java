@@ -13,7 +13,7 @@ import java.util.Set;
 
 public interface VehicleService {
 
-    Page<VehicleResponseDTO> getVehicles(Pageable pageable);
+    Page<VehicleResponseDTO> getVehicles(Pageable pageable, String filterString);
 
     Page<VehicleResponseDTO> getBestOffersVehicles(Pageable pageable);
 

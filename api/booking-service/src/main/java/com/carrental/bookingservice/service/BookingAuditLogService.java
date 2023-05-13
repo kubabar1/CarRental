@@ -8,5 +8,5 @@ import java.util.Set;
 
 public interface BookingAuditLogService {
 
-    Page<BookingAuditLogResponseDTO> getBookingsAuditLogs(Pageable pageable);
+    Page<BookingAuditLogResponseDTO> getBookingsAuditLogs(Pageable pageable, String filterString);
 }

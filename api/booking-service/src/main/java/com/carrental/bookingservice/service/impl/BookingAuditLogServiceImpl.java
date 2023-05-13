@@ -4,15 +4,14 @@ import com.carrental.bookingservice.model.dto.BookingAuditLogResponseDTO;
 import com.carrental.bookingservice.model.entity.BookingAuditLogEntity;
 import com.carrental.bookingservice.repository.BookingAuditLogRepository;
 import com.carrental.bookingservice.service.BookingAuditLogService;
+import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class BookingAuditLogServiceImpl implements BookingAuditLogService {
@@ -21,14 +20,22 @@ public class BookingAuditLogServiceImpl implements BookingAuditLogService {
 
     private final ModelMapper modelMapper;
 
-    public BookingAuditLogServiceImpl(BookingAuditLogRepository bookingAuditLogRepository, ModelMapper modelMapper) {
+    private final FilterSpecificationBuilder<BookingAuditLogEntity> filterSpecificationBuilder;
+
+    public BookingAuditLogServiceImpl(
+            BookingAuditLogRepository bookingAuditLogRepository,
+            ModelMapper modelMapper,
+            FilterSpecificationBuilder<BookingAuditLogEntity> filterSpecificationBuilder
+    ) {
         this.bookingAuditLogRepository = bookingAuditLogRepository;
         this.modelMapper = modelMapper;
+        this.filterSpecificationBuilder = filterSpecificationBuilder;
     }
 
     @Override
-    public Page<BookingAuditLogResponseDTO> getBookingsAuditLogs(Pageable pageable) {
-        Page<BookingAuditLogEntity> bookingAuditLogEntities = bookingAuditLogRepository.findAll(pageable);
+    public Page<BookingAuditLogResponseDTO> getBookingsAuditLogs(Pageable pageable, String filterString) {
+        Specification<BookingAuditLogEntity> spec = filterSpecificationBuilder.build(filterString);
+        Page<BookingAuditLogEntity> bookingAuditLogEntities = bookingAuditLogRepository.findAll(spec, pageable);
         List<BookingAuditLogResponseDTO> bookingAuditLogResponseDTOList = bookingAuditLogEntities
                 .getContent()
                 .stream()

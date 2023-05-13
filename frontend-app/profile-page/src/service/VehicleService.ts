@@ -28,8 +28,14 @@ import { EquipmentAddDTO } from '../model/EquipmentAddDTO';
 import { EquipmentResponseDTO } from '../model/EquipmentResponseDTO';
 import { VehicleOptionsWithAssocCountDTO } from '../model/VehicleOptionsWithAssocCountDTO';
 
-export const getVehiclesList = (page?: number, size?: number): Promise<Page<VehicleResponseDTO>> => {
-    return fetchGet<Page<VehicleResponseDTO>>(PAGE_REQUEST(GET_VEHICLES_PATH, page, size));
+export const getVehiclesList = (
+    page?: number,
+    size?: number,
+    filter?: string,
+    sortBy?: string,
+    desc?: boolean
+): Promise<Page<VehicleResponseDTO>> => {
+    return fetchGet<Page<VehicleResponseDTO>>(PAGE_REQUEST(GET_VEHICLES_PATH, page, size, filter, sortBy, desc));
 };
 
 export const getVehicleById = (vehicleId: string): Promise<VehicleResponseDTO> => {

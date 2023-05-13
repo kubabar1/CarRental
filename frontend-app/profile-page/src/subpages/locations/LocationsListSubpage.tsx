@@ -11,8 +11,8 @@ import Page from '../../../../main-page/src/model/Page';
 export function LocationsListSubpage(): JSX.Element {
     const [locationsPage, setLocationsPage] = useState<Page<LocationResponseDTO> | undefined>(undefined);
 
-    const fetchData = React.useCallback((pageIndex, pageSize) => {
-        getLocationsList(pageIndex, pageSize).then((page: Page<LocationResponseDTO>) => {
+    const fetchData = React.useCallback((pageIndex, pageSize, filter, sortBy, desc): Promise<void> => {
+        return getLocationsList(pageIndex, pageSize, filter, sortBy, desc).then((page: Page<LocationResponseDTO>) => {
             setLocationsPage(page);
         });
     }, []);
@@ -49,7 +49,7 @@ export function LocationsListSubpage(): JSX.Element {
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'Locations list'} />
+            <SubpageHeader title={'Locations'} />
             <SubpageContent>
                 <Table<LocationResponseDTO>
                     columns={columns}

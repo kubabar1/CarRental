@@ -6,62 +6,30 @@ import { SubpageContent } from '../../components/subpage/content/SubpageContent'
 import { Column } from 'react-table';
 import { BookingResponseDTO } from '../../model/BookingResponseDTO';
 import { getAllRentedBookingsList, returnBooking } from '../../service/BookingAdminService';
-import { ButtonTableItem } from '../../components/table/tab_items/ButtonTableItem';
+import { ButtonTableItem } from '../../components/table/tab_items/button_table_item/ButtonTableItem';
 import Page from '../../../../main-page/src/model/Page';
 import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '../../constants/PathsAPI';
+import { bookingListCommonColumns } from './BookingListCommonColumns';
 
 export function RentedBookingsListSubpage(): JSX.Element {
     const [bookingsPage, setBookingsPage] = useState<Page<BookingResponseDTO> | undefined>(undefined);
 
-    const fetchData = React.useCallback((pageIndex, pageSize) => {
-        getAllRentedBookingsList(pageIndex, pageSize).then((bookingsListResponse: Page<BookingResponseDTO>) => {
-            setBookingsPage(bookingsListResponse);
-        });
-    }, []);
+    const fetchData = React.useCallback(
+        (pageIndex: number, pageSize: number, filter?: string, sortBy?: string, desc?: boolean): Promise<void> => {
+            return getAllRentedBookingsList(pageIndex, pageSize, filter, sortBy, desc).then(
+                (bookingsListResponse: Page<BookingResponseDTO>) => {
+                    setBookingsPage(bookingsListResponse);
+                }
+            );
+        },
+        []
+    );
 
     const columns = React.useMemo<Column<BookingResponseDTO>[]>(
         () => [
+            ...bookingListCommonColumns(),
             {
-                Header: 'ID',
-                accessor: 'id',
-            },
-            {
-                Header: 'User ID',
-                accessor: 'userId',
-            },
-            {
-                Header: 'Vehicle ID',
-                accessor: 'vehicleId',
-            },
-            {
-                Header: 'Receipt date',
-                accessor: (row: BookingResponseDTO) => {
-                    return row.receiptDate;
-                },
-            },
-            {
-                Header: 'Return date',
-                accessor: (row: BookingResponseDTO) => {
-                    return row.returnDate;
-                },
-            },
-            {
-                Header: 'Location',
-                accessor: (row: BookingResponseDTO) => {
-                    return `${row.location.country}, ${row.location.city}, ${row.location.streetAndNb}`;
-                },
-            },
-            {
-                Header: 'State',
-                accessor: (row: BookingResponseDTO) => {
-                    return row.bookingState.description;
-                },
-            },
-            {
-                Header: 'Total cost',
-                accessor: 'totalCost',
-            },
-            {
+                id: 'return',
                 Header: 'Return',
                 accessor: (row: BookingResponseDTO) => (
                     <ButtonTableItem
@@ -74,6 +42,8 @@ export function RentedBookingsListSubpage(): JSX.Element {
                         }
                     />
                 ),
+                disableSortBy: true,
+                disableFilters: true,
             },
         ],
         [fetchData]
@@ -81,7 +51,7 @@ export function RentedBookingsListSubpage(): JSX.Element {
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'Rented bookings list'} />
+            <SubpageHeader title={'All rents'} />
             <SubpageContent>
                 <Table<BookingResponseDTO>
                     columns={columns}

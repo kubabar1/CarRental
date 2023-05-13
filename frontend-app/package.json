@@ -42,6 +42,8 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "@types/uuid": "^9.0.1",
+    "uuid": "^9.0.0",
     "zxcvbn": "^4.4.2"
   }
 }

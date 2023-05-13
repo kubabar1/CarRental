@@ -1,12 +1,17 @@
 package com.carrental.vehicleservice.config;
 
+import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
+import com.carrental.commons.utils.filtering.specification.operations.impl.DefaultFilterOperations;
 import com.carrental.vehicleservice.controller.EquipmentController;
 import com.carrental.vehicleservice.controller.VehicleController;
+import com.carrental.vehicleservice.model.entity.EquipmentEntity;
+import com.carrental.vehicleservice.model.entity.VehicleEntity;
 import com.carrental.vehicleservice.repository.*;
 import com.carrental.vehicleservice.service.EquipmentService;
 import com.carrental.vehicleservice.service.FilteringService;
 import com.carrental.vehicleservice.service.VehicleRatingService;
 import com.carrental.vehicleservice.service.VehicleService;
+import com.carrental.vehicleservice.service.filter.EquipmentFilterOperations;
 import com.carrental.vehicleservice.service.impl.EquipmentServiceImpl;
 import com.carrental.vehicleservice.service.impl.FilteringServiceImpl;
 import com.carrental.vehicleservice.service.impl.VehicleRatingServiceImpl;
@@ -22,12 +27,28 @@ import javax.persistence.EntityManager;
 public class VehicleServiceCoreConfig {
 
     @Bean
+    public DefaultFilterOperations<EquipmentEntity> equipmentFilterOperations() {
+        return new DefaultFilterOperations<>();
+    }
+
+    @Bean
+    public DefaultFilterOperations<VehicleEntity> vehicleFilterOperations() {
+        return new EquipmentFilterOperations<>();
+    }
+
+    @Bean
     public EquipmentService equipmentService(
             EquipmentRepository equipmentRepository,
             VehicleRepository vehicleRepository,
-            ModelMapper modelMapper
+            ModelMapper modelMapper,
+            DefaultFilterOperations<EquipmentEntity> equipmentFilterOperations
     ) {
-        return new EquipmentServiceImpl(equipmentRepository, vehicleRepository, modelMapper);
+        return new EquipmentServiceImpl(
+                equipmentRepository,
+                vehicleRepository,
+                modelMapper,
+                new FilterSpecificationBuilder<>(equipmentFilterOperations)
+        );
     }
 
     @Bean
@@ -57,7 +78,7 @@ public class VehicleServiceCoreConfig {
             ModelMapper modelMapper,
             VehicleRatingService vehicleRatingService,
             RabbitTemplate rabbitTemplate,
-            EntityManager entityManager
+            DefaultFilterOperations<VehicleEntity> vehicleFilterOperations
     ) {
         return new VehicleServiceImpl(
                 vehicleRepository,
@@ -70,7 +91,7 @@ public class VehicleServiceCoreConfig {
                 modelMapper,
                 vehicleRatingService,
                 rabbitTemplate,
-                entityManager
+                new FilterSpecificationBuilder<>(vehicleFilterOperations)
         );
     }
 

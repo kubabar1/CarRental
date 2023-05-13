@@ -21,6 +21,9 @@ repositories {
 dependencies {
     implementation 'com.carrental.shared:shared-config-commons'
     implementation 'com.carrental.shared:shared-auth-commons'
+    implementation 'com.carrental.shared:shared-filtering-commons'
+    implementation 'org.apache.commons:commons-collections4:4.1'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'org.hibernate:hibernate-envers:5.6.7.Final'
     implementation 'org.springframework.boot:spring-boot-starter:2.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'

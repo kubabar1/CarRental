@@ -1,0 +1,21 @@
+.no-data-container {
+    text-align: center;
+    padding: 30px 0;
+
+    .no-data-magnifying-icon {
+        font-size: 40px;
+        padding-top: 5px;
+        color: #7f7f7f;
+        padding-bottom: 15px;
+    }
+
+    .no-data-no-results-found {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .no-data-adjust-filters {
+        margin-bottom: 10px;
+        color: #7f7f7f;
+    }
+}

@@ -7,10 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
@@ -25,7 +22,10 @@ public class BookingsAuditLogsController {
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Page<BookingAuditLogResponseDTO>> getBookingsAuditLogsController(Pageable pageable) {
-        return ResponseEntity.ok().body(bookingAuditLogService.getBookingsAuditLogs(pageable));
+    public ResponseEntity<Page<BookingAuditLogResponseDTO>> getBookingsAuditLogsController(
+            Pageable pageable,
+            @RequestParam(value = "filter", required = false) String filterString
+    ) {
+        return ResponseEntity.ok().body(bookingAuditLogService.getBookingsAuditLogs(pageable, filterString));
     }
 }

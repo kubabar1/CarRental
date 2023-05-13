@@ -2,3 +2,4 @@ rootProject.name = 'user-service'
 
 includeBuild '../shared/auth-commons'
 includeBuild '../shared/config-commons'
+includeBuild '../shared/filtering-commons'

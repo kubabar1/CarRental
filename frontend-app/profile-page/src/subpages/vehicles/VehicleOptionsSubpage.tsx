@@ -9,14 +9,11 @@ import { OnChangeValue } from 'react-select/dist/declarations/src/types';
 import Select from 'react-select';
 import './VehicleOptionsSubpage.scss';
 import { VehicleOptionsWithAssocCountDTO } from '../../model/VehicleOptionsWithAssocCountDTO';
-import { ButtonTableItem } from '../../components/table/tab_items/ButtonTableItem';
+import { ButtonTableItem } from '../../components/table/tab_items/button_table_item/ButtonTableItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { AssocDetailsDTO } from '../../model/AssocDetailsDTO';
 import { ModelAssocDetailsDTO } from '../../model/ModelAssocDetailsDTO';
-import { getUsersList } from '../../service/UserService';
-import Page from '../../../../main-page/src/model/Page';
-import { UserResponseDTO } from '../../model/UserResponseDTO';
 
 enum OptionType {
     BRANDS = 'brands',
@@ -77,8 +74,8 @@ export function VehicleOptionsSubpage(): JSX.Element {
         setSelectedBrand(null);
     }, [selectedOption]);
 
-    const fetchData = React.useCallback(() => {
-        getVehicleOptionsWithAssoc().then((vehicleDefaultParams: VehicleOptionsWithAssocCountDTO) => {
+    const fetchData = React.useCallback((): Promise<void> => {
+        return getVehicleOptionsWithAssoc().then((vehicleDefaultParams: VehicleOptionsWithAssocCountDTO) => {
             setVehicleOptions({ ...vehicleDefaultParams });
         });
     }, []);
@@ -86,10 +83,14 @@ export function VehicleOptionsSubpage(): JSX.Element {
     const columns = React.useMemo<Column<VehicleOption>[]>(
         () => [
             {
+                id: 'options',
                 Header: 'Options',
                 accessor: 'value',
+                disableFilters: true,
+                disableSortBy: true,
             },
             {
+                id: 'actions',
                 Header: 'Actions',
                 accessor: (vehicleOption: VehicleOption) => {
                     return (
@@ -114,6 +115,8 @@ export function VehicleOptionsSubpage(): JSX.Element {
                         />
                     );
                 },
+                disableFilters: true,
+                disableSortBy: true,
             },
         ],
         [selectedOption]

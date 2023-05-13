@@ -39,8 +39,11 @@ public class VehicleController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<VehicleResponseDTO>> getVehiclesController(Pageable pageable) {
-        return ResponseEntity.ok().body(vehicleService.getVehicles(pageable));
+    public ResponseEntity<Page<VehicleResponseDTO>> getVehiclesController(
+            Pageable pageable,
+            @RequestParam(value = "filter", required = false) String filterString
+    ) {
+        return ResponseEntity.ok().body(vehicleService.getVehicles(pageable, filterString));
     }
 
     @GetMapping(value = "/best-offers")

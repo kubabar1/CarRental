@@ -7,7 +7,7 @@ import { getAllEquipmentsNotAssignedToVehicleList, removeEquipmentFromVehicle } 
 import { EquipmentResponseDTO } from '../../model/EquipmentResponseDTO';
 import { Table } from '../../components/table/Table';
 import { Column } from 'react-table';
-import { ButtonTableItem } from '../../components/table/tab_items/ButtonTableItem';
+import { ButtonTableItem } from '../../components/table/tab_items/button_table_item/ButtonTableItem';
 import { VehicleDetails } from './components/vehicle_details/VehicleDetails';
 import { getVehicleById } from '../../service/VehicleService';
 import { VehicleResponseDTO } from '../../model/VehicleResponseDTO';
@@ -18,10 +18,12 @@ export function VehicleEquipmentEditSubpage(): JSX.Element {
     const [vehicle, setVehicle] = useState<VehicleResponseDTO | undefined>(undefined);
     const [allPossibleEquipments, setAllPossibleEquipments] = useState<EquipmentResponseDTO[]>([]);
 
-    const fetchData = React.useCallback(() => {
-        getAllEquipmentsNotAssignedToVehicleList(vehicleId).then((equipmentsResponse: EquipmentResponseDTO[]) => {
-            setAllPossibleEquipments(equipmentsResponse);
-        });
+    const fetchData = React.useCallback((): Promise<void> => {
+        return getAllEquipmentsNotAssignedToVehicleList(vehicleId).then(
+            (equipmentsResponse: EquipmentResponseDTO[]) => {
+                setAllPossibleEquipments(equipmentsResponse);
+            }
+        );
     }, [vehicleId]);
 
     useEffect(() => {

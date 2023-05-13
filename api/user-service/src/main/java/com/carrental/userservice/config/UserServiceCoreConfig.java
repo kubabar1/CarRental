@@ -1,6 +1,7 @@
 package com.carrental.userservice.config;
 
 import com.carrental.commons.authentication.service.AuthenticatedUserDataService;
+import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
 import com.carrental.userservice.controller.RegistrationController;
 import com.carrental.userservice.controller.ResetPasswordController;
 import com.carrental.userservice.controller.UserController;
@@ -9,6 +10,7 @@ import com.carrental.userservice.listener.RegistrationCompleteListener;
 import com.carrental.userservice.listener.ResendRegistrationConfirmTokenListener;
 import com.carrental.userservice.listener.SendResetPasswordEmailListener;
 import com.carrental.userservice.listener.UserListener;
+import com.carrental.userservice.model.entity.UserEntity;
 import com.carrental.userservice.repository.UserRepository;
 import com.carrental.userservice.repository.UserRoleRepository;
 import com.carrental.userservice.service.ResetPasswordService;
@@ -17,6 +19,7 @@ import com.carrental.userservice.service.UserService;
 import com.carrental.userservice.service.impl.ResetPasswordServiceImpl;
 import com.carrental.userservice.service.impl.UserRoleServiceImpl;
 import com.carrental.userservice.service.impl.UserServiceImpl;
+import com.carrental.userservice.service.impl.filtering.UserFilterOperation;
 import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -34,15 +37,29 @@ public class UserServiceCoreConfig {
     }
 
     @Bean
+    public UserFilterOperation<UserEntity> userFilterOperation() {
+        return new UserFilterOperation<>();
+    }
+
+    @Bean
     public UserService userService(
             UserRepository userRepository,
             UserRoleRepository userRoleRepository,
             AuthenticatedUserDataService authenticatedUserDataService,
             ModelMapper modelMapper,
             PasswordEncoder passwordEncoder,
-            RabbitTemplate rabbitTemplate
+            RabbitTemplate rabbitTemplate,
+            UserFilterOperation<UserEntity> userFilterOperation
     ) {
-        return new UserServiceImpl(userRepository, userRoleRepository, authenticatedUserDataService, modelMapper, passwordEncoder, rabbitTemplate);
+        return new UserServiceImpl(
+                userRepository,
+                userRoleRepository,
+                authenticatedUserDataService,
+                modelMapper,
+                passwordEncoder,
+                rabbitTemplate,
+                new FilterSpecificationBuilder<>(userFilterOperation)
+        );
     }
 
     @Bean

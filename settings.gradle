@@ -15,6 +15,7 @@ def projectsToInclude = [
         'api/shared/auth-commons',
         'api/shared/config-commons',
         'api/shared/files-commons',
+        'api/shared/filtering-commons',
 ]
 
 projectsToInclude.each {

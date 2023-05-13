@@ -12,19 +12,32 @@ export function UsersRolesListSubpage(): JSX.Element {
     const columns = React.useMemo<Column<UserRoleResponseDTO>[]>(
         () => [
             {
+                id: 'id',
                 Header: 'ID',
                 accessor: 'id',
+                disableFilters: true,
+                disableSortBy: true,
             },
             {
+                id: 'type',
                 Header: 'Type',
                 accessor: 'type',
+                disableFilters: true,
+                disableSortBy: true,
+            },
+            {
+                id: 'label',
+                Header: 'Label',
+                accessor: 'label',
+                disableFilters: true,
+                disableSortBy: true,
             },
         ],
         []
     );
 
-    const fetchData = React.useCallback(() => {
-        getAllUserRoles().then((userRoleResponseDTOS: UserRoleResponseDTO[]) => {
+    const fetchData = React.useCallback((): Promise<void> => {
+        return getAllUserRoles().then((userRoleResponseDTOS: UserRoleResponseDTO[]) => {
             setAllUserRoles(userRoleResponseDTOS);
         });
     }, []);

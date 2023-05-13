@@ -28,8 +28,14 @@ export const getUserById = (userId: string): Promise<UserResponseDTO> => {
     return fetchGet<UserResponseDTO>(GET_USER_BY_ID_PATH(userId));
 };
 
-export const getUsersList = (page?: number, size?: number): Promise<Page<UserResponseDTO>> => {
-    return fetchGet<Page<UserResponseDTO>>(PAGE_REQUEST(GET_USERS_PATH, page, size));
+export const getUsersList = (
+    page?: number,
+    size?: number,
+    filter?: string,
+    sortBy?: string,
+    desc?: boolean
+): Promise<Page<UserResponseDTO>> => {
+    return fetchGet<Page<UserResponseDTO>>(`${PAGE_REQUEST(GET_USERS_PATH, page, size, filter, sortBy, desc)}`);
 };
 
 export const getAllUsersEmails = (): Promise<UsersEmailsResponseDTO> => {

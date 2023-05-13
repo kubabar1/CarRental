@@ -31,8 +31,14 @@ export const GET_ALL_LOCATIONS_PATH = `${APP_ADDR}/locations/all`;
 export const PAGE_REQUEST = (
     url: string,
     page: number = DEFAULT_START_PAGE,
-    size: number = DEFAULT_PAGE_SIZE
-): string => `${url}?page=${page}&size=${size}`;
+    size: number = DEFAULT_PAGE_SIZE,
+    filter?: string,
+    sortBy?: string,
+    desc = false
+): string =>
+    `${url}?page=${page}&size=${size}${filter ? `&filter=${filter}` : ''}${
+        sortBy ? `&sort=${sortBy},${desc ? 'DESC' : 'ASC'}` : ''
+    }`;
 
 export const GET_VEHICLE_BY_ID_PATH = (vehicleId: string): string => withId(`${APP_ADDR}/vehicles`, vehicleId);
 

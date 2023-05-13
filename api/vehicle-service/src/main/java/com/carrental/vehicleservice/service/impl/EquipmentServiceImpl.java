@@ -1,5 +1,6 @@
 package com.carrental.vehicleservice.service.impl;
 
+import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
 import com.carrental.vehicleservice.model.dto.*;
 import com.carrental.vehicleservice.model.entity.ColorEntity;
 import com.carrental.vehicleservice.model.entity.EquipmentEntity;
@@ -11,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -25,19 +27,24 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     private final ModelMapper modelMapper;
 
+    private final FilterSpecificationBuilder<EquipmentEntity> filterSpecificationBuilder;
+
     public EquipmentServiceImpl(
             EquipmentRepository equipmentRepository,
             VehicleRepository vehicleRepository,
-            ModelMapper modelMapper
+            ModelMapper modelMapper,
+            FilterSpecificationBuilder<EquipmentEntity> filterSpecificationBuilder
     ) {
         this.equipmentRepository = equipmentRepository;
         this.vehicleRepository = vehicleRepository;
         this.modelMapper = modelMapper;
+        this.filterSpecificationBuilder = filterSpecificationBuilder;
     }
 
     @Override
-    public Page<EquipmentResponseDTO> getAllEquipments(Pageable pageable) {
-        Page<EquipmentEntity> equipmentEntities = equipmentRepository.findAll(pageable);
+    public Page<EquipmentResponseDTO> getAllEquipments(Pageable pageable, String filterString) {
+        Specification<EquipmentEntity> spec = filterSpecificationBuilder.build(filterString);
+        Page<EquipmentEntity> equipmentEntities = equipmentRepository.findAll(spec, pageable);
         List<EquipmentResponseDTO> equipmentResponseDTOS = equipmentEntities
                 .getContent()
                 .stream()

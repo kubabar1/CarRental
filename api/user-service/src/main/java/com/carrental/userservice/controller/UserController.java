@@ -3,13 +3,9 @@ package com.carrental.userservice.controller;
 import com.carrental.commons.authentication.exception.AuthorizationException;
 import com.carrental.userservice.exception.UserAlreadyExistException;
 import com.carrental.userservice.model.dto.*;
-import com.carrental.userservice.service.ResetPasswordService;
 import com.carrental.userservice.service.UserService;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,8 +31,11 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Page<UserResponseDTO>> getUsersController(Pageable pageable) {
-        return ResponseEntity.ok().body(userService.getUsers(pageable));
+    public ResponseEntity<Page<UserResponseDTO>> getUsersController(
+        @RequestParam(value = "filter", required = false) String filter,
+        Pageable pageable
+    ) {
+        return ResponseEntity.ok().body(userService.getUsers(pageable, filter));
     }
 
     @GetMapping("/all-emails")

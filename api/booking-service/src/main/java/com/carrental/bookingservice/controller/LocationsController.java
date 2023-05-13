@@ -7,10 +7,7 @@ import com.carrental.bookingservice.service.LocationsService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -24,8 +21,9 @@ public class LocationsController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<LocationResponseDTO>> getLocationsController(Pageable pageable) {
-        return ResponseEntity.ok().body(locationsService.getLocations(pageable));
+    public ResponseEntity<Page<LocationResponseDTO>> getLocationsController(
+            @RequestParam(value = "filter", required = false) String filter, Pageable pageable) {
+        return ResponseEntity.ok().body(locationsService.getLocations(pageable, filter));
     }
 
     @GetMapping

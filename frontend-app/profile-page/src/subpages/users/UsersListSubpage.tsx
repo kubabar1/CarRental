@@ -3,51 +3,87 @@ import { Table } from '../../components/table/Table';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { getUsersList } from '../../service/UserService';
-import { Column } from 'react-table';
+import { getAllUserRoles, getUsersList } from '../../service/UserService';
+import { Column, HeaderProps } from 'react-table';
 import { UserResponseDTO } from '../../model/UserResponseDTO';
-import { ButtonTableItem } from '../../components/table/tab_items/ButtonTableItem';
+import { ButtonTableItem } from '../../components/table/tab_items/button_table_item/ButtonTableItem';
 import { UserRolesTableItem } from './tab_items/UserRolesTableItem';
 import Page from '../../../../main-page/src/model/Page';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faFingerprint, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import './UsersListSubpage.scss';
+import {
+    SelectColumnFilter,
+    SelectColumnFilterOption,
+} from '../../components/table/tab_items/select_column_filter/SelectColumnFilter';
+import { UserRoleResponseDTO } from '../../model/UserRoleResponseDTO';
+import { RangeColumnFilter } from '../../components/table/tab_items/slider_column_filter/RangeColumnFilter';
 
 export function UsersListSubpage(): JSX.Element {
     const [usersPage, setUsersPage] = useState<Page<UserResponseDTO> | undefined>(undefined);
+    const [userRoles, setUserRoles] = useState<UserRoleResponseDTO[]>([]);
+
+    React.useEffect(() => {
+        getAllUserRoles().then((roles: UserRoleResponseDTO[]) => {
+            setUserRoles(roles);
+        });
+    }, []);
+
     const columns = React.useMemo<Column<UserResponseDTO>[]>(
         () => [
             {
+                id: 'id',
                 Header: 'ID',
                 accessor: 'id',
             },
             {
+                id: 'name',
                 Header: 'User name',
                 accessor: 'name',
             },
             {
+                id: 'surname',
                 Header: 'User surname',
                 accessor: 'surname',
             },
             {
+                id: 'email',
                 Header: 'Email',
                 accessor: 'email',
             },
             {
+                id: 'phone',
                 Header: 'Phone',
                 accessor: 'phone',
             },
             {
+                id: 'birthDate',
                 Header: 'Birth date',
                 accessor: 'birthDate',
+                Filter: (filterProps: React.PropsWithChildren<HeaderProps<UserResponseDTO>>) => {
+                    return <RangeColumnFilter inputType="date" {...filterProps} />;
+                },
             },
             {
+                id: 'roles',
                 Header: 'User roles',
                 accessor: (user: UserResponseDTO) => {
                     return <UserRolesTableItem userRoles={user.userRoles} />;
                 },
+                disableSortBy: true,
+                Filter: (filterProps: React.PropsWithChildren<HeaderProps<UserResponseDTO>>) => {
+                    return (
+                        <SelectColumnFilter
+                            options={userRoles.map((role: UserRoleResponseDTO) => {
+                                return { value: role.id, label: role.label } as SelectColumnFilterOption;
+                            })}
+                            {...filterProps}
+                        />
+                    );
+                },
             },
             {
+                id: 'actions',
                 Header: 'Actions',
                 accessor: (user: UserResponseDTO) => {
                     return (
@@ -76,13 +112,15 @@ export function UsersListSubpage(): JSX.Element {
                         </div>
                     );
                 },
+                disableFilters: true,
+                disableSortBy: true,
             },
         ],
-        []
+        [userRoles]
     );
 
-    const fetchData = React.useCallback((pageIndex, pageSize) => {
-        getUsersList(pageIndex, pageSize).then((page: Page<UserResponseDTO>) => {
+    const fetchData = React.useCallback((pageIndex, pageSize, filter, sortBy, desc): Promise<void> => {
+        return getUsersList(pageIndex, pageSize, filter, sortBy, desc).then((page: Page<UserResponseDTO>) => {
             setUsersPage(page);
         });
     }, []);
