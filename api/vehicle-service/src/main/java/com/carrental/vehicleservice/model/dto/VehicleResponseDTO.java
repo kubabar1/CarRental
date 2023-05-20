@@ -18,7 +18,7 @@ public class VehicleResponseDTO {
 
     private BigDecimal dailyFee;
 
-    private Long locationId;
+    private LocationResponseDTO location;
 
     private boolean bestOffer;
 

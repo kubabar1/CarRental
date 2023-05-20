@@ -1,10 +1,11 @@
 import { FilterProps } from 'react-table';
 import React, { ChangeEvent, useState } from 'react';
-import Dropdown from 'rc-dropdown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { Button } from 'react-bootstrap';
 import './RangeColumnFilter.scss';
+import classNames from 'classnames';
+import { FilterDropdown } from '../filter_dropdown/FilterDropdown';
 
 type RangeType = { min?: number | string; max?: number | string };
 
@@ -13,7 +14,7 @@ interface RangeColumnFilterInterface<D extends object> extends FilterProps<D> {
 }
 
 export function RangeColumnFilter<D extends object>({
-    column: { setFilter },
+    column: { filterValue, setFilter },
     inputType = 'search',
 }: RangeColumnFilterInterface<D>) {
     const [visible, setVisible] = React.useState<boolean>(false);
@@ -73,27 +74,16 @@ export function RangeColumnFilter<D extends object>({
     );
 
     return (
-        <Dropdown
-            trigger={['click']}
-            onVisibleChange={setVisible}
-            visible={visible}
-            overlay={menu}
-            animation="slide-up"
-        >
-            <a
-                href=""
-                onClick={(e: React.MouseEvent) => {
-                    e.stopPropagation();
+        <FilterDropdown menu={menu} visible={visible} setVisible={setVisible}>
+            <FontAwesomeIcon
+                className={classNames('link-style-black', 'font-awesome-style', 'filter-icon', {
+                    'filter-icon-active': !!filterValue,
+                })}
+                icon={faFilter}
+                onClick={() => {
+                    setVisible(!visible);
                 }}
-            >
-                <FontAwesomeIcon
-                    className="link-style-black font-awesome-style"
-                    icon={faFilter}
-                    onClick={() => {
-                        setVisible(!visible);
-                    }}
-                />
-            </a>
-        </Dropdown>
+            />
+        </FilterDropdown>
     );
 }

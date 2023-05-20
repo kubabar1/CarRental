@@ -53,7 +53,7 @@ public class DefaultFilterOperations<T> implements FilterOperations<T> {
         }
     }
 
-    private From<T, ?> joinFields(Root<T> root, String filterFields) {
+    protected From<T, ?> joinFields(Root<T> root, String filterFields) {
         From<T, ?> rootPath = root;
         String[] fields = getFieldsToJoin(filterFields);
         if (fields.length > 1) {
@@ -68,7 +68,7 @@ public class DefaultFilterOperations<T> implements FilterOperations<T> {
         return filterFields.split("\\.");
     }
 
-    private String getTopField(String filterFields) {
+    protected String getTopField(String filterFields) {
         String[] fields = getFieldsToJoin(filterFields);
         return fields.length > 1 ? fields[fields.length - 1] : filterFields;
     }

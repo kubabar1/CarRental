@@ -82,9 +82,23 @@ public class VehicleServiceImpl implements VehicleService {
     public Page<VehicleResponseDTO> getVehicles(Pageable pageable, String filterString) {
         Specification<VehicleEntity> spec = filterSpecificationBuilder.build(filterString);
         Page<VehicleEntity> vehicles = vehicleRepository.findAll(spec, pageable);
+        Set<LocationResponseDTO> locationResponseDTOS = rabbitTemplate.convertSendAndReceiveAsType(
+                "getLocationQueue",
+                "",
+                new ParameterizedTypeReference<>() {
+                }
+        );
+        Map<Long, LocationResponseDTO> locationResponseMap = locationResponseDTOS != null
+                ? locationResponseDTOS.stream().collect(Collectors.toMap(LocationResponseDTO::getId, e -> e))
+                : new HashMap<>();
+
         List<VehicleResponseDTO> vehicleResponseDTOList = vehicles.getContent()
                 .stream()
-                .map(vehicleEntity -> modelMapper.map(vehicleEntity, VehicleResponseDTO.class))
+                .map(vehicleEntity -> {
+                    VehicleResponseDTO vehicleDTO = modelMapper.map(vehicleEntity, VehicleResponseDTO.class);
+                    vehicleDTO.setLocation(locationResponseMap.get(vehicleEntity.getLocationId()));
+                    return vehicleDTO;
+                })
                 .collect(Collectors.toList());
 
         vehicleRatingService.setVehiclesAverageRating(vehicleResponseDTOList);

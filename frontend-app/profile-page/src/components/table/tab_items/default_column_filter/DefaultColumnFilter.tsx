@@ -1,15 +1,16 @@
 import { FilterProps } from 'react-table';
 import React, { ChangeEvent } from 'react';
 import { Button } from 'react-bootstrap';
-import Dropdown from 'rc-dropdown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import classNames from 'classnames';
+import { FilterDropdown } from '../filter_dropdown/FilterDropdown';
 
-export function DefaultColumnFilter<D extends object>({ column: { setFilter } }: FilterProps<D>) {
+export function DefaultColumnFilter<D extends object>({ column: { filterValue, setFilter } }: FilterProps<D>) {
     const [visible, setVisible] = React.useState<boolean>(false);
     const [value, setValue] = React.useState<string | undefined>(undefined);
 
-    const menu = (
+    const menu: JSX.Element = (
         <form
             className="row filter-card"
             onClick={(e: React.MouseEvent) => {
@@ -45,27 +46,16 @@ export function DefaultColumnFilter<D extends object>({ column: { setFilter } }:
     );
 
     return (
-        <Dropdown
-            trigger={['click']}
-            onVisibleChange={setVisible}
-            visible={visible}
-            overlay={menu}
-            animation="slide-up"
-        >
-            <a
-                href=""
-                onClick={(e: React.MouseEvent) => {
-                    e.stopPropagation();
+        <FilterDropdown menu={menu} visible={visible} setVisible={setVisible}>
+            <FontAwesomeIcon
+                className={classNames('link-style-black', 'font-awesome-style', 'filter-icon', {
+                    'filter-icon-active': !!filterValue,
+                })}
+                icon={faFilter}
+                onClick={() => {
+                    setVisible(!visible);
                 }}
-            >
-                <FontAwesomeIcon
-                    className="link-style-black font-awesome-style"
-                    icon={faFilter}
-                    onClick={() => {
-                        setVisible(!visible);
-                    }}
-                />
-            </a>
-        </Dropdown>
+            />
+        </FilterDropdown>
     );
 }

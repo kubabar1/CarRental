@@ -62,7 +62,7 @@ export function Table<T extends object>({
             defaultColumn: {
                 Filter: DefaultColumnFilter,
             },
-        },
+        } as TableOptions<T>,
         useFilters,
         useSortBy,
         usePagination

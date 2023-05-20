@@ -1,12 +1,13 @@
 import { FilterProps } from 'react-table';
-import React, { useState } from 'react';
+import React from 'react';
 import Select from 'react-select';
 import { SingleValue } from 'react-select';
-import Dropdown from 'rc-dropdown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { Button } from 'react-bootstrap';
 import './SelectColumnFilter.scss';
+import classNames from 'classnames';
+import { FilterDropdown } from '../filter_dropdown/FilterDropdown';
 
 export type SelectColumnFilterOption = { value: string | null; label: string | null };
 
@@ -17,11 +18,21 @@ interface SelectColumnFilterInterface<D extends object> extends FilterProps<D> {
 const filterAll: SelectColumnFilterOption = { value: null, label: 'All' };
 
 export function SelectColumnFilter<D extends object>({
-    column: { setFilter },
+    column: { filterValue, setFilter },
     options = [filterAll],
 }: SelectColumnFilterInterface<D>) {
     const [visible, setVisible] = React.useState<boolean>(false);
     const [value, setValue] = React.useState<SelectColumnFilterOption>(filterAll);
+
+    const optionsSorted: SelectColumnFilterOption[] = options
+        ? [...options?.sort()].sort((optionA: SelectColumnFilterOption, optionB: SelectColumnFilterOption) => {
+              if (optionA.label !== null && optionB.label !== null) {
+                  return optionA.label.localeCompare(optionB.label);
+              } else {
+                  return 0;
+              }
+          })
+        : [];
 
     const menu = (
         <form
@@ -41,7 +52,7 @@ export function SelectColumnFilter<D extends object>({
                         setValue(filterOption);
                     }
                 }}
-                options={[filterAll, ...options]}
+                options={[filterAll, ...optionsSorted]}
             />
             <Button
                 onClick={() => {
@@ -59,27 +70,16 @@ export function SelectColumnFilter<D extends object>({
     );
 
     return (
-        <Dropdown
-            trigger={['click']}
-            onVisibleChange={setVisible}
-            visible={visible}
-            overlay={menu}
-            animation="slide-up"
-        >
-            <a
-                href=""
-                onClick={(e: React.MouseEvent) => {
-                    e.stopPropagation();
+        <FilterDropdown menu={menu} visible={visible} setVisible={setVisible}>
+            <FontAwesomeIcon
+                className={classNames('link-style-black', 'font-awesome-style', 'filter-icon', {
+                    'filter-icon-active': !!filterValue,
+                })}
+                icon={faFilter}
+                onClick={() => {
+                    setVisible(!visible);
                 }}
-            >
-                <FontAwesomeIcon
-                    className="link-style-black font-awesome-style"
-                    icon={faFilter}
-                    onClick={() => {
-                        setVisible(!visible);
-                    }}
-                />
-            </a>
-        </Dropdown>
+            />
+        </FilterDropdown>
     );
 }
