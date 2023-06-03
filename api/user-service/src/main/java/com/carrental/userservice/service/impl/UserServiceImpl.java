@@ -63,6 +63,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UsersEmailsResponseDTO getAllUsersEmailsByIds(List<Long> userIds) {
+        UsersEmailsResponseDTO usersEmailsResponseDTO = new UsersEmailsResponseDTO();
+        usersEmailsResponseDTO.setEmails(userRepository.findAllEmailsByUserIdIn(userIds));
+        return usersEmailsResponseDTO;
+    }
+
+    @Override
     public Page<UserResponseDTO> getUsers(Pageable pageable, String filterString) throws IllegalArgumentException {
         Specification<UserEntity> spec = filterSpecificationBuilder.build(filterString);
         Page<UserEntity> userEntityPage = userRepository.findAll(spec, pageable);

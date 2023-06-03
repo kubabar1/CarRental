@@ -45,28 +45,41 @@ function NavLink({
         toggleOpen(isSelected);
     }, [isSelected, children]);
 
-    return (
-        <a
-            className="card card-link"
-            {...(linkPath
-                ? disableRefresh
-                    ? {
-                          onClick: onClick
-                              ? onClick
-                              : (e) => {
-                                    e.preventDefault();
-                                    history.push(linkPath);
-                                },
-                      }
-                    : { href: linkPath }
-                : {})}
-        >
+    const NavLinkMain = (): JSX.Element => {
+        return (
             <div className={`card-header ${isSelected ? 'header-collapsed' : ''}`} onClick={() => toggleOpen(!isOpen)}>
                 <FontAwesomeIcon className="mr-2" icon={iconName} />
                 {navItemName}
             </div>
-            <div style={{ display: isOpen ? '' : 'none' }}>{children}</div>
+        );
+    };
+
+    const NavLinkChildren = (): JSX.Element => {
+        return <div style={{ display: isOpen ? '' : 'none' }}>{children}</div>;
+    };
+
+    return linkPath ? (
+        <a
+            className="card card-link"
+            {...(disableRefresh
+                ? {
+                      onClick: onClick
+                          ? onClick
+                          : (e) => {
+                                e.preventDefault();
+                                history.push(linkPath!);
+                            },
+                  }
+                : { href: linkPath })}
+        >
+            <NavLinkMain />
+            <NavLinkChildren />
         </a>
+    ) : (
+        <div className="card card-link">
+            <NavLinkMain />
+            <NavLinkChildren />
+        </div>
     );
 }
 

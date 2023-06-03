@@ -52,6 +52,14 @@ public class UserController {
         return ResponseEntity.ok().body(userService.sendEmailsToMultipleRecipients(multipleRecipientsMailsDTO));
     }
 
+    @PostMapping("/selected-users-emails")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<UsersEmailsResponseDTO> getAllUsersEmailsByIdsController(
+        @RequestBody List<Long> userIds
+    ) {
+        return ResponseEntity.ok().body(userService.getAllUsersEmailsByIds(userIds));
+    }
+
     @PostMapping("/email-exists")
     public ResponseEntity<UserEmailExistsDTO> getUserEmailExistsController(
         @Valid @RequestBody PasswordResetRequestDTO passwordResetRequestDTO

@@ -8,13 +8,14 @@ import { InputFormGroup } from '../../components/form/form-group/input/InputForm
 import { TextAreaFormGroup } from '../../components/form/form-group/text-area/TextAreaFormGroup';
 import { mapToOptionType, OptionType, SelectFormGroup } from '../../components/form/form-group/select/SelectFormGroup';
 import { UsersEmailsResponseDTO } from '../../model/UsersEmailsResponseDTO';
-import { getAllUsersEmails } from '../../service/UserService';
+import { getAllUsersEmails, getAllUsersEmailsByIds } from '../../service/UserService';
 import { sendEmails } from '../../service/EmailService';
 import { MultipleRecipientsMailsDTO } from '../../model/MultipleRecipientsMailsDTO';
 import { useForm } from 'react-hook-form';
 
 interface EmailHistoryState {
-    emailAddress: string;
+    userEmail: string;
+    userIds: string[];
 }
 
 type EmailFormValues = {
@@ -27,24 +28,26 @@ export function EmailSubpage(): JSX.Element {
     const history = useHistory<EmailHistoryState>();
     const [allEmailAddresses, setAllEmailAddresses] = useState<OptionType[]>([]);
     const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState<boolean>(false);
-    const { register, formState, control, handleSubmit } = useForm<EmailFormValues>({
+    const { register, formState, control, handleSubmit, setValue, watch } = useForm<EmailFormValues>({
         mode: 'onChange',
-        defaultValues: React.useMemo(() => {
-            return {
-                recipients:
-                    history.location.state && history.location.state.emailAddress
-                        ? [history.location.state.emailAddress]
-                        : [],
-                emailSubject: '',
-                emailText: '',
-            };
-        }, [allEmailAddresses]),
+        defaultValues: {
+            recipients: [],
+            emailSubject: '',
+            emailText: '',
+        },
     });
 
     useEffect(() => {
         getAllUsersEmails().then((usersEmails: UsersEmailsResponseDTO) => {
             setAllEmailAddresses(usersEmails.emails.map(mapToOptionType));
         });
+        if (history.location.state && history.location.state.userEmail) {
+            setValue('recipients', history.location.state.userEmail);
+        } else if (history.location.state && history.location.state.userIds) {
+            getAllUsersEmailsByIds(history.location.state.userIds).then((usersEmails: UsersEmailsResponseDTO) => {
+                setValue('recipients', usersEmails.emails);
+            });
+        }
     }, []);
 
     const onSubmit = (data: EmailFormValues): void => {

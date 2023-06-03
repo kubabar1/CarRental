@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { AssocDetailsDTO } from '../../model/AssocDetailsDTO';
 import { ModelAssocDetailsDTO } from '../../model/ModelAssocDetailsDTO';
+import { EquipmentResponseDTO } from '../../model/EquipmentResponseDTO';
 
 enum OptionType {
     BRANDS = 'brands',
@@ -174,6 +175,7 @@ export function VehicleOptionsSubpage(): JSX.Element {
                             return { value: v.name, count: v.count };
                         })}
                         fetchData={fetchData}
+                        getRowId={(row: VehicleOption) => row.value}
                     />
                 )}
             </SubpageContent>

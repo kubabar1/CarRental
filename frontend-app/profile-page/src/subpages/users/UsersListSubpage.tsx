@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Table } from '../../components/table/Table';
+import { TableWithRef } from '../../components/table/Table';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
@@ -18,10 +18,19 @@ import {
 } from '../../components/table/tab_items/select_column_filter/SelectColumnFilter';
 import { UserRoleResponseDTO } from '../../model/UserRoleResponseDTO';
 import { RangeColumnFilter } from '../../components/table/tab_items/slider_column_filter/RangeColumnFilter';
+import { Button } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 
 export function UsersListSubpage(): JSX.Element {
+    const history = useHistory();
     const [usersPage, setUsersPage] = useState<Page<UserResponseDTO> | undefined>(undefined);
     const [userRoles, setUserRoles] = useState<UserRoleResponseDTO[]>([]);
+    const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
+    const ref = React.useCallback((node) => {
+        if (node && node.selectedRowIds) {
+            setSelectedRowIds(Object.keys(node.selectedRowIds).map((it: string) => parseInt(it)));
+        }
+    }, []);
 
     React.useEffect(() => {
         getAllUserRoles().then((roles: UserRoleResponseDTO[]) => {
@@ -105,7 +114,7 @@ export function UsersListSubpage(): JSX.Element {
                                 buttonRedirectPath={`/profile/email-send`}
                                 buttonVariant={'info'}
                                 buttonRedirectState={{
-                                    emailAddress: user.email,
+                                    userEmail: [user.email],
                                 }}
                                 tooltipMessage={'Send email'}
                             />
@@ -125,15 +134,37 @@ export function UsersListSubpage(): JSX.Element {
         });
     }, []);
 
+    const SendEmailsPanel = (): JSX.Element => {
+        return (
+            <div style={{ padding: '0 10px' }}>
+                <Button
+                    variant={'info'}
+                    disabled={!selectedRowIds.length}
+                    onClick={() => {
+                        history.push(`/profile/email-send`, {
+                            userIds: selectedRowIds,
+                        });
+                    }}
+                    style={{ display: 'block', marginLeft: 'auto', marginRight: '0' }}
+                >
+                    <FontAwesomeIcon icon={faEnvelope} /> Send email
+                </Button>
+            </div>
+        );
+    };
+
     return (
         <SubpageContainer className="user-list-subpage">
             <SubpageHeader title={'Users list'} />
             <SubpageContent>
-                <Table<UserResponseDTO>
+                <SendEmailsPanel />
+                <TableWithRef<UserResponseDTO>
                     columns={columns}
                     data={usersPage ? usersPage.content : []}
                     fetchData={fetchData}
                     pageCount={usersPage?.totalPages}
+                    selectEnabled
+                    reference={ref}
                 />
             </SubpageContent>
         </SubpageContainer>

@@ -113,6 +113,8 @@ export const GET_USERS_PATH = `${APP_ADDR}/users`;
 
 export const GET_ALL_USERS_EMAILS = `${APP_ADDR}/users/all-emails`;
 
+export const GET_SELECTED_USERS_EMAILS = `${APP_ADDR}/users/selected-users-emails`;
+
 export const SEND_EMAILS_TO_USERS = `${APP_ADDR}/users/send-emails`;
 
 export const GET_AUTHORIZED_USER_PATH = `${APP_ADDR}/authentication/user-data`;

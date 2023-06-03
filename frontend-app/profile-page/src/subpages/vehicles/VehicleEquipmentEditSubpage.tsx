@@ -35,14 +35,17 @@ export function VehicleEquipmentEditSubpage(): JSX.Element {
     const columns = React.useMemo<Column<EquipmentResponseDTO>[]>(
         () => [
             {
+                id: 'equipmentCode',
                 Header: 'Code',
                 accessor: 'equipmentCode',
             },
             {
+                id: 'description',
                 Header: 'Description',
                 accessor: 'description',
             },
             {
+                id: 'removeAction',
                 Header: 'Remove',
                 accessor: (equipmentResponseDTO: EquipmentResponseDTO) => (
                     <ButtonTableItem
@@ -84,7 +87,12 @@ export function VehicleEquipmentEditSubpage(): JSX.Element {
                 )}
                 <h5 className={'mt-4 mb-4 font-weight-bold'}>Vehicle equipment</h5>
                 {vehicle && (
-                    <Table<EquipmentResponseDTO> columns={columns} data={vehicle.equipments} fetchData={fetchData} />
+                    <Table<EquipmentResponseDTO>
+                        columns={columns}
+                        data={vehicle.equipments}
+                        fetchData={fetchData}
+                        getRowId={(row: EquipmentResponseDTO) => row.equipmentCode}
+                    />
                 )}
             </SubpageContent>
         </SubpageContainer>

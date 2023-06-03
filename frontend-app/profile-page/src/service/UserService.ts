@@ -6,6 +6,7 @@ import {
     ADD_ROLE_TO_USER_PATH,
     GET_ALL_USERS_EMAILS,
     GET_AUTHORIZED_USER_PATH,
+    GET_SELECTED_USERS_EMAILS,
     GET_USER_BY_ID_PATH,
     GET_USERS_PATH,
     GET_USERS_ROLES_PATH,
@@ -40,6 +41,10 @@ export const getUsersList = (
 
 export const getAllUsersEmails = (): Promise<UsersEmailsResponseDTO> => {
     return fetchGet<UsersEmailsResponseDTO>(GET_ALL_USERS_EMAILS);
+};
+
+export const getAllUsersEmailsByIds = (userIds: string[]): Promise<UsersEmailsResponseDTO> => {
+    return fetchPost<UsersEmailsResponseDTO>(GET_SELECTED_USERS_EMAILS, userIds);
 };
 
 export const getAllUserRoles = (): Promise<UserRoleResponseDTO[]> => {

@@ -56,6 +56,7 @@ export function EquipmentListSubpage(): JSX.Element {
                     data={vehicleEquipmentsPage ? vehicleEquipmentsPage.content : []}
                     fetchData={fetchData}
                     pageCount={vehicleEquipmentsPage?.totalPages}
+                    getRowId={(row: EquipmentResponseDTO) => row.equipmentCode}
                 />
                 <AddEquipmentModal isOpen={isOpen} setIsOpen={setIsOpen} reloadEquipments={fetchData} />
             </SubpageContent>

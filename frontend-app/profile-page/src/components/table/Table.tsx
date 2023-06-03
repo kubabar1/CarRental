@@ -1,6 +1,15 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 import BTable from 'react-bootstrap/Table';
-import { TableOptions, useTable, usePagination, useFilters, useSortBy, Filters } from 'react-table';
+import {
+    TableOptions,
+    useTable,
+    usePagination,
+    useFilters,
+    useSortBy,
+    Filters,
+    useRowSelect,
+    Hooks,
+} from 'react-table';
 import './Table.scss';
 import classNames from 'classnames';
 import { SubpagePagination } from '../subpage/pagination/SubpagePagination';
@@ -13,6 +22,7 @@ import 'rc-dropdown/assets/index.css';
 import { DefaultColumnFilter } from './tab_items/default_column_filter/DefaultColumnFilter';
 import { NoData } from './tab_items/no-data/NoData';
 import { Loading } from './tab_items/loading/Loading';
+import { IndeterminateCheckbox } from './tab_items/indeterminate_checkbox/IndeterminateCheckbox';
 
 interface TableComponentInterface<T extends object> extends TableOptions<T> {
     fetchData: (
@@ -23,14 +33,36 @@ interface TableComponentInterface<T extends object> extends TableOptions<T> {
         desc?: boolean
     ) => Promise<void>;
     tableContainerClassName?: string;
+    selectEnabled?: boolean;
+    reference?: RefObject<T>;
 }
+
+const stateReducer = (ids) => (newState, action) => {
+    if (action.type === 'toggleAllRowsSelected') {
+        if (action.value) {
+            return {
+                ...newState,
+                selectedRowIds: extractSelectedRowIds(ids),
+            };
+        }
+        return { ...newState, selectedRowIds: {} };
+    }
+    return newState;
+};
+
+const extractSelectedRowIds = (ids) => {
+    return ids.reduce((row, id) => ({ ...row, [id]: true }), {});
+};
 
 export function Table<T extends object>({
     columns,
     data,
     fetchData,
+    getRowId = (row: T) => row.id,
     tableContainerClassName,
+    selectEnabled = false,
     pageCount: controlledPageCount,
+    reference = React.createRef<T>(),
 }: TableComponentInterface<T>): JSX.Element {
     const location = useLocation();
     const pageSizeFromUrl: number = getCountFromUrl(location.search);
@@ -59,13 +91,45 @@ export function Table<T extends object>({
             manualFilters: true,
             manualSortBy: true,
             pageCount: controlledPageCount,
+            autoResetSelectedRows: false,
+            getRowId: getRowId,
+            stateReducer: stateReducer(data.map((d: T) => d.id)),
             defaultColumn: {
                 Filter: DefaultColumnFilter,
             },
         } as TableOptions<T>,
         useFilters,
         useSortBy,
-        usePagination
+        usePagination,
+        useRowSelect,
+        (hooks: Hooks<T>) => {
+            if (selectEnabled) {
+                hooks.visibleColumns.push((columns) => [
+                    {
+                        id: 'selection',
+                        Header: ({ getToggleAllRowsSelectedProps }) => (
+                            <div>
+                                <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+                            </div>
+                        ),
+                        Cell: ({ row }) => (
+                            <div>
+                                <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+                            </div>
+                        ),
+                    },
+                    ...columns,
+                ]);
+            }
+        }
+    );
+
+    React.useImperativeHandle(
+        reference,
+        () => ({
+            selectedRowIds: state.selectedRowIds,
+        }),
+        [state.selectedRowIds]
     );
 
     const createFilterString = (filters: Filters<T>): string => {
@@ -174,3 +238,5 @@ export function Table<T extends object>({
         <Loading />
     );
 }
+
+export const TableWithRef = React.forwardRef(Table);

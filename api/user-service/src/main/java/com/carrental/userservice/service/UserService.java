@@ -23,6 +23,8 @@ public interface UserService {
 
     UsersEmailsResponseDTO getAllUsersEmails();
 
+    UsersEmailsResponseDTO getAllUsersEmailsByIds(List<Long> userIds);
+
     UsersEmailsResponseDTO sendEmailsToMultipleRecipients(MultipleRecipientsMailsDTO multipleRecipientsMailsDTO);
 
     UserResponseDTO updateUser(Long userId, UserUpdateDTO userUpdateDTO) throws NoSuchElementException;
