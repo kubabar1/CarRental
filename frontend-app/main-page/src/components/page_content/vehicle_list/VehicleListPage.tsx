@@ -76,7 +76,7 @@ function VehicleListPage(): JSX.Element {
                                         <VehicleItem vehicle={vehicle} key={vehicle.id} />
                                     ))}
                                 {vehiclesPage && (
-                                    <div className="pagination-and-counter-container">
+                                    <div className="pagination-and-counter-container row">
                                         <ReactPaginate
                                             previousLabel="Previous"
                                             nextLabel="Next"

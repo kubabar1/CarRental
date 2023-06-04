@@ -25,8 +25,8 @@ export function SearchMinMaxInput({
     return (
         <div className="search-min-max-input-container">
             <label>{label}</label>
-            <div className="search-min-max-input-groups-container">
-                <InputGroup className="search-min-max-input-group">
+            <div className="search-min-max-input-groups-container row">
+                <InputGroup className="search-min-max-input-group col-xl-6 col-lg-12">
                     {!!labelMin && <InputGroup.Text>{labelMin}</InputGroup.Text>}
                     <Form.Control
                         aria-label={labelMin}
@@ -37,7 +37,7 @@ export function SearchMinMaxInput({
                         }}
                     />
                 </InputGroup>
-                <InputGroup className="search-min-max-input-group">
+                <InputGroup className="search-min-max-input-group col-xl-6 col-lg-12">
                     {!!labelMax && <InputGroup.Text>{labelMax}</InputGroup.Text>}
                     <Form.Control
                         aria-label={labelMax}

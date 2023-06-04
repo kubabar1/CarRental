@@ -2,8 +2,48 @@
     position: relative;
     height: 600px;
 
+    @media only screen and (max-width: 576px) {
+        background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
+    }
+
+    @media only screen and (max-width: 992px) {
+        height: 450px !important;
+    }
+
+    @media only screen and (max-width: 1500px) {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1500px;
+    }
+
+    .reservation-slide-container {
+        @media only screen and (max-width: 1500px) {
+            height: 600px !important;
+
+            img {
+                height: 600px !important;
+            }
+        }
+
+        @media only screen and (max-width: 992px) {
+            height: 450px !important;
+
+            img {
+                height: 450px !important;
+            }
+        }
+    }
+
     .carousel-root {
         position: absolute;
+
+        @media only screen and (max-width: 576px) {
+            display: none;
+        }
+
+        @media only screen and (max-width: 1500px) {
+            max-width: 1500px;
+        }
 
         .control-dots {
             text-align: left;
@@ -13,6 +53,10 @@
 
         .slider-wrapper {
             height: 600px;
+
+            @media only screen and (max-width: 992px) {
+                height: 450px !important;
+            }
         }
     }
 

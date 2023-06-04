@@ -15,7 +15,7 @@ export function RoundedImagesPanel(): JSX.Element {
         imageAlt = 'Car image'
     ): JSX.Element => {
         return (
-            <div className="car-item col-sm-6 col-md-3">
+            <div className="car-item col-12 col-sm-6 col-md-4 col-lg-3">
                 <Link to={link} className="link-style-black">
                     <img src={image} className="img-responsive" alt={imageAlt} />
                     <div className="text-under-round-image">

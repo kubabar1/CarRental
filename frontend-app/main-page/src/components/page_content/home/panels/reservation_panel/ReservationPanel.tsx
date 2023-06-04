@@ -44,14 +44,14 @@ export function ReservationPanel({ authenticatedUser }: ReservationPanelProperti
                 }}
                 selectedItem={selectedCarouselItem}
             >
-                <div>
-                    <img className="d-block h-100" src={frontImage1} />
+                <div className="reservation-slide-container">
+                    <img className="d-block" src={frontImage1} />
                 </div>
-                <div>
-                    <img className="d-block h-100" src={frontImage2} />
+                <div className="reservation-slide-container">
+                    <img className="d-block" src={frontImage2} />
                 </div>
-                <div>
-                    <img className="d-block h-100" src={frontImage3} />
+                <div className="reservation-slide-container">
+                    <img className="d-block" src={frontImage3} />
                 </div>
             </Carousel>
             <ReservationWidget authenticatedUser={authenticatedUser} />

@@ -16,9 +16,15 @@
     .car-item {
         transition: 0.3s;
         opacity: 0.9;
+        margin: 25px auto;
+
+        a {
+            display: block;
+            text-align: center;
+        }
 
         a img {
-            height: 250px;
+            height: 100%;
             border-radius: 50%;
             width: 100%;
             box-shadow: rgba(0, 0, 0, 35%) 0 5px 15px;

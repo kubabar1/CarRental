@@ -1,40 +1,52 @@
 .mobile-page-panel-container {
-    min-height: 450px;
     background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
     display: flex;
     flex-direction: row;
     align-items: stretch;
+    padding: 30px 0;
+    margin: 0 !important;
 
     .mobile-image-container {
-        min-width: 600px;
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-left: 50px;
-        margin-right: 50px;
 
         img {
-            height: 380px;
+            height: 100%;
+            width: 100%;
+            max-width: 650px;
         }
     }
 
     .download-app-container {
-        margin: 50px;
+        padding: 0 50px;
 
         .download-app-text-container {
             font-size: 32px;
             font-weight: bold;
+
+            @media only screen and (max-width: 576px) {
+                text-align: center;
+            }
         }
 
         .download-app-description-container {
             margin-top: 25px;
+
+            @media only screen and (max-width: 576px) {
+                text-align: justify;
+            }
         }
 
         .download-app-links-qr-container {
-            display: flex;
-            flex-direction: row;
             align-items: center;
-            margin-top: 25px;
+            padding-top: 25px;
+            padding-left: 15px;
+
+            @media only screen and (max-width: 576px) {
+                margin-left: auto;
+                margin-right: auto;
+            }
 
             .download-app-links-container {
                 .download-app-link {
@@ -48,6 +60,8 @@
                     flex-direction: row;
                     align-items: stretch;
                     text-decoration: none;
+                    width: 100%;
+                    max-width: 250px;
 
                     .download-app-link-icon {
                         font-size: 32px;
@@ -76,12 +90,24 @@
                 .download-app-link:hover {
                     background-color: #222;
                 }
+
+                @media only screen and (max-width: 576px) {
+                    margin-left: auto;
+                    margin-right: auto;
+                }
             }
 
             .download-app-qr-container {
+                text-align: center;
+                margin-left: 15px;
+
+                @media only screen and (max-width: 576px) {
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+
                 img {
                     height: 140px;
-                    margin-left: 50px;
                 }
             }
         }

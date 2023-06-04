@@ -10,11 +10,11 @@ export function MobilePagePanel() {
     const appStoreLink = 'https://www.apple.com/app-store/';
 
     return (
-        <div className="mobile-page-panel-container container-fluid">
-            <div className="mobile-image-container">
+        <div className="mobile-page-panel-container row">
+            <div className="mobile-image-container col-md-12 col-lg-6">
                 <img src={mobileApp} />
             </div>
-            <div className="download-app-container">
+            <div className="download-app-container col-md-12 col-lg-6">
                 <div className="download-app-text-container">Download our app</div>
                 <div className="download-app-description-container">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget finibus turpis, in rhoncus
@@ -23,7 +23,7 @@ export function MobilePagePanel() {
                     Aliquam ac placerat massa, quis tristique odio. Ut maximus odio ac magna ultricies pellentesque. Sed
                     rhoncus pulvinar nulla, eget accumsan eros porta et. Praesent tempor non enimquisimperdiet.
                 </div>
-                <div className="download-app-links-qr-container">
+                <div className="download-app-links-qr-container row">
                     <div className="download-app-links-container">
                         <DownloadAppLink shopName={'Google Play'} shopIcon={faGooglePlay} shopLink={googlePlayLink} />
                         <DownloadAppLink shopName={'App Store'} shopIcon={faApple} shopLink={appStoreLink} />
