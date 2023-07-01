@@ -1,7 +1,7 @@
 import React, { MouseEvent } from 'react';
 import { UserData } from './user_data/UserData';
 import { SideNav } from './side_nav/SideNav';
-import { AuthenticatedUserDTO } from '../../model/AuthenticatedUserDTO';
+import { AuthenticatedUserDTO } from '@car-rental/shared/model';
 
 interface NavContainerProperties {
     authenticatedUser: AuthenticatedUserDTO;

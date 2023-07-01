@@ -2,7 +2,7 @@ import React from 'react';
 import { SubpageContainer } from '../../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../../components/subpage/content/SubpageContent';
-import { AuthenticatedUserDTO } from '../../../model/AuthenticatedUserDTO';
+import { AuthenticatedUserDTO } from '@car-rental/shared/model';
 import './UserSettingsSubpage.scss';
 import { UserSettingsForm } from './UserSettingsForm';
 

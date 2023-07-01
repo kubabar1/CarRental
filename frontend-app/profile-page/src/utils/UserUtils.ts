@@ -1,4 +1,4 @@
-import { UserRoleResponseDTO } from '../model/UserRoleResponseDTO';
+import { UserRoleResponseDTO } from '@car-rental/shared/model';
 
 export const mapUserRolesDtoToStringArray = (userRoles: UserRoleResponseDTO[]): string[] => {
     return userRoles ? userRoles.map((userRole: UserRoleResponseDTO) => userRole.label) : [];

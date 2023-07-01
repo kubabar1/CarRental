@@ -7,11 +7,11 @@ import { useHistory } from 'react-router-dom';
 import { InputFormGroup } from '../../components/form/form-group/input/InputFormGroup';
 import { TextAreaFormGroup } from '../../components/form/form-group/text-area/TextAreaFormGroup';
 import { mapToOptionType, OptionType, SelectFormGroup } from '../../components/form/form-group/select/SelectFormGroup';
-import { UsersEmailsResponseDTO } from '../../model/UsersEmailsResponseDTO';
-import { getAllUsersEmails, getAllUsersEmailsByIds } from '../../service/UserService';
-import { sendEmails } from '../../service/EmailService';
-import { MultipleRecipientsMailsDTO } from '../../model/MultipleRecipientsMailsDTO';
+import { getAllUsersEmails, getAllUsersEmailsByIds } from '@car-rental/shared/service';
+import { sendEmails } from '@car-rental/shared/service';
+import { MultipleRecipientsMailsDTO, UsersEmailsResponseDTO } from '@car-rental/shared/model';
 import { useForm } from 'react-hook-form';
+import { ResponseData } from '../../../../shared/service';
 
 interface EmailHistoryState {
     userEmail: string;
@@ -28,7 +28,7 @@ export function EmailSubpage(): JSX.Element {
     const history = useHistory<EmailHistoryState>();
     const [allEmailAddresses, setAllEmailAddresses] = useState<OptionType[]>([]);
     const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState<boolean>(false);
-    const { register, formState, control, handleSubmit, setValue, watch } = useForm<EmailFormValues>({
+    const { register, formState, control, handleSubmit, setValue } = useForm<EmailFormValues>({
         mode: 'onChange',
         defaultValues: {
             recipients: [],
@@ -42,13 +42,15 @@ export function EmailSubpage(): JSX.Element {
             setAllEmailAddresses(usersEmails.emails.map(mapToOptionType));
         });
         if (history.location.state && history.location.state.userEmail) {
-            setValue('recipients', history.location.state.userEmail);
+            setValue('recipients', [history.location.state.userEmail]);
         } else if (history.location.state && history.location.state.userIds) {
-            getAllUsersEmailsByIds(history.location.state.userIds).then((usersEmails: UsersEmailsResponseDTO) => {
-                setValue('recipients', usersEmails.emails);
-            });
+            getAllUsersEmailsByIds(history.location.state.userIds).then(
+                (usersEmails: ResponseData<UsersEmailsResponseDTO>) => {
+                    setValue('recipients', usersEmails.responseBody.emails);
+                }
+            );
         }
-    }, []);
+    }, [history.location.state, setValue]);
 
     const onSubmit = (data: EmailFormValues): void => {
         if (!isSubmitButtonDisabled) {

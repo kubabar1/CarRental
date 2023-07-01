@@ -1,7 +1,7 @@
 import React from 'react';
 import './AsideNav.scss';
 import { loginLink, profileLink, registrationLink } from '../../constants/Links';
-import { AuthenticatedUserDTO } from '../../model/AuthenticatedUserDTO';
+import { AuthenticatedUserDTO } from '@car-rental/shared/model';
 
 interface AsideNavProperties {
     authenticatedUser: AuthenticatedUserDTO | undefined;

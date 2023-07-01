@@ -3,7 +3,7 @@ import { SingleValue } from 'react-select/dist/declarations/src/types';
 import { Control, FieldError, FieldPath, FieldValues, Merge, RegisterOptions } from 'react-hook-form/dist/types';
 import { Controller } from 'react-hook-form';
 import Select from 'react-select';
-import LocalisationResponseDTO from '../../../../../../../../model/LocalisationResponseDTO';
+import { LocalisationResponseDTO } from '@car-rental/shared/model';
 import './LocationSelection.scss';
 
 interface CitySelectionProps<FieldValuesType extends FieldValues> {
@@ -17,9 +17,9 @@ interface CitySelectionProps<FieldValuesType extends FieldValues> {
     error: Merge<FieldError, (FieldError | undefined)[]> | undefined;
 }
 
-export type LocationOptionType = { value: number; label: string };
+export type LocationOptionType = { value: string; label: string };
 
-export const mapToLocationOptionType = (val: number, label: string): LocationOptionType => {
+export const mapToLocationOptionType = (val: string, label: string): LocationOptionType => {
     return {
         value: val,
         label: label,

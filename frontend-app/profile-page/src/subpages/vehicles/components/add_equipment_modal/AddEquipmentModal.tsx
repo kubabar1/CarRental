@@ -2,29 +2,23 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { FieldValues } from 'react-hook-form/dist/types';
 import './AddEquipmentModal.scss';
 import { InputFormGroup } from '../../../../components/form/form-group/input/InputFormGroup';
-import { addEquipment } from '../../../../service/VehicleService';
-import { EquipmentAddDTO } from '../../../../model/EquipmentAddDTO';
-import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '../../../../constants/PathsAPI';
+import { addEquipment } from '@car-rental/shared/service';
+import { EquipmentAddDTO } from '@car-rental/shared/model';
 
 type Equipment = {
     equipmentCode: string;
     description: string;
 };
 
-interface AddEquipmentModalProperties<FieldValuesType extends FieldValues> {
+interface AddEquipmentModalProperties {
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
-    reloadEquipments: (pageIndex: number, pageSize: number, filter?: string, sortBy?: string, desc?: boolean) => void;
+    reloadEquipments: (pageIndex?: number, pageSize?: number, filter?: string, sortBy?: string, desc?: boolean) => void;
 }
 
-export function AddEquipmentModal<FieldValuesType extends FieldValues>({
-    isOpen,
-    setIsOpen,
-    reloadEquipments,
-}: AddEquipmentModalProperties<Equipment>): JSX.Element {
+export function AddEquipmentModal({ isOpen, setIsOpen, reloadEquipments }: AddEquipmentModalProperties): JSX.Element {
     const { register, formState, clearErrors, handleSubmit, setValue } = useForm<Equipment>({
         mode: 'onChange',
         defaultValues: {
@@ -38,7 +32,7 @@ export function AddEquipmentModal<FieldValuesType extends FieldValues>({
             setValue('equipmentCode', '');
             setValue('description', '');
             setIsOpen(false);
-            reloadEquipments(DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE);
+            reloadEquipments();
         });
     };
 

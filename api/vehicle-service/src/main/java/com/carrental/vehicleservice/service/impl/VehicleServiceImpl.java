@@ -139,7 +139,18 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public VehicleResponseDTO getVehicleById(Long vehicleId) throws NoSuchElementException {
         VehicleEntity vehicleEntity = vehicleRepository.findById(vehicleId).orElseThrow();
-        return modelMapper.map(vehicleEntity, VehicleResponseDTO.class);
+
+        LocationResponseDTO locationResponseDTO = rabbitTemplate.convertSendAndReceiveAsType(
+            "getLocationByIdQueue",
+            vehicleEntity.getLocationId(),
+            new ParameterizedTypeReference<>() {
+            }
+        );
+
+        VehicleResponseDTO vehicleResponseDTO = modelMapper.map(vehicleEntity, VehicleResponseDTO.class);
+        vehicleResponseDTO.setLocation(locationResponseDTO);
+
+        return vehicleResponseDTO;
     }
 
     @Override

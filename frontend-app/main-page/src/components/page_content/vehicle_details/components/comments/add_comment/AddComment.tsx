@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 import './AddComment.scss';
-import { CommentWithRateResponseDTO } from '../../../../../../model/CommentWithRateResponseDTO';
-import { addComment } from '../../../../../../service/RatingService';
-import { CommentWithRateAddDTO } from '../../../../../../model/CommentWithRateAddDTO';
-import { AuthenticatedUserDTO } from '../../../../../../model/AuthenticatedUserDTO';
+import { addComment } from '@car-rental/shared/service';
+import { CommentWithRateAddDTO, CommentWithRateResponseDTO, AuthenticatedUserDTO } from '@car-rental/shared/model';
+import { ResponseData } from '../../../../../../../../shared/service';
 
 interface AddCommentProperties {
     setComments: (comments: CommentWithRateResponseDTO[]) => void;
@@ -36,8 +35,8 @@ export function AddComment({ vehicleId, comments, setComments }: AddCommentPrope
         if (isOk) {
             const userId = '2';
             addComment(new CommentWithRateAddDTO(starsCount, commentContent, vehicleId, userId)).then(
-                (newComment: CommentWithRateResponseDTO) => {
-                    setComments([newComment, ...comments]);
+                (newComment: ResponseData<CommentWithRateResponseDTO>) => {
+                    setComments([newComment.responseBody, ...comments]);
                     setCommentContent('');
                     setStarsCount(0);
                 }

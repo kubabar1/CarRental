@@ -1,5 +1,5 @@
 import React from 'react';
-import { EquipmentResponseDTO } from '../../../../../model/EquipmentResponseDTO';
+import { EquipmentResponseDTO } from '@car-rental/shared/model';
 import './VehicleEquipment.scss';
 
 interface VehicleEquipmentProps {

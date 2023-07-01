@@ -5,9 +5,9 @@ import { SubpageContent } from '../../components/subpage/content/SubpageContent'
 import { InputFormGroup } from '../../components/form/form-group/input/InputFormGroup';
 import { FormContainer } from '../../components/form/form-group/FormContainer';
 import { useForm } from 'react-hook-form';
-import { addLocation } from '../../service/LocationService';
-import { LocationAddDTO } from '../../model/LocationAddDTO';
-import { locationsListPath, usersListPath } from '../../constants/Links';
+import { addLocation } from '@car-rental/shared/service';
+import { LocationAddDTO } from '@car-rental/shared/model';
+import { locationsListPath } from '../../constants/Links';
 import { useHistory } from 'react-router-dom';
 
 interface LocationAddFormValues {

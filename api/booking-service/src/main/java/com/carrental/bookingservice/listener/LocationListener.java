@@ -19,4 +19,9 @@ public class LocationListener {
     public Set<LocationResponseDTO> getLocationListener(@Payload(required = false) String country) {
         return locationsService.getAllLocations(country);
     }
+
+    @RabbitListener(queues = {"getLocationByIdQueue"})
+    public LocationResponseDTO getLocationByIdQueue(@Payload(required = false) Long locationId) {
+        return locationsService.getLocationById(locationId);
+    }
 }

@@ -1,6 +1,5 @@
 import React from 'react';
-import { VehicleResponseDTO } from '../../../../../model/VehicleResponseDTO';
-import VehicleStatCodeEnum from '../../../../../model/VehicleStatCodeEnum';
+import { VehicleResponseDTO, VehicleStatCodeEnum } from '@car-rental/shared/model';
 import './VehicleStatus.scss';
 
 interface CarStatusProperties {

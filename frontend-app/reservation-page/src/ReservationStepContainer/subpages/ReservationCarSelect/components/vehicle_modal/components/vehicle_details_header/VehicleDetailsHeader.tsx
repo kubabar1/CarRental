@@ -1,6 +1,6 @@
 import React from 'react';
 import './VehicleDetailsHeader.scss';
-import { VehicleResponseDTO } from '../../../../../../../model/VehicleResponseDTO';
+import { VehicleResponseDTO } from '@car-rental/shared/model';
 import { carImagesMainPageCarList } from '../../../../../../../constants/PathsServer';
 
 interface CarDetailsHeaderProperties {

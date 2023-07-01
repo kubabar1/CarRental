@@ -1,12 +1,9 @@
 import React from 'react';
 import { InputFormGroup } from '../../../components/form/form-group/input/InputFormGroup';
-import { getAuthorizedUserData, updateAuthorizedUserData } from '../../../service/UserService';
+import { getAuthorizedUserData, updateAuthorizedUserData, ResponseData } from '@car-rental/shared/service';
 import { FormContainer } from '../../../components/form/form-group/FormContainer';
-import { UserUpdateDTO } from '../../../model/UserUpdateDTO';
-import { AuthenticatedUserDTO } from '../../../model/AuthenticatedUserDTO';
+import { AuthenticatedUserDTO, UserUpdateDTO, UserResponseDTO } from '@car-rental/shared/model';
 import './UserSettingsSubpage.scss';
-import { UserResponseDTO } from '../../../model/UserResponseDTO';
-import { ResponseData } from '../../../service/FetchUtil';
 import { useForm } from 'react-hook-form';
 
 interface UserSettingsProps {

@@ -1,14 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import './VehicleListPage.scss';
 import { VehicleSearchFilters } from './filters/VehicleSearchFilters';
-import { VehicleResponseDTO } from '../../../model/VehicleResponseDTO';
+import { VehicleResponseDTO, FilteringParamsEnum, Page } from '@car-rental/shared/model';
 import { withRouter, useLocation } from 'react-router-dom';
 import { VehicleItem } from './vehicle_item/VehicleItem';
-import { getVehiclesListWithFiltering, mapVehicleFiltersToQs } from '../../../service/VehicleService';
+import { getVehiclesListWithFiltering, mapVehicleFiltersToQs } from '@car-rental/shared/service';
 import { LoaderContainer } from './container/LoaderContainer';
-import FilteringParamsEnum from '../../../model/FilteringParamsEnum';
 import { getCountFromUrl, getPageFromUrl, getVehicleFilteringParamsFromUrl } from '../../../utils/UrlUtil';
-import Page from '../../../model/Page';
 import ReactPaginate from 'react-paginate';
 import Select, { SingleValue } from 'react-select';
 import qs, { ParsedQs } from 'qs';

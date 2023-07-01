@@ -4,21 +4,16 @@ import { SubpageContainer } from '../../components/subpage/container/SubpageCont
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Column } from 'react-table';
-import { BookingResponseDTO } from '../../model/BookingResponseDTO';
+import { BookingResponseDTO, Page } from '@car-rental/shared/model';
 import { ButtonTableItem } from '../../components/table/tab_items/button_table_item/ButtonTableItem';
-import {
-    cancelAuthorizedUserBooking,
-    getAuthenticatedUserReservedBookingsList,
-} from '../../service/BookingUserService';
-import Page from '../../../../main-page/src/model/Page';
-import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '../../constants/PathsAPI';
+import { cancelAuthorizedUserBooking, getAuthenticatedUserReservedBookingsList } from '@car-rental/shared/service';
 import { bookingListCommonColumns } from './BookingListCommonColumns';
 
 export function MyReservedBookingsListSubpage(): JSX.Element {
     const [bookingsPage, setBookingsPage] = useState<Page<BookingResponseDTO> | undefined>(undefined);
 
     const fetchData = React.useCallback(
-        (pageIndex: number, pageSize: number, filter?: string, sortBy?: string, desc?: boolean): Promise<void> => {
+        (pageIndex?: number, pageSize?: number, filter?: string, sortBy?: string, desc?: boolean): Promise<void> => {
             return getAuthenticatedUserReservedBookingsList(pageIndex, pageSize, filter, sortBy, desc).then(
                 (page: Page<BookingResponseDTO>) => {
                     setBookingsPage(page);
@@ -40,7 +35,7 @@ export function MyReservedBookingsListSubpage(): JSX.Element {
                         buttonVariant={'danger'}
                         onClickAction={() =>
                             cancelAuthorizedUserBooking(row.id).then(() => {
-                                fetchData(DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE);
+                                fetchData();
                             })
                         }
                     />

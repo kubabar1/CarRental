@@ -1,16 +1,30 @@
-import React from 'react';
+import React, { ForwardedRef, MutableRefObject, PropsWithChildren } from 'react';
 
-export const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
-    const defaultRef = React.useRef();
-    const resolvedRef = ref || defaultRef;
+interface IndeterminateCheckboxInterface {
+    indeterminate?: boolean | undefined;
+}
 
-    React.useEffect(() => {
-        resolvedRef.current.indeterminate = indeterminate;
-    }, [resolvedRef, indeterminate]);
+export const IndeterminateCheckbox = React.forwardRef(
+    (
+        { indeterminate, ...rest }: PropsWithChildren<IndeterminateCheckboxInterface>,
+        ref: ForwardedRef<IndeterminateCheckboxInterface>
+    ) => {
+        const defaultRef = React.useRef<IndeterminateCheckboxInterface>();
+        const resolvedRef = ref || defaultRef;
 
-    return (
-        <>
-            <input type="checkbox" ref={resolvedRef} {...rest} />
-        </>
-    );
-});
+        React.useEffect(() => {
+            (resolvedRef as MutableRefObject<IndeterminateCheckboxInterface>).current.indeterminate = indeterminate;
+        }, [resolvedRef, indeterminate]);
+
+        /* eslint-disable @typescript-eslint/ban-ts-comment */
+        return (
+            <>
+                {/*// @ts-ignore*/}
+                <input type="checkbox" ref={resolvedRef} {...rest} />
+            </>
+        );
+        /* eslint-enable @typescript-eslint/ban-ts-comment */
+    }
+);
+
+IndeterminateCheckbox.displayName = 'IndeterminateCheckbox';

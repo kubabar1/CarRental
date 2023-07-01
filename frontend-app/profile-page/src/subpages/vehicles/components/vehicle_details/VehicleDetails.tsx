@@ -1,6 +1,6 @@
 import React from 'react';
-import { VehicleResponseDTO } from '../../../../model/VehicleResponseDTO';
-import { carImagesProfilePage, vehicleImageFromServer } from '../../../../constants/PathsServer';
+import { VehicleResponseDTO } from '@car-rental/shared/model';
+import { vehicleImageFromServer } from '../../../../constants/PathsServer';
 import './VehicleDetails.scss';
 
 export interface VehicleDetailsProperties {
@@ -37,7 +37,7 @@ export const VehicleDetails = ({ vehicleResponseDTO }: VehicleDetailsProperties)
                     </p>
                     <p>
                         <strong>Localisation: </strong>
-                        {vehicleResponseDTO.locationId}
+                        {`${vehicleResponseDTO.location.country}, ${vehicleResponseDTO.location.city}, ${vehicleResponseDTO.location.streetAndNb}`}
                     </p>
                 </div>
             </div>

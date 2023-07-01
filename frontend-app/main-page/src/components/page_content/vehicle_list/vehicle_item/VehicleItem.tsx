@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './VehicleItem.scss';
-import { VehicleResponseDTO } from '../../../../model/VehicleResponseDTO';
+import { VehicleResponseDTO } from '@car-rental/shared/model';
 import { carImagesMainPageCarList } from '../../../../constants/PathsServer';
 import StarRatingComponent from 'react-star-rating-component';
 import { carDetailsByIdLink } from '../../../../constants/Links';

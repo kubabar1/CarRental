@@ -67,7 +67,7 @@ function NavLink({
                           ? onClick
                           : (e) => {
                                 e.preventDefault();
-                                history.push(linkPath!);
+                                history.push(linkPath);
                             },
                   }
                 : { href: linkPath })}

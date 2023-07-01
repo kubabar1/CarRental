@@ -1,4 +1,4 @@
-import FilteringParamsEnum from '../model/FilteringParamsEnum';
+import { FilteringParamsEnum } from '@car-rental/shared/model';
 import qs from 'qs';
 
 export const getPageFromUrl = (url: string): number => {

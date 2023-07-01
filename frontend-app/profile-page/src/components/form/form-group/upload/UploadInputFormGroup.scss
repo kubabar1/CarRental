@@ -1,8 +1,7 @@
 .upload-input-form-group-container {
     .thumbs-container {
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
+        flex-flow: row wrap;
         margin-top: 16px;
     }
 

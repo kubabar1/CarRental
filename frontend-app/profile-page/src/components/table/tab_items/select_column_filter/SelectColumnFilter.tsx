@@ -25,7 +25,7 @@ export function SelectColumnFilter<D extends object>({
     const [value, setValue] = React.useState<SelectColumnFilterOption>(filterAll);
 
     const optionsSorted: SelectColumnFilterOption[] = options
-        ? [...options?.sort()].sort((optionA: SelectColumnFilterOption, optionB: SelectColumnFilterOption) => {
+        ? [...options.sort()].sort((optionA: SelectColumnFilterOption, optionB: SelectColumnFilterOption) => {
               if (optionA.label !== null && optionB.label !== null) {
                   return optionA.label.localeCompare(optionB.label);
               } else {

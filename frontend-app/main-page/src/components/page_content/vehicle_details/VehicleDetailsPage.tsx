@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { VehicleResponseDTO } from '../../../model/VehicleResponseDTO';
+import { VehicleResponseDTO } from '@car-rental/shared/model';
 import { VehicleDetailsHeader } from './components/vehicle_details_header/VehicleDetailsHeader';
 import { VehicleStatus } from './components/vehicle_status/VehicleStatus';
 import { VehicleProperties } from './components/details_list/VehicleProperties';
 import ReservationButton from './components/reservation_button/ReservationButton';
 import { CommentList } from './components/comments/CommentList';
 import { AddComment } from './components/comments/add_comment/AddComment';
-import { CommentWithRateResponseDTO } from '../../../model/CommentWithRateResponseDTO';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import ClipLoader from 'react-spinners/ClipLoader';
-import { getVehicleComments } from '../../../service/RatingService';
-import { getVehicleById } from '../../../service/VehicleService';
-import Page from '../../../model/Page';
+import { getVehicleComments } from '@car-rental/shared/service';
+import { getVehicleById } from '@car-rental/shared/service';
 import './VehicleDetailsPage.scss';
-import { AuthenticatedUserDTO } from '../../../model/AuthenticatedUserDTO';
 import { VehicleEquipment } from './components/vehicle_equipment/VehicleEquipment';
+import { CommentWithRateResponseDTO, AuthenticatedUserDTO, Page } from '@car-rental/shared/model';
 
 interface CarDetailsProperties extends RouteComponentProps<{ carId: string }> {
     authenticatedUser: AuthenticatedUserDTO | undefined;

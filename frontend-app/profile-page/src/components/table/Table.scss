@@ -1,3 +1,14 @@
+.dropdown-filter-content-container {
+    .filter-icon {
+        opacity: 0;
+        transition: visibility 0.1s linear, opacity 0.1s linear;
+    }
+
+    .filter-icon-active {
+        opacity: 1;
+    }
+}
+
 .table-container {
     --box-shadow-1: 0, 0, 0;
 
@@ -79,7 +90,10 @@
     padding: 10px;
     background-color: white;
     border-radius: 5px;
-    box-shadow: 0 1px 1px rgba(var(--box-shadow-1), 25%), 0 2px 8px rgba(var(--box-shadow-1), 25%), inset 0 0 0 1px rgba(var(--box-shadow-2), 10%);
+    box-shadow:
+        0 1px 1px rgba(var(--box-shadow-1), 25%),
+        0 2px 8px rgba(var(--box-shadow-1), 25%),
+        inset 0 0 0 1px rgba(var(--box-shadow-2), 10%);
 
     input {
         width: 150px;
@@ -87,16 +101,5 @@
 
     button {
         margin-left: 10px;
-    }
-}
-
-.dropdown-filter-content-container {
-    .filter-icon {
-        opacity: 0;
-        transition: visibility 0.1s linear, opacity 0.1s linear;
-    }
-
-    .filter-icon-active {
-        opacity: 1;
     }
 }

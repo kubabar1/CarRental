@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
 import { LocationSelection } from './components/location_select/LocationSelection';
 import './ReservationWidget.scss';
-import { AuthenticatedUserDTO } from '../../../../../../model/AuthenticatedUserDTO';
-import LocalisationResponseDTO from '../../../../../../model/LocalisationResponseDTO';
-import { getAllLocationsList } from '../../../../../../service/LocationService';
-import { LocalisationsResponseDTO } from '../../../../../../model/LocalisationsResponseDTO';
+import { AuthenticatedUserDTO, LocalisationResponseDTO, LocalisationsResponseDTO } from '@car-rental/shared/model';
+import { getAllLocationsList } from '@car-rental/shared/service';
 import { useForm } from 'react-hook-form';
 import { DateInput } from './components/date_input/DateInput';
 import date from 'date-and-time';

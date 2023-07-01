@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { InputFormGroup } from '../../../../components/form/form-group/input/InputFormGroup';
-import { VehicleStatCodeEnum } from '../../../../model/VehicleStatCodeEnum';
+import { VehicleStatCodeEnum, VehicleDetailsDTO, VehiclePersistDTO } from '@car-rental/shared/model';
 import { TextAreaFormGroup } from '../../../../components/form/form-group/text-area/TextAreaFormGroup';
 import { FormContainer } from '../../../../components/form/form-group/FormContainer';
-import { VehiclePersistDTO } from '../../../../model/VehiclePersistDTO';
-import { VehicleDetailsDTO } from '../../../../model/VehicleDetailsDTO';
 import { RegisterOptions, useForm } from 'react-hook-form';
 import {
     mapToOptionType,
@@ -18,19 +16,21 @@ import {
     addFuelType,
     addModel,
     getVehicleOptions,
-} from '../../../../service/VehicleService';
-import { VehicleOptionsDTO } from '../../../../model/VehicleOptionsDTO';
+    ResponseData,
+} from '@car-rental/shared/service';
 import { SwitchFormGroup } from '../../../../components/form/form-group/switch/SwitchFormGroup';
 import { UploadInputFormGroup } from '../../../../components/form/form-group/upload/UploadInputFormGroup';
 import { FileWithPreview } from '../../../../components/form/form-group/upload/Dropzone';
 import { AddOptionModal } from './add_option_modal/AddOptionModal';
-import { OptionDTO } from '../../../../model/OptionDTO';
-import { getVehicleModelsByBrand } from '../../../../../../main-page/src/service/VehicleService';
-import { VehicleModelDTO } from '../../../../model/VehicleModelDTO';
-import { ResponseData } from '../../../../service/FetchUtil';
-import { VehicleResponseDTO } from '../../../../model/VehicleResponseDTO';
+import { getVehicleModelsByBrand } from '@car-rental/shared/service';
+import {
+    VehicleModelDTO,
+    VehicleResponseDTO,
+    VehicleOptionsDTO,
+    LocalisationResponseDTO,
+    OptionDTO,
+} from '@car-rental/shared/model';
 import { useHistory } from 'react-router-dom';
-import { LocationResponseDTO } from '../../../../model/LocationResponseDTO';
 
 export interface VehicleFormProperties {
     onSubmitAction: (
@@ -48,7 +48,7 @@ export type VehicleFormValues = {
     model: string;
     dailyFee: number;
     registration: string;
-    location: number;
+    location: string;
     vehicleStatus: VehicleStatCodeEnum;
     bestOffer: boolean;
     bodyType: string;
@@ -186,21 +186,7 @@ export const VehicleForm = ({
     };
     const watchBrand: string = watch('brand');
 
-    useEffect(() => {
-        loadVehicleOptions();
-    }, []);
-
-    useEffect(() => {
-        loadVehicleModels();
-    }, [watchBrand]);
-
-    const loadVehicleOptions = (): void => {
-        getVehicleOptions().then((vehicleDefaultParams: VehicleOptionsDTO) => {
-            setVehicleOptions(vehicleDefaultParams);
-        });
-    };
-
-    const loadVehicleModels = () => {
+    const loadVehicleModels = useCallback(() => {
         if (watchBrand) {
             getVehicleModelsByBrand(watchBrand).then((models: string[]) => {
                 setVehicleModels(models);
@@ -208,6 +194,20 @@ export const VehicleForm = ({
         } else {
             setVehicleModels([]);
         }
+    }, [watchBrand]);
+
+    useEffect(() => {
+        loadVehicleOptions();
+    }, []);
+
+    useEffect(() => {
+        loadVehicleModels();
+    }, [watchBrand, loadVehicleModels]);
+
+    const loadVehicleOptions = (): void => {
+        getVehicleOptions().then((vehicleDefaultParams: VehicleOptionsDTO) => {
+            setVehicleOptions(vehicleDefaultParams);
+        });
     };
 
     const onSubmit = (data: VehicleFormValues): void => {
@@ -314,7 +314,7 @@ export const VehicleForm = ({
                     label={'Location:'}
                     name={'location'}
                     control={control}
-                    options={vehicleOptions.locations.map((location: LocationResponseDTO) =>
+                    options={vehicleOptions.locations.map((location: LocalisationResponseDTO) =>
                         mapToOptionTypeWithKeys(
                             location.id,
                             `${location.country}, ${location.city}, ${location.streetAndNb}`

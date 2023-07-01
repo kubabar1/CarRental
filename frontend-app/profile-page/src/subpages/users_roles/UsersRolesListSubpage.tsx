@@ -3,9 +3,9 @@ import { Table } from '../../components/table/Table';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { getAllUserRoles } from '../../service/UserService';
+import { getAllUserRoles } from '@car-rental/shared/service';
 import { Column } from 'react-table';
-import { UserRoleResponseDTO } from '../../model/UserRoleResponseDTO';
+import { UserRoleResponseDTO } from '@car-rental/shared/model';
 
 export function UsersRolesListSubpage(): JSX.Element {
     const [allUserRoles, setAllUserRoles] = useState<UserRoleResponseDTO[]>([]);

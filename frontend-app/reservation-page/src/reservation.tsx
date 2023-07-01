@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route } from 'react-router-dom';
 import 'bootstrap/scss/bootstrap.scss';
 import { ReservationStepContainer } from './ReservationStepContainer/ReservationStepContainer';
 import { reservationRootLink, unauthenticatedSubpageLink } from './constants/Links';
-import { getAuthenticatedUserData } from './service/AuthenticationService';
-import { AuthenticatedUserDTO } from './model/AuthenticatedUserDTO';
+import { getAuthenticatedUserData } from '@car-rental/shared/service';
+import { AuthenticatedUserDTO } from '@car-rental/shared/model';
 import { Button } from 'react-bootstrap';
 import './reservation.scss';
 

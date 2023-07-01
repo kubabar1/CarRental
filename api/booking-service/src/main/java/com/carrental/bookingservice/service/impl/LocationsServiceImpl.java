@@ -78,4 +78,9 @@ public class LocationsServiceImpl implements LocationsService {
         LocationEntity createdLocation = locationsRepository.save(modelMapper.map(locationAddDTO, LocationEntity.class));
         return modelMapper.map(createdLocation, LocationResponseDTO.class);
     }
+
+    @Override
+    public LocationResponseDTO getLocationById(Long locationId) {
+        return modelMapper.map(locationsRepository.findById(locationId).orElse(null), LocationResponseDTO.class);
+    }
 }

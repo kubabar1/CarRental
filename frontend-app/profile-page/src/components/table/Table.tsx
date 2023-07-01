@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react';
+import React, { useCallback } from 'react';
 import BTable from 'react-bootstrap/Table';
 import {
     TableOptions,
@@ -9,13 +9,18 @@ import {
     Filters,
     useRowSelect,
     Hooks,
+    TableState,
+    ActionType,
+    CellProps,
+    HeaderProps,
+    ColumnInstance,
+    UseRowSelectState,
 } from 'react-table';
 import './Table.scss';
 import classNames from 'classnames';
 import { SubpagePagination } from '../subpage/pagination/SubpagePagination';
 import { useLocation } from 'react-router-dom';
 import { getCountFromUrl, getPageFromUrl } from '../../../../main-page/src/utils/UrlUtil';
-import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_INDEX } from '../../constants/PathsAPI';
 import { faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import 'rc-dropdown/assets/index.css';
@@ -34,10 +39,10 @@ interface TableComponentInterface<T extends object> extends TableOptions<T> {
     ) => Promise<void>;
     tableContainerClassName?: string;
     selectEnabled?: boolean;
-    reference?: RefObject<T>;
+    reference?: (node: UseRowSelectState<T>) => void;
 }
 
-const stateReducer = (ids) => (newState, action) => {
+const stateReducer = (ids: string[]) => (newState: TableState, action: ActionType) => {
     if (action.type === 'toggleAllRowsSelected') {
         if (action.value) {
             return {
@@ -50,11 +55,15 @@ const stateReducer = (ids) => (newState, action) => {
     return newState;
 };
 
-const extractSelectedRowIds = (ids) => {
+const extractSelectedRowIds = (ids: string[]) => {
     return ids.reduce((row, id) => ({ ...row, [id]: true }), {});
 };
 
-export function Table<T extends object>({
+interface TableInterface {
+    id: string;
+}
+
+export function Table<T extends TableInterface>({
     columns,
     data,
     fetchData,
@@ -62,7 +71,7 @@ export function Table<T extends object>({
     tableContainerClassName,
     selectEnabled = false,
     pageCount: controlledPageCount,
-    reference = React.createRef<T>(),
+    reference,
 }: TableComponentInterface<T>): JSX.Element {
     const location = useLocation();
     const pageSizeFromUrl: number = getCountFromUrl(location.search);
@@ -84,8 +93,8 @@ export function Table<T extends object>({
             columns,
             data,
             initialState: {
-                pageIndex: pageIndexFromUrl <= 0 ? DEFAULT_PAGE_INDEX : pageIndexFromUrl,
-                pageSize: pageSizeFromUrl <= 0 ? DEFAULT_PAGE_SIZE : pageSizeFromUrl,
+                ...(pageIndexFromUrl <= 0 && { pageIndex: pageIndexFromUrl }),
+                ...(pageSizeFromUrl <= 0 && { pageSize: pageSizeFromUrl }),
             },
             manualPagination: true,
             manualFilters: true,
@@ -104,15 +113,15 @@ export function Table<T extends object>({
         useRowSelect,
         (hooks: Hooks<T>) => {
             if (selectEnabled) {
-                hooks.visibleColumns.push((columns) => [
+                hooks.visibleColumns.push((columns: ColumnInstance<T>[]) => [
                     {
                         id: 'selection',
-                        Header: ({ getToggleAllRowsSelectedProps }) => (
+                        Header: ({ getToggleAllRowsSelectedProps }: HeaderProps<T>) => (
                             <div>
                                 <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
                             </div>
                         ),
-                        Cell: ({ row }) => (
+                        Cell: ({ row }: CellProps<T>) => (
                             <div>
                                 <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
                             </div>
@@ -132,7 +141,7 @@ export function Table<T extends object>({
         [state.selectedRowIds]
     );
 
-    const createFilterString = (filters: Filters<T>): string => {
+    const createFilterString = useCallback((filters: Filters<T>): string => {
         return filters
             .map((f) => {
                 if (f.value.min || f.value.max) {
@@ -152,7 +161,7 @@ export function Table<T extends object>({
                 }
             })
             .join(',');
-    };
+    }, []);
 
     React.useEffect(() => {
         fetchData(
@@ -164,7 +173,7 @@ export function Table<T extends object>({
         ).then(() => {
             setLoading(false);
         });
-    }, [fetchData, state.pageIndex, state.pageSize, state.filters, state.sortBy]);
+    }, [fetchData, state.pageIndex, state.pageSize, state.filters, state.sortBy, createFilterString]);
 
     return !loading ? (
         <div className="table-container">
@@ -239,4 +248,9 @@ export function Table<T extends object>({
     );
 }
 
+// export function TableWithRef() {
+//     return React.forwardRef<JSX.Element>(Table);
+// }
+
+// export const TableWithRef = React.forwardRef<JSX.Element, TableComponentInterface<T>>(Table);
 export const TableWithRef = React.forwardRef(Table);

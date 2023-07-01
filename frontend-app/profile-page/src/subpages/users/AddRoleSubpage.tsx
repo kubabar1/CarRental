@@ -3,8 +3,8 @@ import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { useParams } from 'react-router-dom';
-import { getUserById } from '../../service/UserService';
-import { UserResponseDTO } from '../../model/UserResponseDTO';
+import { getUserById } from '@car-rental/shared/service';
+import { UserResponseDTO } from '@car-rental/shared/model';
 import { AddRoleForm } from './AddRoleForm';
 
 export function AddRoleSubpage(): JSX.Element {

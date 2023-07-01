@@ -1,19 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { LocationSelection } from './components/LocationSelection';
 import './ReservationDataCard.scss';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import date from 'date-and-time';
-import LocalisationResponseDTO from '../../../../../model/LocalisationResponseDTO';
-import { carSelectSubpageLink, reservationDataSubpageLink } from '../../../../../constants/Links';
+import { LocalisationResponseDTO } from '@car-rental/shared/model';
+import { carSelectSubpageLink } from '../../../../../constants/Links';
 import { endpoints } from '../../../../../constants/PathsAPI';
-import { FieldValues, PathValue, SubmitHandler, UseFormRegister, useWatch } from 'react-hook-form';
+import { FieldValues, PathValue, SubmitHandler, useWatch } from 'react-hook-form';
 import { Control, FieldError, FieldPath, Merge } from 'react-hook-form/dist/types';
 import { DateInput } from './components/DateInput';
 import { UseFormHandleSubmit, UseFormSetValue, UseFormTrigger } from 'react-hook-form/dist/types/form';
-import { AuthenticatedUserDTO } from '../../../../../model/AuthenticatedUserDTO';
-import { getAuthenticatedUserData } from '../../../../../service/AuthenticationService';
-import { getAllLocationsList } from '../../../../../service/LocationService';
-import { LocalisationsResponseDTO } from '../../../../../model/LocalisationsResponseDTO';
 import { ReactHookFormStorage } from '../../../../../utils/StorageUtil';
 
 interface ReservationDataCardProperties<FieldValuesType extends FieldValues> {
@@ -57,6 +53,7 @@ export function ReservationDataCard<FieldValuesType extends FieldValues>({
         : '';
     const history = useHistory();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleClickNext: SubmitHandler<FieldValuesType> = (): any | Promise<any> => {
         history.push(carSelectSubpageLink);
     };

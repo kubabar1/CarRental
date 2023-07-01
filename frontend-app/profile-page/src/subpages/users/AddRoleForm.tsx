@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { UserRoleResponseDTO } from '../../model/UserRoleResponseDTO';
+import { UserRoleResponseDTO } from '@car-rental/shared/model';
 import { FormContainer } from '../../components/form/form-group/FormContainer';
 import { useHistory, useParams } from 'react-router-dom';
 import { usersListPath } from '../../constants/Links';
-import { addRolesToUser, getAllUserRoles, getUserById } from '../../service/UserService';
+import { addRolesToUser, getAllUserRoles } from '@car-rental/shared/service';
 import {
     mapToOptionTypeWithKeys,
     OptionType,

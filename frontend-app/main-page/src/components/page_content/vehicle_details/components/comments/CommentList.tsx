@@ -1,6 +1,6 @@
 import React from 'react';
-import { CommentWithRateResponseDTO } from '../../../../../model/CommentWithRateResponseDTO';
 import { CommentItem } from './comment_item/CommentItem';
+import { CommentWithRateResponseDTO } from '@car-rental/shared/model';
 
 interface CommentListProps {
     comments: CommentWithRateResponseDTO[];

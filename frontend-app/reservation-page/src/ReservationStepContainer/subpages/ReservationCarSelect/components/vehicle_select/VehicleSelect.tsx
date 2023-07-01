@@ -1,5 +1,5 @@
 import React from 'react';
-import { VehicleResponseDTO } from '../../../../../model/VehicleResponseDTO';
+import { VehicleResponseDTO } from '@car-rental/shared/model';
 import { VehicleItem } from './vehicle_item/VehicleItem';
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
 import { ReactHookFormStorage } from '../../../../../utils/StorageUtil';

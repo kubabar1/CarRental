@@ -1,7 +1,7 @@
 import React from 'react';
 import './ReservationPanel.scss';
 import { ReservationWidget } from './reservation_widget/ReservationWidget';
-import { AuthenticatedUserDTO } from '../../../../../model/AuthenticatedUserDTO';
+import { AuthenticatedUserDTO } from '@car-rental/shared/model';
 import frontImage1 from '../../../../../images/front_image_1.jpg';
 import frontImage2 from '../../../../../images/front_image_2.jpg';
 import frontImage3 from '../../../../../images/front_image_3.jpg';

@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { TableWithRef } from '../../components/table/Table';
+import { Table } from '../../components/table/Table';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { getAllUserRoles, getUsersList } from '../../service/UserService';
-import { Column, HeaderProps } from 'react-table';
-import { UserResponseDTO } from '../../model/UserResponseDTO';
+import { getAllUserRoles, getUsersList } from '@car-rental/shared/service';
+import { Column, HeaderProps, UseRowSelectState } from 'react-table';
 import { ButtonTableItem } from '../../components/table/tab_items/button_table_item/ButtonTableItem';
 import { UserRolesTableItem } from './tab_items/UserRolesTableItem';
-import Page from '../../../../main-page/src/model/Page';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faFingerprint, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import './UsersListSubpage.scss';
@@ -16,7 +14,7 @@ import {
     SelectColumnFilter,
     SelectColumnFilterOption,
 } from '../../components/table/tab_items/select_column_filter/SelectColumnFilter';
-import { UserRoleResponseDTO } from '../../model/UserRoleResponseDTO';
+import { UserRoleResponseDTO, Page, UserResponseDTO } from '@car-rental/shared/model';
 import { RangeColumnFilter } from '../../components/table/tab_items/slider_column_filter/RangeColumnFilter';
 import { Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
@@ -26,11 +24,14 @@ export function UsersListSubpage(): JSX.Element {
     const [usersPage, setUsersPage] = useState<Page<UserResponseDTO> | undefined>(undefined);
     const [userRoles, setUserRoles] = useState<UserRoleResponseDTO[]>([]);
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
-    const ref = React.useCallback((node) => {
-        if (node && node.selectedRowIds) {
-            setSelectedRowIds(Object.keys(node.selectedRowIds).map((it: string) => parseInt(it)));
-        }
-    }, []);
+    const ref: (node: UseRowSelectState<UserResponseDTO>) => void = React.useCallback(
+        (node: UseRowSelectState<UserResponseDTO>) => {
+            if (node && node.selectedRowIds) {
+                setSelectedRowIds(Object.keys(node.selectedRowIds).map((it: string) => parseInt(it)));
+            }
+        },
+        []
+    );
 
     React.useEffect(() => {
         getAllUserRoles().then((roles: UserRoleResponseDTO[]) => {
@@ -158,7 +159,7 @@ export function UsersListSubpage(): JSX.Element {
             <SubpageHeader title={'Users list'} />
             <SubpageContent>
                 <SendEmailsPanel />
-                <TableWithRef<UserResponseDTO>
+                <Table<UserResponseDTO>
                     columns={columns}
                     data={usersPage ? usersPage.content : []}
                     fetchData={fetchData}

@@ -1,5 +1,5 @@
 import React from 'react';
-import LocalisationResponseDTO from '../../../../model/LocalisationResponseDTO';
+import { LocalisationResponseDTO } from '@car-rental/shared/model';
 
 interface ReservationConfirmationProperties {
     renderFormGroupItem: (label: string, value: string) => JSX.Element;

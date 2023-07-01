@@ -32,6 +32,11 @@ public class QueueConfig {
     }
 
     @Bean
+    public Queue getLocationByIdQueue() {
+        return buildQueue("getLocationByIdQueue");
+    }
+
+    @Bean
     public Queue getUploadVehicleImageQueue() {
         return buildQueue("uploadVehicleImageQueue");
     }

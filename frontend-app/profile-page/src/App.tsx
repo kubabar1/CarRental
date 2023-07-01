@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigation } from './components/nav/Navigation';
 import { Switch } from 'react-router-dom';
-import { getAuthorizedUserData } from './service/UserService';
+import { getAuthorizedUserData } from '@car-rental/shared/service';
 import {
     bookingsAuditLogsListPath,
     bookingsListPath,
@@ -14,7 +14,6 @@ import {
     profileRootLink,
     rentedBookingsListPath,
     reservedBookingsListPath,
-    reservedVehiclesListPath,
     roleAddPath,
     sendEmailPath,
     settingsChangePasswordPath,
@@ -49,15 +48,15 @@ import { MyBookingsListSubpage } from './subpages/booking/MyBookingsListSubpage'
 import { MyRentedBookingsListSubpage } from './subpages/booking/MyRentedBookingsListSubpage';
 import { BookingsAuditLogsListSubpage } from './subpages/booking/BookingsAuditLogsListSubpage';
 import { MyReservedBookingsListSubpage } from './subpages/booking/MyReservedBookingsListSubpage';
-import { AuthenticatedUserDTO } from './model/AuthenticatedUserDTO';
 import { ProtectedRoute } from './utils/ProtectedRoute';
 import { userHasAnyRole } from './utils/UserUtils';
-import { logout } from './service/AuthService';
+import { logout } from '@car-rental/shared/service';
 import { Button } from 'react-bootstrap';
 import { VehicleOptionsSubpage } from './subpages/vehicles/VehicleOptionsSubpage';
 import { LocationAddSubpage } from './subpages/locations/LocationAddSubpage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AuthenticatedUserDTO } from '@car-rental/shared/model';
 
 export function App(): JSX.Element {
     const [authenticatedUser, setAuthenticatedUser] = useState<AuthenticatedUserDTO | undefined>(undefined);

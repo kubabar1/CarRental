@@ -5888,6 +5888,11 @@ type-is@~1.6.17, type-is@~1.6.18:
     media-typer "0.3.0"
     mime-types "~2.1.24"
 
+types-webpack-bundler@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/types-webpack-bundler/-/types-webpack-bundler-1.0.2.tgz#494ef8221ac0ba18092e9c4ec6321d56811cc9e2"
+  integrity sha512-McBxKu99h2WTyOl76SMcS5T3vKTsxBQxe5BQwrbcrFwnczQkU7ae6RKmUN/mqIYOIo4LnIowxFJY0XjPKurP/A==
+
 typescript@^4.1.5:
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.1.5.tgz#123a3b214aaff3be32926f0d8f1f6e704eb89a72"

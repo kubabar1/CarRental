@@ -5,7 +5,7 @@ export interface FilterDropdownInterface {
     visible: boolean;
     setVisible: (visible: boolean) => void;
     menu: JSX.Element;
-    children?: React.ReactNode;
+    children: React.ReactElement;
 }
 
 export function FilterDropdown({ visible, setVisible, menu, children }: FilterDropdownInterface) {

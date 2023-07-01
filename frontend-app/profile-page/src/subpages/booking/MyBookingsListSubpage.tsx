@@ -4,13 +4,8 @@ import { SubpageContainer } from '../../components/subpage/container/SubpageCont
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Column, HeaderProps } from 'react-table';
-import { BookingResponseDTO } from '../../model/BookingResponseDTO';
-import { getAuthenticatedUserBookingsList } from '../../service/BookingUserService';
-import Page from '../../../../main-page/src/model/Page';
-import { UserResponseDTO } from '../../model/UserResponseDTO';
-import { SelectColumnFilter } from '../../components/table/tab_items/select_column_filter/SelectColumnFilter';
-import { getAllBookingStates } from '../../service/BookingAdminService';
-import { BookingStateDTO } from '../../model/BookingStateDTO';
+import { BookingResponseDTO, Page, UserResponseDTO } from '@car-rental/shared/model';
+import { getAuthenticatedUserBookingsList } from '@car-rental/shared/service';
 import { bookingListCommonColumns } from './BookingListCommonColumns';
 import { BookingStatesSelectColumnFilter } from '../../components/table/tab_items/booking_states_select_column_filter/BookingStatesSelectColumnFilter';
 

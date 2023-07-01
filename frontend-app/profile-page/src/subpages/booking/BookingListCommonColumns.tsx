@@ -1,7 +1,6 @@
 import React from 'react';
 import { Column, HeaderProps } from 'react-table';
-import { BookingResponseDTO } from '../../model/BookingResponseDTO';
-import { UserResponseDTO } from '../../model/UserResponseDTO';
+import { BookingResponseDTO, UserResponseDTO } from '@car-rental/shared/model';
 import { RangeColumnFilter } from '../../components/table/tab_items/slider_column_filter/RangeColumnFilter';
 import { LocationSelectColumnFilter } from '../../components/table/tab_items/location_select_column_filter/LocationSelectColumnFilter';
 

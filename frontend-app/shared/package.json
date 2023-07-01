@@ -1,0 +1,20 @@
+{
+  "name": "@car-rental/shared",
+  "version": "1.0.0",
+  "description": "Web application shared",
+  "author": "Jakub Barański",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/qs": "^6.9.5",
+    "@types/react": "^17.0.2",
+    "@types/react-toastify": "^4.1.0",
+    "ts-loader": "^8.0.17",
+    "typescript": "^4.1.5",
+    "webpack": "^5.21.2"
+  },
+  "dependencies": {
+    "qs": "^6.9.6",
+    "react": "^17.0.1",
+    "react-toastify": "^9.1.3"
+  }
+}

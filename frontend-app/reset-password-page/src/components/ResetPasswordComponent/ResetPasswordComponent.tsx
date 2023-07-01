@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import carRentalLogo from '../../images/car_rental_logo_name.png';
 import './ResetPasswordComponent.scss';
 import { homePath, loginPath } from '../../constants/Paths';
-import { checkIfUserWithEmailExists, ResponseData, sendResetPasswordEmail } from '../../services/ResetPasswordService';
-import { UserEmailExistsDTO } from '../../model/UserEmailExistsDTO';
+import { checkIfUserWithEmailExists, ResponseData, sendResetPasswordEmail } from '@car-rental/shared/service';
+import { UserEmailExistsDTO } from '@car-rental/shared/model';
 import { useHistory } from 'react-router-dom';
 
 export function ResetPasswordComponent(): JSX.Element {

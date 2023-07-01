@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { VehicleOptionsDTO } from '../../../../model/VehicleOptionsDTO';
+import { VehicleOptionsDTO, FilteringParamsEnum } from '@car-rental/shared/model';
 import { SearchSelectOption, SearchSelect, mapToOptionType } from './search_components/select/SearchSelect';
-import FilteringParamsEnum from '../../../../model/FilteringParamsEnum';
 import { SingleValue } from 'react-select';
 import { SearchMinMaxInput } from './search_components/min_max_input/SearchMinMaxInput';
 import './VehicleSearchFilters.scss';
-import { getVehicleModelsByBrand, getVehicleOptions } from '../../../../service/VehicleService';
+import { getVehicleModelsByBrand, getVehicleOptions } from '@car-rental/shared/service';
 import qs, { ParsedQs } from 'qs';
 
 interface CarSearchFiltersInterface {

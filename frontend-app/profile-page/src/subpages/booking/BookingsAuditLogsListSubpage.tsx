@@ -4,12 +4,10 @@ import { SubpageContainer } from '../../components/subpage/container/SubpageCont
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Column, HeaderProps } from 'react-table';
-import { BookingAuditLogResponseDTO } from '../../model/BookingAuditLogResponseDTO';
-import { getBookingsAuditLogsList } from '../../service/BookingAuditLogService';
-import Page from '../../../../main-page/src/model/Page';
+import { getBookingsAuditLogsList } from '@car-rental/shared/service';
 import { RangeColumnFilter } from '../../components/table/tab_items/slider_column_filter/RangeColumnFilter';
 import { BookingStatesSelectColumnFilter } from '../../components/table/tab_items/booking_states_select_column_filter/BookingStatesSelectColumnFilter';
-import { BookingStateCodeEnum } from '../../model/BookingStateCodeEnum';
+import { BookingStateCodeEnum, Page, BookingAuditLogResponseDTO } from '@car-rental/shared/model';
 
 export function BookingsAuditLogsListSubpage(): JSX.Element {
     const [bookingAuditLogPage, setBookingAuditLogPage] = useState<Page<BookingAuditLogResponseDTO> | undefined>(

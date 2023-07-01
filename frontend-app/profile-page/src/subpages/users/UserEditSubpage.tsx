@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { getUserById } from '../../service/UserService';
-import { UserResponseDTO } from '../../model/UserResponseDTO';
+import { getUserById } from '@car-rental/shared/service';
+import { UserResponseDTO } from '@car-rental/shared/model';
 import { useParams } from 'react-router-dom';
 import { UserEditForm } from './UserEditForm';
 

@@ -1,12 +1,11 @@
 import React from 'react';
 import { InputFormGroup } from '../../components/form/form-group/input/InputFormGroup';
-import { updateUserData } from '../../service/UserService';
-import { UserResponseDTO } from '../../model/UserResponseDTO';
 import { FormContainer } from '../../components/form/form-group/FormContainer';
-import { UserUpdateDTO } from '../../model/UserUpdateDTO';
+import { UserUpdateDTO, UserResponseDTO } from '@car-rental/shared/model';
 import { useHistory, useParams } from 'react-router-dom';
 import { usersListPath } from '../../constants/Links';
 import { useForm } from 'react-hook-form';
+import { updateUserData } from '@car-rental/shared/service';
 
 type UserEditFormValues = {
     name: string;

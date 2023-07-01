@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import './SubpagePagination.scss';
 import ReactPaginate from 'react-paginate';
 import Select, { SingleValue } from 'react-select';
@@ -32,23 +32,26 @@ export function SubpagePagination({
         };
     };
 
-    const changeLocationSearchParam = (locationSearchParam: string, value: string) => {
-        const currentParams: ParsedQs = qs.parse(location.search, {
-            ignoreQueryPrefix: true,
-        });
-        currentParams[locationSearchParam] = value;
-        history.push({
-            search: `?${qs.stringify(currentParams)}`,
-        });
-    };
+    const changeLocationSearchParam = useCallback(
+        (locationSearchParam: string, value: string) => {
+            const currentParams: ParsedQs = qs.parse(location.search, {
+                ignoreQueryPrefix: true,
+            });
+            currentParams[locationSearchParam] = value;
+            history.push({
+                search: `?${qs.stringify(currentParams)}`,
+            });
+        },
+        [history]
+    );
 
     useEffect(() => {
         changeLocationSearchParam('page', `${pageIndex}`);
-    }, [pageIndex]);
+    }, [pageIndex, changeLocationSearchParam]);
 
     useEffect(() => {
         changeLocationSearchParam('count', `${perPageCount}`);
-    }, [perPageCount]);
+    }, [perPageCount, changeLocationSearchParam]);
 
     return (
         <div className="subpage-pagination-and-counter-container">

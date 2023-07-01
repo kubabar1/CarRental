@@ -1,5 +1,5 @@
 import React from 'react';
-import { AuthenticatedUserDTO } from '../../../../model/AuthenticatedUserDTO';
+import { AuthenticatedUserDTO } from '@car-rental/shared/model';
 
 interface ReservationConfirmationProperties {
     authenticatedUser: AuthenticatedUserDTO;

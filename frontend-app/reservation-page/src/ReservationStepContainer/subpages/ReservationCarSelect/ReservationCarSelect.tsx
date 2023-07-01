@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import { Link, Redirect, useHistory } from 'react-router-dom';
-import { carSelectSubpageLink, confirmationSubpageLink, reservationDataSubpageLink } from '../../../constants/Links';
+import React from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { confirmationSubpageLink, reservationDataSubpageLink } from '../../../constants/Links';
 import './ReservationCarSelect.scss';
 import { Control, FieldPath, FieldValues, SubmitHandler, useWatch } from 'react-hook-form';
-import { VehicleResponseDTO } from '../../../model/VehicleResponseDTO';
+import { VehicleResponseDTO } from '@car-rental/shared/model';
 import { VehicleSelect } from './components/vehicle_select/VehicleSelect';
 import { UseFormHandleSubmit } from 'react-hook-form/dist/types/form';
 import { FieldError, Merge } from 'react-hook-form/dist/types';
@@ -31,6 +31,7 @@ export function ReservationCarSelect<FieldValuesType extends FieldValues>({
     const history = useHistory();
     const selectedVehicleId = useWatch({ name: vehicleSelectName, control: control });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleClickNext: SubmitHandler<FieldValuesType> = (): any | Promise<any> => {
         history.push(confirmationSubpageLink);
     };

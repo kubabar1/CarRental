@@ -3,10 +3,9 @@ import { Table } from '../../components/table/Table';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { Column, HeaderProps } from 'react-table';
-import { BookingResponseDTO } from '../../model/BookingResponseDTO';
-import { getAuthenticatedUserRentedBookingsList } from '../../service/BookingUserService';
-import Page from '../../../../main-page/src/model/Page';
+import { Column } from 'react-table';
+import { BookingResponseDTO, Page } from '@car-rental/shared/model';
+import { getAuthenticatedUserRentedBookingsList } from '@car-rental/shared/service';
 import { bookingListCommonColumns } from './BookingListCommonColumns';
 
 export function MyRentedBookingsListSubpage(): JSX.Element {

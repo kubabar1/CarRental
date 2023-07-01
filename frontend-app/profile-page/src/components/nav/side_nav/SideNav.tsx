@@ -25,7 +25,6 @@ import {
     myRentedBookingsListPath,
     rentedBookingsListPath,
     reservedBookingsListPath,
-    reservedVehiclesListPath,
     userRolesListPath,
     usersListPath,
     myReservedBookingsListPath,

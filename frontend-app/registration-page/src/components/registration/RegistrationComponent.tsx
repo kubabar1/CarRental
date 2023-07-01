@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import carRentalLogo from '../../images/car_rental_logo_name.png';
 import './RegistrationComponent.scss';
 import { homePath } from '../../constants/PathsApi';
-import { registerUser } from '../../service/RegistrationService';
-import { CreateUserDTO } from '../../model/CreateUserDTO';
-import { UserResponseDTO } from '../../model/UserResponseDTO';
+import { registerUser, ResponseData } from '@car-rental/shared/service';
+import { CreateUserDTO, UserResponseDTO } from '@car-rental/shared/model';
 import PasswordStrengthBar from 'react-password-strength-bar';
-import { ResponseData } from '../../service/FetchUtil';
 import { Input } from './components/Input';
 import { useHistory } from 'react-router-dom';
 

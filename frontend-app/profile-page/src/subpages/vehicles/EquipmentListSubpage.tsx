@@ -2,33 +2,43 @@ import React, { useState } from 'react';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { getAllEquipmentsList } from '../../service/EquipmentService';
-import { EquipmentResponseDTO } from '../../model/EquipmentResponseDTO';
+import { getAllEquipmentsList } from '@car-rental/shared/service';
+import { EquipmentResponseDTO, Page } from '@car-rental/shared/model';
 import { Table } from '../../components/table/Table';
 import { Column } from 'react-table';
-import Page from '../../../../main-page/src/model/Page';
 import { Button } from 'react-bootstrap';
 import './EquipmentListSubpage.scss';
 import { AddEquipmentModal } from './components/add_equipment_modal/AddEquipmentModal';
 
+export interface EquipmentResponseExtDTO extends EquipmentResponseDTO {
+    id: string;
+}
+
+export const mapEqpResponseToExt = (eqp: EquipmentResponseDTO) => {
+    return {
+        id: eqp.equipmentCode,
+        ...eqp,
+    };
+};
+
 export function EquipmentListSubpage(): JSX.Element {
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
-    const [vehicleEquipmentsPage, setVehicleEquipmentsPage] = useState<Page<EquipmentResponseDTO> | undefined>(
-        undefined
-    );
+    const [totalPages, setTotalPages] = React.useState<number>(0);
+    const [vehicleEquipments, setVehicleEquipments] = useState<EquipmentResponseExtDTO[]>([]);
 
     const fetchData = React.useCallback(
-        (pageIndex: number, pageSize: number, filter?: string, sortBy?: string, desc?: boolean): Promise<void> => {
+        (pageIndex?: number, pageSize?: number, filter?: string, sortBy?: string, desc?: boolean): Promise<void> => {
             return getAllEquipmentsList(pageIndex, pageSize, filter, sortBy, desc).then(
                 (page: Page<EquipmentResponseDTO>) => {
-                    setVehicleEquipmentsPage(page);
+                    setVehicleEquipments(page ? page.content.map(mapEqpResponseToExt) : []);
+                    setTotalPages(page ? page.totalPages : 0);
                 }
             );
         },
         []
     );
 
-    const columns = React.useMemo<Column<EquipmentResponseDTO>[]>(
+    const columns = React.useMemo<Column<EquipmentResponseExtDTO>[]>(
         () => [
             {
                 id: 'equipmentCode',
@@ -51,12 +61,12 @@ export function EquipmentListSubpage(): JSX.Element {
                 <div className="add-equipment-button-container">
                     <Button onClick={() => setIsOpen(true)}>Add</Button>
                 </div>
-                <Table<EquipmentResponseDTO>
+                <Table<EquipmentResponseExtDTO>
                     columns={columns}
-                    data={vehicleEquipmentsPage ? vehicleEquipmentsPage.content : []}
+                    data={vehicleEquipments}
                     fetchData={fetchData}
-                    pageCount={vehicleEquipmentsPage?.totalPages}
-                    getRowId={(row: EquipmentResponseDTO) => row.equipmentCode}
+                    pageCount={totalPages}
+                    // getRowId={(row: EquipmentResponseDTO) => row.equipmentCode}
                 />
                 <AddEquipmentModal isOpen={isOpen} setIsOpen={setIsOpen} reloadEquipments={fetchData} />
             </SubpageContent>

@@ -2,13 +2,10 @@ import React from 'react';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { addVehicle } from '../../service/VehicleService';
-import { VehiclePersistDTO } from '../../model/VehiclePersistDTO';
+import { addVehicle, ResponseData } from '@car-rental/shared/service';
 import { VehicleForm, VehicleFormValues } from './components/vehicle_form/VehicleForm';
-import { VehicleStatCodeEnum } from '../../model/VehicleStatCodeEnum';
+import { VehicleStatCodeEnum, VehiclePersistDTO, VehicleResponseDTO } from '@car-rental/shared/model';
 import { FileWithPreview } from '../../components/form/form-group/upload/Dropzone';
-import { ResponseData } from '../../service/FetchUtil';
-import { VehicleResponseDTO } from '../../model/VehicleResponseDTO';
 
 export function VehicleAddSubpage(): JSX.Element {
     const addVehicleForm = async (
@@ -23,7 +20,7 @@ export function VehicleAddSubpage(): JSX.Element {
         model: '',
         dailyFee: 0,
         registration: '',
-        location: 0,
+        location: '0',
         vehicleStatus: VehicleStatCodeEnum.AVI,
         bestOffer: false,
         bodyType: '',

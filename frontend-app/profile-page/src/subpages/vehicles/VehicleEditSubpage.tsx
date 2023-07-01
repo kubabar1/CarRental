@@ -2,13 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { VehicleResponseDTO } from '../../model/VehicleResponseDTO';
 import { useParams } from 'react-router-dom';
-import { getVehicleById, updateVehicleData } from '../../service/VehicleService';
-import { VehiclePersistDTO } from '../../model/VehiclePersistDTO';
+import { getVehicleById, updateVehicleData, ResponseData } from '@car-rental/shared/service';
+import { VehiclePersistDTO, VehicleResponseDTO } from '@car-rental/shared/model';
 import { VehicleForm, VehicleFormValues } from './components/vehicle_form/VehicleForm';
 import { FileWithPreview } from '../../components/form/form-group/upload/Dropzone';
-import { ResponseData } from '../../service/FetchUtil';
 
 export function VehicleEditSubpage(): JSX.Element {
     const { vehicleId } = useParams<{ vehicleId: string }>();
@@ -33,7 +31,7 @@ export function VehicleEditSubpage(): JSX.Element {
             model: vehicleResponseDTO.model,
             dailyFee: vehicleResponseDTO.dailyFee,
             registration: vehicleResponseDTO.registration,
-            location: vehicleResponseDTO.locationId,
+            location: vehicleResponseDTO.location.id,
             vehicleStatus: vehicleResponseDTO.vehicleStatus.vehicleStatCode,
             bestOffer: vehicleResponseDTO.bestOffer,
             bodyType: vehicleResponseDTO.vehicleDetails.bodyType,

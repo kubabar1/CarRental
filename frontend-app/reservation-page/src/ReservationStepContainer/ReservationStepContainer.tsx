@@ -9,7 +9,13 @@ import {
 } from '../constants/Links';
 import { ReservationCarSelect } from './subpages/ReservationCarSelect/ReservationCarSelect';
 import { StepsHeader } from './components/StepsHeader/StepsHeader';
-import { AuthenticatedUserDTO } from '../model/AuthenticatedUserDTO';
+import {
+    AuthenticatedUserDTO,
+    LocalisationsResponseDTO,
+    LocalisationResponseDTO,
+    VehicleResponseDTO,
+} from '@car-rental/shared/model';
+import { getAllLocationsList, getAvailableVehiclesByLocation } from '@car-rental/shared/service';
 import { useForm } from 'react-hook-form';
 import { ReservationConfirmation } from './subpages/ReservationConfirmation/ReservationConfirmation';
 import qs from 'qs';
@@ -17,11 +23,6 @@ import date from 'date-and-time';
 import { PersonalDataCard } from './subpages/ReservationData/cards/PersonalDataCard/PersonalDataCard';
 import { ReservationDataCard } from './subpages/ReservationData/cards/ReservationDataCard/ReservationDataCard';
 import { reactHookFormStorage } from '../utils/StorageUtil';
-import { getAllLocationsList } from '../service/LocationService';
-import { LocalisationsResponseDTO } from '../model/LocalisationsResponseDTO';
-import LocalisationResponseDTO from '../model/LocalisationResponseDTO';
-import { getAvailableVehiclesByLocation } from '../service/VehicleService';
-import { VehicleResponseDTO } from '../model/VehicleResponseDTO';
 
 type ReservationFormValues = {
     localisationId: string;
@@ -82,7 +83,7 @@ export function ReservationStepContainer({ authenticatedUser }: ReservationStepC
 
     useEffect(() => {
         reservationStorage.setValuesInForm();
-    }, []);
+    }, [reservationStorage]);
 
     return (
         <div>

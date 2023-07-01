@@ -1,7 +1,7 @@
 import React from 'react';
 import { mapUserRolesDtoToStringArray } from '../../../utils/UserUtils';
 import './UserRolesTableItem.scss';
-import { UserRoleResponseDTO } from '../../../model/UserRoleResponseDTO';
+import { UserRoleResponseDTO } from '@car-rental/shared/model';
 
 interface UserRolesTableItemProps {
     userRoles: UserRoleResponseDTO[];

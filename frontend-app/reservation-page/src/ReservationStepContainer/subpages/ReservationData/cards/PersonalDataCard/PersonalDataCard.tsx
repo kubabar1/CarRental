@@ -1,5 +1,5 @@
 import React from 'react';
-import { AuthenticatedUserDTO } from '../../../../../model/AuthenticatedUserDTO';
+import { AuthenticatedUserDTO } from '@car-rental/shared/model';
 import './PersonalDataCard.scss';
 
 interface PersonalDataCardProperties {

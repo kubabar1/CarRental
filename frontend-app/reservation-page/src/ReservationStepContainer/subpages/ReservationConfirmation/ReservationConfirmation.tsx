@@ -1,7 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { carSelectSubpageLink, confirmationSubpageLink } from '../../../constants/Links';
-import { AuthenticatedUserDTO } from '../../../model/AuthenticatedUserDTO';
+import { carSelectSubpageLink } from '../../../constants/Links';
+import {
+    AuthenticatedUserDTO,
+    BookingAddRequestDTO,
+    LocalisationResponseDTO,
+    VehicleResponseDTO,
+} from '@car-rental/shared/model';
 import { PersonalData } from './components/PersonalData';
 import { Control, FieldPath, FieldValues, SubmitHandler, useWatch } from 'react-hook-form';
 import { ReservationData } from './components/ReservationData';
@@ -9,14 +14,9 @@ import { SelectedVehicleData } from './components/SelectedVehicleData';
 import './ReservationConfirmation.scss';
 import { ReservationCost } from './components/ReservationCost';
 import { UseFormHandleSubmit } from 'react-hook-form/dist/types/form';
-import { sendEmails } from '../../../../../profile-page/src/service/EmailService';
-import { MultipleRecipientsMailsDTO } from '../../../../../profile-page/src/model/MultipleRecipientsMailsDTO';
-import { createBooking } from '../../../service/BookingService';
-import BookingAddRequestDTO from '../../../model/BookingAddRequestDTO';
+import { createBooking } from '@car-rental/shared/service';
 import { homePath } from '../../../../../login-page/src/constants/Paths';
 import { ReactHookFormStorage } from '../../../utils/StorageUtil';
-import LocalisationResponseDTO from '../../../model/LocalisationResponseDTO';
-import { VehicleResponseDTO } from '../../../model/VehicleResponseDTO';
 
 interface ReservationConfirmationProperties<FieldValuesType extends FieldValues> {
     control: Control<FieldValuesType>;
@@ -52,6 +52,7 @@ export function ReservationConfirmation<FieldValuesType extends FieldValues>({
     );
     const selectedVehicle: VehicleResponseDTO | undefined = vehicles.find((v) => v.id === selectedVehicleId);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleFormSubmit: SubmitHandler<FieldValuesType> = (): any | Promise<any> => {
         createBooking(
             new BookingAddRequestDTO(selectedLocalisationId, selectedVehicleId, receptionDate, returnDate)

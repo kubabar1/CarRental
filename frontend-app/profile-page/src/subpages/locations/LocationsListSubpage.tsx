@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
-import { getLocationsList } from '../../service/LocationService';
+import { getLocationsList } from '@car-rental/shared/service';
 import { Column } from 'react-table';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Table } from '../../components/table/Table';
-import { LocationResponseDTO } from '../../model/LocationResponseDTO';
-import Page from '../../../../main-page/src/model/Page';
+import { LocalisationResponseDTO, Page } from '@car-rental/shared/model';
 
 export function LocationsListSubpage(): JSX.Element {
-    const [locationsPage, setLocationsPage] = useState<Page<LocationResponseDTO> | undefined>(undefined);
+    const [locationsPage, setLocationsPage] = useState<Page<LocalisationResponseDTO> | undefined>(undefined);
 
     const fetchData = React.useCallback((pageIndex, pageSize, filter, sortBy, desc): Promise<void> => {
-        return getLocationsList(pageIndex, pageSize, filter, sortBy, desc).then((page: Page<LocationResponseDTO>) => {
-            setLocationsPage(page);
-        });
+        return getLocationsList(pageIndex, pageSize, filter, sortBy, desc).then(
+            (page: Page<LocalisationResponseDTO>) => {
+                setLocationsPage(page);
+            }
+        );
     }, []);
 
-    const columns = React.useMemo<Column<LocationResponseDTO>[]>(
+    const columns = React.useMemo<Column<LocalisationResponseDTO>[]>(
         () => [
             {
                 Header: 'ID',
@@ -51,7 +52,7 @@ export function LocationsListSubpage(): JSX.Element {
         <SubpageContainer>
             <SubpageHeader title={'Locations'} />
             <SubpageContent>
-                <Table<LocationResponseDTO>
+                <Table<LocalisationResponseDTO>
                     columns={columns}
                     data={locationsPage ? locationsPage.content : []}
                     fetchData={fetchData}

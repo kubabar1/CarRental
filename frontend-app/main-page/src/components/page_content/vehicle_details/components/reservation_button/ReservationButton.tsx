@@ -1,5 +1,5 @@
 import React from 'react';
-import { VehicleResponseDTO } from '../../../../../model/VehicleResponseDTO';
+import { VehicleResponseDTO } from '@car-rental/shared/model';
 import { Button } from 'react-bootstrap';
 
 interface ReservationButtonProperties {
@@ -15,7 +15,7 @@ export default function ReservationButton(props: ReservationButtonProperties): J
             <Button
                 onClick={() => {
                     window.location.replace(
-                        `http://localhost:3030/reservation?localisationId=${vehicle.locationId}&vehicleId=${vehicle.id}`
+                        `http://localhost:3030/reservation?localisationId=${vehicle.location}&vehicleId=${vehicle.id}`
                     );
                 }}
                 className="linkstyle btn btn-success px-5 py-2 ml-3"

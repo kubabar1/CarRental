@@ -1,5 +1,5 @@
-import { FieldValues, useWatch } from 'react-hook-form';
-import { Control, FieldPath, UseFormSetValue } from 'react-hook-form/dist/types';
+import { FieldValues } from 'react-hook-form';
+import { FieldPath, UseFormSetValue } from 'react-hook-form/dist/types';
 import { UseFormWatch } from 'react-hook-form/dist/types/form';
 
 export interface ReactHookFormStorage<T> {

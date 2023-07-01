@@ -4,17 +4,14 @@ import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Table } from '../../components/table/Table';
 import { Column } from 'react-table';
-import { deleteOption, getVehicleOptionsWithAssoc } from '../../service/VehicleService';
+import { deleteOption, getVehicleOptionsWithAssoc } from '@car-rental/shared/service';
 import { OnChangeValue } from 'react-select/dist/declarations/src/types';
 import Select from 'react-select';
 import './VehicleOptionsSubpage.scss';
-import { VehicleOptionsWithAssocCountDTO } from '../../model/VehicleOptionsWithAssocCountDTO';
 import { ButtonTableItem } from '../../components/table/tab_items/button_table_item/ButtonTableItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { AssocDetailsDTO } from '../../model/AssocDetailsDTO';
-import { ModelAssocDetailsDTO } from '../../model/ModelAssocDetailsDTO';
-import { EquipmentResponseDTO } from '../../model/EquipmentResponseDTO';
+import { AssocDetailsDTO, ModelAssocDetailsDTO, VehicleOptionsWithAssocCountDTO } from '@car-rental/shared/model';
 
 enum OptionType {
     BRANDS = 'brands',
@@ -32,6 +29,10 @@ type VehicleOption = {
 type OptionSelectType = { value: OptionType; label: string };
 
 type BrandSelectType = { value: string | null; label: string | null };
+
+export interface VehicleOptionExt extends VehicleOption {
+    id: string;
+}
 
 export function VehicleOptionsSubpage(): JSX.Element {
     const [vehicleOptions, setVehicleOptions] = useState<VehicleOptionsWithAssocCountDTO | undefined>(undefined);
@@ -67,21 +68,21 @@ export function VehicleOptionsSubpage(): JSX.Element {
         };
     };
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    useEffect(() => {
-        setSelectedBrand(null);
-    }, [selectedOption]);
-
     const fetchData = React.useCallback((): Promise<void> => {
         return getVehicleOptionsWithAssoc().then((vehicleDefaultParams: VehicleOptionsWithAssocCountDTO) => {
             setVehicleOptions({ ...vehicleDefaultParams });
         });
     }, []);
 
-    const columns = React.useMemo<Column<VehicleOption>[]>(
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
+
+    useEffect(() => {
+        setSelectedBrand(null);
+    }, [selectedOption]);
+
+    const columns = React.useMemo<Column<VehicleOptionExt>[]>(
         () => [
             {
                 id: 'options',
@@ -93,7 +94,7 @@ export function VehicleOptionsSubpage(): JSX.Element {
             {
                 id: 'actions',
                 Header: 'Actions',
-                accessor: (vehicleOption: VehicleOption) => {
+                accessor: (vehicleOption: VehicleOptionExt) => {
                     return (
                         <ButtonTableItem
                             buttonText={<FontAwesomeIcon icon={faTrash} />}
@@ -120,7 +121,7 @@ export function VehicleOptionsSubpage(): JSX.Element {
                 disableSortBy: true,
             },
         ],
-        [selectedOption]
+        [selectedOption, fetchData]
     );
 
     return (
@@ -165,17 +166,17 @@ export function VehicleOptionsSubpage(): JSX.Element {
                     </div>
                 )}
                 {vehicleOptions && (
-                    <Table<VehicleOption>
+                    <Table<VehicleOptionExt>
                         tableContainerClassName={'vehicle-option-table-container'}
                         columns={columns}
                         data={(selectedOption === OptionType.MODELS
                             ? vehicleOptions.models.filter((m: ModelAssocDetailsDTO) => m.brand === selectedBrand)
                             : vehicleOptions[selectedOption]
                         ).map((v: AssocDetailsDTO) => {
-                            return { value: v.name, count: v.count };
+                            return { id: v.name, value: v.name, count: v.count };
                         })}
                         fetchData={fetchData}
-                        getRowId={(row: VehicleOption) => row.value}
+                        // getRowId={(row: VehicleOptionExt) => row.value}
                     />
                 )}
             </SubpageContent>

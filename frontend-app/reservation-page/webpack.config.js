@@ -9,7 +9,6 @@ module.exports = Object.assign({}, mainConfig, {
     name: 'reservation-page',
     entry: {
         reservation: path.join(__dirname, 'src/reservation.tsx'),
-        reservation_status: path.join(__dirname, 'src/reservation_status.tsx'),
     },
     output: {
         ...mainConfig.output,

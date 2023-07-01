@@ -1,15 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { VehicleResponseDTO } from '../../../model/VehicleResponseDTO';
 import ReactPaginate from 'react-paginate';
 import { getCountFromUrl, getPageFromUrl } from '../../../utils/UrlUtil';
-import Page from '../../../model/Page';
 import { VehicleItem } from '../vehicle_list/vehicle_item/VehicleItem';
 import { useHistory, useLocation, withRouter } from 'react-router-dom';
 import { LoaderContainer } from '../vehicle_list/container/LoaderContainer';
 import qs, { ParsedQs } from 'qs';
 import Select, { SingleValue } from 'react-select';
-import { getBestOffersVehiclesList } from '../../../service/VehicleService';
+import { getBestOffersVehiclesList } from '@car-rental/shared/service';
 import './BestOffersPage.scss';
+import { VehicleResponseDTO, Page } from '@car-rental/shared/model';
 
 type OptionType = { value: string | null; label: string | null };
 

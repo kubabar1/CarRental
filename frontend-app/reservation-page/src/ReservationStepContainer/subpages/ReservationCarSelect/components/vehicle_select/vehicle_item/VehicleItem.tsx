@@ -1,7 +1,7 @@
 import React from 'react';
 import { carImagesMainPageCarList } from '../../../../../../constants/PathsServer';
 import './VehicleItem.scss';
-import { VehicleResponseDTO } from '../../../../../../model/VehicleResponseDTO';
+import { VehicleResponseDTO } from '@car-rental/shared/model';
 
 interface CarItemProperties {
     vehicle: VehicleResponseDTO;

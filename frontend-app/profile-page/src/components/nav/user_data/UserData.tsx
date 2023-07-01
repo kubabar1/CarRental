@@ -1,7 +1,7 @@
 import React from 'react';
 import carRentalLogoName from '../../../images/car_rental_logo_name.png';
 import { userImagesProfilePage } from '../../../constants/PathsServer';
-import { AuthenticatedUserDTO } from '../../../model/AuthenticatedUserDTO';
+import { AuthenticatedUserDTO } from '@car-rental/shared/model';
 import './UserData.scss';
 
 interface UserDataProperties {

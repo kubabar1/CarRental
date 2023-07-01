@@ -14,4 +14,6 @@ public interface LocationsService {
     LocationResponseDTO addLocation(LocationAddDTO locationAddDTO);
 
     Set<LocationResponseDTO> getAllLocations(String country);
+
+    LocationResponseDTO getLocationById(Long locationId);
 }

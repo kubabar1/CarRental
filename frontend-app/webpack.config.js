@@ -33,6 +33,10 @@ module.exports = {
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js'],
+        alias: {
+            '@car-rental/shared/model': path.resolve(__dirname, './shared/model'),
+            '@car-rental/shared/service': path.resolve(__dirname, './shared/service'),
+        }
     },
     mode: process.env.NODE_ENV,
     devtool: 'source-map',
@@ -58,10 +62,10 @@ module.exports = {
                         loader: 'file-loader',
                         options: {
                             name: '[name].[ext]',
-                            outputPath: 'fonts/'
-                        }
-                    }
-                ]
+                            outputPath: 'fonts/',
+                        },
+                    },
+                ],
             },
         ],
     },

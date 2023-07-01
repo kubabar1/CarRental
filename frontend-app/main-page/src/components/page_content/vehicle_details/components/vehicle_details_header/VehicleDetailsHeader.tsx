@@ -1,5 +1,5 @@
 import React from 'react';
-import { VehicleResponseDTO } from '../../../../../model/VehicleResponseDTO';
+import { VehicleResponseDTO } from '@car-rental/shared/model';
 import { carImagesMainPageCarList } from '../../../../../constants/PathsServer';
 import './VehicleDetailsHeader.scss';
 

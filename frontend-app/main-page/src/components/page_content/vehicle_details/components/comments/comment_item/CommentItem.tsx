@@ -1,9 +1,9 @@
 import React from 'react';
-import { CommentWithRateResponseDTO } from '../../../../../../model/CommentWithRateResponseDTO';
 import { userImagesMainPage } from '../../../../../../constants/PathsServer';
 import StarRatingComponent from 'react-star-rating-component';
 import date from 'date-and-time';
 import './CommentItem.scss';
+import { CommentWithRateResponseDTO } from '@car-rental/shared/model';
 
 interface CommentItemProperties {
     comment: CommentWithRateResponseDTO;

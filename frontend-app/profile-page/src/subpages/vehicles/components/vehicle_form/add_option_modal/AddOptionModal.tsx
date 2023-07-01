@@ -3,7 +3,6 @@ import { InputFormGroup } from '../../../../../components/form/form-group/input/
 import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { FieldValues } from 'react-hook-form/dist/types';
 import './AddOptionModal.scss';
 import { RegisterOptions } from 'react-hook-form/dist/types/validator';
 
@@ -11,7 +10,7 @@ type Option = {
     value: string;
 };
 
-interface AddOptionModalProperties<FieldValuesType extends FieldValues> {
+interface AddOptionModalProperties {
     headerTitle: string;
     optionLabel: string;
     isOpen: boolean;
@@ -21,14 +20,14 @@ interface AddOptionModalProperties<FieldValuesType extends FieldValues> {
     registerOptions?: RegisterOptions;
 }
 
-export function AddOptionModal<FieldValuesType extends FieldValues>({
+export function AddOptionModal({
     headerTitle,
     optionLabel,
     isOpen,
     setIsOpen,
     onSubmit,
     registerOptions,
-}: AddOptionModalProperties<Option>): JSX.Element {
+}: AddOptionModalProperties): JSX.Element {
     const { register, formState, clearErrors, handleSubmit, setValue } = useForm<Option>({
         mode: 'onChange',
         defaultValues: {

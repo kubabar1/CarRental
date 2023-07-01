@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap';
 import './VehicleModal.scss';
-import { VehicleResponseDTO } from '../../../../../model/VehicleResponseDTO';
+import { VehicleResponseDTO } from '@car-rental/shared/model';
 import { VehicleDetailsHeader } from './components/vehicle_details_header/VehicleDetailsHeader';
 import { VehicleProperties } from './components/details_list/VehicleProperties';
 import { VehicleEquipment } from './components/vehicle_equipment/VehicleEquipment';

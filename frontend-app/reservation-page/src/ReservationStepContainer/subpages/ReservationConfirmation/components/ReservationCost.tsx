@@ -1,7 +1,6 @@
 import React from 'react';
-import { getBookingCost } from '../../../../service/BookingService';
-import BookingCostRequestDTO from '../../../../model/BookingCostRequestDTO';
-import BookingCostResponseDTO from '../../../../model/BookingCostResponseDTO';
+import { BookingCostRequestDTO, BookingCostResponseDTO } from '@car-rental/shared/model';
+import { ResponseData, getBookingCost } from '@car-rental/shared/service';
 
 interface ReservationCostProperties {
     selectedVehicleId: string;
@@ -21,8 +20,8 @@ export function ReservationCost({
     React.useEffect(() => {
         if (selectedVehicleId) {
             getBookingCost(new BookingCostRequestDTO(selectedVehicleId, receptionDate, returnDate)).then(
-                (bookingCost: BookingCostResponseDTO) => {
-                    setFullCost(bookingCost.totalCost);
+                (bookingCost: ResponseData<BookingCostResponseDTO>) => {
+                    setFullCost(bookingCost.responseBody.totalCost);
                 }
             );
         }

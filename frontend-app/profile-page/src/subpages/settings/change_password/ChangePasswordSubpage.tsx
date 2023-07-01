@@ -3,11 +3,9 @@ import { SubpageContainer } from '../../../components/subpage/container/SubpageC
 import { SubpageHeader } from '../../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../../components/subpage/content/SubpageContent';
 import { FormContainer } from '../../../components/form/form-group/FormContainer';
-import { PasswordUpdateDTO } from '../../../model/PasswordUpdateDTO';
-import { ResponseData } from '../../../service/FetchUtil';
-import { UserResponseDTO } from '../../../model/UserResponseDTO';
+import { PasswordUpdateDTO, UserResponseDTO } from '@car-rental/shared/model';
 import PasswordStrengthBar from 'react-password-strength-bar/dist';
-import { updateUserPassword } from '../../../service/UserService';
+import { updateUserPassword, ResponseData } from '@car-rental/shared/service';
 import './ChangePasswordSubpage.scss';
 
 export function ChangePasswordSubpage(): JSX.Element {

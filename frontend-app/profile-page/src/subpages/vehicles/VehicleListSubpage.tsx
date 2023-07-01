@@ -4,12 +4,9 @@ import { SubpageContainer } from '../../components/subpage/container/SubpageCont
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Column, HeaderProps } from 'react-table';
-import { VehicleResponseDTO } from '../../model/VehicleResponseDTO';
-import { getVehicleOptions, getVehiclesList } from '../../service/VehicleService';
+import { getVehicleOptions, getVehiclesList } from '@car-rental/shared/service';
 import { ButtonTableItem } from '../../components/table/tab_items/button_table_item/ButtonTableItem';
-import Page from '../../../../main-page/src/model/Page';
-import { VehicleOptionsDTO } from '../../model/VehicleOptionsDTO';
-import { BookingResponseDTO } from '../../model/BookingResponseDTO';
+import { BookingResponseDTO, VehicleOptionsDTO, VehicleResponseDTO, Page } from '@car-rental/shared/model';
 import { SelectColumnFilter } from '../../components/table/tab_items/select_column_filter/SelectColumnFilter';
 import { RangeColumnFilter } from '../../components/table/tab_items/slider_column_filter/RangeColumnFilter';
 import { LocationSelectColumnFilter } from '../../components/table/tab_items/location_select_column_filter/LocationSelectColumnFilter';

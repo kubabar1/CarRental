@@ -3,7 +3,7 @@ import { SingleValue } from 'react-select/dist/declarations/src/types';
 import { Control, FieldError, FieldPath, FieldValues, Merge, RegisterOptions } from 'react-hook-form/dist/types';
 import { Controller } from 'react-hook-form';
 import Select from 'react-select';
-import LocalisationResponseDTO from '../../../../../../model/LocalisationResponseDTO';
+import { LocalisationResponseDTO } from '@car-rental/shared/model';
 import { ReactHookFormStorage } from '../../../../../../utils/StorageUtil';
 
 interface LocationSelectionProps<FieldValuesType extends FieldValues> {
@@ -38,7 +38,7 @@ export function LocationSelection<FieldValuesType extends FieldValues>({
     afterChange,
 }: LocationSelectionProps<FieldValuesType>): JSX.Element {
     const options: LocationOptionType[] = allLocations.map((o: LocalisationResponseDTO) =>
-        mapToLocationOptionType(o.id, `${o.city}, ${o.streetAndNb}`)
+        mapToLocationOptionType(`${o.id}`, `${o.city}, ${o.streetAndNb}`)
     );
     return (
         <div className="location-select-group">
