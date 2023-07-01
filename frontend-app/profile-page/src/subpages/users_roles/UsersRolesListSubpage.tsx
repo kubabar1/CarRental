@@ -3,7 +3,7 @@ import { Table } from '../../components/table/Table';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { getAllUserRoles } from '@car-rental/shared/service';
+import { UserService } from '@car-rental/shared/service';
 import { Column } from 'react-table';
 import { UserRoleResponseDTO } from '@car-rental/shared/model';
 
@@ -37,7 +37,7 @@ export function UsersRolesListSubpage(): JSX.Element {
     );
 
     const fetchData = React.useCallback((): Promise<void> => {
-        return getAllUserRoles().then((userRoleResponseDTOS: UserRoleResponseDTO[]) => {
+        return UserService.getAllUserRoles().then((userRoleResponseDTOS: UserRoleResponseDTO[]) => {
             setAllUserRoles(userRoleResponseDTOS);
         });
     }, []);

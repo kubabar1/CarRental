@@ -49,8 +49,6 @@ export const GET_VEHICLE_BY_ID_PATH = (vehicleId: string): string => withId(`${A
 export const GET_VEHICLE_MODELS_BY_BRAND_PATH = (brand: string): string =>
     withId(`${APP_ADDR}/vehicles/filter-params/brand-models`, brand);
 
-export const GET_VEHICLE_RATE_BY_ID_PATH = (vehicleId: string): string => withId(`${APP_ADDR}/rates`, vehicleId);
-
 export const GET_VEHICLE_COMMENTS_BY_ID_PATH = (vehicleId: string): string =>
     withId(`${APP_ADDR}/comments/vehicle`, vehicleId);
 
@@ -60,14 +58,9 @@ export const endpoints = {
     authenticationEndpoint: APP_ADDR + '/userdata/is-authenticated',
     localisationsEndpoint: APP_ADDR + '/locations',
     brandListEndpoint: APP_ADDR + '/car-list-search/brands',
-    brandModelsListEndpoint: (brand: string): string => APP_ADDR + `/car-list-search/brands/models/${brand}`,
     cityListEndpoint: APP_ADDR + '/car-list-search/brands/cities',
     bodyTypesListEndpoint: APP_ADDR + '/car-list-search/body-types',
     coloursListEndpoint: APP_ADDR + '/car-list-search/colours',
-    carsPageableEndpoint: (page: number, pageCount: number): string =>
-        APP_ADDR + `/cars?page=${page}&number=${pageCount}`,
-    commentsEndpoint: (carId: string, page: number, pageCount: number): string =>
-        APP_ADDR + `/comments/${carId}?page=${page}&number=${pageCount}`,
     carByIdEndpoint: (carId: string): string => APP_ADDR + `/cars/${carId}`,
     login: APP_ADDR + '/login',
     isUserWithEmailExists: APP_ADDR + '/users/email-exists',
@@ -133,8 +126,6 @@ export const ADD_BODY_TYPE_PATH = `${APP_ADDR}/vehicles/body-type`;
 
 export const ADD_FUEL_TYPE_PATH = `${APP_ADDR}/vehicles/fuel-type`;
 
-export const ADD_GEARBOX_PATH = `${APP_ADDR}/vehicles/gearbox`;
-
 export const ADD_COLOR_PATH = `${APP_ADDR}/vehicles/color`;
 
 export const ADD_VEHICLE_MODEL_PATH = `${APP_ADDR}/vehicles/model`;
@@ -143,8 +134,6 @@ export const DELETE_SPECIFIC_VEHICLE_OPTION_PATH = (vehicleOptionType: string, v
     `${APP_ADDR}/vehicles/vehicle-options/${vehicleOptionType}/${vehicleOption}`;
 
 export const UPDATE_VEHICLE_PATH = (vehicleId: string): string => withId(`${APP_ADDR}/vehicles`, vehicleId);
-
-export const GET_UNAVAILABLE_VEHICLES_PATH = `${APP_ADDR}/vehicles/unavailable`;
 
 export const GET_USERS_ROLES_PATH = `${APP_ADDR}/users-roles`;
 
@@ -155,8 +144,6 @@ export const GET_ALL_USERS_EMAILS = `${APP_ADDR}/users/all-emails`;
 export const GET_SELECTED_USERS_EMAILS = `${APP_ADDR}/users/selected-users-emails`;
 
 export const SEND_EMAILS_TO_USERS = `${APP_ADDR}/users/send-emails`;
-
-export const GET_AUTHORIZED_USER_PATH = `${APP_ADDR}/authentication/user-data`;
 
 export const UPDATE_USER_PATH = (userId: string): string => withId(`${APP_ADDR}/users`, userId);
 

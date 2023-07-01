@@ -3,7 +3,7 @@ import { UserRoleResponseDTO } from '@car-rental/shared/model';
 import { FormContainer } from '../../components/form/form-group/FormContainer';
 import { useHistory, useParams } from 'react-router-dom';
 import { usersListPath } from '../../constants/Links';
-import { addRolesToUser, getAllUserRoles } from '@car-rental/shared/service';
+import { UserService } from '@car-rental/shared/service';
 import {
     mapToOptionTypeWithKeys,
     OptionType,
@@ -31,7 +31,7 @@ export function AddRoleForm({ currentUserRoles }: AddRoleFormProperties): JSX.El
     });
 
     useEffect(() => {
-        getAllUserRoles().then((userRolesResponse: UserRoleResponseDTO[]) => {
+        UserService.getAllUserRoles().then((userRolesResponse: UserRoleResponseDTO[]) => {
             setAllPossibleUserRoles(
                 userRolesResponse.map((userRolesResponse: UserRoleResponseDTO) =>
                     mapToOptionTypeWithKeys(userRolesResponse.id, userRolesResponse.label)
@@ -41,7 +41,7 @@ export function AddRoleForm({ currentUserRoles }: AddRoleFormProperties): JSX.El
     }, [userId]);
 
     const onSubmit = (data: AddRoleFormValues): void => {
-        addRolesToUser(data.userRoles, userId).then(() => {
+        UserService.addRolesToUser(data.userRoles, userId).then(() => {
             history.push(usersListPath.link);
         });
     };

@@ -4,7 +4,7 @@ import { SubpageContainer } from '../../components/subpage/container/SubpageCont
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Column, HeaderProps } from 'react-table';
-import { getVehicleOptions, getVehiclesList } from '@car-rental/shared/service';
+import { VehicleService } from '@car-rental/shared/service';
 import { ButtonTableItem } from '../../components/table/tab_items/button_table_item/ButtonTableItem';
 import { BookingResponseDTO, VehicleOptionsDTO, VehicleResponseDTO, Page } from '@car-rental/shared/model';
 import { SelectColumnFilter } from '../../components/table/tab_items/select_column_filter/SelectColumnFilter';
@@ -16,15 +16,17 @@ export function VehicleListSubpage(): JSX.Element {
     const [vehicleOptions, setVehicleOptions] = useState<VehicleOptionsDTO | undefined>(undefined);
 
     React.useEffect(() => {
-        getVehicleOptions().then((vehicleDefaultParams: VehicleOptionsDTO) => {
+        VehicleService.getVehicleOptions().then((vehicleDefaultParams: VehicleOptionsDTO) => {
             setVehicleOptions(vehicleDefaultParams);
         });
     }, []);
 
     const fetchData = React.useCallback((pageIndex, pageSize, filter, sortBy, desc): Promise<void> => {
-        return getVehiclesList(pageIndex, pageSize, filter, sortBy, desc).then((page: Page<VehicleResponseDTO>) => {
-            setVehiclesPage(page);
-        });
+        return VehicleService.getVehiclesList(pageIndex, pageSize, filter, sortBy, desc).then(
+            (page: Page<VehicleResponseDTO>) => {
+                setVehiclesPage(page);
+            }
+        );
     }, []);
 
     const columns = React.useMemo<Column<VehicleResponseDTO>[]>(

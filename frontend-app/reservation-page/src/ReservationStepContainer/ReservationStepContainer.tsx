@@ -15,7 +15,7 @@ import {
     LocalisationResponseDTO,
     VehicleResponseDTO,
 } from '@car-rental/shared/model';
-import { getAllLocationsList, getAvailableVehiclesByLocation } from '@car-rental/shared/service';
+import { LocationService, VehicleService } from '@car-rental/shared/service';
 import { useForm } from 'react-hook-form';
 import { ReservationConfirmation } from './subpages/ReservationConfirmation/ReservationConfirmation';
 import qs from 'qs';
@@ -62,14 +62,14 @@ export function ReservationStepContainer({ authenticatedUser }: ReservationStepC
     const selectedLocalisationId = watch('localisationId');
 
     React.useEffect(() => {
-        getAllLocationsList().then((localisations: LocalisationsResponseDTO) => {
+        LocationService.getAllLocationsList().then((localisations: LocalisationsResponseDTO) => {
             setLocalisations(localisations.locations);
         });
     }, []);
 
     React.useEffect(() => {
         if (selectedLocalisationId) {
-            getAvailableVehiclesByLocation(selectedLocalisationId).then((v: VehicleResponseDTO[]) => {
+            VehicleService.getAvailableVehiclesByLocation(selectedLocalisationId).then((v: VehicleResponseDTO[]) => {
                 setVehicles(v);
             });
         }

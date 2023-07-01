@@ -8,8 +8,7 @@ import { CommentList } from './components/comments/CommentList';
 import { AddComment } from './components/comments/add_comment/AddComment';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import ClipLoader from 'react-spinners/ClipLoader';
-import { getVehicleComments } from '@car-rental/shared/service';
-import { getVehicleById } from '@car-rental/shared/service';
+import { RatingService, VehicleService } from '@car-rental/shared/service';
 import './VehicleDetailsPage.scss';
 import { VehicleEquipment } from './components/vehicle_equipment/VehicleEquipment';
 import { CommentWithRateResponseDTO, AuthenticatedUserDTO, Page } from '@car-rental/shared/model';
@@ -28,10 +27,10 @@ export function VehicleDetailsPage({ authenticatedUser, match }: CarDetailsPrope
     const [currentPage, setCurrentPage] = useState<number>(DEFAULT_START_COMMENTS_PAGE);
 
     useEffect(() => {
-        getVehicleById(vehicleId).then((vehicleResponseDTO: VehicleResponseDTO) => {
+        VehicleService.getVehicleById(vehicleId).then((vehicleResponseDTO: VehicleResponseDTO) => {
             setVehicle(vehicleResponseDTO);
         });
-        getVehicleComments(vehicleId, DEFAULT_START_COMMENTS_PAGE, DEFAULT_COMMENTS_COUNT).then(
+        RatingService.getVehicleComments(vehicleId, DEFAULT_START_COMMENTS_PAGE, DEFAULT_COMMENTS_COUNT).then(
             (commentResponseDTOS: Page<CommentWithRateResponseDTO>) => {
                 setComments(commentResponseDTOS.content);
                 setTotalCommentsCount(commentResponseDTOS.totalElements);
@@ -42,7 +41,7 @@ export function VehicleDetailsPage({ authenticatedUser, match }: CarDetailsPrope
     const loadMoreComments = (): void => {
         const nextPage = currentPage + 1;
         setCurrentPage(nextPage);
-        getVehicleComments(vehicleId, nextPage, DEFAULT_COMMENTS_COUNT).then(
+        RatingService.getVehicleComments(vehicleId, nextPage, DEFAULT_COMMENTS_COUNT).then(
             (commentResponseDTOS: Page<CommentWithRateResponseDTO>) => {
                 setComments([...comments, ...commentResponseDTOS.content]);
                 console.log(totalCommentsCount);

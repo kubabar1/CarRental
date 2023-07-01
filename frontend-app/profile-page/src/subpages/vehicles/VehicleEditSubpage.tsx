@@ -3,8 +3,8 @@ import { SubpageContainer } from '../../components/subpage/container/SubpageCont
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { useParams } from 'react-router-dom';
-import { getVehicleById, updateVehicleData, ResponseData } from '@car-rental/shared/service';
-import { VehiclePersistDTO, VehicleResponseDTO } from '@car-rental/shared/model';
+import { VehicleService } from '@car-rental/shared/service';
+import { VehiclePersistDTO, VehicleResponseDTO, ResponseData } from '@car-rental/shared/model';
 import { VehicleForm, VehicleFormValues } from './components/vehicle_form/VehicleForm';
 import { FileWithPreview } from '../../components/form/form-group/upload/Dropzone';
 
@@ -13,7 +13,7 @@ export function VehicleEditSubpage(): JSX.Element {
     const [vehicleResponseDTO, setVehicleResponseDTO] = useState<VehicleResponseDTO | undefined>(undefined);
 
     useEffect(() => {
-        getVehicleById(vehicleId).then((vehicleResp: VehicleResponseDTO) => {
+        VehicleService.getVehicleById(vehicleId).then((vehicleResp: VehicleResponseDTO) => {
             setVehicleResponseDTO(vehicleResp);
         });
     }, [vehicleId]);
@@ -22,7 +22,7 @@ export function VehicleEditSubpage(): JSX.Element {
         vehiclePersistDTO: VehiclePersistDTO,
         vehicleImage: File
     ): Promise<ResponseData<VehicleResponseDTO>> => {
-        return updateVehicleData(vehicleId, vehiclePersistDTO, vehicleImage);
+        return VehicleService.updateVehicleData(vehicleId, vehiclePersistDTO, vehicleImage);
     };
 
     const mapVehicleResponseToFormValues = (vehicleResponseDTO: VehicleResponseDTO): VehicleFormValues => {

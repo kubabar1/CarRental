@@ -6,7 +6,7 @@ import { SubpageContent } from '../../components/subpage/content/SubpageContent'
 import { Column } from 'react-table';
 import { BookingResponseDTO, Page } from '@car-rental/shared/model';
 import { ButtonTableItem } from '../../components/table/tab_items/button_table_item/ButtonTableItem';
-import { cancelAuthorizedUserBooking, getAuthenticatedUserReservedBookingsList } from '@car-rental/shared/service';
+import { BookingUserService } from '@car-rental/shared/service';
 import { bookingListCommonColumns } from './BookingListCommonColumns';
 
 export function MyReservedBookingsListSubpage(): JSX.Element {
@@ -14,11 +14,15 @@ export function MyReservedBookingsListSubpage(): JSX.Element {
 
     const fetchData = React.useCallback(
         (pageIndex?: number, pageSize?: number, filter?: string, sortBy?: string, desc?: boolean): Promise<void> => {
-            return getAuthenticatedUserReservedBookingsList(pageIndex, pageSize, filter, sortBy, desc).then(
-                (page: Page<BookingResponseDTO>) => {
-                    setBookingsPage(page);
-                }
-            );
+            return BookingUserService.getAuthenticatedUserReservedBookingsList(
+                pageIndex,
+                pageSize,
+                filter,
+                sortBy,
+                desc
+            ).then((page: Page<BookingResponseDTO>) => {
+                setBookingsPage(page);
+            });
         },
         []
     );
@@ -34,7 +38,7 @@ export function MyReservedBookingsListSubpage(): JSX.Element {
                         buttonText={'Cancel'}
                         buttonVariant={'danger'}
                         onClickAction={() =>
-                            cancelAuthorizedUserBooking(row.id).then(() => {
+                            BookingUserService.cancelAuthorizedUserBooking(row.id).then(() => {
                                 fetchData();
                             })
                         }

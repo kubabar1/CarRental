@@ -1,23 +1,28 @@
 import { endpoints } from '../constant/PathsAPI';
-import { UserEmailExistsDTO } from '../model';
-import { PasswordResetRequestDTO } from '../model';
-import { PasswordResetResponseDTO } from '../model';
-import { PasswordResetDTO } from '../model';
-import { fetchPost, ResponseData } from './FetchUtil';
+import {
+    UserEmailExistsDTO,
+    PasswordResetRequestDTO,
+    PasswordResetResponseDTO,
+    PasswordResetDTO,
+    ResponseData,
+} from '../model';
+import { fetchPost } from './FetchUtil';
 
-export const checkIfUserWithEmailExists = (userEmail: string): Promise<ResponseData<UserEmailExistsDTO>> => {
-    return fetchPost<UserEmailExistsDTO>(endpoints.isUserWithEmailExists, new PasswordResetRequestDTO(userEmail));
-};
+export class ResetPasswordService {
+    static checkIfUserWithEmailExists = (userEmail: string): Promise<ResponseData<UserEmailExistsDTO>> => {
+        return fetchPost<UserEmailExistsDTO>(endpoints.isUserWithEmailExists, new PasswordResetRequestDTO(userEmail));
+    };
 
-export const sendResetPasswordEmail = (userEmail: string): Promise<ResponseData<PasswordResetResponseDTO>> => {
-    return fetchPost<PasswordResetResponseDTO>(
-        endpoints.sendResetPasswordEmail,
-        new PasswordResetRequestDTO(userEmail)
-    );
-};
+    static sendResetPasswordEmail = (userEmail: string): Promise<ResponseData<PasswordResetResponseDTO>> => {
+        return fetchPost<PasswordResetResponseDTO>(
+            endpoints.sendResetPasswordEmail,
+            new PasswordResetRequestDTO(userEmail)
+        );
+    };
 
-export const resetUserPassword = (
-    passwordResetDTO: PasswordResetDTO
-): Promise<ResponseData<PasswordResetResponseDTO>> => {
-    return fetchPost<PasswordResetResponseDTO>(endpoints.saveUserPasswordAfterReset, passwordResetDTO);
-};
+    static resetUserPassword = (
+        passwordResetDTO: PasswordResetDTO
+    ): Promise<ResponseData<PasswordResetResponseDTO>> => {
+        return fetchPost<PasswordResetResponseDTO>(endpoints.saveUserPasswordAfterReset, passwordResetDTO);
+    };
+}

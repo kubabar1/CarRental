@@ -4,7 +4,7 @@ import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Table } from '../../components/table/Table';
 import { Column } from 'react-table';
-import { deleteOption, getVehicleOptionsWithAssoc } from '@car-rental/shared/service';
+import { VehicleService } from '@car-rental/shared/service';
 import { OnChangeValue } from 'react-select/dist/declarations/src/types';
 import Select from 'react-select';
 import './VehicleOptionsSubpage.scss';
@@ -69,9 +69,11 @@ export function VehicleOptionsSubpage(): JSX.Element {
     };
 
     const fetchData = React.useCallback((): Promise<void> => {
-        return getVehicleOptionsWithAssoc().then((vehicleDefaultParams: VehicleOptionsWithAssocCountDTO) => {
-            setVehicleOptions({ ...vehicleDefaultParams });
-        });
+        return VehicleService.getVehicleOptionsWithAssoc().then(
+            (vehicleDefaultParams: VehicleOptionsWithAssocCountDTO) => {
+                setVehicleOptions({ ...vehicleDefaultParams });
+            }
+        );
     }, []);
 
     useEffect(() => {
@@ -99,11 +101,12 @@ export function VehicleOptionsSubpage(): JSX.Element {
                         <ButtonTableItem
                             buttonText={<FontAwesomeIcon icon={faTrash} />}
                             onClickAction={() => {
-                                deleteOption(getDeleteUrlForVehicleOption(selectedOption), vehicleOption.value).then(
-                                    () => {
-                                        fetchData();
-                                    }
-                                );
+                                VehicleService.deleteOption(
+                                    getDeleteUrlForVehicleOption(selectedOption),
+                                    vehicleOption.value
+                                ).then(() => {
+                                    fetchData();
+                                });
                             }}
                             buttonVariant={'danger'}
                             tooltipMessage={

@@ -28,6 +28,7 @@ export * from './PasswordResetRequestDTO';
 export * from './PasswordResetResponseDTO';
 export * from './PasswordUpdateDTO';
 export * from './ReservationStatusResponseDTO';
+export * from './ResponseData';
 export * from './RoleAddDTO';
 export * from './UserEmailExistsDTO';
 export * from './UserResponseDTO';

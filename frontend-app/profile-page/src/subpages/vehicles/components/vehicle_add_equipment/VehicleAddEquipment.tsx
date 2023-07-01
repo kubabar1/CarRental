@@ -2,12 +2,8 @@ import React from 'react';
 import Select, { MultiValue } from 'react-select';
 import './VehicleAddEquipment.scss';
 import { Button } from 'react-bootstrap';
-import {
-    addEquipmentsToVehicle,
-    getAllEquipmentsNotAssignedToVehicleList,
-    ResponseData,
-} from '@car-rental/shared/service';
-import { EquipmentResponseDTO, VehicleResponseDTO } from '@car-rental/shared/model';
+import { EquipmentService } from '@car-rental/shared/service';
+import { EquipmentResponseDTO, VehicleResponseDTO, ResponseData } from '@car-rental/shared/model';
 import { EquipmentResponseExtDTO, mapEqpResponseToExt } from '../../VehicleEquipmentEditSubpage';
 
 export type VehicleAddEquipmentSelectOption = { value: string; label: string };
@@ -50,12 +46,12 @@ export const VehicleAddEquipment = ({
                     variant={'success'}
                     disabled={!equipmentsToAddList.length}
                     onClick={() => {
-                        addEquipmentsToVehicle(
+                        EquipmentService.addEquipmentsToVehicle(
                             vehicleId,
                             equipmentsToAddList.map((vehicle: VehicleAddEquipmentSelectOption) => vehicle.value)
                         ).then((vehicleResp: ResponseData<VehicleResponseDTO>) => {
                             setVehicle(vehicleResp.responseBody);
-                            getAllEquipmentsNotAssignedToVehicleList(vehicleId).then(
+                            EquipmentService.getAllEquipmentsNotAssignedToVehicleList(vehicleId).then(
                                 (equipmentsResponse: EquipmentResponseDTO[]) => {
                                     setAllPossibleEquipments(equipmentsResponse.map(mapEqpResponseToExt));
                                 }

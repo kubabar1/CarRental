@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import carRentalLogo from '../../images/car_rental_logo_name.png';
 import './ResetPasswordComponent.scss';
 import { homePath, loginPath } from '../../constants/Paths';
-import { checkIfUserWithEmailExists, ResponseData, sendResetPasswordEmail } from '@car-rental/shared/service';
-import { UserEmailExistsDTO } from '@car-rental/shared/model';
+import { ResetPasswordService } from '@car-rental/shared/service';
+import { UserEmailExistsDTO, ResponseData } from '@car-rental/shared/model';
 import { useHistory } from 'react-router-dom';
 
 export function ResetPasswordComponent(): JSX.Element {
@@ -16,13 +16,13 @@ export function ResetPasswordComponent(): JSX.Element {
         event.preventDefault();
         if (email) {
             setIsSubmitButtonDisabled(true);
-            checkIfUserWithEmailExists(email)
+            ResetPasswordService.checkIfUserWithEmailExists(email)
                 .then((userEmailExists: ResponseData<UserEmailExistsDTO>) => {
                     if (!userEmailExists.responseBody.userEmailExists) {
                         setEmailError('User with given email does not exists');
                     } else {
                         setEmailError(undefined);
-                        sendResetPasswordEmail(email)
+                        ResetPasswordService.sendResetPasswordEmail(email)
                             .then(() => {
                                 history.push(`/reset-password/confirm-mail?status=ok`);
                             })

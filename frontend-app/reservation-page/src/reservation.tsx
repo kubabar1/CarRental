@@ -4,7 +4,7 @@ import { BrowserRouter, Redirect, Route } from 'react-router-dom';
 import 'bootstrap/scss/bootstrap.scss';
 import { ReservationStepContainer } from './ReservationStepContainer/ReservationStepContainer';
 import { reservationRootLink, unauthenticatedSubpageLink } from './constants/Links';
-import { getAuthenticatedUserData } from '@car-rental/shared/service';
+import { AuthService } from '@car-rental/shared/service';
 import { AuthenticatedUserDTO } from '@car-rental/shared/model';
 import { Button } from 'react-bootstrap';
 import './reservation.scss';
@@ -20,7 +20,7 @@ ReactDOM.render(
                     );
 
                     React.useEffect(() => {
-                        getAuthenticatedUserData().then((authUser: AuthenticatedUserDTO) => {
+                        AuthService.getAuthenticatedUserData().then((authUser: AuthenticatedUserDTO) => {
                             setAuthenticatedUser(authUser);
                         });
                     }, []);

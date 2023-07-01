@@ -3,9 +3,9 @@ import { SubpageContainer } from '../../../components/subpage/container/SubpageC
 import { SubpageHeader } from '../../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../../components/subpage/content/SubpageContent';
 import { FormContainer } from '../../../components/form/form-group/FormContainer';
-import { PasswordUpdateDTO, UserResponseDTO } from '@car-rental/shared/model';
+import { PasswordUpdateDTO, UserResponseDTO, ResponseData } from '@car-rental/shared/model';
 import PasswordStrengthBar from 'react-password-strength-bar/dist';
-import { updateUserPassword, ResponseData } from '@car-rental/shared/service';
+import { UserService } from '@car-rental/shared/service';
 import './ChangePasswordSubpage.scss';
 
 export function ChangePasswordSubpage(): JSX.Element {
@@ -116,7 +116,7 @@ export function ChangePasswordSubpage(): JSX.Element {
                 confirmPassword!
             );
             /* eslint-enable @typescript-eslint/no-non-null-assertion */
-            updateUserPassword(passwordUpdateDTO).then(
+            UserService.updateUserPassword(passwordUpdateDTO).then(
                 (passwordResponse: ResponseData<UserResponseDTO | PasswordUpdateDTO>) => {
                     if (passwordResponse.statusCode != 200) {
                         const passwordResponseErrors: PasswordUpdateDTO = passwordResponse.responseBody as PasswordUpdateDTO;

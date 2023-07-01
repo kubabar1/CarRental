@@ -1,8 +1,8 @@
 import React from 'react';
 import { InputFormGroup } from '../../../components/form/form-group/input/InputFormGroup';
-import { getAuthorizedUserData, updateAuthorizedUserData, ResponseData } from '@car-rental/shared/service';
+import { AuthService, UserService } from '@car-rental/shared/service';
 import { FormContainer } from '../../../components/form/form-group/FormContainer';
-import { AuthenticatedUserDTO, UserUpdateDTO, UserResponseDTO } from '@car-rental/shared/model';
+import { AuthenticatedUserDTO, UserUpdateDTO, UserResponseDTO, ResponseData } from '@car-rental/shared/model';
 import './UserSettingsSubpage.scss';
 import { useForm } from 'react-hook-form';
 
@@ -30,15 +30,15 @@ export function UserSettingsForm({ authenticatedUser, setAuthenticatedUser }: Us
     });
 
     const onSubmit = (data: UserSettingsFormValues): void => {
-        updateAuthorizedUserData(new UserUpdateDTO(data.name, data.surname, data.phone, data.birthDate)).then(
-            (userResponse: ResponseData<UserResponseDTO>) => {
-                if (userResponse.statusCode == 200 && !!userResponse.responseBody) {
-                    getAuthorizedUserData().then((authenticatedUserDTO: AuthenticatedUserDTO) =>
-                        setAuthenticatedUser(authenticatedUserDTO)
-                    );
-                }
+        UserService.updateAuthorizedUserData(
+            new UserUpdateDTO(data.name, data.surname, data.phone, data.birthDate)
+        ).then((userResponse: ResponseData<UserResponseDTO>) => {
+            if (userResponse.statusCode == 200 && !!userResponse.responseBody) {
+                AuthService.getAuthenticatedUserData().then((authenticatedUserDTO: AuthenticatedUserDTO) =>
+                    setAuthenticatedUser(authenticatedUserDTO)
+                );
             }
-        );
+        });
     };
 
     return (

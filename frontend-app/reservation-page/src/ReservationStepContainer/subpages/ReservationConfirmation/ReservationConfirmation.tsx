@@ -14,7 +14,7 @@ import { SelectedVehicleData } from './components/SelectedVehicleData';
 import './ReservationConfirmation.scss';
 import { ReservationCost } from './components/ReservationCost';
 import { UseFormHandleSubmit } from 'react-hook-form/dist/types/form';
-import { createBooking } from '@car-rental/shared/service';
+import { BookingUserService } from '@car-rental/shared/service';
 import { homePath } from '../../../../../login-page/src/constants/Paths';
 import { ReactHookFormStorage } from '../../../utils/StorageUtil';
 
@@ -54,7 +54,7 @@ export function ReservationConfirmation<FieldValuesType extends FieldValues>({
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleFormSubmit: SubmitHandler<FieldValuesType> = (): any | Promise<any> => {
-        createBooking(
+        BookingUserService.createBooking(
             new BookingAddRequestDTO(selectedLocalisationId, selectedVehicleId, receptionDate, returnDate)
         ).then(() => {
             reservationStorage.clear();

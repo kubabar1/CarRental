@@ -1,9 +1,5 @@
 import { toast } from 'react-toastify';
-
-export interface ResponseData<T> {
-    statusCode: number;
-    responseBody: T;
-}
+import { ResponseData } from '../model';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
 export async function fetchPost<T>(getPath: string, data?: any): Promise<ResponseData<T>> {

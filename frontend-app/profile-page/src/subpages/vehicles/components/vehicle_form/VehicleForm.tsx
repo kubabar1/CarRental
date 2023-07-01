@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { InputFormGroup } from '../../../../components/form/form-group/input/InputFormGroup';
-import { VehicleStatCodeEnum, VehicleDetailsDTO, VehiclePersistDTO } from '@car-rental/shared/model';
+import { VehicleStatCodeEnum, VehicleDetailsDTO, VehiclePersistDTO, ResponseData } from '@car-rental/shared/model';
 import { TextAreaFormGroup } from '../../../../components/form/form-group/text-area/TextAreaFormGroup';
 import { FormContainer } from '../../../../components/form/form-group/FormContainer';
 import { RegisterOptions, useForm } from 'react-hook-form';
@@ -9,20 +9,11 @@ import {
     mapToOptionTypeWithKeys,
     SelectFormGroup,
 } from '../../../../components/form/form-group/select/SelectFormGroup';
-import {
-    addBodyType,
-    addBrand,
-    addColor,
-    addFuelType,
-    addModel,
-    getVehicleOptions,
-    ResponseData,
-} from '@car-rental/shared/service';
+import { VehicleService } from '@car-rental/shared/service';
 import { SwitchFormGroup } from '../../../../components/form/form-group/switch/SwitchFormGroup';
 import { UploadInputFormGroup } from '../../../../components/form/form-group/upload/UploadInputFormGroup';
 import { FileWithPreview } from '../../../../components/form/form-group/upload/Dropzone';
 import { AddOptionModal } from './add_option_modal/AddOptionModal';
-import { getVehicleModelsByBrand } from '@car-rental/shared/service';
 import {
     VehicleModelDTO,
     VehicleResponseDTO,
@@ -101,7 +92,7 @@ export const VehicleForm = ({
             headerTitle: 'Add brand',
             optionLabel: 'Brand:',
             onSubmit: (value: string) => {
-                addBrand(new OptionDTO(value)).then(() => {
+                VehicleService.addBrand(new OptionDTO(value)).then(() => {
                     loadVehicleOptions();
                     setIsOpen(false);
                 });
@@ -118,7 +109,7 @@ export const VehicleForm = ({
             headerTitle: 'Add model',
             optionLabel: 'Model:',
             onSubmit: (value: string) => {
-                addModel(new VehicleModelDTO(watchBrand, value)).then(() => {
+                VehicleService.addModel(new VehicleModelDTO(watchBrand, value)).then(() => {
                     loadVehicleOptions();
                     loadVehicleModels();
                     setIsOpen(false);
@@ -136,7 +127,7 @@ export const VehicleForm = ({
             headerTitle: 'Add body type',
             optionLabel: 'Body type:',
             onSubmit: (value: string) => {
-                addBodyType(new OptionDTO(value)).then(() => {
+                VehicleService.addBodyType(new OptionDTO(value)).then(() => {
                     loadVehicleOptions();
                     setIsOpen(false);
                 });
@@ -153,7 +144,7 @@ export const VehicleForm = ({
             headerTitle: 'Add fuel type',
             optionLabel: 'Fuel type:',
             onSubmit: (value: string) => {
-                addFuelType(new OptionDTO(value)).then(() => {
+                VehicleService.addFuelType(new OptionDTO(value)).then(() => {
                     loadVehicleOptions();
                     setIsOpen(false);
                 });
@@ -170,7 +161,7 @@ export const VehicleForm = ({
             headerTitle: 'Add color',
             optionLabel: 'Color:',
             onSubmit: (value: string) => {
-                addColor(new OptionDTO(value)).then(() => {
+                VehicleService.addColor(new OptionDTO(value)).then(() => {
                     loadVehicleOptions();
                     setIsOpen(false);
                 });
@@ -188,7 +179,7 @@ export const VehicleForm = ({
 
     const loadVehicleModels = useCallback(() => {
         if (watchBrand) {
-            getVehicleModelsByBrand(watchBrand).then((models: string[]) => {
+            VehicleService.getVehicleModelsByBrand(watchBrand).then((models: string[]) => {
                 setVehicleModels(models);
             });
         } else {
@@ -205,7 +196,7 @@ export const VehicleForm = ({
     }, [watchBrand, loadVehicleModels]);
 
     const loadVehicleOptions = (): void => {
-        getVehicleOptions().then((vehicleDefaultParams: VehicleOptionsDTO) => {
+        VehicleService.getVehicleOptions().then((vehicleDefaultParams: VehicleOptionsDTO) => {
             setVehicleOptions(vehicleDefaultParams);
         });
     };

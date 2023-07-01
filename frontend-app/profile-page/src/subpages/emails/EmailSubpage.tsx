@@ -7,11 +7,9 @@ import { useHistory } from 'react-router-dom';
 import { InputFormGroup } from '../../components/form/form-group/input/InputFormGroup';
 import { TextAreaFormGroup } from '../../components/form/form-group/text-area/TextAreaFormGroup';
 import { mapToOptionType, OptionType, SelectFormGroup } from '../../components/form/form-group/select/SelectFormGroup';
-import { getAllUsersEmails, getAllUsersEmailsByIds } from '@car-rental/shared/service';
-import { sendEmails } from '@car-rental/shared/service';
-import { MultipleRecipientsMailsDTO, UsersEmailsResponseDTO } from '@car-rental/shared/model';
+import { UserService, EmailService } from '@car-rental/shared/service';
+import { MultipleRecipientsMailsDTO, UsersEmailsResponseDTO, ResponseData } from '@car-rental/shared/model';
 import { useForm } from 'react-hook-form';
-import { ResponseData } from '../../../../shared/service';
 
 interface EmailHistoryState {
     userEmail: string;
@@ -38,13 +36,13 @@ export function EmailSubpage(): JSX.Element {
     });
 
     useEffect(() => {
-        getAllUsersEmails().then((usersEmails: UsersEmailsResponseDTO) => {
+        UserService.getAllUsersEmails().then((usersEmails: UsersEmailsResponseDTO) => {
             setAllEmailAddresses(usersEmails.emails.map(mapToOptionType));
         });
         if (history.location.state && history.location.state.userEmail) {
             setValue('recipients', [history.location.state.userEmail]);
         } else if (history.location.state && history.location.state.userIds) {
-            getAllUsersEmailsByIds(history.location.state.userIds).then(
+            UserService.getAllUsersEmailsByIds(history.location.state.userIds).then(
                 (usersEmails: ResponseData<UsersEmailsResponseDTO>) => {
                     setValue('recipients', usersEmails.responseBody.emails);
                 }
@@ -55,7 +53,9 @@ export function EmailSubpage(): JSX.Element {
     const onSubmit = (data: EmailFormValues): void => {
         if (!isSubmitButtonDisabled) {
             setIsSubmitButtonDisabled(true);
-            sendEmails(new MultipleRecipientsMailsDTO(data.recipients, data.emailSubject, data.emailText)).then(() => {
+            EmailService.sendEmails(
+                new MultipleRecipientsMailsDTO(data.recipients, data.emailSubject, data.emailText)
+            ).then(() => {
                 setIsSubmitButtonDisabled(false);
             });
         }

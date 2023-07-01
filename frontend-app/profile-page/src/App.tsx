@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigation } from './components/nav/Navigation';
 import { Switch } from 'react-router-dom';
-import { getAuthorizedUserData } from '@car-rental/shared/service';
+import { AuthService } from '@car-rental/shared/service';
 import {
     bookingsAuditLogsListPath,
     bookingsListPath,
@@ -50,7 +50,6 @@ import { BookingsAuditLogsListSubpage } from './subpages/booking/BookingsAuditLo
 import { MyReservedBookingsListSubpage } from './subpages/booking/MyReservedBookingsListSubpage';
 import { ProtectedRoute } from './utils/ProtectedRoute';
 import { userHasAnyRole } from './utils/UserUtils';
-import { logout } from '@car-rental/shared/service';
 import { Button } from 'react-bootstrap';
 import { VehicleOptionsSubpage } from './subpages/vehicles/VehicleOptionsSubpage';
 import { LocationAddSubpage } from './subpages/locations/LocationAddSubpage';
@@ -62,13 +61,13 @@ export function App(): JSX.Element {
     const [authenticatedUser, setAuthenticatedUser] = useState<AuthenticatedUserDTO | undefined>(undefined);
 
     useEffect(() => {
-        getAuthorizedUserData().then((authenticatedUserDTO: AuthenticatedUserDTO) =>
+        AuthService.getAuthenticatedUserData().then((authenticatedUserDTO: AuthenticatedUserDTO) =>
             setAuthenticatedUser(authenticatedUserDTO)
         );
     }, []);
 
     const runLogout = (): void => {
-        logout().then(() => {
+        AuthService.logout().then(() => {
             window.location.href = '/';
         });
     };

@@ -6,7 +6,7 @@ import { useHistory, useLocation, withRouter } from 'react-router-dom';
 import { LoaderContainer } from '../vehicle_list/container/LoaderContainer';
 import qs, { ParsedQs } from 'qs';
 import Select, { SingleValue } from 'react-select';
-import { getBestOffersVehiclesList } from '@car-rental/shared/service';
+import { VehicleService } from '@car-rental/shared/service';
 import './BestOffersPage.scss';
 import { VehicleResponseDTO, Page } from '@car-rental/shared/model';
 
@@ -38,15 +38,17 @@ function BestOffersPage(): JSX.Element {
     );
 
     useEffect(() => {
-        getBestOffersVehiclesList(currentPage, perPageCount).then((vehicleResponseDTOS: Page<VehicleResponseDTO>) => {
-            const maxPage = vehicleResponseDTOS.totalPages - 1;
-            if (currentPage > maxPage) {
-                setCurrentPage(maxPage);
-                changeUrlPageParam(maxPage);
-            } else {
-                setVehiclesPage(vehicleResponseDTOS);
+        VehicleService.getBestOffersVehiclesList(currentPage, perPageCount).then(
+            (vehicleResponseDTOS: Page<VehicleResponseDTO>) => {
+                const maxPage = vehicleResponseDTOS.totalPages - 1;
+                if (currentPage > maxPage) {
+                    setCurrentPage(maxPage);
+                    changeUrlPageParam(maxPage);
+                } else {
+                    setVehiclesPage(vehicleResponseDTOS);
+                }
             }
-        });
+        );
     }, [currentPage, perPageCount, changeUrlPageParam]);
 
     const mapToOptionType = (val: number): OptionType => {

@@ -5,7 +5,7 @@ import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Column } from 'react-table';
 import { BookingResponseDTO, Page } from '@car-rental/shared/model';
-import { getAllRentedBookingsList, returnBooking } from '@car-rental/shared/service';
+import { BookingAdminService } from '@car-rental/shared/service';
 import { ButtonTableItem } from '../../components/table/tab_items/button_table_item/ButtonTableItem';
 import { bookingListCommonColumns } from './BookingListCommonColumns';
 
@@ -14,7 +14,7 @@ export function RentedBookingsListSubpage(): JSX.Element {
 
     const fetchData = React.useCallback(
         (pageIndex?: number, pageSize?: number, filter?: string, sortBy?: string, desc?: boolean): Promise<void> => {
-            return getAllRentedBookingsList(pageIndex, pageSize, filter, sortBy, desc).then(
+            return BookingAdminService.getAllRentedBookingsList(pageIndex, pageSize, filter, sortBy, desc).then(
                 (bookingsListResponse: Page<BookingResponseDTO>) => {
                     setBookingsPage(bookingsListResponse);
                 }
@@ -34,7 +34,7 @@ export function RentedBookingsListSubpage(): JSX.Element {
                         buttonText={'Return'}
                         buttonVariant={'success'}
                         onClickAction={() =>
-                            returnBooking(row.id).then(() => {
+                            BookingAdminService.returnBooking(row.id).then(() => {
                                 fetchData();
                             })
                         }

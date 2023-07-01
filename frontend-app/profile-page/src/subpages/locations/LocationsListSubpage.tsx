@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getLocationsList } from '@car-rental/shared/service';
+import { LocationService } from '@car-rental/shared/service';
 import { Column } from 'react-table';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
@@ -11,7 +11,7 @@ export function LocationsListSubpage(): JSX.Element {
     const [locationsPage, setLocationsPage] = useState<Page<LocalisationResponseDTO> | undefined>(undefined);
 
     const fetchData = React.useCallback((pageIndex, pageSize, filter, sortBy, desc): Promise<void> => {
-        return getLocationsList(pageIndex, pageSize, filter, sortBy, desc).then(
+        return LocationService.getLocationsList(pageIndex, pageSize, filter, sortBy, desc).then(
             (page: Page<LocalisationResponseDTO>) => {
                 setLocationsPage(page);
             }

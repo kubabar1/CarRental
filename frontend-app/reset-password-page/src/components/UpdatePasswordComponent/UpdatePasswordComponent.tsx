@@ -6,8 +6,8 @@ import { homePath, loginPath } from '../../constants/Paths';
 import qs from 'qs';
 import { PasswordResetDTO } from '@car-rental/shared/model';
 import PasswordStrengthBar from 'react-password-strength-bar';
-import { resetUserPassword, ResponseData } from '@car-rental/shared/service';
-import { PasswordResetResponseDTO } from '@car-rental/shared/model';
+import { ResetPasswordService } from '@car-rental/shared/service';
+import { PasswordResetResponseDTO, ResponseData } from '@car-rental/shared/model';
 
 export function UpdatePasswordComponent() {
     const [newPassword, setNewPassword] = useState<string | undefined>(undefined);
@@ -122,7 +122,7 @@ export function UpdatePasswordComponent() {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const passwordResetDTO: PasswordResetDTO = new PasswordResetDTO(newPassword!, confirmPassword!, token!);
             setIsSubmitButtonDisabled(true);
-            resetUserPassword(passwordResetDTO)
+            ResetPasswordService.resetUserPassword(passwordResetDTO)
                 .then((passwordResetResponse: ResponseData<PasswordResetResponseDTO | PasswordResetDTO>) => {
                     if (passwordResetResponse.statusCode == 200) {
                         window.location.href = loginPath;

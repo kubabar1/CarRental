@@ -3,7 +3,7 @@ import { Table } from '../../components/table/Table';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { getAllUserRoles, getUsersList } from '@car-rental/shared/service';
+import { UserService } from '@car-rental/shared/service';
 import { Column, HeaderProps, UseRowSelectState } from 'react-table';
 import { ButtonTableItem } from '../../components/table/tab_items/button_table_item/ButtonTableItem';
 import { UserRolesTableItem } from './tab_items/UserRolesTableItem';
@@ -34,7 +34,7 @@ export function UsersListSubpage(): JSX.Element {
     );
 
     React.useEffect(() => {
-        getAllUserRoles().then((roles: UserRoleResponseDTO[]) => {
+        UserService.getAllUserRoles().then((roles: UserRoleResponseDTO[]) => {
             setUserRoles(roles);
         });
     }, []);
@@ -130,9 +130,11 @@ export function UsersListSubpage(): JSX.Element {
     );
 
     const fetchData = React.useCallback((pageIndex, pageSize, filter, sortBy, desc): Promise<void> => {
-        return getUsersList(pageIndex, pageSize, filter, sortBy, desc).then((page: Page<UserResponseDTO>) => {
-            setUsersPage(page);
-        });
+        return UserService.getUsersList(pageIndex, pageSize, filter, sortBy, desc).then(
+            (page: Page<UserResponseDTO>) => {
+                setUsersPage(page);
+            }
+        );
     }, []);
 
     const SendEmailsPanel = (): JSX.Element => {

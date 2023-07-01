@@ -5,7 +5,7 @@ import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Column } from 'react-table';
 import { BookingResponseDTO, Page } from '@car-rental/shared/model';
-import { cancelBooking, getAllReservedBookingsList, rentBooking } from '@car-rental/shared/service';
+import { BookingAdminService } from '@car-rental/shared/service';
 import { ButtonTableItem } from '../../components/table/tab_items/button_table_item/ButtonTableItem';
 import { bookingListCommonColumns } from './BookingListCommonColumns';
 
@@ -14,7 +14,7 @@ export function ReservedBookingsListSubpage(): JSX.Element {
 
     const fetchData = React.useCallback(
         (pageIndex?: number, pageSize?: number, filter?: string, sortBy?: string, desc?: boolean): Promise<void> => {
-            return getAllReservedBookingsList(pageIndex, pageSize, filter, sortBy, desc).then(
+            return BookingAdminService.getAllReservedBookingsList(pageIndex, pageSize, filter, sortBy, desc).then(
                 (page: Page<BookingResponseDTO>) => {
                     setBookingsPage(page);
                 }
@@ -33,7 +33,7 @@ export function ReservedBookingsListSubpage(): JSX.Element {
                     <ButtonTableItem
                         buttonText={'Rent'}
                         onClickAction={() =>
-                            rentBooking(row.id).then(() => {
+                            BookingAdminService.rentBooking(row.id).then(() => {
                                 fetchData();
                             })
                         }
@@ -50,7 +50,7 @@ export function ReservedBookingsListSubpage(): JSX.Element {
                         buttonText={'Cancel'}
                         buttonVariant={'danger'}
                         onClickAction={() =>
-                            cancelBooking(row.id).then(() => {
+                            BookingAdminService.cancelBooking(row.id).then(() => {
                                 fetchData();
                             })
                         }

@@ -3,13 +3,8 @@ import { SubpageContainer } from '../../components/subpage/container/SubpageCont
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { useParams } from 'react-router-dom';
-import {
-    getAllEquipmentsNotAssignedToVehicleList,
-    removeEquipmentFromVehicle,
-    getVehicleById,
-    ResponseData,
-} from '@car-rental/shared/service';
-import { EquipmentResponseDTO, VehicleResponseDTO } from '@car-rental/shared/model';
+import { EquipmentService, VehicleService } from '@car-rental/shared/service';
+import { EquipmentResponseDTO, VehicleResponseDTO, ResponseData } from '@car-rental/shared/model';
 import { Table } from '../../components/table/Table';
 import { Column } from 'react-table';
 import { ButtonTableItem } from '../../components/table/tab_items/button_table_item/ButtonTableItem';
@@ -33,7 +28,7 @@ export function VehicleEquipmentEditSubpage(): JSX.Element {
     const [allPossibleEquipments, setAllPossibleEquipments] = useState<EquipmentResponseExtDTO[]>([]);
 
     const fetchData = React.useCallback((): Promise<void> => {
-        return getAllEquipmentsNotAssignedToVehicleList(vehicleId).then(
+        return EquipmentService.getAllEquipmentsNotAssignedToVehicleList(vehicleId).then(
             (equipmentsResponse: EquipmentResponseDTO[]) => {
                 setAllPossibleEquipments(equipmentsResponse.map(mapEqpResponseToExt));
             }
@@ -41,7 +36,7 @@ export function VehicleEquipmentEditSubpage(): JSX.Element {
     }, [vehicleId]);
 
     useEffect(() => {
-        getVehicleById(vehicleId).then((vehicleResp: VehicleResponseDTO) => {
+        VehicleService.getVehicleById(vehicleId).then((vehicleResp: VehicleResponseDTO) => {
             setVehicle(vehicleResp);
         });
     }, [vehicleId]);
@@ -66,16 +61,17 @@ export function VehicleEquipmentEditSubpage(): JSX.Element {
                         buttonText={'Remove'}
                         buttonVariant={'danger'}
                         onClickAction={() =>
-                            removeEquipmentFromVehicle(vehicleId, equipmentResponseDTO.equipmentCode).then(
-                                (vehicleResp: ResponseData<VehicleResponseDTO>) => {
-                                    setVehicle(vehicleResp.responseBody);
-                                    getAllEquipmentsNotAssignedToVehicleList(vehicleId).then(
-                                        (equipmentsResponse: EquipmentResponseDTO[]) => {
-                                            setAllPossibleEquipments(equipmentsResponse.map(mapEqpResponseToExt));
-                                        }
-                                    );
-                                }
-                            )
+                            EquipmentService.removeEquipmentFromVehicle(
+                                vehicleId,
+                                equipmentResponseDTO.equipmentCode
+                            ).then((vehicleResp: ResponseData<VehicleResponseDTO>) => {
+                                setVehicle(vehicleResp.responseBody);
+                                EquipmentService.getAllEquipmentsNotAssignedToVehicleList(vehicleId).then(
+                                    (equipmentsResponse: EquipmentResponseDTO[]) => {
+                                        setAllPossibleEquipments(equipmentsResponse.map(mapEqpResponseToExt));
+                                    }
+                                );
+                            })
                         }
                     />
                 ),

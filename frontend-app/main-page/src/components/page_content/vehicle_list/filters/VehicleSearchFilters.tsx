@@ -4,7 +4,7 @@ import { SearchSelectOption, SearchSelect, mapToOptionType } from './search_comp
 import { SingleValue } from 'react-select';
 import { SearchMinMaxInput } from './search_components/min_max_input/SearchMinMaxInput';
 import './VehicleSearchFilters.scss';
-import { getVehicleModelsByBrand, getVehicleOptions } from '@car-rental/shared/service';
+import { VehicleService } from '@car-rental/shared/service';
 import qs, { ParsedQs } from 'qs';
 
 interface CarSearchFiltersInterface {
@@ -61,14 +61,14 @@ export function VehicleSearchFilters({ handleFilterSubmit }: CarSearchFiltersInt
     );
 
     useEffect(() => {
-        getVehicleOptions().then((vehicleFilterParams: VehicleOptionsDTO) => {
+        VehicleService.getVehicleOptions().then((vehicleFilterParams: VehicleOptionsDTO) => {
             setVehicleFiltersParams(vehicleFilterParams);
         });
     }, []);
 
     useEffect(() => {
         if (brand) {
-            getVehicleModelsByBrand(brand).then((models: string[]) => {
+            VehicleService.getVehicleModelsByBrand(brand).then((models: string[]) => {
                 setVehicleFilterModelsParam(models);
             });
         } else {
@@ -174,7 +174,7 @@ export function VehicleSearchFilters({ handleFilterSubmit }: CarSearchFiltersInt
                         setMaxDoorsCount
                     )}
                     {renderSearchMinMaxInput(
-                        'Doors count:',
+                        'Production year:',
                         minProductionYear,
                         maxProductionYear,
                         setMinProductionYear,

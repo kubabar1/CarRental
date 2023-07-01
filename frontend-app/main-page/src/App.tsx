@@ -19,19 +19,21 @@ import { ContactPage } from './components/page_content/contact/ContactPage';
 import VehicleListPage from './components/page_content/vehicle_list/VehicleListPage';
 import CarDetailsPage from './components/page_content/vehicle_details/VehicleDetailsPage';
 import BestOffersPage from './components/page_content/best_offers/BestOffersPage';
-import { getAuthenticatedUserData, logout } from '@car-rental/shared/service';
+import { AuthService } from '@car-rental/shared/service';
 import { AuthenticatedUserDTO } from '@car-rental/shared/model';
 
 export function App(): JSX.Element {
     const [authenticatedUser, setAuthenticatedUser] = useState<AuthenticatedUserDTO | undefined>(undefined);
 
     useEffect(() => {
-        getAuthenticatedUserData().then((authorizedUser: AuthenticatedUserDTO) => setAuthenticatedUser(authorizedUser));
+        AuthService.getAuthenticatedUserData().then((authorizedUser: AuthenticatedUserDTO) =>
+            setAuthenticatedUser(authorizedUser)
+        );
     }, []);
 
     const runLogout = (): void => {
-        logout().then(() => {
-            getAuthenticatedUserData().then((authorizedUser: AuthenticatedUserDTO) =>
+        AuthService.logout().then(() => {
+            AuthService.getAuthenticatedUserData().then((authorizedUser: AuthenticatedUserDTO) =>
                 setAuthenticatedUser(authorizedUser)
             );
         });

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { getAllEquipmentsList } from '@car-rental/shared/service';
+import { EquipmentService } from '@car-rental/shared/service';
 import { EquipmentResponseDTO, Page } from '@car-rental/shared/model';
 import { Table } from '../../components/table/Table';
 import { Column } from 'react-table';
@@ -28,7 +28,7 @@ export function EquipmentListSubpage(): JSX.Element {
 
     const fetchData = React.useCallback(
         (pageIndex?: number, pageSize?: number, filter?: string, sortBy?: string, desc?: boolean): Promise<void> => {
-            return getAllEquipmentsList(pageIndex, pageSize, filter, sortBy, desc).then(
+            return EquipmentService.getAllEquipmentsList(pageIndex, pageSize, filter, sortBy, desc).then(
                 (page: Page<EquipmentResponseDTO>) => {
                     setVehicleEquipments(page ? page.content.map(mapEqpResponseToExt) : []);
                     setTotalPages(page ? page.totalPages : 0);

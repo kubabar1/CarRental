@@ -2,9 +2,9 @@ import React from 'react';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { addVehicle, ResponseData } from '@car-rental/shared/service';
+import { VehicleService } from '@car-rental/shared/service';
 import { VehicleForm, VehicleFormValues } from './components/vehicle_form/VehicleForm';
-import { VehicleStatCodeEnum, VehiclePersistDTO, VehicleResponseDTO } from '@car-rental/shared/model';
+import { VehicleStatCodeEnum, VehiclePersistDTO, VehicleResponseDTO, ResponseData } from '@car-rental/shared/model';
 import { FileWithPreview } from '../../components/form/form-group/upload/Dropzone';
 
 export function VehicleAddSubpage(): JSX.Element {
@@ -12,7 +12,7 @@ export function VehicleAddSubpage(): JSX.Element {
         vehiclePersistDTO: VehiclePersistDTO,
         vehicleImage: File
     ): Promise<ResponseData<VehicleResponseDTO>> => {
-        return addVehicle(vehiclePersistDTO, vehicleImage);
+        return VehicleService.addVehicle(vehiclePersistDTO, vehicleImage);
     };
 
     const vehicleDefaultValues: VehicleFormValues = {

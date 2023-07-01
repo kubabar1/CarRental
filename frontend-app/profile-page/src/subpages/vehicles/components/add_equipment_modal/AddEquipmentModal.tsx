@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import './AddEquipmentModal.scss';
 import { InputFormGroup } from '../../../../components/form/form-group/input/InputFormGroup';
-import { addEquipment } from '@car-rental/shared/service';
+import { VehicleService } from '@car-rental/shared/service';
 import { EquipmentAddDTO } from '@car-rental/shared/model';
 
 type Equipment = {
@@ -28,7 +28,7 @@ export function AddEquipmentModal({ isOpen, setIsOpen, reloadEquipments }: AddEq
     });
 
     const addEqp = (value: Equipment) => {
-        addEquipment(new EquipmentAddDTO(value.equipmentCode, value.description)).then(() => {
+        VehicleService.addEquipment(new EquipmentAddDTO(value.equipmentCode, value.description)).then(() => {
             setValue('equipmentCode', '');
             setValue('description', '');
             setIsOpen(false);

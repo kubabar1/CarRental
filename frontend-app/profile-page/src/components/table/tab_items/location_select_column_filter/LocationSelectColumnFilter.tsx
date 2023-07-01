@@ -1,14 +1,14 @@
 import { FilterProps } from 'react-table';
 import React from 'react';
 import { SelectColumnFilter } from '../select_column_filter/SelectColumnFilter';
-import { getAllLocationsList } from '@car-rental/shared/service';
+import { LocationService } from '@car-rental/shared/service';
 import { LocalisationResponseDTO, LocalisationsResponseDTO } from '@car-rental/shared/model';
 
 export function LocationSelectColumnFilter<D extends object>(filterProps: FilterProps<D>) {
     const [locations, setLocations] = React.useState<LocalisationResponseDTO[]>([]);
 
     React.useEffect(() => {
-        getAllLocationsList().then((locationsResponse: LocalisationsResponseDTO) => {
+        LocationService.getAllLocationsList().then((locationsResponse: LocalisationsResponseDTO) => {
             setLocations(locationsResponse.locations);
         });
     }, []);

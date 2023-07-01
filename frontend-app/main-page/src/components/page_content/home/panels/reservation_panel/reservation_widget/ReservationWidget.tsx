@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { LocationSelection } from './components/location_select/LocationSelection';
 import './ReservationWidget.scss';
 import { AuthenticatedUserDTO, LocalisationResponseDTO, LocalisationsResponseDTO } from '@car-rental/shared/model';
-import { getAllLocationsList } from '@car-rental/shared/service';
+import { LocationService } from '@car-rental/shared/service';
 import { useForm } from 'react-hook-form';
 import { DateInput } from './components/date_input/DateInput';
 import date from 'date-and-time';
@@ -45,7 +45,7 @@ export function ReservationWidget({ authenticatedUser }: ReservationWidgetProper
         : '';
 
     useEffect(() => {
-        getAllLocationsList().then((locations: LocalisationsResponseDTO) => {
+        LocationService.getAllLocationsList().then((locations: LocalisationsResponseDTO) => {
             setAllLocations(locations.locations);
         });
     }, []);

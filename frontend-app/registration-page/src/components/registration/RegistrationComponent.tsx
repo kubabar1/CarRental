@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import carRentalLogo from '../../images/car_rental_logo_name.png';
 import './RegistrationComponent.scss';
 import { homePath } from '../../constants/PathsApi';
-import { registerUser, ResponseData } from '@car-rental/shared/service';
-import { CreateUserDTO, UserResponseDTO } from '@car-rental/shared/model';
+import { RegistrationService } from '@car-rental/shared/service';
+import { CreateUserDTO, UserResponseDTO, ResponseData } from '@car-rental/shared/model';
 import PasswordStrengthBar from 'react-password-strength-bar';
 import { Input } from './components/Input';
 import { useHistory } from 'react-router-dom';
@@ -170,34 +170,36 @@ export function RegistrationComponent(): JSX.Element {
                 matchingPassword!
             );
             /* eslint-enable @typescript-eslint/no-non-null-assertion */
-            registerUser(createUserDTO).then((userResponse: ResponseData<UserResponseDTO | CreateUserDTO>) => {
-                if (userResponse.statusCode == 200) {
-                    history.push('/registration/confirm-mail?status=ok');
-                } else {
-                    const userErrors: CreateUserDTO = userResponse.responseBody as CreateUserDTO;
-                    if (userErrors.firstName) {
-                        setFirstNameError(userErrors.firstName);
-                    }
-                    if (userErrors.lastName) {
-                        setLastNameError(userErrors.lastName);
-                    }
-                    if (userErrors.phone) {
-                        setPhoneError(userErrors.phone);
-                    }
-                    if (userErrors.birthDate) {
-                        setBirthDateError(userErrors.birthDate);
-                    }
-                    if (userErrors.email) {
-                        setEmailError(userErrors.email);
-                    }
-                    if (userErrors.password) {
-                        setPasswordError(userErrors.password);
-                    }
-                    if (userErrors.matchingPassword) {
-                        setMatchingPasswordError(userErrors.matchingPassword);
+            RegistrationService.registerUser(createUserDTO).then(
+                (userResponse: ResponseData<UserResponseDTO | CreateUserDTO>) => {
+                    if (userResponse.statusCode == 200) {
+                        history.push('/registration/confirm-mail?status=ok');
+                    } else {
+                        const userErrors: CreateUserDTO = userResponse.responseBody as CreateUserDTO;
+                        if (userErrors.firstName) {
+                            setFirstNameError(userErrors.firstName);
+                        }
+                        if (userErrors.lastName) {
+                            setLastNameError(userErrors.lastName);
+                        }
+                        if (userErrors.phone) {
+                            setPhoneError(userErrors.phone);
+                        }
+                        if (userErrors.birthDate) {
+                            setBirthDateError(userErrors.birthDate);
+                        }
+                        if (userErrors.email) {
+                            setEmailError(userErrors.email);
+                        }
+                        if (userErrors.password) {
+                            setPasswordError(userErrors.password);
+                        }
+                        if (userErrors.matchingPassword) {
+                            setMatchingPasswordError(userErrors.matchingPassword);
+                        }
                     }
                 }
-            });
+            );
         }
     };
 

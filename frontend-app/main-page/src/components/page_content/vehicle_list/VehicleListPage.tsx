@@ -4,7 +4,7 @@ import { VehicleSearchFilters } from './filters/VehicleSearchFilters';
 import { VehicleResponseDTO, FilteringParamsEnum, Page } from '@car-rental/shared/model';
 import { withRouter, useLocation } from 'react-router-dom';
 import { VehicleItem } from './vehicle_item/VehicleItem';
-import { getVehiclesListWithFiltering, mapVehicleFiltersToQs } from '@car-rental/shared/service';
+import { VehicleService } from '@car-rental/shared/service';
 import { LoaderContainer } from './container/LoaderContainer';
 import { getCountFromUrl, getPageFromUrl, getVehicleFilteringParamsFromUrl } from '../../../utils/UrlUtil';
 import ReactPaginate from 'react-paginate';
@@ -27,7 +27,7 @@ function VehicleListPage(): JSX.Element {
 
     const getVehiclesWithFiltering = useCallback(
         (vehicleFilters: Map<FilteringParamsEnum, string | undefined>) =>
-            getVehiclesListWithFiltering(vehicleFilters, currentPage, perPageCount).then(
+            VehicleService.getVehiclesListWithFiltering(vehicleFilters, currentPage, perPageCount).then(
                 (vehicleResponseDTOPage: Page<VehicleResponseDTO>) => {
                     const maxPage = vehicleResponseDTOPage.totalPages - 1;
                     if (currentPage > maxPage) {
@@ -50,7 +50,7 @@ function VehicleListPage(): JSX.Element {
     ): void => {
         event.preventDefault();
         setVehicleFilters(vehicleFilters);
-        const vehicleFiltersParamsUrl: ParsedQs = mapVehicleFiltersToQs(vehicleFilters);
+        const vehicleFiltersParamsUrl: ParsedQs = VehicleService.mapVehicleFiltersToQs(vehicleFilters);
         window.history.replaceState(null, '', `?${qs.stringify(vehicleFiltersParamsUrl)}`);
         setCurrentPage(0);
     };

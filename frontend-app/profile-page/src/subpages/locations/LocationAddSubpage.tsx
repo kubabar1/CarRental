@@ -5,7 +5,7 @@ import { SubpageContent } from '../../components/subpage/content/SubpageContent'
 import { InputFormGroup } from '../../components/form/form-group/input/InputFormGroup';
 import { FormContainer } from '../../components/form/form-group/FormContainer';
 import { useForm } from 'react-hook-form';
-import { addLocation } from '@car-rental/shared/service';
+import { LocationService } from '@car-rental/shared/service';
 import { LocationAddDTO } from '@car-rental/shared/model';
 import { locationsListPath } from '../../constants/Links';
 import { useHistory } from 'react-router-dom';
@@ -42,7 +42,7 @@ export function LocationAddSubpage(): JSX.Element {
     };
 
     const onSubmit = (data: LocationAddFormValues): void => {
-        addLocation(
+        LocationService.addLocation(
             new LocationAddDTO(data.country, data.city, data.streetAndNb, data.code, data.email, data.phone)
         ).then(() => {
             history.push(locationsListPath.link);
