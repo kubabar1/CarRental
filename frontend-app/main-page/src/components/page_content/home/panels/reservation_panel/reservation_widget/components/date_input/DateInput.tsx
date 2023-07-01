@@ -1,13 +1,13 @@
 import React from 'react';
 import './DateHourInput.scss';
-import { FieldError, FieldPath, FieldValues, RegisterOptions, UseFormRegister } from 'react-hook-form';
+import { FieldValues, RegisterOptions, UseFormRegister, Auto, PathString, Message } from 'react-hook-form';
 
 interface DateInputProps<FieldValuesType extends FieldValues> {
     label: string;
-    dateInputName: FieldPath<FieldValuesType>;
     register: UseFormRegister<FieldValuesType>;
-    dateInputRegisterOptions?: RegisterOptions;
-    dateInputError?: FieldError;
+    dateInputName: Auto.FieldPath<FieldValuesType, PathString>;
+    dateInputRegisterOptions?: RegisterOptions<FieldValuesType, PathString>;
+    dateInputError?: Message;
     minDate?: string;
     maxDate?: string;
 }
@@ -34,7 +34,7 @@ export function DateInput<FieldValuesType extends FieldValues>({
                 />
                 {dateInputError && (
                     <div className="alert alert-danger custom-alert" role="alert">
-                        {dateInputError.message}
+                        {dateInputError}
                     </div>
                 )}
             </div>

@@ -115,7 +115,7 @@ export function UsersListSubpage(): JSX.Element {
                                 buttonRedirectPath={`/profile/email-send`}
                                 buttonVariant={'info'}
                                 buttonRedirectState={{
-                                    userEmail: [user.email],
+                                    userIds: [user.id],
                                 }}
                                 tooltipMessage={'Send email'}
                             />

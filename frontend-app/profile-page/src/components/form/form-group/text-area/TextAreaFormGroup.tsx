@@ -1,14 +1,18 @@
 import React from 'react';
 import './TextAreaFormGroup.scss';
-import { FieldError, FieldPath, FieldValues } from 'react-hook-form/dist/types';
+import { FieldError, FieldValues } from 'react-hook-form/dist/types';
 import { UseFormRegister } from 'react-hook-form/dist/types/form';
 import { RegisterOptions } from 'react-hook-form/dist/types/validator';
+import { Auto, PathString } from 'react-hook-form';
 
 interface FormGroupProperties<FieldValuesType extends FieldValues> {
     label: string;
-    name: FieldPath<FieldValuesType>;
+    name: Auto.FieldPath<FieldValuesType, PathString>;
     register: UseFormRegister<FieldValuesType>;
-    registerOptions?: RegisterOptions;
+    registerOptions?: Omit<
+        RegisterOptions<FieldValuesType, PathString>,
+        'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
+    >;
     isDisabled?: boolean;
     error?: FieldError;
     rows?: number;

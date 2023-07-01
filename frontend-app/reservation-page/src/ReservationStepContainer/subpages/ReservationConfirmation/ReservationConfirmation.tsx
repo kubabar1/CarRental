@@ -8,7 +8,7 @@ import {
     VehicleResponseDTO,
 } from '@car-rental/shared/model';
 import { PersonalData } from './components/PersonalData';
-import { Control, FieldPath, FieldValues, SubmitHandler, useWatch } from 'react-hook-form';
+import { Auto, Control, FieldValues, PathString, SubmitHandler, useWatch } from 'react-hook-form';
 import { ReservationData } from './components/ReservationData';
 import { SelectedVehicleData } from './components/SelectedVehicleData';
 import './ReservationConfirmation.scss';
@@ -21,10 +21,10 @@ import { ReactHookFormStorage } from '../../../utils/StorageUtil';
 interface ReservationConfirmationProperties<FieldValuesType extends FieldValues> {
     control: Control<FieldValuesType>;
     authenticatedUser: AuthenticatedUserDTO;
-    vehicleSelectName: FieldPath<FieldValuesType>;
-    receptionDateSelectName: FieldPath<FieldValuesType>;
-    returnDateSelectName: FieldPath<FieldValuesType>;
-    locationSelectName: FieldPath<FieldValuesType>;
+    vehicleSelectName: Auto.FieldPath<FieldValuesType, PathString>;
+    receptionDateSelectName: Auto.FieldPath<FieldValuesType, PathString>;
+    returnDateSelectName: Auto.FieldPath<FieldValuesType, PathString>;
+    locationSelectName: Auto.FieldPath<FieldValuesType, PathString>;
     onClickReserve: UseFormHandleSubmit<FieldValuesType>;
     reservationStorage: ReactHookFormStorage<FieldValuesType>;
     localisations: LocalisationResponseDTO[];

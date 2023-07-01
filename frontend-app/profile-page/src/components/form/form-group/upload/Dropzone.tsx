@@ -1,11 +1,11 @@
 import React from 'react';
 import { DropEvent, DropzoneOptions, FileRejection, useDropzone } from 'react-dropzone';
-import { FieldPath, FieldPathValue, FieldValues } from 'react-hook-form/dist/types';
+import { PathString, FieldPathValue, FieldValues } from 'react-hook-form';
 import { vehicleImageFromServer } from '../../../../constants/PathsServer';
 
 interface DropzoneProperties<FieldValuesType extends FieldValues> extends DropzoneOptions {
     onDrop?: (acceptedFiles: FileWithPreview[], fileRejections: FileRejection[], event: DropEvent) => void;
-    file: FieldPathValue<FieldValuesType, FieldPath<FieldValuesType>>;
+    file: FieldPathValue<FieldValuesType, PathString>;
     isDisabled?: boolean;
     multiple?: boolean;
 }

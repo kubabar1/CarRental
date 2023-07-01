@@ -1,20 +1,19 @@
 import React from 'react';
 import { SingleValue } from 'react-select/dist/declarations/src/types';
-import { Control, FieldError, FieldPath, FieldValues, Merge, RegisterOptions } from 'react-hook-form/dist/types';
-import { Controller } from 'react-hook-form';
+import { Controller, Control, FieldValues, FieldError, RegisterOptions, Auto, PathString } from 'react-hook-form';
 import Select from 'react-select';
 import { LocalisationResponseDTO } from '@car-rental/shared/model';
 import './LocationSelection.scss';
 
 interface CitySelectionProps<FieldValuesType extends FieldValues> {
     allLocations: LocalisationResponseDTO[];
-    name: FieldPath<FieldValuesType>;
+    name: Auto.FieldPath<FieldValuesType, PathString>;
     control: Control<FieldValuesType>;
     rules: Omit<
-        RegisterOptions<FieldValuesType, FieldPath<FieldValuesType>>,
+        RegisterOptions<FieldValuesType, PathString>,
         'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
     >;
-    error: Merge<FieldError, (FieldError | undefined)[]> | undefined;
+    error: FieldError | undefined;
 }
 
 export type LocationOptionType = { value: string; label: string };

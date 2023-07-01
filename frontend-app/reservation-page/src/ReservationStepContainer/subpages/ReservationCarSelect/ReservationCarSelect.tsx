@@ -2,20 +2,20 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { confirmationSubpageLink, reservationDataSubpageLink } from '../../../constants/Links';
 import './ReservationCarSelect.scss';
-import { Control, FieldPath, FieldValues, SubmitHandler, useWatch } from 'react-hook-form';
+import { Auto, Control, FieldValues, PathString, SubmitHandler, useWatch } from 'react-hook-form';
 import { VehicleResponseDTO } from '@car-rental/shared/model';
 import { VehicleSelect } from './components/vehicle_select/VehicleSelect';
 import { UseFormHandleSubmit } from 'react-hook-form/dist/types/form';
-import { FieldError, Merge } from 'react-hook-form/dist/types';
+import { FieldError } from 'react-hook-form/dist/types';
 import { VehicleModal } from './components/vehicle_modal/VehicleModal';
 import { ReactHookFormStorage } from '../../../utils/StorageUtil';
 
 interface ReservationCarSelectProperties<FieldValuesType extends FieldValues> {
     control: Control<FieldValuesType>;
-    vehicleSelectName: FieldPath<FieldValuesType>;
+    vehicleSelectName: Auto.FieldPath<FieldValuesType, PathString>;
     vehicles: VehicleResponseDTO[];
     onClickNext: UseFormHandleSubmit<FieldValuesType>;
-    vehiclesError: Merge<FieldError, (FieldError | undefined)[]> | undefined;
+    vehiclesError: FieldError | undefined;
     reservationStorage: ReactHookFormStorage<FieldValuesType>;
 }
 

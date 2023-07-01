@@ -76,7 +76,7 @@ export function EmailSubpage(): JSX.Element {
                         control={control}
                         options={allEmailAddresses}
                         rules={{ required: 'Recipients are required' }}
-                        error={formState.errors.recipients}
+                        error={formState.errors.recipients?.message}
                         isMulti={true}
                     />
                     <InputFormGroup<EmailFormValues>

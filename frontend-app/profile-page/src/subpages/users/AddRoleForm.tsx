@@ -57,7 +57,7 @@ export function AddRoleForm({ currentUserRoles }: AddRoleFormProperties): JSX.El
                 name={'userRoles'}
                 control={control}
                 options={allPossibleUserRoles}
-                error={formState.errors.userRoles}
+                error={formState.errors.userRoles?.message}
                 isMulti={true}
             />
         </FormContainer>

@@ -1,11 +1,11 @@
 import React from 'react';
 import { VehicleResponseDTO } from '@car-rental/shared/model';
 import { VehicleItem } from './vehicle_item/VehicleItem';
-import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
+import { Auto, Control, Controller, FieldValues, PathString } from 'react-hook-form';
 import { ReactHookFormStorage } from '../../../../../utils/StorageUtil';
 
 interface VehicleSelectProperties<FieldValuesType extends FieldValues> {
-    name: FieldPath<FieldValuesType>;
+    name: Auto.FieldPath<FieldValuesType, PathString>;
     control: Control<FieldValuesType>;
     vehicles: VehicleResponseDTO[];
     setModalVehicleDetailsId: (vehicleId: string | undefined) => void;

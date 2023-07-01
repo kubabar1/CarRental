@@ -246,7 +246,7 @@ export const VehicleForm = ({
                     name={'brand'}
                     control={control}
                     options={vehicleOptions.brands.map(mapToOptionType)}
-                    error={formState.errors.brand}
+                    error={formState.errors.brand?.message}
                     displayAddButton
                     onClickAddButton={() => {
                         setSelectedModalOption(vehicleModalOptions.brand);
@@ -263,7 +263,7 @@ export const VehicleForm = ({
                     name={'model'}
                     control={control}
                     options={vehicleModels.map(mapToOptionType)}
-                    error={formState.errors.model}
+                    error={formState.errors.model?.message}
                     rules={{ required: 'Model is required' }}
                     displayAddButton
                     onClickAddButton={() => {
@@ -311,7 +311,7 @@ export const VehicleForm = ({
                             `${location.country}, ${location.city}, ${location.streetAndNb}`
                         )
                     )}
-                    error={formState.errors.location}
+                    error={formState.errors.location?.message}
                     rules={{
                         required: 'Registration is required',
                     }}
@@ -326,7 +326,7 @@ export const VehicleForm = ({
                     mapToOptionTypeWithKeys(VehicleStatCodeEnum.AVI, 'Available'),
                     mapToOptionTypeWithKeys(VehicleStatCodeEnum.RMV, 'Removed'),
                 ]}
-                error={formState.errors.vehicleStatus}
+                error={formState.errors.vehicleStatus?.message}
                 rules={{
                     required: 'Vehicle status is required',
                 }}
@@ -343,7 +343,7 @@ export const VehicleForm = ({
                     name={'bodyType'}
                     control={control}
                     options={vehicleOptions.bodyTypes.map(mapToOptionType)}
-                    error={formState.errors.bodyType}
+                    error={formState.errors.bodyType?.message}
                     displayAddButton
                     onClickAddButton={() => {
                         setSelectedModalOption(vehicleModalOptions.bodyType);
@@ -360,7 +360,7 @@ export const VehicleForm = ({
                     name={'fuelType'}
                     control={control}
                     options={vehicleOptions.fuelTypes.map(mapToOptionType)}
-                    error={formState.errors.fuelType}
+                    error={formState.errors.fuelType?.message}
                     displayAddButton
                     onClickAddButton={() => {
                         setSelectedModalOption(vehicleModalOptions.fuelType);
@@ -388,7 +388,7 @@ export const VehicleForm = ({
                 name={'gearbox'}
                 control={control}
                 options={[mapToOptionTypeWithKeys('auto', 'Automatic'), mapToOptionTypeWithKeys('man', 'Manual')]}
-                error={formState.errors.gearbox}
+                error={formState.errors.gearbox?.message}
                 rules={{ required: 'Gearbox type is required' }}
             />
             <SwitchFormGroup<VehicleFormValues>
@@ -427,7 +427,7 @@ export const VehicleForm = ({
                     name={'color'}
                     control={control}
                     options={vehicleOptions.colors.map(mapToOptionType)}
-                    error={formState.errors.color}
+                    error={formState.errors.color?.message}
                     displayAddButton
                     onClickAddButton={() => {
                         setSelectedModalOption(vehicleModalOptions.color);
@@ -470,9 +470,9 @@ export const VehicleForm = ({
                 label={'Vehicle image:'}
                 name={'vehicleImage'}
                 control={control}
-                error={formState.errors.vehicleImage}
+                error={formState.errors.vehicleImage?.message}
                 rules={{
-                    validate: (value: string | number | boolean | FileWithPreview) => {
+                    validate: (value: string | number | boolean | unknown | FileWithPreview) => {
                         if (!value || !(value as FileWithPreview).name) {
                             return 'File is required';
                         }

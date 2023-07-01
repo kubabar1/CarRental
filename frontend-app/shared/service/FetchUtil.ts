@@ -1,8 +1,13 @@
 import { toast } from 'react-toastify';
 import { ResponseData } from '../model';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-export async function fetchPost<T>(getPath: string, data?: any): Promise<ResponseData<T>> {
+export async function fetchPost<T>(
+    getPath: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+    data?: any,
+    successNotification?: string,
+    errorNotification?: string
+): Promise<ResponseData<T>> {
     return fetch(getPath, {
         method: 'POST',
         mode: 'cors',
@@ -16,13 +21,15 @@ export async function fetchPost<T>(getPath: string, data?: any): Promise<Respons
         referrerPolicy: 'no-referrer',
         ...(!!data && { body: JSON.stringify(data) }),
     }).then((res: Response) => {
-        // if (res.status >= 200 && res.status < 300 && !!notification) {
-        //     toast.success(notification);
-        // }
-        if (res.status >= 200 && res.status < 300) {
-            console.log('POST OK');
-        } else {
-            console.log('POST NOK');
+        if (!!successNotification && res.status >= 200 && res.status < 300) {
+            console.log('###################################123');
+            console.log('###################################123');
+            console.log(res);
+            console.log(successNotification);
+            toast.success(successNotification);
+        }
+        if (!!errorNotification && (res.status < 200 || res.status > 300)) {
+            toast.error(successNotification);
         }
         return res.json().then((data) => {
             return { statusCode: res.status, responseBody: data };

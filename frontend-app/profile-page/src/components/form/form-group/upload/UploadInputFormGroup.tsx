@@ -1,21 +1,20 @@
 import React from 'react';
 import './UploadInputFormGroup.scss';
 import { Control } from 'react-hook-form/dist/types/form';
-import { FieldError, FieldPath, FieldValues } from 'react-hook-form/dist/types';
 import { RegisterOptions } from 'react-hook-form/dist/types/validator';
-import { Controller } from 'react-hook-form';
+import { Auto, Controller, PathString, FieldValues, Message } from 'react-hook-form';
 import { Dropzone, FileWithPreview } from './Dropzone';
 
 interface FormGroupProperties<FieldValuesType extends FieldValues> {
     label: string;
-    name: FieldPath<FieldValuesType>;
+    name: Auto.FieldPath<FieldValuesType, PathString>;
     control: Control<FieldValuesType>;
     rules?: Omit<
-        RegisterOptions<FieldValuesType, FieldPath<FieldValuesType>>,
+        RegisterOptions<FieldValuesType, PathString>,
         'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
     >;
     isDisabled?: boolean;
-    error?: FieldError;
+    error?: Message;
 }
 
 export function UploadInputFormGroup<FieldValuesType extends FieldValues>({
@@ -50,7 +49,7 @@ export function UploadInputFormGroup<FieldValuesType extends FieldValues>({
                     />
                     {error && (
                         <div className="alert alert-danger custom-alert" role="alert">
-                            {error.message}
+                            {error}
                         </div>
                     )}
                 </div>

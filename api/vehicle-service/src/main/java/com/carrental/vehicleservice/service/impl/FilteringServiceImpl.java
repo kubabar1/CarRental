@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 import static com.carrental.vehicleservice.model.constants.FilteringParamsEnum.*;
 import static com.carrental.vehicleservice.model.entity.BodyTypeEntity.BODY_TYPE;
+import static com.carrental.vehicleservice.model.entity.BrandEntity.BRAND;
 import static com.carrental.vehicleservice.model.entity.ColorEntity.COLOR;
 import static com.carrental.vehicleservice.model.entity.ModelEntity.MODEL;
 import static com.carrental.vehicleservice.model.entity.VehicleDetailsEntity.*;
@@ -115,7 +116,7 @@ public class FilteringServiceImpl implements FilteringService {
         List<Predicate> predicates = new ArrayList<>();
 
         if (brand != null) {
-            predicates.add(cb.like(cb.upper(vehicleEntityRoot.get(BRAND_FIELD)), brand.toUpperCase()));
+            predicates.add(cb.like(cb.upper(vehicleEntityRoot.get(BRAND_FIELD).get(BRAND)), brand.toUpperCase()));
         }
         if (model != null) {
             predicates.add(cb.like(cb.upper(vehicleEntityRoot.get(MODEL_FIELD).get(MODEL)), model.toUpperCase()));

@@ -1,13 +1,12 @@
 import React from 'react';
 import { FieldError, FieldPath, FieldValues, RegisterOptions, UseFormRegister } from 'react-hook-form';
-import { Merge } from 'react-hook-form/dist/types';
 
 interface ReceptionDateHourInputs<FieldValuesType extends FieldValues> {
     label: string;
     inputName: FieldPath<FieldValuesType>;
     register: UseFormRegister<FieldValuesType>;
     inputRegisterOptions?: RegisterOptions;
-    inputError?: Merge<FieldError, (FieldError | undefined)[]> | undefined;
+    inputError?: FieldError | undefined;
     min?: string;
     max?: string;
 }

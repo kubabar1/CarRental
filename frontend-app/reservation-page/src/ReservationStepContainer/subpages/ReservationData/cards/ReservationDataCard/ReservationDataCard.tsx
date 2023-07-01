@@ -6,22 +6,23 @@ import date from 'date-and-time';
 import { LocalisationResponseDTO } from '@car-rental/shared/model';
 import { carSelectSubpageLink } from '../../../../../constants/Links';
 import { endpoints } from '../../../../../constants/PathsAPI';
-import { FieldValues, PathValue, SubmitHandler, useWatch } from 'react-hook-form';
-import { Control, FieldError, FieldPath, Merge } from 'react-hook-form/dist/types';
+import { Auto, FieldValues, PathString, SubmitHandler, useWatch } from 'react-hook-form';
+import { Control, FieldError } from 'react-hook-form/dist/types';
 import { DateInput } from './components/DateInput';
 import { UseFormHandleSubmit, UseFormSetValue, UseFormTrigger } from 'react-hook-form/dist/types/form';
 import { ReactHookFormStorage } from '../../../../../utils/StorageUtil';
+import { FieldPathSetValue } from 'react-hook-form/dist/types/path';
 
 interface ReservationDataCardProperties<FieldValuesType extends FieldValues> {
     setValue: UseFormSetValue<FieldValuesType>;
-    locationSelectName: FieldPath<FieldValuesType>;
-    vehicleSelectName: FieldPath<FieldValuesType>;
+    locationSelectName: Auto.FieldPath<FieldValuesType, PathString>;
+    vehicleSelectName: Auto.FieldPath<FieldValuesType, PathString>;
     control: Control<FieldValuesType>;
-    localisationError: Merge<FieldError, (FieldError | undefined)[]> | undefined;
-    receptionDateError: Merge<FieldError, (FieldError | undefined)[]> | undefined;
-    returnDateError: Merge<FieldError, (FieldError | undefined)[]> | undefined;
-    receptionDateSelectName: FieldPath<FieldValuesType>;
-    returnDateSelectName: FieldPath<FieldValuesType>;
+    localisationError: FieldError | undefined;
+    receptionDateError: FieldError | undefined;
+    returnDateError: FieldError | undefined;
+    receptionDateSelectName: Auto.FieldPath<FieldValuesType, PathString>;
+    returnDateSelectName: Auto.FieldPath<FieldValuesType, PathString>;
     onClickNext: UseFormHandleSubmit<FieldValuesType>;
     trigger: UseFormTrigger<FieldValuesType>;
     reservationStorage: ReactHookFormStorage<FieldValuesType>;
@@ -73,7 +74,7 @@ export function ReservationDataCard<FieldValuesType extends FieldValues>({
                         control={control}
                         reservationStorage={reservationStorage}
                         afterChange={() => {
-                            setValue(vehicleSelectName, '' as PathValue<FieldValuesType, FieldPath<FieldValuesType>>);
+                            setValue(vehicleSelectName, '' as FieldPathSetValue<FieldValuesType, PathString>);
                             reservationStorage.removeValueFromStorage(vehicleSelectName);
                         }}
                     />

@@ -1,20 +1,20 @@
 import React from 'react';
 import { SingleValue } from 'react-select/dist/declarations/src/types';
-import { Control, FieldError, FieldPath, FieldValues, Merge, RegisterOptions } from 'react-hook-form/dist/types';
-import { Controller } from 'react-hook-form';
+import { Control, FieldError, FieldValues, RegisterOptions } from 'react-hook-form/dist/types';
+import { Auto, Controller, PathString } from 'react-hook-form';
 import Select from 'react-select';
 import { LocalisationResponseDTO } from '@car-rental/shared/model';
 import { ReactHookFormStorage } from '../../../../../../utils/StorageUtil';
 
 interface LocationSelectionProps<FieldValuesType extends FieldValues> {
     allLocations: LocalisationResponseDTO[];
-    inputName: FieldPath<FieldValuesType>;
+    inputName: Auto.FieldPath<FieldValuesType, PathString>;
     control: Control<FieldValuesType>;
     rules: Omit<
-        RegisterOptions<FieldValuesType, FieldPath<FieldValuesType>>,
+        RegisterOptions<FieldValuesType, PathString>,
         'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
     >;
-    error: Merge<FieldError, (FieldError | undefined)[]> | undefined;
+    error: FieldError | undefined;
     reservationStorage?: ReactHookFormStorage<FieldValuesType>;
     afterChange?: () => void;
 }

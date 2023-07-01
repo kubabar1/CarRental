@@ -1,19 +1,20 @@
 import React from 'react';
 import './InputFormGroup.scss';
 import { UseFormRegister } from 'react-hook-form/dist/types/form';
-import { FieldError, FieldPath, FieldValues } from 'react-hook-form/dist/types';
+import { FieldError, FieldValues } from 'react-hook-form/dist/types';
 import { RegisterOptions } from 'react-hook-form/dist/types/validator';
+import { Auto, PathString } from 'react-hook-form';
 
 type InputType = 'text' | 'number' | 'date';
 
 interface FormGroupProperties<FieldValuesType extends FieldValues> {
     label: string;
-    name: FieldPath<FieldValuesType>;
+    name: Auto.FieldPath<FieldValuesType, PathString>;
     register: UseFormRegister<FieldValuesType>;
-    registerOptions?: RegisterOptions;
+    registerOptions?: RegisterOptions<FieldValuesType, PathString>;
     type?: InputType;
     isDisabled?: boolean;
-    error?: FieldError;
+    error?: FieldError | undefined;
     step?: number;
     min?: number;
     max?: number;

@@ -51,7 +51,12 @@ export class BookingAdminService {
     };
 
     static rentBooking = (bookingId: string): Promise<ResponseData<BookingResponseDTO>> => {
-        return fetchPost<BookingResponseDTO>(RENT_ADMIN_BOOKING(bookingId));
+        return fetchPost<BookingResponseDTO>(
+            RENT_ADMIN_BOOKING(bookingId),
+            undefined,
+            `Booking '${bookingId}' rented`,
+            `Cannot rent booking '${bookingId}' - error occurred`
+        );
     };
 
     static cancelBooking = (bookingId: string): Promise<ResponseData<BookingResponseDTO>> => {

@@ -1,20 +1,20 @@
 import React from 'react';
 import './SwitchFormGroup.scss';
 import { Control } from 'react-hook-form/dist/types/form';
-import { FieldError, FieldPath, FieldValues, Merge } from 'react-hook-form/dist/types';
+import { FieldError, FieldValues } from 'react-hook-form/dist/types';
 import { RegisterOptions } from 'react-hook-form/dist/types/validator';
 import Switch from 'react-switch';
-import { Controller } from 'react-hook-form';
+import { Auto, Controller, PathString } from 'react-hook-form';
 
 interface FormGroupProperties<FieldValuesType extends FieldValues> {
     label: string;
-    name: FieldPath<FieldValuesType>;
+    name: Auto.FieldPath<FieldValuesType, PathString>;
     control: Control<FieldValuesType>;
     rules?: Omit<
-        RegisterOptions<FieldValuesType, FieldPath<FieldValuesType>>,
+        RegisterOptions<FieldValuesType, PathString>,
         'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
     >;
-    error?: Merge<FieldError, (FieldError | undefined)[]> | undefined;
+    error?: FieldError | undefined;
     isDisabled?: boolean;
 }
 

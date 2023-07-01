@@ -2,8 +2,7 @@ import React, { MouseEvent } from 'react';
 import './SelectFormGroup.scss';
 import Select from 'react-select';
 import { Control } from 'react-hook-form/dist/types/form';
-import { FieldError, FieldPath, FieldValues, Merge } from 'react-hook-form/dist/types';
-import { Controller } from 'react-hook-form';
+import { Auto, Controller, Message, PathString, FieldValues } from 'react-hook-form';
 import { OnChangeValue, Options } from 'react-select/dist/declarations/src/types';
 import { RegisterOptions } from 'react-hook-form/dist/types/validator';
 import { Button } from 'react-bootstrap';
@@ -16,13 +15,13 @@ export type OptionType = { value: string | number | null; label: string | null }
 interface FormGroupProperties<FieldValuesType extends FieldValues> {
     label: string;
     options: Options<OptionType>;
-    name: FieldPath<FieldValuesType>;
+    name: Auto.FieldPath<FieldValuesType, PathString>;
     control?: Control<FieldValuesType>;
     rules?: Omit<
-        RegisterOptions<FieldValuesType, FieldPath<FieldValuesType>>,
+        RegisterOptions<FieldValuesType, PathString>,
         'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
     >;
-    error?: Merge<FieldError, (FieldError | undefined)[]> | undefined;
+    error?: Message;
     isClearable?: boolean;
     isMulti?: boolean;
     displayAddButton?: boolean;
@@ -124,7 +123,7 @@ export function SelectFormGroup<FieldValuesType extends FieldValues, IsMulti ext
                     />
                     {error && (
                         <div className="alert alert-danger custom-alert" role="alert">
-                            {error.message}
+                            {error}
                         </div>
                     )}
                 </div>

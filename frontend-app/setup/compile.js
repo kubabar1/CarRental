@@ -6,7 +6,7 @@ const chalk = require('chalk');
 const utils = require('./utils');
 
 compiler.hooks.run.tap('RunPlugin', (params) => {
-    console.log(`➤ Compiling module ${chalk.blue(params.name)}...`);
+    console.log(`➤ Compiling module ${chalk.blue(params.name)} ...`);
 });
 
 compiler.run(utils.compilationHandler);

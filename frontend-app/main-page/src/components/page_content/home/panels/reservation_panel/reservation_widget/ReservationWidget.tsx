@@ -15,7 +15,7 @@ type ReservationFormValues = {
     location: string;
     receptionDate: Date;
     receptionHour: number;
-    returnDate: Date;
+    returnDate: string;
     returnHour: number;
     notAuthenticated: boolean;
 };
@@ -94,7 +94,7 @@ export function ReservationWidget({ authenticatedUser }: ReservationWidgetProper
                         min: { value: minReceptionDate, message: 'Incorrect reception date' },
                         max: { value: maxReceptionDate, message: 'Incorrect reception date' },
                     }}
-                    dateInputError={formState.errors.receptionDate}
+                    dateInputError={formState.errors.receptionDate?.message}
                     minDate={minReceptionDate}
                     maxDate={maxReceptionDate}
                 />
@@ -106,7 +106,7 @@ export function ReservationWidget({ authenticatedUser }: ReservationWidgetProper
                         required: 'Return date is required',
                         min: { value: minReturnDate, message: 'Incorrect return date' },
                     }}
-                    dateInputError={formState.errors.returnDate}
+                    dateInputError={formState.errors.returnDate?.message}
                     minDate={minReturnDate}
                 />
                 {renderAuthError()}

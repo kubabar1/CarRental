@@ -1,13 +1,16 @@
 import React from 'react';
-import { Controller, FieldError, FieldPath, FieldValues, RegisterOptions } from 'react-hook-form';
-import { Control, Merge } from 'react-hook-form/dist/types';
+import { Auto, Controller, FieldError, FieldValues, PathString, RegisterOptions } from 'react-hook-form';
+import { Control } from 'react-hook-form/dist/types';
 import { ReactHookFormStorage } from '../../../../../../utils/StorageUtil';
 
 interface ReceptionDateHourInputs<FieldValuesType extends FieldValues> {
     label: string;
-    inputName: FieldPath<FieldValuesType>;
-    inputRegisterOptions?: RegisterOptions;
-    inputError?: Merge<FieldError, (FieldError | undefined)[]> | undefined;
+    inputName: Auto.FieldPath<FieldValuesType, PathString>;
+    inputRegisterOptions?: Omit<
+        RegisterOptions<FieldValuesType, PathString>,
+        'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
+    >;
+    inputError?: FieldError | undefined;
     control: Control<FieldValuesType>;
     min?: string;
     max?: string;
