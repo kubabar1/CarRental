@@ -52,7 +52,6 @@ interface ReservationStepContainerProps {
 }
 
 export function ReservationStepContainer({ authenticatedUser }: ReservationStepContainerProps): JSX.Element {
-    const [step, setStep] = React.useState<number>(1);
     const { formState, control, handleSubmit, watch, trigger, setValue } = useForm<ReservationFormValues>({
         mode: 'onChange',
     });
@@ -83,12 +82,11 @@ export function ReservationStepContainer({ authenticatedUser }: ReservationStepC
 
     useEffect(() => {
         reservationStorage.setValuesInForm();
-    }, [reservationStorage]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div>
-            <Logo />
-            <StepsHeader step={step} />
             <Switch>
                 <Route
                     exact
@@ -127,10 +125,11 @@ export function ReservationStepContainer({ authenticatedUser }: ReservationStepC
                     exact
                     path={reservationDataSubpageLink}
                     render={(): JSX.Element => {
-                        setStep(1);
                         return (
                             <main>
                                 <div id="reservation-data-container" className="container col-md-6 offset-md-3 my-5 ">
+                                    <Logo />
+                                    <StepsHeader step={1} />
                                     <PersonalDataCard authenticatedUser={authenticatedUser} />
                                     <ReservationDataCard<ReservationFormValues>
                                         setValue={setValue}
@@ -156,16 +155,19 @@ export function ReservationStepContainer({ authenticatedUser }: ReservationStepC
                     exact
                     path={carSelectSubpageLink}
                     render={(): JSX.Element => {
-                        setStep(2);
                         return (
-                            <ReservationCarSelect<ReservationFormValues>
-                                control={control}
-                                vehicles={vehicles}
-                                vehicleSelectName={'vehicleId'}
-                                onClickNext={handleSubmit}
-                                vehiclesError={formState.errors.vehicleId}
-                                reservationStorage={reservationStorage}
-                            />
+                            <div>
+                                <Logo />
+                                <StepsHeader step={2} />
+                                <ReservationCarSelect<ReservationFormValues>
+                                    control={control}
+                                    vehicles={vehicles}
+                                    vehicleSelectName={'vehicleId'}
+                                    onClickNext={handleSubmit}
+                                    vehiclesError={formState.errors.vehicleId}
+                                    reservationStorage={reservationStorage}
+                                />
+                            </div>
                         );
                     }}
                 />
@@ -173,20 +175,23 @@ export function ReservationStepContainer({ authenticatedUser }: ReservationStepC
                     exact
                     path={confirmationSubpageLink}
                     render={(): JSX.Element => {
-                        setStep(3);
                         return (
-                            <ReservationConfirmation<ReservationFormValues>
-                                authenticatedUser={authenticatedUser}
-                                control={control}
-                                vehicleSelectName={'vehicleId'}
-                                receptionDateSelectName={'receptionDate'}
-                                returnDateSelectName={'returnDate'}
-                                locationSelectName={'localisationId'}
-                                localisations={localisations}
-                                vehicles={vehicles}
-                                onClickReserve={handleSubmit}
-                                reservationStorage={reservationStorage}
-                            />
+                            <div>
+                                <Logo />
+                                <StepsHeader step={3} />
+                                <ReservationConfirmation<ReservationFormValues>
+                                    authenticatedUser={authenticatedUser}
+                                    control={control}
+                                    vehicleSelectName={'vehicleId'}
+                                    receptionDateSelectName={'receptionDate'}
+                                    returnDateSelectName={'returnDate'}
+                                    locationSelectName={'localisationId'}
+                                    localisations={localisations}
+                                    vehicles={vehicles}
+                                    onClickReserve={handleSubmit}
+                                    reservationStorage={reservationStorage}
+                                />
+                            </div>
                         );
                     }}
                 />

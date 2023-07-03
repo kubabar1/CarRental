@@ -1,10 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { carSelectSubpageLink } from '../../../constants/Links';
 import {
     AuthenticatedUserDTO,
     BookingAddRequestDTO,
+    BookingResponseDTO,
     LocalisationResponseDTO,
+    ResponseData,
     VehicleResponseDTO,
 } from '@car-rental/shared/model';
 import { PersonalData } from './components/PersonalData';
@@ -15,7 +17,6 @@ import './ReservationConfirmation.scss';
 import { ReservationCost } from './components/ReservationCost';
 import { UseFormHandleSubmit } from 'react-hook-form/dist/types/form';
 import { BookingUserService } from '@car-rental/shared/service';
-import { homePath } from '../../../../../login-page/src/constants/Paths';
 import { ReactHookFormStorage } from '../../../utils/StorageUtil';
 
 interface ReservationConfirmationProperties<FieldValuesType extends FieldValues> {
@@ -51,15 +52,19 @@ export function ReservationConfirmation<FieldValuesType extends FieldValues>({
         (l) => l.id == selectedLocalisationId
     );
     const selectedVehicle: VehicleResponseDTO | undefined = vehicles.find((v) => v.id === selectedVehicleId);
+    const history = useHistory();
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleFormSubmit: SubmitHandler<FieldValuesType> = (): any | Promise<any> => {
         BookingUserService.createBooking(
             new BookingAddRequestDTO(selectedLocalisationId, selectedVehicleId, receptionDate, returnDate)
-        ).then(() => {
-            reservationStorage.clear();
-            window.location.href = homePath;
-        });
+        )
+            .then((value: ResponseData<BookingResponseDTO>) => {
+                history.push(`/reservation/reservation-status/${value.statusCode === 200 ? 'ok' : 'nok'}`);
+            })
+            .finally(() => {
+                reservationStorage.clear();
+            });
     };
 
     const renderFormGroupItem = (label: string, value: string): JSX.Element => {

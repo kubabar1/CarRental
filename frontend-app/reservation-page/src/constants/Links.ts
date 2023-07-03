@@ -3,4 +3,4 @@ export const reservationDataSubpageLink = `${reservationRootLink}/reservation-da
 export const carSelectSubpageLink = `${reservationRootLink}/reservation-car-selection`;
 export const confirmationSubpageLink = `${reservationRootLink}/reservation-confirm`;
 export const unauthenticatedSubpageLink = `${reservationRootLink}/unauthenticated`;
-export const reservationStatusSubpage = `${reservationRootLink}/reservation-status/:reservationId`;
+export const reservationStatusSubpage = `${reservationRootLink}/reservation-status/:reservationStatus`;

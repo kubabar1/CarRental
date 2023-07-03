@@ -20,25 +20,18 @@ export async function fetchPost<T>(
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
         ...(!!data && { body: JSON.stringify(data) }),
-    }).then((res: Response) => {
-        if (!!successNotification && res.status >= 200 && res.status < 300) {
-            console.log('###################################123');
-            console.log('###################################123');
-            console.log(res);
-            console.log(successNotification);
-            toast.success(successNotification);
-        }
-        if (!!errorNotification && (res.status < 200 || res.status > 300)) {
-            toast.error(successNotification);
-        }
-        return res.json().then((data) => {
-            return { statusCode: res.status, responseBody: data };
-        });
-    });
+    })
+        .then((res: Response) => handleFetchResult<T>(res, successNotification, errorNotification))
+        .catch(() => handleCatch<T>(errorNotification));
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-export async function fetchPut<T>(getPath: string, data?: any): Promise<ResponseData<T>> {
+export async function fetchPut<T>(
+    getPath: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+    data?: any,
+    successNotification?: string,
+    errorNotification?: string
+): Promise<ResponseData<T>> {
     return fetch(getPath, {
         method: 'PUT',
         mode: 'cors',
@@ -50,22 +43,16 @@ export async function fetchPut<T>(getPath: string, data?: any): Promise<Response
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
         ...(!!data && { body: JSON.stringify(data) }),
-    }).then((res: Response) => {
-        // if (res.status >= 200 && res.status < 300 && !!notification) {
-        //     toast.success(notification);
-        // }
-        if (res.status >= 200 && res.status < 300) {
-            console.log('PUT OK');
-        } else {
-            console.log('PUT NOK');
-        }
-        return res.json().then((data) => {
-            return { statusCode: res.status, responseBody: data };
-        });
-    });
+    })
+        .then((res: Response) => handleFetchResult<T>(res, successNotification, errorNotification))
+        .catch(() => handleCatch<T>(errorNotification));
 }
 
-export async function fetchGet<T>(getPath: string): Promise<T> {
+export async function fetchGet<T>(
+    getPath: string,
+    successNotification?: string,
+    errorNotification?: string
+): Promise<T> {
     return fetch(getPath, {
         method: 'GET',
         mode: 'cors',
@@ -76,21 +63,31 @@ export async function fetchGet<T>(getPath: string): Promise<T> {
         },
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
-    }).then((res: Response) => {
-        // if (res.status >= 200 && res.status < 300 && !!notification) {
-        //     toast.success(notification);
-        // }
-        if (res.status >= 200 && res.status < 300) {
-            console.log('GET OK');
-        } else {
-            console.log('GET NOK');
-        }
-        return res.json();
-    });
+    })
+        .then((res: Response) => {
+            if (!!successNotification && res.status >= 200 && res.status < 300) {
+                toast.success(successNotification);
+            }
+            if (!!errorNotification && (res.status < 200 || res.status > 300)) {
+                toast.error(successNotification);
+            }
+            return res.json();
+        })
+        .catch(() => {
+            if (errorNotification) {
+                toast.error(errorNotification);
+            }
+            return Promise.reject();
+        });
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-export async function fetchDelete<T>(getPath: string, data?: any, notification?: string): Promise<ResponseData<T>> {
+export async function fetchDelete<T>(
+    getPath: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+    data?: any,
+    successNotification?: string,
+    errorNotification?: string
+): Promise<ResponseData<T>> {
     return fetch(getPath, {
         method: 'DELETE',
         mode: 'cors',
@@ -102,21 +99,17 @@ export async function fetchDelete<T>(getPath: string, data?: any, notification?:
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
         ...(!!data && { body: JSON.stringify(data) }),
-    }).then((res: Response) => {
-        if (res.status >= 200 && res.status < 300 && !!notification) {
-            toast.success(notification);
-        }
-        return res.json().then((data) => {
-            return { statusCode: res.status, responseBody: data };
-        });
-    });
+    })
+        .then((res: Response) => handleFetchResult<T>(res, successNotification, errorNotification))
+        .catch(() => handleCatch<T>(errorNotification));
 }
 
 export async function fetchWithFile<T>(
     method: string,
     getPath: string,
     data: FormData,
-    notification?: string
+    successNotification?: string,
+    errorNotification?: string
 ): Promise<ResponseData<T>> {
     return fetch(getPath, {
         method: method,
@@ -129,12 +122,30 @@ export async function fetchWithFile<T>(
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
         body: data,
-    }).then((res: Response) => {
-        if (res.status >= 200 && res.status < 300 && !!notification) {
-            toast.success(notification);
-        }
-        return res.json().then((data) => {
-            return { statusCode: res.status, responseBody: data };
-        });
+    })
+        .then((res: Response) => handleFetchResult<T>(res, successNotification, errorNotification))
+        .catch(() => handleCatch<T>(errorNotification));
+}
+
+function handleFetchResult<T>(
+    res: Response,
+    successNotification?: string,
+    errorNotification?: string
+): Promise<ResponseData<T>> {
+    if (!!successNotification && res.status >= 200 && res.status < 300) {
+        toast.success(successNotification);
+    }
+    if (!!errorNotification && (res.status < 200 || res.status > 300)) {
+        toast.error(successNotification);
+    }
+    return res.json().then((data) => {
+        return { statusCode: res.status, responseBody: data };
     });
+}
+
+function handleCatch<T>(errorNotification?: string): Promise<ResponseData<T>> {
+    if (errorNotification) {
+        toast.error(errorNotification);
+    }
+    return Promise.reject();
 }

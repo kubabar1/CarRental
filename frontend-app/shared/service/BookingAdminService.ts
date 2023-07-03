@@ -60,11 +60,21 @@ export class BookingAdminService {
     };
 
     static cancelBooking = (bookingId: string): Promise<ResponseData<BookingResponseDTO>> => {
-        return fetchPost<BookingResponseDTO>(CANCEL_ADMIN_BOOKING(bookingId));
+        return fetchPost<BookingResponseDTO>(
+            CANCEL_ADMIN_BOOKING(bookingId),
+            undefined,
+            `Booking '${bookingId}' canceled`,
+            `Cannot cancel booking '${bookingId}' - error occurred`
+        );
     };
 
     static returnBooking = (bookingId: string): Promise<ResponseData<BookingResponseDTO>> => {
-        return fetchPost<BookingResponseDTO>(RETURN_ADMIN_BOOKING(bookingId));
+        return fetchPost<BookingResponseDTO>(
+            RETURN_ADMIN_BOOKING(bookingId),
+            undefined,
+            `Booking '${bookingId}' returned`,
+            `Cannot return booking '${bookingId}' - error occurred`
+        );
     };
 
     static getAllBookingStates = (): Promise<BookingStateDTO[]> => {

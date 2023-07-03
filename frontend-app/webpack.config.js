@@ -36,6 +36,7 @@ module.exports = {
         alias: {
             '@car-rental/shared/model': path.resolve(__dirname, './shared/model'),
             '@car-rental/shared/service': path.resolve(__dirname, './shared/service'),
+            '@car-rental/shared/constant': path.resolve(__dirname, './shared/constant'),
         }
     },
     mode: process.env.NODE_ENV,

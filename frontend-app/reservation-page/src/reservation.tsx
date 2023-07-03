@@ -1,13 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Redirect, Route } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, useParams } from 'react-router-dom';
 import 'bootstrap/scss/bootstrap.scss';
 import { ReservationStepContainer } from './ReservationStepContainer/ReservationStepContainer';
-import { reservationRootLink, unauthenticatedSubpageLink } from './constants/Links';
+import { reservationRootLink, reservationStatusSubpage, unauthenticatedSubpageLink } from './constants/Links';
 import { AuthService } from '@car-rental/shared/service';
 import { AuthenticatedUserDTO } from '@car-rental/shared/model';
 import { Button } from 'react-bootstrap';
 import './reservation.scss';
+import {
+    ReservationStatus,
+    ReservationStatusComponent,
+} from './ReservationStepContainer/components/RegistrationConfirmation/ReservationStatusComponent';
 
 ReactDOM.render(
     <BrowserRouter>
@@ -53,6 +57,13 @@ ReactDOM.render(
                             </div>
                         </div>
                     );
+                }}
+            />
+            <Route
+                path={reservationStatusSubpage}
+                component={(): JSX.Element => {
+                    const { reservationStatus } = useParams<{ reservationStatus: ReservationStatus }>();
+                    return <ReservationStatusComponent reservationStatus={reservationStatus} />;
                 }}
             />
         </React.StrictMode>

@@ -28,6 +28,7 @@ import { DefaultColumnFilter } from './tab_items/default_column_filter/DefaultCo
 import { NoData } from './tab_items/no-data/NoData';
 import { Loading } from './tab_items/loading/Loading';
 import { IndeterminateCheckbox } from './tab_items/indeterminate_checkbox/IndeterminateCheckbox';
+import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '@car-rental/shared/constant';
 
 interface TableComponentInterface<T extends object> extends TableOptions<T> {
     fetchData: (
@@ -93,8 +94,8 @@ export function Table<T extends TableInterface>({
             columns,
             data,
             initialState: {
-                ...(pageIndexFromUrl <= 0 && { pageIndex: pageIndexFromUrl }),
-                ...(pageSizeFromUrl <= 0 && { pageSize: pageSizeFromUrl }),
+                pageIndex: pageIndexFromUrl <= 0 ? DEFAULT_PAGE_INDEX : pageIndexFromUrl,
+                pageSize: pageSizeFromUrl <= 0 ? DEFAULT_PAGE_SIZE : pageSizeFromUrl,
             },
             manualPagination: true,
             manualFilters: true,
@@ -247,10 +248,3 @@ export function Table<T extends TableInterface>({
         <Loading />
     );
 }
-
-// export function TableWithRef() {
-//     return React.forwardRef<JSX.Element>(Table);
-// }
-
-// export const TableWithRef = React.forwardRef<JSX.Element, TableComponentInterface<T>>(Table);
-export const TableWithRef = React.forwardRef(Table);

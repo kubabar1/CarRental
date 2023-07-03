@@ -1,7 +1,7 @@
 import { FieldValues } from 'react-hook-form';
-import { FieldPath, UseFormSetValue } from 'react-hook-form/dist/types';
+import { UseFormSetValue } from 'react-hook-form/dist/types';
 import { UseFormWatch } from 'react-hook-form/dist/types/form';
-import { FieldPathSetValue, PathString } from 'react-hook-form/dist/types/path';
+import { Auto, FieldPathSetValue, PathString } from 'react-hook-form/dist/types/path';
 
 export interface ReactHookFormStorage<T> {
     clear: () => void;
@@ -26,7 +26,10 @@ export const reactHookFormStorage = <T extends FieldValues>(
         if (str) {
             const values: T = JSON.parse(str);
             Object.keys(values).forEach((key: string) => {
-                setValue(key as FieldPath<T>, values[key as FieldPath<T>] as FieldPathSetValue<T, PathString>);
+                setValue(
+                    key as Auto.FieldPath<T, PathString>,
+                    values[key as Auto.FieldPath<T, PathString>] as FieldPathSetValue<T, PathString>
+                );
             });
         }
     };
