@@ -1,4 +1,4 @@
-import { endpoints } from '../constant/PathsAPI';
+import { endpoints } from '../constant';
 import {
     UserEmailExistsDTO,
     PasswordResetRequestDTO,

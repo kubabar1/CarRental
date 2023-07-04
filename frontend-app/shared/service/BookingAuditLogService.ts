@@ -1,6 +1,6 @@
 import { BookingAuditLogResponseDTO, Page } from '../model';
 import { fetchGet } from './FetchUtil';
-import { GET_BOOKINGS_AUDIT_LOGS_PATH, PAGE_REQUEST } from '../constant/PathsAPI';
+import { GET_BOOKINGS_AUDIT_LOGS_PATH, PAGE_REQUEST } from '../constant';
 
 export class BookingAuditLogService {
     static getBookingsAuditLogsList = (

@@ -1,5 +1,5 @@
 import { fetchGet, fetchPut } from './FetchUtil';
-import { GET_VEHICLE_COMMENTS_BY_ID_PATH, PAGE_REQUEST, ADD_COMMENT_PATH } from '../constant/PathsAPI';
+import { GET_VEHICLE_COMMENTS_BY_ID_PATH, PAGE_REQUEST, ADD_COMMENT_PATH } from '../constant';
 import { CommentWithRateAddDTO, CommentWithRateResponseDTO, ResponseData, Page } from '../model';
 
 export class RatingService {

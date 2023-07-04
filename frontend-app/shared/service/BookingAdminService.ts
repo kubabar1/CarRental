@@ -10,7 +10,7 @@ import {
     PAGE_REQUEST,
     RENT_ADMIN_BOOKING,
     RETURN_ADMIN_BOOKING,
-} from '../constant/PathsAPI';
+} from '../constant';
 import { fetchGet, fetchPost } from './FetchUtil';
 
 export class BookingAdminService {

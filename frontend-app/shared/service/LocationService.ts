@@ -1,5 +1,5 @@
 import { fetchGet, fetchPut } from './FetchUtil';
-import { ADD_LOCATION_PATH, GET_ALL_LOCATIONS_PATH, GET_LOCATIONS_PATH, PAGE_REQUEST } from '../constant/PathsAPI';
+import { ADD_LOCATION_PATH, GET_ALL_LOCATIONS_PATH, GET_LOCATIONS_PATH, PAGE_REQUEST } from '../constant';
 import { LocalisationsResponseDTO, LocalisationResponseDTO, LocationAddDTO, Page, ResponseData } from '../model';
 
 export class LocationService {

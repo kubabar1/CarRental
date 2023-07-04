@@ -1,5 +1,5 @@
 import { fetchGet } from './FetchUtil';
-import { GET_AUTHENTICATED_USER_DATA_PATH, LOGOUT_PATH } from '../constant/PathsAPI';
+import { GET_AUTHENTICATED_USER_DATA_PATH, LOGOUT_PATH } from '../constant';
 import { AuthenticatedUserDTO } from '../model';
 
 export class AuthService {

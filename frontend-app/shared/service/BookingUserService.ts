@@ -16,7 +16,7 @@ import {
     GET_USER_BOOKINGS_RENTED_PATH,
     GET_USER_BOOKINGS_RESERVED_PATH,
     PAGE_REQUEST,
-} from '../constant/PathsAPI';
+} from '../constant';
 
 export class BookingUserService {
     static getBookingCost = (data: BookingCostRequestDTO): Promise<ResponseData<BookingCostResponseDTO>> => {
