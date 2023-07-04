@@ -9,6 +9,8 @@ import com.carrental.vehicleservice.repository.EquipmentRepository;
 import com.carrental.vehicleservice.repository.VehicleRepository;
 import com.carrental.vehicleservice.service.EquipmentService;
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -27,17 +29,21 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     private final ModelMapper modelMapper;
 
+    private final RabbitTemplate rabbitTemplate;
+
     private final FilterSpecificationBuilder<EquipmentEntity> filterSpecificationBuilder;
 
     public EquipmentServiceImpl(
             EquipmentRepository equipmentRepository,
             VehicleRepository vehicleRepository,
             ModelMapper modelMapper,
+            RabbitTemplate rabbitTemplate,
             FilterSpecificationBuilder<EquipmentEntity> filterSpecificationBuilder
     ) {
         this.equipmentRepository = equipmentRepository;
         this.vehicleRepository = vehicleRepository;
         this.modelMapper = modelMapper;
+        this.rabbitTemplate = rabbitTemplate;
         this.filterSpecificationBuilder = filterSpecificationBuilder;
     }
 
@@ -79,7 +85,17 @@ public class EquipmentServiceImpl implements EquipmentService {
         equipmentSetPersistDTO.getEquipments().forEach(equipmentPersistDTO -> {
             addEquipmentToVehicle(vehicleEntity, equipmentPersistDTO.getEquipmentCode());
         });
-        return modelMapper.map(vehicleEntity, VehicleResponseDTO.class);
+
+        LocationResponseDTO locationResponseDTO = rabbitTemplate.convertSendAndReceiveAsType(
+            "getLocationByIdQueue",
+            vehicleEntity.getLocationId(),
+            new ParameterizedTypeReference<>() {
+            }
+        );
+
+        VehicleResponseDTO vehicleResponseDTO = modelMapper.map(vehicleEntity, VehicleResponseDTO.class);
+        vehicleResponseDTO.setLocation(locationResponseDTO);
+        return vehicleResponseDTO;
     }
 
     @Override
@@ -89,7 +105,17 @@ public class EquipmentServiceImpl implements EquipmentService {
                 .getEquipments()
                 .removeIf(equipmentEntity -> equipmentEntity.getEquipmentCode().equals(equipmentPersistDTO.getEquipmentCode()));
         VehicleEntity vehicleEntityAfterUpdate = vehicleRepository.save(vehicleEntity);
-        return modelMapper.map(vehicleEntityAfterUpdate, VehicleResponseDTO.class);
+
+        LocationResponseDTO locationResponseDTO = rabbitTemplate.convertSendAndReceiveAsType(
+            "getLocationByIdQueue",
+            vehicleEntityAfterUpdate.getLocationId(),
+            new ParameterizedTypeReference<>() {
+            }
+        );
+
+        VehicleResponseDTO vehicleResponseDTO = modelMapper.map(vehicleEntityAfterUpdate, VehicleResponseDTO.class);
+        vehicleResponseDTO.setLocation(locationResponseDTO);
+        return vehicleResponseDTO;
     }
 
     @Override

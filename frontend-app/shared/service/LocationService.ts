@@ -4,7 +4,12 @@ import { LocalisationsResponseDTO, LocalisationResponseDTO, LocationAddDTO, Page
 
 export class LocationService {
     static addLocation = (locationAddDTO: LocationAddDTO): Promise<ResponseData<LocalisationResponseDTO>> => {
-        return fetchPut<LocalisationResponseDTO>(ADD_LOCATION_PATH, locationAddDTO);
+        return fetchPut<LocalisationResponseDTO>(
+            ADD_LOCATION_PATH,
+            locationAddDTO,
+            'Location added',
+            `Cannot add location - error occurred`
+        );
     };
 
     static getLocationsList = (
@@ -18,6 +23,7 @@ export class LocationService {
             PAGE_REQUEST(GET_LOCATIONS_PATH, page, size, filter, sortBy, desc)
         );
     };
+
     static getAllLocationsList = (): Promise<LocalisationsResponseDTO> => {
         return fetchGet<LocalisationsResponseDTO>(GET_ALL_LOCATIONS_PATH);
     };

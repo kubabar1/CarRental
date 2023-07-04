@@ -57,6 +57,9 @@ export function EmailSubpage(): JSX.Element {
                 new MultipleRecipientsMailsDTO(data.recipients, data.emailSubject, data.emailText)
             ).then(() => {
                 setIsSubmitButtonDisabled(false);
+                setValue('recipients', []);
+                setValue('emailSubject', '');
+                setValue('emailText', '');
             });
         }
     };

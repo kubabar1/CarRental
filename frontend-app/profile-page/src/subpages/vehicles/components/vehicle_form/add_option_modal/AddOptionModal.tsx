@@ -68,15 +68,12 @@ export function AddOptionModal({
                 />
             </Modal.Body>
             <Modal.Footer>
-                <Button
-                    disabled={!formState.isValid}
-                    type="submit"
-                    variant={'outline-primary'}
-                    onClick={handleSubmit(addOption)}
-                >
+                <Button onClick={onClose} variant={'outline-primary'}>
+                    Close
+                </Button>
+                <Button disabled={!formState.isValid} type="submit" onClick={handleSubmit(addOption)}>
                     Add
                 </Button>
-                <Button onClick={onClose}>Close</Button>
             </Modal.Footer>
         </Modal>
     );

@@ -21,7 +21,7 @@ export async function fetchPost<T>(
         referrerPolicy: 'no-referrer',
         ...(!!data && { body: JSON.stringify(data) }),
     })
-        .then((res: Response) => handleFetchResult<T>(res, successNotification, errorNotification))
+        .then((res: Response) => handleFetchResult<T>(res, successNotification))
         .catch(() => handleCatch<T>(errorNotification));
 }
 
@@ -44,7 +44,7 @@ export async function fetchPut<T>(
         referrerPolicy: 'no-referrer',
         ...(!!data && { body: JSON.stringify(data) }),
     })
-        .then((res: Response) => handleFetchResult<T>(res, successNotification, errorNotification))
+        .then((res: Response) => handleFetchResult<T>(res, successNotification))
         .catch(() => handleCatch<T>(errorNotification));
 }
 
@@ -100,7 +100,7 @@ export async function fetchDelete<T>(
         referrerPolicy: 'no-referrer',
         ...(!!data && { body: JSON.stringify(data) }),
     })
-        .then((res: Response) => handleFetchResult<T>(res, successNotification, errorNotification))
+        .then((res: Response) => handleFetchResult<T>(res, successNotification))
         .catch(() => handleCatch<T>(errorNotification));
 }
 
@@ -123,20 +123,13 @@ export async function fetchWithFile<T>(
         referrerPolicy: 'no-referrer',
         body: data,
     })
-        .then((res: Response) => handleFetchResult<T>(res, successNotification, errorNotification))
+        .then((res: Response) => handleFetchResult<T>(res, successNotification))
         .catch(() => handleCatch<T>(errorNotification));
 }
 
-function handleFetchResult<T>(
-    res: Response,
-    successNotification?: string,
-    errorNotification?: string
-): Promise<ResponseData<T>> {
+function handleFetchResult<T>(res: Response, successNotification?: string): Promise<ResponseData<T>> {
     if (!!successNotification && res.status >= 200 && res.status < 300) {
         toast.success(successNotification);
-    }
-    if (!!errorNotification && (res.status < 200 || res.status > 300)) {
-        toast.error(successNotification);
     }
     return res.json().then((data) => {
         return { statusCode: res.status, responseBody: data };

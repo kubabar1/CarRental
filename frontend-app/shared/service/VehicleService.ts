@@ -17,7 +17,7 @@ import {
     ADD_EQUIPMENT,
     GET_VEHICLE_OPTIONS_WITH_ASSOC_PATH,
     DELETE_SPECIFIC_VEHICLE_OPTION_PATH,
-} from '../constant/PathsAPI';
+} from '../constant';
 import qs, { ParsedQs } from 'qs';
 import {
     VehicleOptionsWithAssocCountDTO,
@@ -67,7 +67,13 @@ export class VehicleService {
         });
         data.append('vehiclePersistDTO', vehiclePersistDtoBlob);
         data.append('vehicleImage', vehicleImage);
-        return fetchWithFile<VehicleResponseDTO>('PUT', ADD_VEHICLE_PATH, data);
+        return fetchWithFile<VehicleResponseDTO>(
+            'PUT',
+            ADD_VEHICLE_PATH,
+            data,
+            'Vehicle added',
+            'Cannot add vehicle - error occurred'
+        );
     }
 
     static updateVehicleData(
@@ -83,27 +89,48 @@ export class VehicleService {
         if (vehicleImage.size) {
             data.append('vehicleImage', vehicleImage);
         }
-        return fetchWithFile<VehicleResponseDTO>('POST', UPDATE_VEHICLE_PATH(vehicleId), data);
+        return fetchWithFile<VehicleResponseDTO>(
+            'POST',
+            UPDATE_VEHICLE_PATH(vehicleId),
+            data,
+            'Vehicle updated',
+            'Cannot update vehicle - error occurred'
+        );
     }
 
     static addBrand(optionDTO: OptionDTO): Promise<ResponseData<OptionDTO>> {
-        return fetchPut<OptionDTO>(ADD_BRAND_PATH, optionDTO);
+        return fetchPut<OptionDTO>(ADD_BRAND_PATH, optionDTO, 'Brand added', 'Cannot add brand - error occurred');
     }
 
     static addBodyType(optionDTO: OptionDTO): Promise<ResponseData<OptionDTO>> {
-        return fetchPut<OptionDTO>(ADD_BODY_TYPE_PATH, optionDTO);
+        return fetchPut<OptionDTO>(
+            ADD_BODY_TYPE_PATH,
+            optionDTO,
+            'Body type added',
+            'Cannot add body type - error occurred'
+        );
     }
 
     static addFuelType(optionDTO: OptionDTO): Promise<ResponseData<OptionDTO>> {
-        return fetchPut<OptionDTO>(ADD_FUEL_TYPE_PATH, optionDTO);
+        return fetchPut<OptionDTO>(
+            ADD_FUEL_TYPE_PATH,
+            optionDTO,
+            'Fuel type added',
+            'Cannot add fuel type - error occurred'
+        );
     }
 
     static addColor(optionDTO: OptionDTO): Promise<ResponseData<OptionDTO>> {
-        return fetchPut<OptionDTO>(ADD_COLOR_PATH, optionDTO);
+        return fetchPut<OptionDTO>(ADD_COLOR_PATH, optionDTO, 'Color added', 'Cannot add color - error occurred');
     }
 
     static addModel(vehicleModelDTO: VehicleModelDTO): Promise<ResponseData<VehicleModelDTO>> {
-        return fetchPut<VehicleModelDTO>(ADD_VEHICLE_MODEL_PATH, vehicleModelDTO);
+        return fetchPut<VehicleModelDTO>(
+            ADD_VEHICLE_MODEL_PATH,
+            vehicleModelDTO,
+            'Vehicle model added',
+            'Cannot add model - error occurred'
+        );
     }
 
     static getVehicleOptions = (): Promise<VehicleOptionsDTO> => {
@@ -125,7 +152,12 @@ export class VehicleService {
     };
 
     static addEquipment(equipmentAddDTO: EquipmentAddDTO): Promise<ResponseData<EquipmentResponseDTO>> {
-        return fetchPut<EquipmentResponseDTO>(ADD_EQUIPMENT, equipmentAddDTO);
+        return fetchPut<EquipmentResponseDTO>(
+            ADD_EQUIPMENT,
+            equipmentAddDTO,
+            'Equipment added',
+            'Cannot add equipment - error occurred'
+        );
     }
 
     static getVehicleOptionsWithAssoc = (): Promise<VehicleOptionsWithAssocCountDTO> => {
@@ -137,7 +169,12 @@ export class VehicleService {
     };
 
     static deleteOption(vehicleOptionType: string, vehicleOption: string): Promise<ResponseData<OptionDTO>> {
-        return fetchDelete<OptionDTO>(DELETE_SPECIFIC_VEHICLE_OPTION_PATH(vehicleOptionType, vehicleOption));
+        return fetchDelete<OptionDTO>(
+            DELETE_SPECIFIC_VEHICLE_OPTION_PATH(vehicleOptionType, vehicleOption),
+            undefined,
+            'Option deleted',
+            'Cannot delete option - error occurred'
+        );
     }
 
     static getVehicleById = (vehicleId: string): Promise<VehicleResponseDTO> => {

@@ -10,7 +10,7 @@ import {
     UPDATE_AUTHORIZED_USER_PATH,
     UPDATE_USER_PASSWORD_PATH,
     UPDATE_USER_PATH,
-} from '../constant/PathsAPI';
+} from '../constant';
 import {
     RoleAddDTO,
     Page,
@@ -52,24 +52,41 @@ export class UserService {
     static addRolesToUser = (userRolesId: string[], userId: string): Promise<ResponseData<UserResponseDTO>> => {
         return fetchPost<UserResponseDTO>(
             ADD_ROLE_TO_USER_PATH(userId),
-            userRolesId.map((userRoleId: string) => new RoleAddDTO(userRoleId))
+            userRolesId.map((userRoleId: string) => new RoleAddDTO(userRoleId)),
+            `Roles for user with id '${userId}' updated`,
+            `Cannot update roles for user with id '${userId}' - error occurred`
         );
     };
 
     static updateUserPassword = (
         passwordUpdateDRO: PasswordUpdateDTO
     ): Promise<ResponseData<UserResponseDTO | PasswordUpdateDTO>> => {
-        return fetchPut<UserResponseDTO | PasswordUpdateDTO>(UPDATE_USER_PASSWORD_PATH, passwordUpdateDRO);
+        return fetchPut<UserResponseDTO | PasswordUpdateDTO>(
+            UPDATE_USER_PASSWORD_PATH,
+            passwordUpdateDRO,
+            'Password updated',
+            'Cannot update password - error occurred'
+        );
     };
 
     static updateUserData = (
         userId: string,
         settingsUpdateDTO: UserUpdateDTO
     ): Promise<ResponseData<UserResponseDTO>> => {
-        return fetchPost<UserResponseDTO>(UPDATE_USER_PATH(userId), settingsUpdateDTO);
+        return fetchPost<UserResponseDTO>(
+            UPDATE_USER_PATH(userId),
+            settingsUpdateDTO,
+            `User with id '${userId}' updated`,
+            `Cannot update user with id '${userId}' - error occurred`
+        );
     };
 
     static updateAuthorizedUserData = (settingsUpdateDTO: UserUpdateDTO): Promise<ResponseData<UserResponseDTO>> => {
-        return fetchPut<UserResponseDTO>(UPDATE_AUTHORIZED_USER_PATH, settingsUpdateDTO);
+        return fetchPut<UserResponseDTO>(
+            UPDATE_AUTHORIZED_USER_PATH,
+            settingsUpdateDTO,
+            'Data updated',
+            'Cannot update data'
+        );
     };
 }

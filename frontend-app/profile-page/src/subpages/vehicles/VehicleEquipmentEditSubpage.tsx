@@ -101,7 +101,6 @@ export function VehicleEquipmentEditSubpage(): JSX.Element {
                         columns={columns}
                         data={vehicle.equipments.map(mapEqpResponseToExt)}
                         fetchData={fetchData}
-                        // getRowId={(row: EquipmentResponseExtDTO) => row.equipmentCode}
                     />
                 )}
             </SubpageContent>

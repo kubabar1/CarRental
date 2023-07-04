@@ -78,15 +78,12 @@ export function AddEquipmentModal({ isOpen, setIsOpen, reloadEquipments }: AddEq
                 />
             </Modal.Body>
             <Modal.Footer>
-                <Button
-                    disabled={!formState.isValid}
-                    type="submit"
-                    variant={'outline-primary'}
-                    onClick={handleSubmit(addEqp)}
-                >
+                <Button onClick={onClose} variant={'outline-primary'}>
+                    Close
+                </Button>
+                <Button disabled={!formState.isValid} type="submit" onClick={handleSubmit(addEqp)}>
                     Add
                 </Button>
-                <Button onClick={onClose}>Close</Button>
             </Modal.Footer>
         </Modal>
     );

@@ -41,12 +41,14 @@ public class VehicleServiceCoreConfig {
             EquipmentRepository equipmentRepository,
             VehicleRepository vehicleRepository,
             ModelMapper modelMapper,
+            RabbitTemplate rabbitTemplate,
             DefaultFilterOperations<EquipmentEntity> equipmentFilterOperations
     ) {
         return new EquipmentServiceImpl(
                 equipmentRepository,
                 vehicleRepository,
                 modelMapper,
+                rabbitTemplate,
                 new FilterSpecificationBuilder<>(equipmentFilterOperations)
         );
     }

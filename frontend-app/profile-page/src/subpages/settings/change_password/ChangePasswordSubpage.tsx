@@ -130,6 +130,9 @@ export function ChangePasswordSubpage(): JSX.Element {
                             setConfirmPasswordError(passwordResponseErrors.confirmPassword);
                         }
                     }
+                    setCurrentPassword('');
+                    setNewPassword('');
+                    setConfirmPassword('');
                 }
             );
         }

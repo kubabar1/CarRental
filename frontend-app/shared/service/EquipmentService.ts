@@ -15,7 +15,7 @@ import {
     GET_EQUIPMENTS_PATH,
     PAGE_REQUEST,
     REMOVE_EQUIPMENT_FROM_VEHICLE_PATH,
-} from '../constant/PathsAPI';
+} from '../constant';
 
 export class EquipmentService {
     static getAllEquipmentsList = (
@@ -36,7 +36,9 @@ export class EquipmentService {
     ): Promise<ResponseData<VehicleResponseDTO>> => {
         return fetchPost<VehicleResponseDTO>(
             ADD_EQUIPMENT_TO_VEHICLE_PATH(vehicleId),
-            EquipmentService.mapVehicleEquipmentCodeArrayToEquipmentSetPersistDTO(vehicleEquipmentCodeArray)
+            EquipmentService.mapVehicleEquipmentCodeArrayToEquipmentSetPersistDTO(vehicleEquipmentCodeArray),
+            'Equipment added',
+            'Cannot add equipment - error occurred'
         );
     };
 
@@ -46,7 +48,9 @@ export class EquipmentService {
     ): Promise<ResponseData<VehicleResponseDTO>> => {
         return fetchPost<VehicleResponseDTO>(
             REMOVE_EQUIPMENT_FROM_VEHICLE_PATH(vehicleId),
-            new EquipmentPersistDTO(vehicleEquipmentCode)
+            new EquipmentPersistDTO(vehicleEquipmentCode),
+            'Equipment removed',
+            'Cannot removed equipment - error occurred'
         );
     };
 

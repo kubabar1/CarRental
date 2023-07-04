@@ -40,7 +40,12 @@ export class BookingUserService {
     };
 
     static cancelAuthorizedUserBooking = (bookingId: string): Promise<ResponseData<BookingResponseDTO>> => {
-        return fetchPost<BookingResponseDTO>(CANCEL_USER_BOOKING(bookingId));
+        return fetchPost<BookingResponseDTO>(
+            CANCEL_USER_BOOKING(bookingId),
+            undefined,
+            `Booking '${bookingId}' canceled`,
+            `Cannot cancel booking '${bookingId}' - error occurred`
+        );
     };
 
     static getAuthenticatedUserReservedBookingsList = (
