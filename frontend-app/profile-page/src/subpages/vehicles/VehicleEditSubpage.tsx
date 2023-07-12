@@ -3,7 +3,7 @@ import { SubpageContainer } from '../../components/subpage/container/SubpageCont
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { useParams } from 'react-router-dom';
-import { VehicleService } from '@car-rental/shared/service';
+import { TranslationService, VehicleService } from '@car-rental/shared/service';
 import { VehiclePersistDTO, VehicleResponseDTO, ResponseData } from '@car-rental/shared/model';
 import { VehicleForm, VehicleFormValues } from './components/vehicle_form/VehicleForm';
 import { FileWithPreview } from '../../components/form/form-group/upload/Dropzone';
@@ -51,13 +51,13 @@ export function VehicleEditSubpage(): JSX.Element {
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'Vehicle edit'} />
+            <SubpageHeader title={TranslationService.translate('vehicleEditSubpageTitle')} />
             <SubpageContent>
                 {vehicleResponseDTO && (
                     <VehicleForm
                         onSubmitAction={updateVehicleForm}
                         vehicleDefaultValues={mapVehicleResponseToFormValues(vehicleResponseDTO)}
-                        submitButtonValue={'Update'}
+                        submitButtonValue={TranslationService.translate('vehicleEditSubpageUpdateButton')}
                         isDirtyCheckEnabled
                     />
                 )}

@@ -5,7 +5,7 @@ import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Column } from 'react-table';
 import { BookingResponseDTO, Page } from '@car-rental/shared/model';
-import { BookingUserService } from '@car-rental/shared/service';
+import { BookingUserService, TranslationService } from '@car-rental/shared/service';
 import { bookingListCommonColumns } from './BookingListCommonColumns';
 
 export function MyRentedBookingsListSubpage(): JSX.Element {
@@ -29,7 +29,7 @@ export function MyRentedBookingsListSubpage(): JSX.Element {
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'My rents'} />
+            <SubpageHeader title={TranslationService.translate('myRentsSubpageTitle')} />
             <SubpageContent>
                 <Table<BookingResponseDTO>
                     columns={columns}

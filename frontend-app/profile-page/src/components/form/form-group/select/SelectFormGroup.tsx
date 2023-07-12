@@ -9,6 +9,7 @@ import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { TranslationService } from '@car-rental/shared/service';
 
 export type OptionType = { value: string | number | null; label: string | null };
 
@@ -81,6 +82,7 @@ export function SelectFormGroup<FieldValuesType extends FieldValues, IsMulti ext
                             <div className="select-row">
                                 <Select<OptionType, IsMulti>
                                     options={options}
+                                    placeholder={TranslationService.translate('selectFormGroupPlaceholder')}
                                     value={
                                         Array.isArray(value)
                                             ? options.filter((val: OptionType) => {

@@ -4,6 +4,7 @@ import notOkIcon from '../../images/not-ok-icon.png';
 import './RegistrationConfirmationComponent.scss';
 import { homePath } from '../../constants/PathsApi';
 import qs from 'qs';
+import { TranslationService } from '@car-rental/shared/service';
 
 export function RegistrationStatusComponent(): JSX.Element {
     const isStatusOk = qs.parse(location.search, { ignoreQueryPrefix: true }).status == 'ok';
@@ -15,14 +16,18 @@ export function RegistrationStatusComponent(): JSX.Element {
                     <img className="mb-2 ok-icon" src={isStatusOk ? okIcon : notOkIcon} alt="" />
                 </div>
                 <h1 className="h3 mb-4 font-weight-normal text-center">
-                    {isStatusOk ? 'Registration successful!' : 'Registration failed!'}
+                    {isStatusOk
+                        ? TranslationService.translate('registrationSuccessfulMessage')
+                        : TranslationService.translate('registrationFailedMessage')}
                 </h1>
                 <p className="mb-4 text-center">
-                    {isStatusOk ? 'Please confirm Your email address' : 'Please try again later'}
+                    {isStatusOk
+                        ? TranslationService.translate('registrationSuccessfulMessageText')
+                        : TranslationService.translate('registrationFailedMessageText')}
                 </p>
                 <p className="login-link pl-3">
                     <a href={homePath} className="linkstyle">
-                        Home
+                        {TranslationService.translate('homeLink')}
                     </a>
                 </p>
             </div>

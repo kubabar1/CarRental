@@ -6,7 +6,7 @@ import { useHistory, useLocation, withRouter } from 'react-router-dom';
 import { LoaderContainer } from '../vehicle_list/container/LoaderContainer';
 import qs, { ParsedQs } from 'qs';
 import Select, { SingleValue } from 'react-select';
-import { VehicleService } from '@car-rental/shared/service';
+import { TranslationService, VehicleService } from '@car-rental/shared/service';
 import './BestOffersPage.scss';
 import { VehicleResponseDTO, Page } from '@car-rental/shared/model';
 
@@ -73,8 +73,8 @@ function BestOffersPage(): JSX.Element {
                     {vehiclesPage && (
                         <div className="pagination-and-counter-container">
                             <ReactPaginate
-                                previousLabel="Previous"
-                                nextLabel="Next"
+                                previousLabel={TranslationService.translate('previous')}
+                                nextLabel={TranslationService.translate('next')}
                                 pageClassName="page-item"
                                 pageLinkClassName="page-link"
                                 previousClassName="page-item"

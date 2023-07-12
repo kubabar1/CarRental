@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { LocationSelection } from './components/location_select/LocationSelection';
 import './ReservationWidget.scss';
 import { AuthenticatedUserDTO, LocalisationResponseDTO, LocalisationsResponseDTO } from '@car-rental/shared/model';
-import { LocationService } from '@car-rental/shared/service';
+import { LocationService, TranslationService } from '@car-rental/shared/service';
 import { useForm } from 'react-hook-form';
 import { DateInput } from './components/date_input/DateInput';
 import date from 'date-and-time';
@@ -77,7 +77,7 @@ export function ReservationWidget({ authenticatedUser }: ReservationWidgetProper
     return (
         <div className="car-rent-form-container container col-xl-3 col-lg-4 col-md-5 col-sm-7 card card-body shadow mr-3">
             <form onSubmit={handleSubmit(goToBookingCreationPage)}>
-                <h3>Reserve car</h3>
+                <h3>{TranslationService.translate('reserveCar')}</h3>
                 <LocationSelection<ReservationFormValues>
                     allLocations={allLocations}
                     name={'location'}
@@ -86,7 +86,7 @@ export function ReservationWidget({ authenticatedUser }: ReservationWidgetProper
                     error={formState.errors.location}
                 />
                 <DateInput<ReservationFormValues>
-                    label={'Reception date:'}
+                    label={TranslationService.translate('receptionDate')}
                     dateInputName={'receptionDate'}
                     register={register}
                     dateInputRegisterOptions={{
@@ -99,7 +99,7 @@ export function ReservationWidget({ authenticatedUser }: ReservationWidgetProper
                     maxDate={maxReceptionDate}
                 />
                 <DateInput<ReservationFormValues>
-                    label={'Return date:'}
+                    label={TranslationService.translate('returnDate')}
                     dateInputName={'returnDate'}
                     register={register}
                     dateInputRegisterOptions={{
@@ -110,7 +110,11 @@ export function ReservationWidget({ authenticatedUser }: ReservationWidgetProper
                     minDate={minReturnDate}
                 />
                 {renderAuthError()}
-                <input type="submit" value="Reserve" className="btn btn-primary reserve-widget-submit-button" />
+                <input
+                    type="submit"
+                    value={TranslationService.translate('reserve')}
+                    className="btn btn-primary reserve-widget-submit-button"
+                />
             </form>
         </div>
     );

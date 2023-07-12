@@ -4,6 +4,7 @@ import './RegistrationInvalidTokenComponent.scss';
 import { loginPath } from '../../constants/PathsApi';
 import qs from 'qs';
 import { useLocation } from 'react-router-dom';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface RegistrationInvalidTokenComponentProps {
     displayTokenExpiredMessage: boolean;
@@ -26,9 +27,11 @@ export function RegistrationInvalidTokenComponent({
     const expiredTokenMessage = (): JSX.Element => {
         return (
             <div>
-                {'Given token expired. Click '}
-                <a href={`http://localhost:8080/registration/resend-registration-confirm?token=${token}`}>{'here'}</a>
-                {' to resend verification mail.'}
+                {TranslationService.translate('tokenExpiredBegin')}
+                <a href={`http://localhost:8080/registration/resend-registration-confirm?token=${token}`}>
+                    {TranslationService.translate('tokenExpiredHere')}
+                </a>
+                {TranslationService.translate('tokenExpiredEnd')}
             </div>
         );
     };
@@ -42,13 +45,17 @@ export function RegistrationInvalidTokenComponent({
                 <div className="ok-icon-div">
                     <img className="mb-2 ok-icon" src={notOkIcon} alt="" />
                 </div>
-                <h1 className="h3 mb-4 font-weight-normal text-center">{'Invalid registration token'}</h1>
+                <h1 className="h3 mb-4 font-weight-normal text-center">
+                    {TranslationService.translate('invalidToken')}
+                </h1>
                 <p className="mb-4 text-center">
-                    {displayTokenExpiredMessage ? expiredTokenMessage() : 'Given token is invalid.'}
+                    {displayTokenExpiredMessage
+                        ? expiredTokenMessage()
+                        : TranslationService.translate('invalidTokenMessage')}
                 </p>
                 <p className="login-link pl-3">
                     <a href={loginPath} className="linkstyle">
-                        Login
+                        {TranslationService.translate('loginLink')}
                     </a>
                 </p>
             </div>

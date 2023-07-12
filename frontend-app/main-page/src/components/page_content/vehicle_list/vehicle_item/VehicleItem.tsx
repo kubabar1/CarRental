@@ -5,6 +5,7 @@ import { VehicleResponseDTO } from '@car-rental/shared/model';
 import { carImagesMainPageCarList } from '../../../../constants/PathsServer';
 import StarRatingComponent from 'react-star-rating-component';
 import { carDetailsByIdLink } from '../../../../constants/Links';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface CarItemProperties {
     vehicle: VehicleResponseDTO;
@@ -61,7 +62,7 @@ export function VehicleItem({ vehicle }: CarItemProperties): JSX.Element {
                     </div>
                     {vehicle.bestOffer && (
                         <div className="alert alert-danger special-offer-vehicle-item" role="alert">
-                            BEST OFFER
+                            {TranslationService.translate('bestOfferLabel')}
                         </div>
                     )}
                 </div>

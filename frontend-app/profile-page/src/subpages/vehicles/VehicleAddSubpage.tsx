@@ -2,7 +2,7 @@ import React from 'react';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { VehicleService } from '@car-rental/shared/service';
+import { TranslationService, VehicleService } from '@car-rental/shared/service';
 import { VehicleForm, VehicleFormValues } from './components/vehicle_form/VehicleForm';
 import { VehicleStatCodeEnum, VehiclePersistDTO, VehicleResponseDTO, ResponseData } from '@car-rental/shared/model';
 import { FileWithPreview } from '../../components/form/form-group/upload/Dropzone';
@@ -39,12 +39,12 @@ export function VehicleAddSubpage(): JSX.Element {
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'Add vehicle'} />
+            <SubpageHeader title={TranslationService.translate('addVehicleSubpageTitle')} />
             <SubpageContent>
                 <VehicleForm
                     onSubmitAction={addVehicleForm}
                     vehicleDefaultValues={vehicleDefaultValues}
-                    submitButtonValue={'Create'}
+                    submitButtonValue={TranslationService.translate('addVehicleSubpageCreateButton')}
                     redirectToEquipmentList
                 />
             </SubpageContent>

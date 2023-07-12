@@ -19,11 +19,13 @@ import { ContactPage } from './components/page_content/contact/ContactPage';
 import VehicleListPage from './components/page_content/vehicle_list/VehicleListPage';
 import CarDetailsPage from './components/page_content/vehicle_details/VehicleDetailsPage';
 import BestOffersPage from './components/page_content/best_offers/BestOffersPage';
-import { AuthService } from '@car-rental/shared/service';
+import { AuthService, TranslationService } from '@car-rental/shared/service';
 import { AuthenticatedUserDTO } from '@car-rental/shared/model';
 
 export function App(): JSX.Element {
     const [authenticatedUser, setAuthenticatedUser] = useState<AuthenticatedUserDTO | undefined>(undefined);
+    const [language, setLanguage] = React.useState<string>(TranslationService.getLanguageCookie());
+    TranslationService.changeLanguage(language);
 
     useEffect(() => {
         AuthService.getAuthenticatedUserData().then((authorizedUser: AuthenticatedUserDTO) =>
@@ -57,7 +59,12 @@ export function App(): JSX.Element {
 
     return (
         <main>
-            <AsideNav authenticatedUser={authenticatedUser} logout={runLogout} />
+            <AsideNav
+                language={language}
+                authenticatedUser={authenticatedUser}
+                logout={runLogout}
+                setLanguage={setLanguage}
+            />
             <MainNav />
             <Switch>
                 <Route exact path={homeLink} component={renderHomePage} />

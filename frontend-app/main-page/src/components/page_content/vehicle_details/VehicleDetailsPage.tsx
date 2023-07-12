@@ -8,7 +8,7 @@ import { CommentList } from './components/comments/CommentList';
 import { AddComment } from './components/comments/add_comment/AddComment';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import ClipLoader from 'react-spinners/ClipLoader';
-import { RatingService, VehicleService } from '@car-rental/shared/service';
+import { RatingService, TranslationService, VehicleService } from '@car-rental/shared/service';
 import './VehicleDetailsPage.scss';
 import { VehicleEquipment } from './components/vehicle_equipment/VehicleEquipment';
 import { CommentWithRateResponseDTO, AuthenticatedUserDTO, Page } from '@car-rental/shared/model';
@@ -72,7 +72,7 @@ export function VehicleDetailsPage({ authenticatedUser, match }: CarDetailsPrope
                                 </div>
                             )}
                             <div className="text-left">
-                                <h3 className="mt-2 ml-3 mb-4">Comments</h3>
+                                <h3 className="mt-2 ml-3 mb-4">{TranslationService.translate('commentsHeader')}</h3>
                             </div>
                             {isAuthenticated && (
                                 <AddComment
@@ -89,7 +89,7 @@ export function VehicleDetailsPage({ authenticatedUser, match }: CarDetailsPrope
                                     className="btn btn-primary my-5 load-more-comments"
                                     onClick={() => loadMoreComments()}
                                 >
-                                    More comments
+                                    {TranslationService.translate('moreComments')}
                                 </button>
                             )}
                         </div>

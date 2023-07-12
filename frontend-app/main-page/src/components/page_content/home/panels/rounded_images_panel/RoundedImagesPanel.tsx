@@ -6,6 +6,7 @@ import coupeCarRound from '../../../../../images/coupe_car_round.jpeg';
 import sedanCarRound from '../../../../../images/sedan_car_round.jpeg';
 import suvCarRound from '../../../../../images/suv_car_round.jpeg';
 import hatchbackCarRound from '../../../../../images/hatchback_car_round.jpeg';
+import { TranslationService } from '@car-rental/shared/service';
 
 export function RoundedImagesPanel(): JSX.Element {
     const renderRoundedImage = (
@@ -30,10 +31,26 @@ export function RoundedImagesPanel(): JSX.Element {
         <div id="car-types-round-images">
             <div className="container car-types-round-images-container">
                 <div className="row">
-                    {renderRoundedImage('Coupe', coupeCarRound, `${carListLink}?bodyType=Coupe`)}
-                    {renderRoundedImage('Sedan', sedanCarRound, `${carListLink}?bodyType=Sedan`)}
-                    {renderRoundedImage('SUV', suvCarRound, `${carListLink}?bodyType=SUV`)}
-                    {renderRoundedImage('Hatchback', hatchbackCarRound, `${carListLink}?bodyType=Hatchback`)}
+                    {renderRoundedImage(
+                        TranslationService.translate('coupe'),
+                        coupeCarRound,
+                        `${carListLink}?bodyType=Coupe`
+                    )}
+                    {renderRoundedImage(
+                        TranslationService.translate('sedan'),
+                        sedanCarRound,
+                        `${carListLink}?bodyType=Sedan`
+                    )}
+                    {renderRoundedImage(
+                        TranslationService.translate('suv'),
+                        suvCarRound,
+                        `${carListLink}?bodyType=SUV`
+                    )}
+                    {renderRoundedImage(
+                        TranslationService.translate('hatchback'),
+                        hatchbackCarRound,
+                        `${carListLink}?bodyType=Hatchback`
+                    )}
                 </div>
             </div>
         </div>

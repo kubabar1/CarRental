@@ -3,7 +3,7 @@ import { Table } from '../../components/table/Table';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { UserService } from '@car-rental/shared/service';
+import { TranslationService, UserService } from '@car-rental/shared/service';
 import { Column, HeaderProps, UseRowSelectState } from 'react-table';
 import { ButtonTableItem } from '../../components/table/tab_items/button_table_item/ButtonTableItem';
 import { UserRolesTableItem } from './tab_items/UserRolesTableItem';
@@ -43,32 +43,32 @@ export function UsersListSubpage(): JSX.Element {
         () => [
             {
                 id: 'id',
-                Header: 'ID',
+                Header: TranslationService.translate('idUserListSubpageLabel'),
                 accessor: 'id',
             },
             {
                 id: 'name',
-                Header: 'User name',
+                Header: TranslationService.translate('nameUserListSubpageLabel'),
                 accessor: 'name',
             },
             {
                 id: 'surname',
-                Header: 'User surname',
+                Header: TranslationService.translate('surnameUserListSubpageLabel'),
                 accessor: 'surname',
             },
             {
                 id: 'email',
-                Header: 'Email',
+                Header: TranslationService.translate('emailUserListSubpageLabel'),
                 accessor: 'email',
             },
             {
                 id: 'phone',
-                Header: 'Phone',
+                Header: TranslationService.translate('phoneUserListSubpageLabel'),
                 accessor: 'phone',
             },
             {
                 id: 'birthDate',
-                Header: 'Birth date',
+                Header: TranslationService.translate('birthDateUserListSubpageLabel'),
                 accessor: 'birthDate',
                 Filter: (filterProps: React.PropsWithChildren<HeaderProps<UserResponseDTO>>) => {
                     return <RangeColumnFilter inputType="date" {...filterProps} />;
@@ -76,7 +76,7 @@ export function UsersListSubpage(): JSX.Element {
             },
             {
                 id: 'roles',
-                Header: 'User roles',
+                Header: TranslationService.translate('userRolesUserListSubpageLabel'),
                 accessor: (user: UserResponseDTO) => {
                     return <UserRolesTableItem userRoles={user.userRoles} />;
                 },
@@ -94,7 +94,7 @@ export function UsersListSubpage(): JSX.Element {
             },
             {
                 id: 'actions',
-                Header: 'Actions',
+                Header: TranslationService.translate('actionsUserListSubpageLabel'),
                 accessor: (user: UserResponseDTO) => {
                     return (
                         <div className="actions-column-item-container">
@@ -102,13 +102,15 @@ export function UsersListSubpage(): JSX.Element {
                                 buttonText={<FontAwesomeIcon icon={faCog} />}
                                 buttonRedirectPath={`/profile/users/${user.id}/edit`}
                                 buttonVariant={'warning'}
-                                tooltipMessage={'Settings'}
+                                tooltipMessage={TranslationService.translate('userListSubpageSettingsTooltipMessage')}
                             />
                             <ButtonTableItem
                                 buttonText={<FontAwesomeIcon icon={faFingerprint} />}
                                 buttonRedirectPath={`/profile/user-roles/add/${user.id}`}
                                 buttonVariant={'success'}
-                                tooltipMessage={'Update roles'}
+                                tooltipMessage={TranslationService.translate(
+                                    'userListSubpageUpdateRolesTooltipMessage'
+                                )}
                             />
                             <ButtonTableItem
                                 buttonText={<FontAwesomeIcon icon={faEnvelope} />}
@@ -117,7 +119,7 @@ export function UsersListSubpage(): JSX.Element {
                                 buttonRedirectState={{
                                     userIds: [user.id],
                                 }}
-                                tooltipMessage={'Send email'}
+                                tooltipMessage={TranslationService.translate('userListSubpageSendEmailTooltipMessage')}
                             />
                         </div>
                     );
@@ -150,7 +152,8 @@ export function UsersListSubpage(): JSX.Element {
                     }}
                     style={{ display: 'block', marginLeft: 'auto', marginRight: '0' }}
                 >
-                    <FontAwesomeIcon icon={faEnvelope} /> Send email
+                    <FontAwesomeIcon icon={faEnvelope} />{' '}
+                    {TranslationService.translate('userListSubpageSendEmailButton')}
                 </Button>
             </div>
         );
@@ -158,7 +161,7 @@ export function UsersListSubpage(): JSX.Element {
 
     return (
         <SubpageContainer className="user-list-subpage">
-            <SubpageHeader title={'Users list'} />
+            <SubpageHeader title={TranslationService.translate('userListSubpageTitle')} />
             <SubpageContent>
                 <SendEmailsPanel />
                 <Table<UserResponseDTO>

@@ -4,10 +4,11 @@ import { SubpageContainer } from '../../components/subpage/container/SubpageCont
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Column, HeaderProps } from 'react-table';
-import { BookingAuditLogService } from '@car-rental/shared/service';
+import { BookingAuditLogService, TranslationService } from '@car-rental/shared/service';
 import { RangeColumnFilter } from '../../components/table/tab_items/slider_column_filter/RangeColumnFilter';
 import { BookingStatesSelectColumnFilter } from '../../components/table/tab_items/booking_states_select_column_filter/BookingStatesSelectColumnFilter';
-import { BookingStateCodeEnum, Page, BookingAuditLogResponseDTO } from '@car-rental/shared/model';
+import { BookingStateCodeEnum, Page, BookingAuditLogResponseDTO, BookingResponseDTO } from '@car-rental/shared/model';
+import { translateBookingCode } from '../../utils/TranslationUtils';
 
 export function BookingsAuditLogsListSubpage(): JSX.Element {
     const [bookingAuditLogPage, setBookingAuditLogPage] = useState<Page<BookingAuditLogResponseDTO> | undefined>(
@@ -17,46 +18,36 @@ export function BookingsAuditLogsListSubpage(): JSX.Element {
         () => [
             {
                 id: 'id',
-                Header: 'ID',
+                Header: TranslationService.translate('idBookingAuditLogsColumn'),
                 accessor: 'id',
             },
             {
                 id: 'userId',
-                Header: 'User ID',
+                Header: TranslationService.translate('userIdBookingAuditLogsColumn'),
                 accessor: 'userId',
             },
             {
                 id: 'vehicleId',
-                Header: 'Vehicle ID',
+                Header: TranslationService.translate('vehicleIdBookingAuditLogsColumn'),
                 accessor: 'vehicleId',
             },
             {
                 id: 'bookingId',
-                Header: 'Booking ID',
+                Header: TranslationService.translate('bookingIdBookingAuditLogsColumn'),
                 accessor: 'bookingId',
             },
             {
                 id: 'bookingStateCode',
-                Header: 'Booking state',
-                accessor: (row: BookingAuditLogResponseDTO) => {
-                    switch (row.bookingCode as BookingStateCodeEnum) {
-                        case BookingStateCodeEnum.CAN:
-                            return 'canceled';
-                        case BookingStateCodeEnum.REN:
-                            return 'rented';
-                        case BookingStateCodeEnum.RES:
-                            return 'reserved';
-                        case BookingStateCodeEnum.RET:
-                            return 'returned';
-                    }
-                },
+                Header: TranslationService.translate('bookingStateBookingAuditLogsColumn'),
+                accessor: (row: BookingAuditLogResponseDTO) =>
+                    translateBookingCode(row.bookingCode as BookingStateCodeEnum),
                 Filter: (filterProps: React.PropsWithChildren<HeaderProps<BookingAuditLogResponseDTO>>) => {
                     return <BookingStatesSelectColumnFilter {...filterProps} />;
                 },
             },
             {
                 id: 'receiptDate',
-                Header: 'Receipt date',
+                Header: TranslationService.translate('receiptDateBookingAuditLogsColumn'),
                 accessor: (row: BookingAuditLogResponseDTO) => {
                     return row.receiptDate;
                 },
@@ -66,7 +57,7 @@ export function BookingsAuditLogsListSubpage(): JSX.Element {
             },
             {
                 id: 'returnDate',
-                Header: 'Return date',
+                Header: TranslationService.translate('returnDateBookingAuditLogsColumn'),
                 accessor: (row: BookingAuditLogResponseDTO) => {
                     return row.returnDate;
                 },
@@ -76,8 +67,10 @@ export function BookingsAuditLogsListSubpage(): JSX.Element {
             },
             {
                 id: 'totalCost',
-                Header: 'Total cost',
-                accessor: 'totalCost',
+                Header: TranslationService.translate('totalCostBookingAuditLogsColumn'),
+                accessor: (row: BookingAuditLogResponseDTO) => {
+                    return `${row.totalCost} $`;
+                },
                 Filter: (filterProps: React.PropsWithChildren<HeaderProps<BookingAuditLogResponseDTO>>) => {
                     return <RangeColumnFilter inputType="number" {...filterProps} />;
                 },
@@ -96,7 +89,7 @@ export function BookingsAuditLogsListSubpage(): JSX.Element {
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'Audit logs'} />
+            <SubpageHeader title={TranslationService.translate('auditLogsSubpageTitle')} />
             <SubpageContent>
                 <Table<BookingAuditLogResponseDTO>
                     columns={columns}

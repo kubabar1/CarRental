@@ -35,6 +35,7 @@ import {
     locationAddPath,
 } from '../../../constants/Links';
 import { userHasAnyRole } from '../../../utils/UserUtils';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface SideNavProperties {
     userRoles: string[];
@@ -44,104 +45,126 @@ interface SideNavProperties {
 export function SideNav({ userRoles = [], runLogout }: SideNavProperties): JSX.Element {
     return (
         <section id="menu-panel" className="mb-5">
-            <NavLink navItemName={'Booking'} iconName={faListUl}>
+            <NavLink navItemName={TranslationService.translate('bookingNavLinkName')} iconName={faListUl}>
                 <NavSubLink
-                    navItemName={'All bookings'}
+                    navItemName={TranslationService.translate('allBookingsNavLinkName')}
                     linkPath={bookingsListPath.link}
                     authorized={userHasAnyRole(userRoles, bookingsListPath.permittedRoles)}
                 />
                 <NavSubLink
-                    navItemName={'All reservations'}
+                    navItemName={TranslationService.translate('allReservationsNavLinkName')}
                     linkPath={reservedBookingsListPath.link}
                     authorized={userHasAnyRole(userRoles, reservedBookingsListPath.permittedRoles)}
                 />
                 <NavSubLink
-                    navItemName={'All rents'}
+                    navItemName={TranslationService.translate('allRentsNavLinkName')}
                     linkPath={rentedBookingsListPath.link}
                     authorized={userHasAnyRole(userRoles, rentedBookingsListPath.permittedRoles)}
                 />
                 <NavSubLink
-                    navItemName={'My bookings'}
+                    navItemName={TranslationService.translate('myBookingsNavLinkName')}
                     linkPath={myBookingsListPath.link}
                     authorized={userHasAnyRole(userRoles, myBookingsListPath.permittedRoles)}
                 />
                 <NavSubLink
-                    navItemName={'My reservations'}
+                    navItemName={TranslationService.translate('myReservationsNavLinkName')}
                     linkPath={myReservedBookingsListPath.link}
                     authorized={userHasAnyRole(userRoles, myReservedBookingsListPath.permittedRoles)}
                 />
                 <NavSubLink
-                    navItemName={'My rents'}
+                    navItemName={TranslationService.translate('myRentsNavLinkName')}
                     linkPath={myRentedBookingsListPath.link}
                     authorized={userHasAnyRole(userRoles, myRentedBookingsListPath.permittedRoles)}
                 />
                 <NavSubLink
-                    navItemName={'Bookings audit logs'}
+                    navItemName={TranslationService.translate('bookingsAuditLogNavLinkName')}
                     linkPath={bookingsAuditLogsListPath.link}
                     authorized={userHasAnyRole(userRoles, bookingsAuditLogsListPath.permittedRoles)}
                 />
             </NavLink>
 
             {userHasAnyRole(userRoles, usersListPath.permittedRoles) && (
-                <NavLink navItemName={'Users'} iconName={faUser}>
-                    <NavSubLink navItemName={'Users list'} linkPath={usersListPath.link} />
+                <NavLink navItemName={TranslationService.translate('usersNavLinkName')} iconName={faUser}>
+                    <NavSubLink
+                        navItemName={TranslationService.translate('usersListNavLinkName')}
+                        linkPath={usersListPath.link}
+                    />
                 </NavLink>
             )}
 
-            <NavLink navItemName={'Vehicles'} iconName={faCar}>
+            <NavLink navItemName={TranslationService.translate('vehiclesNavLinkName')} iconName={faCar}>
                 <NavSubLink
-                    navItemName={'Vehicles'}
+                    navItemName={TranslationService.translate('vehiclesListNavLinkName')}
                     linkPath={vehiclesListPath.link}
                     authorized={userHasAnyRole(userRoles, vehiclesListPath.permittedRoles)}
                 />
                 <NavSubLink
-                    navItemName={'Add vehicle'}
+                    navItemName={TranslationService.translate('addVehicleNavLinkName')}
                     linkPath={vehicleAddPath.link}
                     authorized={userHasAnyRole(userRoles, vehicleAddPath.permittedRoles)}
                 />
                 <NavSubLink
-                    navItemName={'Equipments'}
+                    navItemName={TranslationService.translate('equipmentsNavLinkName')}
                     linkPath={equipmentListPath.link}
                     authorized={userHasAnyRole(userRoles, equipmentListPath.permittedRoles)}
                 />
                 <NavSubLink
-                    navItemName={'Vehicle options'}
+                    navItemName={TranslationService.translate('vehicleOptionsNavLinkName')}
                     linkPath={vehicleOptionsListPath.link}
                     authorized={userHasAnyRole(userRoles, vehicleOptionsListPath.permittedRoles)}
                 />
             </NavLink>
 
             {userHasAnyRole(userRoles, userRolesListPath.permittedRoles) && (
-                <NavLink navItemName={'User roles'} iconName={faUserLock}>
-                    <NavSubLink navItemName={'User roles'} linkPath={userRolesListPath.link} />
+                <NavLink navItemName={TranslationService.translate('userRolesNavLinkName')} iconName={faUserLock}>
+                    <NavSubLink
+                        navItemName={TranslationService.translate('userRolesListNavLinkName')}
+                        linkPath={userRolesListPath.link}
+                    />
                 </NavLink>
             )}
 
             {userHasAnyRole(userRoles, locationsListPath.permittedRoles) && (
-                <NavLink navItemName={'Locations'} iconName={faMapMarkedAlt}>
-                    <NavSubLink navItemName={'Locations'} linkPath={locationsListPath.link} />
-                    <NavSubLink navItemName={'Add localisation'} linkPath={locationAddPath.link} />
+                <NavLink navItemName={TranslationService.translate('locationsNavLinkName')} iconName={faMapMarkedAlt}>
+                    <NavSubLink
+                        navItemName={TranslationService.translate('locationsListNavLinkName')}
+                        linkPath={locationsListPath.link}
+                    />
+                    <NavSubLink
+                        navItemName={TranslationService.translate('addLocationNavLinkName')}
+                        linkPath={locationAddPath.link}
+                    />
                 </NavLink>
             )}
 
             {userHasAnyRole(userRoles, sendEmailPath.permittedRoles) && (
                 <NavLink
-                    navItemName={'Send email'}
+                    navItemName={TranslationService.translate('sendEmailNavLinkName')}
                     iconName={faEnvelope}
                     linkPath={sendEmailPath.link}
                     disableRefresh={true}
                 />
             )}
 
-            <NavLink navItemName={'Settings'} iconName={faCog}>
-                <NavSubLink navItemName={'User settings'} linkPath={settingsUserSettingsPath.link} />
-                <NavSubLink navItemName={'Change password'} linkPath={settingsChangePasswordPath.link} />
+            <NavLink navItemName={TranslationService.translate('settingsNavLinkName')} iconName={faCog}>
+                <NavSubLink
+                    navItemName={TranslationService.translate('userSettingsNavLinkName')}
+                    linkPath={settingsUserSettingsPath.link}
+                />
+                <NavSubLink
+                    navItemName={TranslationService.translate('changePasswordNavLinkName')}
+                    linkPath={settingsChangePasswordPath.link}
+                />
             </NavLink>
 
-            <NavLink navItemName={'Home'} iconName={faHome} linkPath={homeLink} />
+            <NavLink
+                navItemName={TranslationService.translate('homeNavLinkName')}
+                iconName={faHome}
+                linkPath={homeLink}
+            />
 
             <NavLink
-                navItemName={'Log out'}
+                navItemName={TranslationService.translate('logOutNavLinkName')}
                 iconName={faSignOutAlt}
                 linkPath={logoutLink}
                 disableRefresh={true}

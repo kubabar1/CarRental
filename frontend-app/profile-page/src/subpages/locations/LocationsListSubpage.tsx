@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LocationService } from '@car-rental/shared/service';
+import { LocationService, TranslationService } from '@car-rental/shared/service';
 import { Column } from 'react-table';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
@@ -21,27 +21,27 @@ export function LocationsListSubpage(): JSX.Element {
     const columns = React.useMemo<Column<LocalisationResponseDTO>[]>(
         () => [
             {
-                Header: 'ID',
+                Header: TranslationService.translate('idLocationSubpageColumn'),
                 accessor: 'id',
             },
             {
-                Header: 'Country',
+                Header: TranslationService.translate('countryLocationSubpageColumn'),
                 accessor: 'country',
             },
             {
-                Header: 'City',
+                Header: TranslationService.translate('cityLocationSubpageColumn'),
                 accessor: 'city',
             },
             {
-                Header: 'Address',
+                Header: TranslationService.translate('addressLocationSubpageColumn'),
                 accessor: 'streetAndNb',
             },
             {
-                Header: 'Email',
+                Header: TranslationService.translate('emailLocationSubpageColumn'),
                 accessor: 'email',
             },
             {
-                Header: 'Phone',
+                Header: TranslationService.translate('phoneLocationSubpageColumn'),
                 accessor: 'phone',
             },
         ],
@@ -50,7 +50,7 @@ export function LocationsListSubpage(): JSX.Element {
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'Locations'} />
+            <SubpageHeader title={TranslationService.translate('locationSubpageTitle')} />
             <SubpageContent>
                 <Table<LocalisationResponseDTO>
                     columns={columns}

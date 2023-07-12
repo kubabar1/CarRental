@@ -2,6 +2,7 @@ import React from 'react';
 import { VehicleResponseDTO } from '@car-rental/shared/model';
 import { vehicleImageFromServer } from '../../../../constants/PathsServer';
 import './VehicleDetails.scss';
+import { TranslationService } from '@car-rental/shared/service';
 
 export interface VehicleDetailsProperties {
     vehicleResponseDTO: VehicleResponseDTO;
@@ -20,23 +21,23 @@ export const VehicleDetails = ({ vehicleResponseDTO }: VehicleDetailsProperties)
                 </div>
                 <div className={'vehicle-details-item-text'}>
                     <p>
-                        <strong>ID: </strong>
+                        <strong>{TranslationService.translate('idVehicleDetailsLabel')}</strong>
                         {vehicleResponseDTO.id}
                     </p>
                     <p>
-                        <strong>Brand: </strong>
+                        <strong>{TranslationService.translate('brandVehicleDetailsLabel')}</strong>
                         {vehicleResponseDTO.brand}
                     </p>
                     <p>
-                        <strong>Model: </strong>
+                        <strong>{TranslationService.translate('modelVehicleDetailsLabel')}</strong>
                         {vehicleResponseDTO.model}
                     </p>
                     <p>
-                        <strong>Registration: </strong>
+                        <strong>{TranslationService.translate('registrationVehicleDetailsLabel')}</strong>
                         {vehicleResponseDTO.registration}
                     </p>
                     <p>
-                        <strong>Localisation: </strong>
+                        <strong>{TranslationService.translate('locationVehicleDetailsLabel')}</strong>
                         {`${vehicleResponseDTO.location.country}, ${vehicleResponseDTO.location.city}, ${vehicleResponseDTO.location.streetAndNb}`}
                     </p>
                 </div>

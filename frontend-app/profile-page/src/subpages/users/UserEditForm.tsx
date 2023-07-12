@@ -5,7 +5,7 @@ import { UserUpdateDTO, UserResponseDTO } from '@car-rental/shared/model';
 import { useHistory, useParams } from 'react-router-dom';
 import { usersListPath } from '../../constants/Links';
 import { useForm } from 'react-hook-form';
-import { UserService } from '@car-rental/shared/service';
+import { TranslationService, UserService } from '@car-rental/shared/service';
 
 type UserEditFormValues = {
     name: string;
@@ -42,32 +42,32 @@ export function UserEditForm({ user }: UserEditForm): JSX.Element {
     return (
         <FormContainer onSubmit={handleSubmit(onSubmit)}>
             <InputFormGroup<UserEditFormValues>
-                label={'Name:'}
+                label={TranslationService.translate('nameEditUserSubpageLabel')}
                 name={'name'}
                 register={register}
-                registerOptions={{ required: 'Name is required' }}
+                registerOptions={{ required: TranslationService.translate('nameEditUserSubpageRequired') }}
                 error={formState.errors.name}
             />
             <InputFormGroup<UserEditFormValues>
-                label={'Surname:'}
+                label={TranslationService.translate('surnameEditUserSubpageLabel')}
                 name={'surname'}
                 register={register}
-                registerOptions={{ required: 'Surname is required' }}
+                registerOptions={{ required: TranslationService.translate('surnameEditUserSubpageRequired') }}
                 error={formState.errors.surname}
             />
             <InputFormGroup<UserEditFormValues>
-                label={'Phone:'}
+                label={TranslationService.translate('phoneEditUserSubpageLabel')}
                 name={'phone'}
                 register={register}
-                registerOptions={{ required: 'Phone is required' }}
+                registerOptions={{ required: TranslationService.translate('phoneEditUserSubpageRequired') }}
                 error={formState.errors.phone}
             />
             {/*// TODO: Add constrain for max date*/}
             <InputFormGroup<UserEditFormValues>
-                label={'Birth date:'}
+                label={TranslationService.translate('birthDateEditUserSubpageLabel')}
                 name={'birthDate'}
                 register={register}
-                registerOptions={{ required: 'Birth date is required' }}
+                registerOptions={{ required: TranslationService.translate('birthDateEditUserSubpageRequired') }}
                 error={formState.errors.birthDate}
             />
         </FormContainer>

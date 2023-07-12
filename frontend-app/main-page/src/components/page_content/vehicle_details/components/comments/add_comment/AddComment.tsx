@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 import './AddComment.scss';
-import { RatingService } from '@car-rental/shared/service';
+import { RatingService, TranslationService } from '@car-rental/shared/service';
 import {
     CommentWithRateAddDTO,
     CommentWithRateResponseDTO,
@@ -69,7 +69,7 @@ export function AddComment({ vehicleId, comments, setComments }: AddCommentPrope
 
     return (
         <div id="add-comment-container" className="card text-left">
-            <div className="card-header">Leave a comment</div>
+            <div className="card-header">{TranslationService.translate('leaveComment')}</div>
             <div className="card-body">
                 <form onSubmit={handleAddComment}>
                     <div className="car-rank mb-3 ml-q">
@@ -88,7 +88,7 @@ export function AddComment({ vehicleId, comments, setComments }: AddCommentPrope
                             rows={5}
                             value={commentContent}
                             onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => setComment(event.target.value)}
-                            placeholder="Comment"
+                            placeholder={TranslationService.translate('commentPlaceholder')}
                             required
                             maxLength={MAX_COMMENT_LENGTH}
                         />
@@ -100,7 +100,7 @@ export function AddComment({ vehicleId, comments, setComments }: AddCommentPrope
                     )}
                     <input
                         type="submit"
-                        value="Submit"
+                        value={TranslationService.translate('addComment')}
                         className="btn btn-primary leave-comment-button"
                         name="leave-comment-button"
                     />

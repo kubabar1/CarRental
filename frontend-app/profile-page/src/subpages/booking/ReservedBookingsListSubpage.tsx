@@ -5,7 +5,7 @@ import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Column } from 'react-table';
 import { BookingResponseDTO, Page } from '@car-rental/shared/model';
-import { BookingAdminService } from '@car-rental/shared/service';
+import { BookingAdminService, TranslationService } from '@car-rental/shared/service';
 import { ButtonTableItem } from '../../components/table/tab_items/button_table_item/ButtonTableItem';
 import { bookingListCommonColumns } from './BookingListCommonColumns';
 
@@ -28,10 +28,10 @@ export function ReservedBookingsListSubpage(): JSX.Element {
             ...bookingListCommonColumns(),
             {
                 id: 'rent',
-                Header: 'Rent',
+                Header: TranslationService.translate('rentBookingListColumn'),
                 accessor: (row: BookingResponseDTO) => (
                     <ButtonTableItem
-                        buttonText={'Rent'}
+                        buttonText={TranslationService.translate('rentButtonBookingListColumn')}
                         onClickAction={() =>
                             BookingAdminService.rentBooking(row.id).then(() => {
                                 fetchData();
@@ -44,10 +44,10 @@ export function ReservedBookingsListSubpage(): JSX.Element {
             },
             {
                 id: 'cancel',
-                Header: 'Cancel',
+                Header: TranslationService.translate('cancelBookingListColumn'),
                 accessor: (row: BookingResponseDTO) => (
                     <ButtonTableItem
-                        buttonText={'Cancel'}
+                        buttonText={TranslationService.translate('cancelButtonBookingListColumn')}
                         buttonVariant={'danger'}
                         onClickAction={() =>
                             BookingAdminService.cancelBooking(row.id).then(() => {
@@ -65,7 +65,7 @@ export function ReservedBookingsListSubpage(): JSX.Element {
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'All reservations'} />
+            <SubpageHeader title={TranslationService.translate('allReservationsSubpageTitle')} />
             <SubpageContent>
                 <Table<BookingResponseDTO>
                     columns={columns}

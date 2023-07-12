@@ -3,7 +3,7 @@ import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { useParams } from 'react-router-dom';
-import { UserService } from '@car-rental/shared/service';
+import { TranslationService, UserService } from '@car-rental/shared/service';
 import { UserResponseDTO } from '@car-rental/shared/model';
 import { AddRoleForm } from './AddRoleForm';
 
@@ -19,7 +19,7 @@ export function AddRoleSubpage(): JSX.Element {
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'Add user role'} />
+            <SubpageHeader title={TranslationService.translate('addUserRoleSubpageTitle')} />
             <SubpageContent>
                 {userRolesBeforeUpdate && <AddRoleForm currentUserRoles={userRolesBeforeUpdate} />}
             </SubpageContent>

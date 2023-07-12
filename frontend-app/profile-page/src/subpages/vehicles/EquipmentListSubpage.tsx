@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SubpageContainer } from '../../components/subpage/container/SubpageContainer';
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
-import { EquipmentService } from '@car-rental/shared/service';
+import { EquipmentService, TranslationService } from '@car-rental/shared/service';
 import { EquipmentResponseDTO, Page } from '@car-rental/shared/model';
 import { Table } from '../../components/table/Table';
 import { Column } from 'react-table';
@@ -42,12 +42,12 @@ export function EquipmentListSubpage(): JSX.Element {
         () => [
             {
                 id: 'equipmentCode',
-                Header: 'Code',
+                Header: TranslationService.translate('equipmentCodeLabelEquipmentsForm'),
                 accessor: 'equipmentCode',
             },
             {
                 id: 'description',
-                Header: 'Description',
+                Header: TranslationService.translate('descriptionLabelEquipmentsForm'),
                 accessor: 'description',
             },
         ],
@@ -56,17 +56,18 @@ export function EquipmentListSubpage(): JSX.Element {
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'Equipments'} />
+            <SubpageHeader title={TranslationService.translate('equipmentsSubpageTitle')} />
             <SubpageContent>
                 <div className="add-equipment-button-container">
-                    <Button onClick={() => setIsOpen(true)}>Add</Button>
+                    <Button onClick={() => setIsOpen(true)}>
+                        {TranslationService.translate('equipmentsSubpageAddButton')}
+                    </Button>
                 </div>
                 <Table<EquipmentResponseExtDTO>
                     columns={columns}
                     data={vehicleEquipments}
                     fetchData={fetchData}
                     pageCount={totalPages}
-                    // getRowId={(row: EquipmentResponseDTO) => row.equipmentCode}
                 />
                 <AddEquipmentModal isOpen={isOpen} setIsOpen={setIsOpen} reloadEquipments={fetchData} />
             </SubpageContent>

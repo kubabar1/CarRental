@@ -4,7 +4,7 @@ import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Table } from '../../components/table/Table';
 import { Column } from 'react-table';
-import { VehicleService } from '@car-rental/shared/service';
+import { TranslationService, VehicleService } from '@car-rental/shared/service';
 import { OnChangeValue } from 'react-select/dist/declarations/src/types';
 import Select from 'react-select';
 import './VehicleOptionsSubpage.scss';
@@ -41,11 +41,11 @@ export function VehicleOptionsSubpage(): JSX.Element {
 
     const translateOptionTypeHeader = (option: OptionType): string => {
         const translations: Record<OptionType, string> = {
-            brands: 'Brands',
-            models: 'Models',
-            bodyTypes: 'Body types',
-            fuelTypes: 'Fuel types',
-            colors: 'Colors',
+            brands: TranslationService.translate('brandVehicleOptionTypeHeader'),
+            models: TranslationService.translate('modelVehicleOptionTypeHeader'),
+            bodyTypes: TranslationService.translate('bodyTypeVehicleOptionTypeHeader'),
+            fuelTypes: TranslationService.translate('fuelTypeVehicleOptionTypeHeader'),
+            colors: TranslationService.translate('colorVehicleOptionTypeHeader'),
         };
         return translations[option];
     };
@@ -88,14 +88,14 @@ export function VehicleOptionsSubpage(): JSX.Element {
         () => [
             {
                 id: 'options',
-                Header: 'Options',
+                Header: TranslationService.translate('optionsVehicleOptionsSubpageLabel'),
                 accessor: 'value',
                 disableFilters: true,
                 disableSortBy: true,
             },
             {
                 id: 'actions',
-                Header: 'Actions',
+                Header: TranslationService.translate('actionsVehicleOptionsSubpageLabel'),
                 accessor: (vehicleOption: VehicleOptionExt) => {
                     return (
                         <ButtonTableItem
@@ -129,10 +129,12 @@ export function VehicleOptionsSubpage(): JSX.Element {
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'Vehicle options'} />
+            <SubpageHeader title={TranslationService.translate('vehicleOptionsSubpageTitle')} />
             <SubpageContent>
                 <div className="select-vehicle-option-container row">
-                    <label className="ml-5 mt-4 col-md-2">{'Option:'}</label>
+                    <label className="ml-5 mt-4 col-md-2">
+                        {TranslationService.translate('vehicleOptionsSubpageOptionLabel')}
+                    </label>
                     <Select<OptionSelectType>
                         className={'ml-4 mt-3 col-md-8'}
                         options={Object.keys(OptionType).map((v: string) => {
@@ -148,7 +150,9 @@ export function VehicleOptionsSubpage(): JSX.Element {
                 </div>
                 {vehicleOptions && selectedOption === OptionType.MODELS && (
                     <div className="select-vehicle-option-container row">
-                        <label className="ml-5 mt-4 col-md-2">{'Brand:'}</label>
+                        <label className="ml-5 mt-4 col-md-2">
+                            {TranslationService.translate('vehicleBrandSubpageOptionLabel')}
+                        </label>
                         <Select<BrandSelectType>
                             className={'ml-4 mt-3 col-md-8'}
                             options={vehicleOptions.brands.map((o) => {
@@ -179,7 +183,6 @@ export function VehicleOptionsSubpage(): JSX.Element {
                             return { id: v.name, value: v.name, count: v.count };
                         })}
                         fetchData={fetchData}
-                        // getRowId={(row: VehicleOptionExt) => row.value}
                     />
                 )}
             </SubpageContent>

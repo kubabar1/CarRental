@@ -1,27 +1,30 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { RegisterOptions, useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 import { InputFormGroup } from '../../../../components/form/form-group/input/InputFormGroup';
-import { VehicleStatCodeEnum, VehicleDetailsDTO, VehiclePersistDTO, ResponseData } from '@car-rental/shared/model';
 import { TextAreaFormGroup } from '../../../../components/form/form-group/text-area/TextAreaFormGroup';
 import { FormContainer } from '../../../../components/form/form-group/FormContainer';
-import { RegisterOptions, useForm } from 'react-hook-form';
 import {
     mapToOptionType,
     mapToOptionTypeWithKeys,
     SelectFormGroup,
 } from '../../../../components/form/form-group/select/SelectFormGroup';
-import { VehicleService } from '@car-rental/shared/service';
 import { SwitchFormGroup } from '../../../../components/form/form-group/switch/SwitchFormGroup';
 import { UploadInputFormGroup } from '../../../../components/form/form-group/upload/UploadInputFormGroup';
 import { FileWithPreview } from '../../../../components/form/form-group/upload/Dropzone';
 import { AddOptionModal } from './add_option_modal/AddOptionModal';
+import { TranslationService, VehicleService } from '@car-rental/shared/service';
 import {
     VehicleModelDTO,
     VehicleResponseDTO,
     VehicleOptionsDTO,
     LocalisationResponseDTO,
     OptionDTO,
+    VehicleStatCodeEnum,
+    VehicleDetailsDTO,
+    VehiclePersistDTO,
+    ResponseData,
 } from '@car-rental/shared/model';
-import { useHistory } from 'react-router-dom';
 
 export interface VehicleFormProperties {
     onSubmitAction: (
@@ -89,8 +92,8 @@ export const VehicleForm = ({
     const [selectedModalOption, setSelectedModalOption] = React.useState<ModalVehicleOptions | undefined>(undefined);
     const vehicleModalOptions: Record<keyof VehicleOption, ModalVehicleOptions> = {
         brand: {
-            headerTitle: 'Add brand',
-            optionLabel: 'Brand:',
+            headerTitle: TranslationService.translate('brandHeaderVehicleFormAddOption'),
+            optionLabel: TranslationService.translate('brandLabelVehicleFormAddOption'),
             onSubmit: (value: string) => {
                 VehicleService.addBrand(new OptionDTO(value)).then(() => {
                     loadVehicleOptions();
@@ -98,16 +101,16 @@ export const VehicleForm = ({
                 });
             },
             registerOptions: {
-                required: 'Brand cannot be empty',
+                required: TranslationService.translate('brandVehicleFormAddOptionRequired'),
                 maxLength: {
                     value: 50,
-                    message: 'Brand name cannot be longer than 50',
+                    message: TranslationService.translate('brandVehicleFormAddOptionMaxLength'),
                 },
             },
         },
         model: {
-            headerTitle: 'Add model',
-            optionLabel: 'Model:',
+            headerTitle: TranslationService.translate('modelHeaderVehicleFormAddOption'),
+            optionLabel: TranslationService.translate('modelLabelVehicleFormAddOption'),
             onSubmit: (value: string) => {
                 VehicleService.addModel(new VehicleModelDTO(watchBrand, value)).then(() => {
                     loadVehicleOptions();
@@ -116,16 +119,16 @@ export const VehicleForm = ({
                 });
             },
             registerOptions: {
-                required: 'Model cannot be empty',
+                required: TranslationService.translate('modelVehicleFormAddOptionRequired'),
                 maxLength: {
                     value: 50,
-                    message: 'Model name cannot be longer than 50',
+                    message: TranslationService.translate('modelVehicleFormAddOptionMaxLength'),
                 },
             },
         },
         bodyType: {
-            headerTitle: 'Add body type',
-            optionLabel: 'Body type:',
+            headerTitle: TranslationService.translate('bodyTypeHeaderVehicleFormAddOption'),
+            optionLabel: TranslationService.translate('bodyTypeLabelVehicleFormAddOption'),
             onSubmit: (value: string) => {
                 VehicleService.addBodyType(new OptionDTO(value)).then(() => {
                     loadVehicleOptions();
@@ -133,16 +136,16 @@ export const VehicleForm = ({
                 });
             },
             registerOptions: {
-                required: 'Body type cannot be empty',
+                required: TranslationService.translate('bodyTypeVehicleFormAddOptionRequired'),
                 maxLength: {
                     value: 50,
-                    message: 'Body type cannot be longer than 50',
+                    message: TranslationService.translate('bodyTypeVehicleFormAddOptionMaxLength'),
                 },
             },
         },
         fuelType: {
-            headerTitle: 'Add fuel type',
-            optionLabel: 'Fuel type:',
+            headerTitle: TranslationService.translate('fuelTypeHeaderVehicleFormAddOption'),
+            optionLabel: TranslationService.translate('fuelTypeLabelVehicleFormAddOption'),
             onSubmit: (value: string) => {
                 VehicleService.addFuelType(new OptionDTO(value)).then(() => {
                     loadVehicleOptions();
@@ -150,16 +153,16 @@ export const VehicleForm = ({
                 });
             },
             registerOptions: {
-                required: 'Fuel type cannot be empty',
+                required: TranslationService.translate('fuelTypeVehicleFormAddOptionRequired'),
                 maxLength: {
                     value: 50,
-                    message: 'Fuel type cannot be longer than 50',
+                    message: TranslationService.translate('fuelTypeVehicleFormAddOptionMaxLength'),
                 },
             },
         },
         color: {
-            headerTitle: 'Add color',
-            optionLabel: 'Color:',
+            headerTitle: TranslationService.translate('colorHeaderVehicleFormAddOption'),
+            optionLabel: TranslationService.translate('colorLabelVehicleFormAddOption'),
             onSubmit: (value: string) => {
                 VehicleService.addColor(new OptionDTO(value)).then(() => {
                     loadVehicleOptions();
@@ -167,10 +170,10 @@ export const VehicleForm = ({
                 });
             },
             registerOptions: {
-                required: 'Color cannot be empty',
+                required: TranslationService.translate('colorVehicleFormAddOptionRequired'),
                 maxLength: {
                     value: 50,
-                    message: 'Color name cannot be longer than 50',
+                    message: TranslationService.translate('colorVehicleFormAddOptionMaxLength'),
                 },
             },
         },
@@ -242,7 +245,7 @@ export const VehicleForm = ({
         >
             {vehicleOptions && (
                 <SelectFormGroup<VehicleFormValues>
-                    label={'Brand:'}
+                    label={TranslationService.translate('brandLabelVehicleForm')}
                     name={'brand'}
                     control={control}
                     options={vehicleOptions.brands.map(mapToOptionType)}
@@ -253,18 +256,18 @@ export const VehicleForm = ({
                         setIsOpen(true);
                     }}
                     rules={{
-                        required: 'Brand is required',
+                        required: TranslationService.translate('brandVehicleFormRequired'),
                     }}
                 />
             )}
             {vehicleOptions && (
                 <SelectFormGroup<VehicleFormValues>
-                    label={'Model:'}
+                    label={TranslationService.translate('modelLabelVehicleForm')}
                     name={'model'}
                     control={control}
                     options={vehicleModels.map(mapToOptionType)}
                     error={formState.errors.model?.message}
-                    rules={{ required: 'Model is required' }}
+                    rules={{ required: TranslationService.translate('modelVehicleFormRequired') }}
                     displayAddButton
                     onClickAddButton={() => {
                         setSelectedModalOption(vehicleModalOptions.model);
@@ -274,35 +277,35 @@ export const VehicleForm = ({
                 />
             )}
             <InputFormGroup<VehicleFormValues>
-                label={'Daily fee (USD):'}
+                label={TranslationService.translate('dailyFeeLabelVehicleForm')}
                 name={'dailyFee'}
                 type={'number'}
                 step={0.01}
                 register={register}
                 min={0}
                 registerOptions={{
-                    required: 'Daily fee is required',
+                    required: TranslationService.translate('dailyFeeVehicleFormRequired'),
                     valueAsNumber: true,
                     min: 0,
                 }}
                 error={formState.errors.dailyFee}
             />
             <InputFormGroup<VehicleFormValues>
-                label={'Registration:'}
+                label={TranslationService.translate('registrationLabelVehicleForm')}
                 name={'registration'}
                 register={register}
                 registerOptions={{
-                    required: 'Registration is required',
+                    required: TranslationService.translate('registrationVehicleFormRequired'),
                     maxLength: {
                         value: 20,
-                        message: 'Registration cannot be longer than 50',
+                        message: TranslationService.translate('registrationVehicleFormMaxLength'),
                     },
                 }}
                 error={formState.errors.registration}
             />
             {vehicleOptions && (
                 <SelectFormGroup<VehicleFormValues>
-                    label={'Location:'}
+                    label={TranslationService.translate('locationLabelVehicleForm')}
                     name={'location'}
                     control={control}
                     options={vehicleOptions.locations.map((location: LocalisationResponseDTO) =>
@@ -313,33 +316,42 @@ export const VehicleForm = ({
                     )}
                     error={formState.errors.location?.message}
                     rules={{
-                        required: 'Registration is required',
+                        required: TranslationService.translate('registrationVehicleFormRequired'),
                     }}
                 />
             )}
             <SelectFormGroup<VehicleFormValues>
-                label={'Status:'}
+                label={TranslationService.translate('statusLabelVehicleForm')}
                 name={'vehicleStatus'}
                 control={control}
                 options={[
-                    mapToOptionTypeWithKeys(VehicleStatCodeEnum.UAV, 'Unavailable'),
-                    mapToOptionTypeWithKeys(VehicleStatCodeEnum.AVI, 'Available'),
-                    mapToOptionTypeWithKeys(VehicleStatCodeEnum.RMV, 'Removed'),
+                    mapToOptionTypeWithKeys(
+                        VehicleStatCodeEnum.UAV,
+                        TranslationService.translate('statusUavLabelVehicleFormOption')
+                    ),
+                    mapToOptionTypeWithKeys(
+                        VehicleStatCodeEnum.AVI,
+                        TranslationService.translate('statusAviLabelVehicleFormOption')
+                    ),
+                    mapToOptionTypeWithKeys(
+                        VehicleStatCodeEnum.RMV,
+                        TranslationService.translate('statusRmvLabelVehicleFormOption')
+                    ),
                 ]}
                 error={formState.errors.vehicleStatus?.message}
                 rules={{
-                    required: 'Vehicle status is required',
+                    required: TranslationService.translate('vehicleStatusVehicleFormRequired'),
                 }}
             />
             <SwitchFormGroup<VehicleFormValues>
-                label={'Best offer:'}
+                label={TranslationService.translate('bestOfferLabelVehicleForm')}
                 name={'bestOffer'}
                 control={control}
                 error={formState.errors.bestOffer}
             />
             {vehicleOptions && (
                 <SelectFormGroup<VehicleFormValues>
-                    label={'Body type:'}
+                    label={TranslationService.translate('bodyTypeLabelVehicleForm')}
                     name={'bodyType'}
                     control={control}
                     options={vehicleOptions.bodyTypes.map(mapToOptionType)}
@@ -350,13 +362,13 @@ export const VehicleForm = ({
                         setIsOpen(true);
                     }}
                     rules={{
-                        required: 'Body type is required',
+                        required: TranslationService.translate('bodyTypeVehicleFormRequired'),
                     }}
                 />
             )}
             {vehicleOptions && (
                 <SelectFormGroup<VehicleFormValues>
-                    label={'Fuel type:'}
+                    label={TranslationService.translate('fuelTypeLabelVehicleForm')}
                     name={'fuelType'}
                     control={control}
                     options={vehicleOptions.fuelTypes.map(mapToOptionType)}
@@ -367,63 +379,66 @@ export const VehicleForm = ({
                         setIsOpen(true);
                     }}
                     rules={{
-                        required: 'Fuel type is required',
+                        required: TranslationService.translate('fuelTypeVehicleFormRequired'),
                     }}
                 />
             )}
             <InputFormGroup<VehicleFormValues>
-                label={'Power (HP):'}
+                label={TranslationService.translate('powerLabelVehicleForm')}
                 name={'power'}
                 type={'number'}
                 min={0}
                 register={register}
                 registerOptions={{
-                    required: 'Power is required',
+                    required: TranslationService.translate('powerVehicleFormRequired'),
                     valueAsNumber: true,
                 }}
                 error={formState.errors.power}
             />
             <SelectFormGroup<VehicleFormValues>
-                label={'Gearbox:'}
+                label={TranslationService.translate('gearboxLabelVehicleForm')}
                 name={'gearbox'}
                 control={control}
-                options={[mapToOptionTypeWithKeys('auto', 'Automatic'), mapToOptionTypeWithKeys('man', 'Manual')]}
+                options={[
+                    mapToOptionTypeWithKeys('auto', TranslationService.translate('gearboxLabelVehicleFormOptionAuto')),
+                    mapToOptionTypeWithKeys('man', TranslationService.translate('gearboxLabelVehicleFormOptionMan')),
+                ]}
                 error={formState.errors.gearbox?.message}
-                rules={{ required: 'Gearbox type is required' }}
+                rules={{ required: TranslationService.translate('gearboxVehicleFormRequired') }}
             />
             <SwitchFormGroup<VehicleFormValues>
-                label={'Front wheel drive:'}
+                label={TranslationService.translate('frontWheelDriveLabelVehicleForm')}
                 name={'frontWheelDrive'}
                 control={control}
                 error={formState.errors.frontWheelDrive}
             />
             <InputFormGroup<VehicleFormValues>
-                label={'Doors count:'}
+                label={TranslationService.translate('doorsCountLabelVehicleForm')}
                 name={'doorsCount'}
                 type={'number'}
                 min={0}
                 register={register}
                 registerOptions={{
-                    required: 'Doors count is required',
+                    required: TranslationService.translate('doorsCountVehicleFormRequired'),
                     valueAsNumber: true,
                 }}
                 error={formState.errors.doorsCount}
             />
             <InputFormGroup<VehicleFormValues>
-                label={'Seats count:'}
+                label={TranslationService.translate('seatsCountLabelVehicleForm')}
                 name={'seatsCount'}
                 type={'number'}
                 min={0}
                 register={register}
                 registerOptions={{
-                    required: 'Seats count is required',
+                    required: TranslationService.translate('seatsCountVehicleFormRequired'),
                     valueAsNumber: true,
                 }}
                 error={formState.errors.seatsCount}
             />
             {vehicleOptions && (
                 <SelectFormGroup<VehicleFormValues>
-                    label={'Color:'}
+                    label={TranslationService.translate('colorLabelVehicleForm')}
                     name={'color'}
                     control={control}
                     options={vehicleOptions.colors.map(mapToOptionType)}
@@ -434,47 +449,47 @@ export const VehicleForm = ({
                         setIsOpen(true);
                     }}
                     rules={{
-                        required: 'Color is required',
+                        required: TranslationService.translate('colorVehicleFormRequired'),
                     }}
                 />
             )}
             <SwitchFormGroup<VehicleFormValues>
-                label={'Metallic:'}
+                label={TranslationService.translate('metallicLabelVehicleForm')}
                 name={'metallic'}
                 control={control}
                 error={formState.errors.metallic}
             />
             <TextAreaFormGroup<VehicleFormValues>
-                label={'Description:'}
+                label={TranslationService.translate('descriptionLabelVehicleForm')}
                 name={'description'}
                 register={register}
-                registerOptions={{ required: 'Description is required' }}
+                registerOptions={{ required: TranslationService.translate('descriptionVehicleFormRequired') }}
                 error={formState.errors.description}
             />
             <InputFormGroup<VehicleFormValues>
-                label={'Production year:'}
+                label={TranslationService.translate('productionYearLabelVehicleForm')}
                 name={'productionYear'}
                 type={'number'}
                 register={register}
                 registerOptions={{
-                    required: 'Production year is required',
+                    required: TranslationService.translate('productionYearVehicleFormRequired'),
                     min: {
                         value: 1900,
-                        message: 'Production year cannot be below 1900',
+                        message: TranslationService.translate('productionYearVehicleFormMin'),
                     },
                     valueAsNumber: true,
                 }}
                 error={formState.errors.productionYear}
             />
             <UploadInputFormGroup<VehicleFormValues>
-                label={'Vehicle image:'}
+                label={TranslationService.translate('vehicleImageLabelVehicleForm')}
                 name={'vehicleImage'}
                 control={control}
                 error={formState.errors.vehicleImage?.message}
                 rules={{
                     validate: (value: string | number | boolean | unknown | FileWithPreview) => {
                         if (!value || !(value as FileWithPreview).name) {
-                            return 'File is required';
+                            return TranslationService.translate('vehicleImageVehicleFormRequired');
                         }
                         return true;
                     },

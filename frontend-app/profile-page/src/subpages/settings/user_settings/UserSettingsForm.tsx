@@ -1,6 +1,6 @@
 import React from 'react';
 import { InputFormGroup } from '../../../components/form/form-group/input/InputFormGroup';
-import { AuthService, UserService } from '@car-rental/shared/service';
+import { AuthService, TranslationService, UserService } from '@car-rental/shared/service';
 import { FormContainer } from '../../../components/form/form-group/FormContainer';
 import { AuthenticatedUserDTO, UserUpdateDTO, UserResponseDTO, ResponseData } from '@car-rental/shared/model';
 import './UserSettingsSubpage.scss';
@@ -44,32 +44,32 @@ export function UserSettingsForm({ authenticatedUser, setAuthenticatedUser }: Us
     return (
         <FormContainer onSubmit={handleSubmit(onSubmit)}>
             <InputFormGroup<UserSettingsFormValues>
-                label={'Name:'}
+                label={TranslationService.translate('nameUserSettingsFormLabel')}
                 name={'name'}
                 register={register}
-                registerOptions={{ required: 'Name is required' }}
+                registerOptions={{ required: TranslationService.translate('nameRequiredUserSettingsForm') }}
                 error={formState.errors.name}
             />
             <InputFormGroup<UserSettingsFormValues>
-                label={'Surname:'}
+                label={TranslationService.translate('surnameUserSettingsFormLabel')}
                 name={'surname'}
                 register={register}
-                registerOptions={{ required: 'Surname is required' }}
+                registerOptions={{ required: TranslationService.translate('surnameRequiredUserSettingsForm') }}
                 error={formState.errors.surname}
             />
             <InputFormGroup<UserSettingsFormValues>
-                label={'Phone:'}
+                label={TranslationService.translate('phoneUserSettingsFormLabel')}
                 name={'phone'}
                 register={register}
-                registerOptions={{ required: 'Phone is required' }}
+                registerOptions={{ required: TranslationService.translate('phoneRequiredUserSettingsForm') }}
                 error={formState.errors.phone}
             />
             {/*// TODO: Add constrain for max date*/}
             <InputFormGroup<UserSettingsFormValues>
-                label={'Birth date:'}
+                label={TranslationService.translate('birthDateUserSettingsFormLabel')}
                 name={'birthDate'}
                 register={register}
-                registerOptions={{ required: 'Birth date is required' }}
+                registerOptions={{ required: TranslationService.translate('birthDateRequiredUserSettingsForm') }}
                 error={formState.errors.birthDate}
                 type={'date'}
             />

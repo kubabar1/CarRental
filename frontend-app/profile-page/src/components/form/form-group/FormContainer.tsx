@@ -1,5 +1,6 @@
 import React, { FormEvent, FormEventHandler } from 'react';
 import { Button } from 'react-bootstrap';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface FormContainerProperties {
     onSubmit: FormEventHandler<HTMLFormElement>;
@@ -12,7 +13,7 @@ export function FormContainer({
     children,
     onSubmit,
     isSubmitButtonDisabled = false,
-    submitButtonValue = 'Update',
+    submitButtonValue = TranslationService.translate('formContainerSubmitButton'),
 }: FormContainerProperties): JSX.Element {
     return (
         <form

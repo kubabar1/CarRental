@@ -16,8 +16,10 @@ function NavSubLink({ navItemName, linkPath, location, authorized = true }: NavS
     return authorized ? (
         <Link to={linkPath} className="sub-link">
             <div className={`container py-3 sub-link-container ${isSelected ? 'selected-sub-link' : ''}`}>
-                <FontAwesomeIcon className="mr-2 ml-3" icon={faAngleRight} />
-                {navItemName}
+                <div>
+                    <FontAwesomeIcon className="mr-2 ml-3" icon={faAngleRight} />
+                </div>
+                <div>{navItemName}</div>
             </div>
         </Link>
     ) : (

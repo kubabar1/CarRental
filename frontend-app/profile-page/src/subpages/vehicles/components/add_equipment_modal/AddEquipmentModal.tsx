@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import './AddEquipmentModal.scss';
 import { InputFormGroup } from '../../../../components/form/form-group/input/InputFormGroup';
-import { VehicleService } from '@car-rental/shared/service';
+import { TranslationService, VehicleService } from '@car-rental/shared/service';
 import { EquipmentAddDTO } from '@car-rental/shared/model';
 
 type Equipment = {
@@ -53,36 +53,44 @@ export function AddEquipmentModal({ isOpen, setIsOpen, reloadEquipments }: AddEq
             className={'add-option-modal'}
         >
             <Modal.Header>
-                <Modal.Title id="contained-modal-title-vcenter">{'Add equipment'}</Modal.Title>
+                <Modal.Title id="contained-modal-title-vcenter">
+                    {TranslationService.translate('addEquipmentModalTitle')}
+                </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <InputFormGroup<Equipment>
-                    label={'Code:'}
+                    label={TranslationService.translate('addEquipmentModalInputCode')}
                     name={'equipmentCode'}
                     register={register}
                     registerOptions={{
-                        required: 'Equipment code is required',
-                        maxLength: { value: 3, message: 'Equipment code cannot be longer than 3' },
+                        required: TranslationService.translate('addEquipmentModalInputCodeRequired'),
+                        maxLength: {
+                            value: 3,
+                            message: TranslationService.translate('addEquipmentModalInputCodeMaxLength'),
+                        },
                     }}
                     error={formState.errors.equipmentCode}
                 />
                 <InputFormGroup<Equipment>
-                    label={'Description:'}
+                    label={TranslationService.translate('addEquipmentModalInputDescription')}
                     name={'description'}
                     register={register}
                     registerOptions={{
-                        required: 'Equipment description is required',
-                        maxLength: { value: 50, message: 'Equipment description cannot be longer than 50' },
+                        required: TranslationService.translate('addEquipmentModalInputRequired'),
+                        maxLength: {
+                            value: 50,
+                            message: TranslationService.translate('addEquipmentModalInputMaxLength'),
+                        },
                     }}
                     error={formState.errors.description}
                 />
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={onClose} variant={'outline-primary'}>
-                    Close
+                    {TranslationService.translate('addEquipmentModalCloseButton')}
                 </Button>
                 <Button disabled={!formState.isValid} type="submit" onClick={handleSubmit(addEqp)}>
-                    Add
+                    {TranslationService.translate('addEquipmentModalAddButton')}
                 </Button>
             </Modal.Footer>
         </Modal>

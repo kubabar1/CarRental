@@ -4,7 +4,7 @@ import { VehicleSearchFilters } from './filters/VehicleSearchFilters';
 import { VehicleResponseDTO, FilteringParamsEnum, Page } from '@car-rental/shared/model';
 import { withRouter, useLocation } from 'react-router-dom';
 import { VehicleItem } from './vehicle_item/VehicleItem';
-import { VehicleService } from '@car-rental/shared/service';
+import { TranslationService, VehicleService } from '@car-rental/shared/service';
 import { LoaderContainer } from './container/LoaderContainer';
 import { getCountFromUrl, getPageFromUrl, getVehicleFilteringParamsFromUrl } from '../../../utils/UrlUtil';
 import ReactPaginate from 'react-paginate';
@@ -76,8 +76,8 @@ function VehicleListPage(): JSX.Element {
                                 {vehiclesPage && (
                                     <div className="pagination-and-counter-container row">
                                         <ReactPaginate
-                                            previousLabel="Previous"
-                                            nextLabel="Next"
+                                            previousLabel={TranslationService.translate('previous')}
+                                            nextLabel={TranslationService.translate('next')}
                                             pageClassName="page-item"
                                             pageLinkClassName="page-link"
                                             previousClassName="page-item"

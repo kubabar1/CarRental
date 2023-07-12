@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface DownloadAppLinkProps {
     shopName: string;
@@ -16,7 +17,9 @@ export function DownloadAppLink({ shopName, shopIcon, shopLink }: DownloadAppLin
                     <FontAwesomeIcon icon={shopIcon} />
                 </div>
                 <div className="download-app-link-text">
-                    <div className="download-app-link-download-on-text">Download on the</div>
+                    <div className="download-app-link-download-on-text">
+                        {TranslationService.translate('downloadOnThe')}
+                    </div>
                     <div className="download-app-link-shop-name">{shopName}</div>
                 </div>
             </a>

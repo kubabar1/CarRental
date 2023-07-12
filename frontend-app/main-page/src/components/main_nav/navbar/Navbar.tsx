@@ -2,6 +2,7 @@ import React from 'react';
 import './Navbar.scss';
 import { NavbarLink } from './navbar_link/NavbarLink';
 import { aboutUsLink, bestOffersLink, carListLink, contactLink, homeLink } from '../../../constants/Links';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface NavbarProps {
     active: boolean;
@@ -12,11 +13,15 @@ export function Navbar({ active, setTrue }: NavbarProps): JSX.Element {
     return (
         <div id="collapsible-navbar" className={active ? 'collapse navbar-collapse show' : 'collapse navbar-collapse'}>
             <ul className="navbar-nav pr-3 ml-auto">
-                <NavbarLink setTrue={setTrue} target={homeLink} name={'Home'} />
-                <NavbarLink setTrue={setTrue} target={carListLink} name={'Car list'} />
-                <NavbarLink setTrue={setTrue} target={bestOffersLink} name={'Best offers'} />
-                <NavbarLink setTrue={setTrue} target={aboutUsLink} name={'About us'} />
-                <NavbarLink setTrue={setTrue} target={contactLink} name={'Contact'} />
+                <NavbarLink setTrue={setTrue} target={homeLink} name={TranslationService.translate('home')} />
+                <NavbarLink setTrue={setTrue} target={carListLink} name={TranslationService.translate('carList')} />
+                <NavbarLink
+                    setTrue={setTrue}
+                    target={bestOffersLink}
+                    name={TranslationService.translate('bestOffers')}
+                />
+                <NavbarLink setTrue={setTrue} target={aboutUsLink} name={TranslationService.translate('aboutUs')} />
+                <NavbarLink setTrue={setTrue} target={contactLink} name={TranslationService.translate('contact')} />
             </ul>
         </div>
     );

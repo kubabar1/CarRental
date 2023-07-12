@@ -5,7 +5,7 @@ import { SubpageContent } from '../../components/subpage/content/SubpageContent'
 import { InputFormGroup } from '../../components/form/form-group/input/InputFormGroup';
 import { FormContainer } from '../../components/form/form-group/FormContainer';
 import { useForm } from 'react-hook-form';
-import { LocationService } from '@car-rental/shared/service';
+import { LocationService, TranslationService } from '@car-rental/shared/service';
 import { LocationAddDTO } from '@car-rental/shared/model';
 import { locationsListPath } from '../../constants/Links';
 import { useHistory } from 'react-router-dom';
@@ -51,83 +51,98 @@ export function LocationAddSubpage(): JSX.Element {
 
     return (
         <SubpageContainer className="location-add-container">
-            <SubpageHeader title={'Add location'} />
+            <SubpageHeader title={TranslationService.translate('addLocationSubpageTitle')} />
             <SubpageContent>
-                <FormContainer onSubmit={handleSubmit(onSubmit)} submitButtonValue={'Create'}>
+                <FormContainer
+                    onSubmit={handleSubmit(onSubmit)}
+                    submitButtonValue={TranslationService.translate('addLocationSubpageCreateButton')}
+                >
                     <InputFormGroup<LocationAddFormValues>
-                        label={'Country:'}
+                        label={TranslationService.translate('countryAddLocationSubpageLabel')}
                         name={'country'}
                         register={register}
                         registerOptions={{
-                            required: 'Country is required',
+                            required: TranslationService.translate('countryAddLocationSubpageRequired'),
                             maxLength: {
                                 value: maxLengths.country,
-                                message: `Code cannot be longer than ${maxLengths.country}`,
+                                message: TranslationService.translate('countryAddLocationSubpageMaxLength', [
+                                    maxLengths.country,
+                                ]),
                             },
                         }}
                         error={formState.errors.country}
                     />
                     <InputFormGroup<LocationAddFormValues>
-                        label={'City:'}
+                        label={TranslationService.translate('cityAddLocationSubpageLabel')}
                         name={'city'}
                         register={register}
                         registerOptions={{
-                            required: 'City is required',
+                            required: TranslationService.translate('cityAddLocationSubpageRequired'),
                             maxLength: {
                                 value: maxLengths.city,
-                                message: `City cannot be longer than ${maxLengths.city}`,
+                                message: TranslationService.translate('cityAddLocationSubpageMaxLength', [
+                                    maxLengths.city,
+                                ]),
                             },
                         }}
                         error={formState.errors.city}
                     />
                     <InputFormGroup<LocationAddFormValues>
-                        label={'Street and number:'}
+                        label={TranslationService.translate('streetAndNbAddLocationSubpageLabel')}
                         name={'streetAndNb'}
                         register={register}
                         registerOptions={{
-                            required: 'Street and number is required',
+                            required: TranslationService.translate('streetAndNbAddLocationSubpageRequired'),
                             maxLength: {
                                 value: maxLengths.streetAndNb,
-                                message: `Street and number cannot be longer than ${maxLengths.streetAndNb}`,
+                                message: TranslationService.translate('streetAndNbAddLocationSubpageMaxLength', [
+                                    maxLengths.streetAndNb,
+                                ]),
                             },
                         }}
                         error={formState.errors.streetAndNb}
                     />
                     <InputFormGroup<LocationAddFormValues>
-                        label={'Code:'}
+                        label={TranslationService.translate('codeAddLocationSubpageLabel')}
                         name={'code'}
                         register={register}
                         registerOptions={{
-                            required: 'Code is required',
+                            required: TranslationService.translate('codeAddLocationSubpageRequired'),
                             maxLength: {
                                 value: maxLengths.code,
-                                message: `Code cannot be longer than ${maxLengths.code}`,
+                                message: TranslationService.translate('codeAddLocationSubpageMaxLength', [
+                                    maxLengths.code,
+                                ]),
                             },
                         }}
                         error={formState.errors.code}
                     />
                     <InputFormGroup<LocationAddFormValues>
-                        label={'Email:'}
+                        label={TranslationService.translate('emailAddLocationSubpageLabel')}
                         name={'email'}
                         register={register}
                         registerOptions={{
-                            required: 'Email is required',
+                            required: TranslationService.translate('emailAddLocationSubpageRequired'),
                             maxLength: {
                                 value: maxLengths.email,
-                                message: `Email cannot be longer than ${maxLengths.email}`,
+                                message: TranslationService.translate('emailAddLocationSubpageMaxLength', [
+                                    maxLengths.email,
+                                ]),
                             },
                         }}
                         error={formState.errors.email}
                     />
                     <InputFormGroup<LocationAddFormValues>
-                        label={'Phone:'}
+                        label={TranslationService.translate('phoneAddLocationSubpageLabel')}
                         name={'phone'}
                         register={register}
                         registerOptions={{
-                            required: 'Phone is required',
+                            required: TranslationService.translate('phoneAddLocationSubpageRequired'),
                             maxLength: {
                                 value: maxLengths.phone,
-                                message: `Phone cannot be longer than ${maxLengths.phone}`,
+                                message: TranslationService.translate('phoneAddLocationSubpageMaxLength', [
+                                    maxLengths.phone,
+                                ]),
                             },
                         }}
                         error={formState.errors.phone}

@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { InputFormGroup } from '../../components/form/form-group/input/InputFormGroup';
 import { TextAreaFormGroup } from '../../components/form/form-group/text-area/TextAreaFormGroup';
 import { mapToOptionType, OptionType, SelectFormGroup } from '../../components/form/form-group/select/SelectFormGroup';
-import { UserService, EmailService } from '@car-rental/shared/service';
+import { UserService, EmailService, TranslationService } from '@car-rental/shared/service';
 import { MultipleRecipientsMailsDTO, UsersEmailsResponseDTO, ResponseData } from '@car-rental/shared/model';
 import { useForm } from 'react-hook-form';
 
@@ -66,34 +66,38 @@ export function EmailSubpage(): JSX.Element {
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'Send email - form'} />
+            <SubpageHeader title={TranslationService.translate('sendEmailFormSubpageTitle')} />
             <SubpageContent>
                 <FormContainer
                     onSubmit={handleSubmit(onSubmit)}
                     isSubmitButtonDisabled={isSubmitButtonDisabled}
-                    submitButtonValue={'Send'}
+                    submitButtonValue={TranslationService.translate('sendEmailFormSubpageSendButton')}
                 >
                     <SelectFormGroup<EmailFormValues, true>
-                        label={'Receivers:'}
+                        label={TranslationService.translate('recipientsSendEmailFormSubpageLabel')}
                         name={'recipients'}
                         control={control}
                         options={allEmailAddresses}
-                        rules={{ required: 'Recipients are required' }}
+                        rules={{ required: TranslationService.translate('recipientsSendEmailFormSubpageRequired') }}
                         error={formState.errors.recipients?.message}
                         isMulti={true}
                     />
                     <InputFormGroup<EmailFormValues>
-                        label={'Subject:'}
+                        label={TranslationService.translate('emailSubjectSendEmailFormSubpageLabel')}
                         name={'emailSubject'}
                         register={register}
-                        registerOptions={{ required: 'Subject is required' }}
+                        registerOptions={{
+                            required: TranslationService.translate('emailSubjectSendEmailFormSubpageRequired'),
+                        }}
                         error={formState.errors.emailSubject}
                     />
                     <TextAreaFormGroup<EmailFormValues>
-                        label={'Message:'}
+                        label={TranslationService.translate('emailTextSendEmailFormSubpageLabel')}
                         name={'emailText'}
                         register={register}
-                        registerOptions={{ required: 'Description is required' }}
+                        registerOptions={{
+                            required: TranslationService.translate('emailTextSendEmailFormSubpageRequired'),
+                        }}
                         error={formState.errors.emailText}
                     />
                 </FormContainer>

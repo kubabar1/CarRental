@@ -1,5 +1,6 @@
 import React from 'react';
 import './Employee.scss';
+import { TranslationService } from '@car-rental/shared/service';
 
 export interface EmployeeProperties {
     employeeName: string;
@@ -15,7 +16,7 @@ export function Employee({ employeeName, employeePosition, employeeImage }: Empl
             </div>
             <div className="employee-description">
                 <div className="employee-name">{employeeName}</div>
-                <div className="employee-position">{employeePosition}</div>
+                <div className="employee-position">{TranslationService.translate(employeePosition)}</div>
             </div>
         </div>
     );

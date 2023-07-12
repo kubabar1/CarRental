@@ -12,6 +12,11 @@ import {
     ReservationStatus,
     ReservationStatusComponent,
 } from './ReservationStepContainer/components/RegistrationConfirmation/ReservationStatusComponent';
+import { translationsEn } from './translations/TranslationsEn';
+import { translationsPl } from './translations/TranslationsPl';
+import { TranslationService } from '@car-rental/shared/service';
+
+TranslationService.configureDefault('reservation', translationsEn, translationsPl);
 
 ReactDOM.render(
     <BrowserRouter>

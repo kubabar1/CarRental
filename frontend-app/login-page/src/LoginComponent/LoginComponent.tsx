@@ -3,6 +3,7 @@ import carRentalLogo from '../images/car_rental_logo_name.png';
 import './LoginComponent.scss';
 import { homePath, registrationPath } from '../constants/Paths';
 import { endpoints } from '../constants/PathsApi';
+import { TranslationService } from '@car-rental/shared/service';
 
 export function LoginComponent(): JSX.Element {
     const [username, setUsername] = useState<string | undefined>(undefined);
@@ -27,14 +28,10 @@ export function LoginComponent(): JSX.Element {
             setIsSubmitButtonDisabled(true);
             fetch(endpoints.login, {
                 method: 'POST',
-                // mode: 'cors',
-                // cache: 'no-cache',
                 credentials: 'include',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                // redirect: 'follow',
-                // referrerPolicy: 'no-referrer',
                 body: data,
             })
                 .then((res: Response) => {
@@ -77,14 +74,14 @@ export function LoginComponent(): JSX.Element {
                             type="text"
                             className="form-control"
                             id="inputLogin"
-                            placeholder="Username"
+                            placeholder={TranslationService.translate('username')}
                             required
                             autoFocus
                             onChange={(event) => setUsername(event.target.value)}
                         />
                         {usernameError && (
                             <div className="alert alert-danger custom-alert" role="alert">
-                                Username cannot be empty
+                                {TranslationService.translate('usernameError')}
                             </div>
                         )}
                     </div>
@@ -94,14 +91,14 @@ export function LoginComponent(): JSX.Element {
                             type="password"
                             className="form-control"
                             id="inputPassword"
-                            placeholder="Password"
+                            placeholder={TranslationService.translate('password')}
                             required
                             autoComplete="off"
                             onChange={(event) => setPassword(event.target.value)}
                         />
                         {passwordError && (
                             <div className="alert alert-danger custom-alert" role="alert">
-                                Password cannot be empty
+                                {TranslationService.translate('passwordError')}
                             </div>
                         )}
                     </div>
@@ -114,7 +111,7 @@ export function LoginComponent(): JSX.Element {
                                 checked={rememberMe}
                                 onChange={handleRememberMe}
                             />{' '}
-                            Remember me
+                            {TranslationService.translate('rememberMe')}
                         </label>
                     </div>
 
@@ -123,26 +120,26 @@ export function LoginComponent(): JSX.Element {
                         type="submit"
                         disabled={isSubmitButtonDisabled}
                     >
-                        Sign in
+                        {TranslationService.translate('signIn')}
                     </button>
                     {loginError && (
                         <div className="alert alert-danger custom-alert" role="alert">
-                            Incorrect username or password
+                            {TranslationService.translate('loginError')}
                         </div>
                     )}
                 </form>
                 <div className="forgot-password">
-                    <a href="/reset-password">Forgot password?</a>
+                    <a href="/reset-password">{TranslationService.translate('forgotPassword')}</a>
                 </div>
                 <div className="row">
                     <p className="mt-3 login-link pl-3">
                         <a href={homePath} className="linkstyle">
-                            Home
+                            {TranslationService.translate('homeLink')}
                         </a>
                     </p>
                     <p className="mt-3 ml-auto login-link pr-3">
                         <a href={registrationPath} className="linkstyle">
-                            Register
+                            {TranslationService.translate('registerLink')}
                         </a>
                     </p>
                 </div>

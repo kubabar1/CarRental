@@ -4,7 +4,7 @@ import { SearchSelectOption, SearchSelect, mapToOptionType } from './search_comp
 import { SingleValue } from 'react-select';
 import { SearchMinMaxInput } from './search_components/min_max_input/SearchMinMaxInput';
 import './VehicleSearchFilters.scss';
-import { VehicleService } from '@car-rental/shared/service';
+import { TranslationService, VehicleService } from '@car-rental/shared/service';
 import qs, { ParsedQs } from 'qs';
 
 interface CarSearchFiltersInterface {
@@ -104,8 +104,8 @@ export function VehicleSearchFilters({ handleFilterSubmit }: CarSearchFiltersInt
         return (
             <SearchMinMaxInput
                 label={searchLabel}
-                labelMin={'From:'}
-                labelMax={'To:'}
+                labelMin={TranslationService.translate('fromFilter')}
+                labelMax={TranslationService.translate('toFilter')}
                 minValue={filteringValueMin}
                 maxValue={filteringValueMax}
                 setMinValue={(newValue: string | undefined) => {
@@ -146,41 +146,67 @@ export function VehicleSearchFilters({ handleFilterSubmit }: CarSearchFiltersInt
                         handleFilterSubmit(event, getVehicleFilters());
                     }}
                 >
-                    {vehicleFiltersParams && renderSearchSelect('Brand:', brand, setBrand, vehicleFiltersParams.brands)}
-                    {vehicleFiltersParams && renderSearchSelect('Model:', model, setModel, vehicleFilterModelsParam)}
-                    {/*// TODO: uncomment after add handling for localisations*/}
-                    {/*{renderSearchSelect(*/}
-                    {/*    'City:',*/}
-                    {/*    city,*/}
-                    {/*    setCity,*/}
-                    {/*    vehicleFiltersParams.cities*/}
-                    {/*)}*/}
                     {vehicleFiltersParams &&
-                        renderSearchSelect('Body type:', bodyType, setBodyType, vehicleFiltersParams.bodyTypes)}
-                    {vehicleFiltersParams && renderSearchSelect('Color:', color, setColor, vehicleFiltersParams.colors)}
-                    {renderSearchMinMaxInput('Price:', minPrice, maxPrice, setMinPrice, setMaxPrice)}
+                        renderSearchSelect(
+                            TranslationService.translate('brandFilter'),
+                            brand,
+                            setBrand,
+                            vehicleFiltersParams.brands
+                        )}
+                    {vehicleFiltersParams &&
+                        renderSearchSelect(
+                            TranslationService.translate('modelFilter'),
+                            model,
+                            setModel,
+                            vehicleFilterModelsParam
+                        )}
+                    {vehicleFiltersParams &&
+                        renderSearchSelect(
+                            TranslationService.translate('bodyTypeFilter'),
+                            bodyType,
+                            setBodyType,
+                            vehicleFiltersParams.bodyTypes
+                        )}
+                    {vehicleFiltersParams &&
+                        renderSearchSelect(
+                            TranslationService.translate('colorFilter'),
+                            color,
+                            setColor,
+                            vehicleFiltersParams.colors
+                        )}
                     {renderSearchMinMaxInput(
-                        'Seats count:',
+                        TranslationService.translate('priceFilter'),
+                        minPrice,
+                        maxPrice,
+                        setMinPrice,
+                        setMaxPrice
+                    )}
+                    {renderSearchMinMaxInput(
+                        TranslationService.translate('seatsCountFilter'),
                         minSeatsCount,
                         maxSeatsCount,
                         setMinSeatsCount,
                         setMaxSeatsCount
                     )}
                     {renderSearchMinMaxInput(
-                        'Doors count:',
+                        TranslationService.translate('doorsCountFilter'),
                         minDoorsCount,
                         maxDoorsCount,
                         setMinDoorsCount,
                         setMaxDoorsCount
                     )}
                     {renderSearchMinMaxInput(
-                        'Production year:',
+                        TranslationService.translate('productionYearFilter'),
                         minProductionYear,
                         maxProductionYear,
                         setMinProductionYear,
                         setMaxProductionYear
                     )}
-                    <input type="submit" value="Search" className="btn btn-primary search-filter-submit-button" />
+                    <input
+                        type="submit"
+                        value={TranslationService.translate('search')}
+                        className="btn btn-primary search-filter-submit-button"
+                    />
                 </form>
             </div>
         </div>

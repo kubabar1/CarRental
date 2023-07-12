@@ -6,7 +6,7 @@ import { SubpageContent } from '../../components/subpage/content/SubpageContent'
 import { Column } from 'react-table';
 import { BookingResponseDTO, Page } from '@car-rental/shared/model';
 import { ButtonTableItem } from '../../components/table/tab_items/button_table_item/ButtonTableItem';
-import { BookingUserService } from '@car-rental/shared/service';
+import { BookingUserService, TranslationService } from '@car-rental/shared/service';
 import { bookingListCommonColumns } from './BookingListCommonColumns';
 
 export function MyReservedBookingsListSubpage(): JSX.Element {
@@ -32,10 +32,10 @@ export function MyReservedBookingsListSubpage(): JSX.Element {
             ...bookingListCommonColumns(),
             {
                 id: 'cancel',
-                Header: 'Cancel',
+                Header: TranslationService.translate('cancelBookingListColumn'),
                 accessor: (row: BookingResponseDTO) => (
                     <ButtonTableItem
-                        buttonText={'Cancel'}
+                        buttonText={TranslationService.translate('cancelButtonBookingListColumn')}
                         buttonVariant={'danger'}
                         onClickAction={() =>
                             BookingUserService.cancelAuthorizedUserBooking(row.id).then(() => {
@@ -53,7 +53,7 @@ export function MyReservedBookingsListSubpage(): JSX.Element {
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'My reservations'} />
+            <SubpageHeader title={TranslationService.translate('myReservationsSubpageTitle')} />
             <SubpageContent>
                 <Table<BookingResponseDTO>
                     columns={columns}

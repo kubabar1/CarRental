@@ -4,6 +4,7 @@ import StarRatingComponent from 'react-star-rating-component';
 import date from 'date-and-time';
 import './CommentItem.scss';
 import { CommentWithRateResponseDTO } from '@car-rental/shared/model';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface CommentItemProperties {
     comment: CommentWithRateResponseDTO;
@@ -19,7 +20,11 @@ export function CommentItem({ comment }: CommentItemProperties): JSX.Element {
                 <h4>
                     {comment.userId + ' '}
                     <small>
-                        <i> Posted on {date.format(new Date(comment.creationDate), 'YYYY-MM-DD HH:mm:ss')}</i>
+                        <i>
+                            {' '}
+                            {TranslationService.translate('postedOn')}{' '}
+                            {date.format(new Date(comment.creationDate), 'YYYY-MM-DD HH:mm:ss')}
+                        </i>
                     </small>
                 </h4>
                 <div className="car-rank mb-2">

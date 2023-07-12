@@ -6,7 +6,7 @@ import { homePath, loginPath } from '../../constants/Paths';
 import qs from 'qs';
 import { PasswordResetDTO } from '@car-rental/shared/model';
 import PasswordStrengthBar from 'react-password-strength-bar';
-import { ResetPasswordService } from '@car-rental/shared/service';
+import { ResetPasswordService, TranslationService } from '@car-rental/shared/service';
 import { PasswordResetResponseDTO, ResponseData } from '@car-rental/shared/model';
 
 export function UpdatePasswordComponent() {
@@ -59,57 +59,57 @@ export function UpdatePasswordComponent() {
         let isValid = true;
 
         if (!token) {
-            setNewPasswordError('No token was given');
+            setNewPasswordError(TranslationService.translate('noTokenError'));
             isValid = false;
         }
 
         if (!newPassword) {
-            setNewPasswordError('Password cannot be empty');
+            setNewPasswordError(TranslationService.translate('newPasswordErrorRequired'));
             isValid = false;
         }
         if (!!newPassword && newPassword.length < 8) {
-            setNewPasswordError('Password should be longer than 8 characters');
+            setNewPasswordError(TranslationService.translate('newPasswordErrorMinLen'));
             isValid = false;
         }
         if (!!newPassword && newPassword.length > 16) {
-            setNewPasswordError('Password should be shorter than 16 characters');
+            setNewPasswordError(TranslationService.translate('newPasswordErrorMaxLen'));
             isValid = false;
         }
         if (passwordScore < 3) {
-            setNewPasswordError('Password is too weak');
+            setNewPasswordError(TranslationService.translate('newPasswordErrorWeak'));
             isValid = false;
         }
         if (!!newPassword && !hasNumber(newPassword)) {
-            setNewPasswordError('Password should contain at least 1 number');
+            setNewPasswordError(TranslationService.translate('newPasswordErrorNumber'));
             isValid = false;
         }
         if (!!newPassword && !hasLowerCase(newPassword)) {
-            setNewPasswordError('Password should contain at least 1 lower case character');
+            setNewPasswordError(TranslationService.translate('newPasswordErrorLowerCase'));
             isValid = false;
         }
         if (!!newPassword && !hasUpperCase(newPassword)) {
-            setNewPasswordError('Password should contain at least 1 upper case character');
+            setNewPasswordError(TranslationService.translate('newPasswordErrorUpperCase'));
             isValid = false;
         }
         if (!!newPassword && hasWhiteSpace(newPassword)) {
-            setNewPasswordError('Password should not contain whitespace character');
+            setNewPasswordError(TranslationService.translate('newPasswordErrorWhiteSpace'));
             isValid = false;
         }
         if (!!newPassword && !hasSpecialCharacter(newPassword)) {
-            setNewPasswordError('Password should contain at least 1 special character');
+            setNewPasswordError(TranslationService.translate('newPasswordErrorSpecialCharacter'));
             isValid = false;
         }
 
         if (!confirmPassword) {
-            setConfirmPasswordError('Matching password cannot be empty');
+            setConfirmPasswordError(TranslationService.translate('confirmPasswordErrorRequired'));
             isValid = false;
         }
         if (!!confirmPassword && confirmPassword.length > 16) {
-            setConfirmPasswordError('Matching password should be shorter than 16 characters');
+            setConfirmPasswordError(TranslationService.translate('confirmPasswordErrorMaxLen'));
             isValid = false;
         }
         if (confirmPassword !== newPassword) {
-            setConfirmPasswordError('Matching password is different from the password');
+            setConfirmPasswordError(TranslationService.translate('confirmPasswordErrorDiff'));
             isValid = false;
         }
         return isValid;
@@ -165,7 +165,7 @@ export function UpdatePasswordComponent() {
                             type="password"
                             className="form-control"
                             id="password"
-                            placeholder="Password"
+                            placeholder={TranslationService.translate('passwordPlaceholder')}
                             required
                             autoFocus
                             value={newPassword}
@@ -187,7 +187,7 @@ export function UpdatePasswordComponent() {
                             type="password"
                             className="form-control"
                             id="passwordConfirm"
-                            placeholder="Confirm password"
+                            placeholder={TranslationService.translate('confirmPasswordPlaceholder')}
                             required
                             value={confirmPassword}
                             onChange={(event) => setConfirmPassword(event.target.value)}
@@ -202,18 +202,18 @@ export function UpdatePasswordComponent() {
                         type="submit"
                         disabled={isSubmitButtonDisabled}
                     >
-                        Update password
+                        {TranslationService.translate('updatePasswordButton')}
                     </button>
                 </form>
                 <div className="row">
                     <p className="mt-3 reset-password-link pl-3">
                         <a href={homePath} className="linkstyle">
-                            Home
+                            {TranslationService.translate('homeLink')}
                         </a>
                     </p>
                     <p className="mt-3 ml-auto reset-password-link pr-3">
                         <a href={loginPath} className="linkstyle">
-                            Login
+                            {TranslationService.translate('loginLink')}
                         </a>
                     </p>
                 </div>

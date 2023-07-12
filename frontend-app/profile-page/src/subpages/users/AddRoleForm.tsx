@@ -3,7 +3,7 @@ import { UserRoleResponseDTO } from '@car-rental/shared/model';
 import { FormContainer } from '../../components/form/form-group/FormContainer';
 import { useHistory, useParams } from 'react-router-dom';
 import { usersListPath } from '../../constants/Links';
-import { UserService } from '@car-rental/shared/service';
+import { TranslationService, UserService } from '@car-rental/shared/service';
 import {
     mapToOptionTypeWithKeys,
     OptionType,
@@ -34,7 +34,7 @@ export function AddRoleForm({ currentUserRoles }: AddRoleFormProperties): JSX.El
         UserService.getAllUserRoles().then((userRolesResponse: UserRoleResponseDTO[]) => {
             setAllPossibleUserRoles(
                 userRolesResponse.map((userRolesResponse: UserRoleResponseDTO) =>
-                    mapToOptionTypeWithKeys(userRolesResponse.id, userRolesResponse.label)
+                    mapToOptionTypeWithKeys(userRolesResponse.id, TranslationService.translate(userRolesResponse.type))
                 )
             );
         });
@@ -50,10 +50,10 @@ export function AddRoleForm({ currentUserRoles }: AddRoleFormProperties): JSX.El
         <FormContainer
             onSubmit={handleSubmit(onSubmit)}
             isSubmitButtonDisabled={!formState.isValid || !formState.isDirty}
-            submitButtonValue={'Update roles'}
+            submitButtonValue={TranslationService.translate('userRolesAddUserRoleSubpageUpdateButton')}
         >
             <SelectFormGroup<AddRoleFormValues, true>
-                label={'User roles:'}
+                label={TranslationService.translate('userRolesAddUserRoleSubpageLabel')}
                 name={'userRoles'}
                 control={control}
                 options={allPossibleUserRoles}

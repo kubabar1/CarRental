@@ -5,7 +5,7 @@ import { SubpageContent } from '../../../components/subpage/content/SubpageConte
 import { FormContainer } from '../../../components/form/form-group/FormContainer';
 import { PasswordUpdateDTO, UserResponseDTO, ResponseData } from '@car-rental/shared/model';
 import PasswordStrengthBar from 'react-password-strength-bar/dist';
-import { UserService } from '@car-rental/shared/service';
+import { TranslationService, UserService } from '@car-rental/shared/service';
 import './ChangePasswordSubpage.scss';
 
 export function ChangePasswordSubpage(): JSX.Element {
@@ -49,57 +49,57 @@ export function ChangePasswordSubpage(): JSX.Element {
         let isValid = true;
 
         if (!currentPassword) {
-            setCurrentPasswordError('Current password cannot be empty');
+            setCurrentPasswordError(TranslationService.translate('currentPasswordChangePasswordSubpageRequired'));
             isValid = false;
         }
 
         if (!newPassword) {
-            setNewPasswordError('Password cannot be empty');
+            setNewPasswordError(TranslationService.translate('passwordChangePasswordSubpageRequired'));
             isValid = false;
         }
         if (!!newPassword && newPassword.length < 8) {
-            setNewPasswordError('Password should be longer than 8 characters');
+            setNewPasswordError(TranslationService.translate('newPasswordChangePasswordSubpageMinLength'));
             isValid = false;
         }
         if (!!newPassword && newPassword.length > 16) {
-            setNewPasswordError('Password should be shorter than 16 characters');
+            setNewPasswordError(TranslationService.translate('newPasswordChangePasswordSubpageMaxLength'));
             isValid = false;
         }
         if (passwordScore < 3) {
-            setNewPasswordError('Password is too weak');
+            setNewPasswordError(TranslationService.translate('newPasswordChangePasswordSubpageScoreLow'));
             isValid = false;
         }
         if (!!newPassword && !hasNumber(newPassword)) {
-            setNewPasswordError('Password should contain at least 1 number');
+            setNewPasswordError(TranslationService.translate('newPasswordPasswordChangePasswordSubpageNumber'));
             isValid = false;
         }
         if (!!newPassword && !hasLowerCase(newPassword)) {
-            setNewPasswordError('Password should contain at least 1 lower case character');
+            setNewPasswordError(TranslationService.translate('newPasswordPasswordChangePasswordSubpageLowerCase'));
             isValid = false;
         }
         if (!!newPassword && !hasUpperCase(newPassword)) {
-            setNewPasswordError('Password should contain at least 1 upper case character');
+            setNewPasswordError(TranslationService.translate('newPasswordChangePasswordSubpageUpperCase'));
             isValid = false;
         }
         if (!!newPassword && hasWhiteSpace(newPassword)) {
-            setNewPasswordError('Password should not contain whitespace character');
+            setNewPasswordError(TranslationService.translate('newPasswordChangePasswordSubpageWhiteSpace'));
             isValid = false;
         }
         if (!!newPassword && !hasSpecialCharacter(newPassword)) {
-            setNewPasswordError('Password should contain at least 1 special character');
+            setNewPasswordError(TranslationService.translate('newPasswordChangePasswordSubpageSpecialCharacter'));
             isValid = false;
         }
 
         if (!confirmPassword) {
-            setConfirmPasswordError('Matching password cannot be empty');
+            setConfirmPasswordError(TranslationService.translate('confirmPasswordChangePasswordSubpageRequired'));
             isValid = false;
         }
         if (!!confirmPassword && confirmPassword.length > 16) {
-            setConfirmPasswordError('Matching password should be shorter than 16 characters');
+            setConfirmPasswordError(TranslationService.translate('confirmPasswordChangePasswordSubpageMaxLength'));
             isValid = false;
         }
         if (confirmPassword !== newPassword) {
-            setConfirmPasswordError('Matching password is different from the password');
+            setConfirmPasswordError(TranslationService.translate('confirmPasswordChangePasswordSubpageDifferent'));
             isValid = false;
         }
         return isValid;
@@ -150,15 +150,20 @@ export function ChangePasswordSubpage(): JSX.Element {
 
     return (
         <SubpageContainer className="change-password-container">
-            <SubpageHeader title={'Change password'} />
+            <SubpageHeader title={TranslationService.translate('changePasswordSubpageTitle')} />
             <SubpageContent>
-                <FormContainer onSubmit={handleSubmit} submitButtonValue={'Update password'}>
+                <FormContainer
+                    onSubmit={handleSubmit}
+                    submitButtonValue={TranslationService.translate('changePasswordSubpageUpdatePasswordButton')}
+                >
                     <div className="form-group">
-                        <label>Current password:</label>
+                        <label>{TranslationService.translate('currentPasswordChangePasswordSubpageLabel')}</label>
                         <input
                             type="password"
                             className="form-control"
-                            placeholder={'Current password'}
+                            placeholder={TranslationService.translate(
+                                'currentPasswordChangePasswordSubpagePlaceholder'
+                            )}
                             autoFocus
                             required
                             autoComplete={'off'}
@@ -171,11 +176,11 @@ export function ChangePasswordSubpage(): JSX.Element {
                     </div>
 
                     <div className="form-group">
-                        <label>New password:</label>
+                        <label>{TranslationService.translate('newPasswordChangePasswordSubpageLabel')}</label>
                         <input
                             type="password"
                             className="form-control"
-                            placeholder={'New password'}
+                            placeholder={TranslationService.translate('newPasswordChangePasswordSubpagePlaceholder')}
                             required
                             autoComplete={'off'}
                             value={newPassword}
@@ -195,11 +200,13 @@ export function ChangePasswordSubpage(): JSX.Element {
                     </div>
 
                     <div className="form-group">
-                        <label>Confirm password:</label>
+                        <label>{TranslationService.translate('confirmPasswordChangePasswordSubpageLabel')}</label>
                         <input
                             type="password"
                             className="form-control"
-                            placeholder={'Confirm password'}
+                            placeholder={TranslationService.translate(
+                                'confirmPasswordChangePasswordSubpagePlaceholder'
+                            )}
                             required
                             autoComplete={'off'}
                             value={confirmPassword}

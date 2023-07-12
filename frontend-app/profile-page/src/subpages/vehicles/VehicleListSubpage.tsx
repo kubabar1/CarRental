@@ -4,12 +4,19 @@ import { SubpageContainer } from '../../components/subpage/container/SubpageCont
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { Column, HeaderProps } from 'react-table';
-import { VehicleService } from '@car-rental/shared/service';
+import { TranslationService, VehicleService } from '@car-rental/shared/service';
 import { ButtonTableItem } from '../../components/table/tab_items/button_table_item/ButtonTableItem';
-import { BookingResponseDTO, VehicleOptionsDTO, VehicleResponseDTO, Page } from '@car-rental/shared/model';
+import {
+    BookingResponseDTO,
+    VehicleOptionsDTO,
+    VehicleResponseDTO,
+    Page,
+    VehicleStatCodeEnum,
+} from '@car-rental/shared/model';
 import { SelectColumnFilter } from '../../components/table/tab_items/select_column_filter/SelectColumnFilter';
 import { RangeColumnFilter } from '../../components/table/tab_items/slider_column_filter/RangeColumnFilter';
 import { LocationSelectColumnFilter } from '../../components/table/tab_items/location_select_column_filter/LocationSelectColumnFilter';
+import { scryRenderedComponentsWithType } from 'react-dom/test-utils';
 
 export function VehicleListSubpage(): JSX.Element {
     const [vehiclesPage, setVehiclesPage] = useState<Page<VehicleResponseDTO> | undefined>(undefined);
@@ -33,12 +40,12 @@ export function VehicleListSubpage(): JSX.Element {
         () => [
             {
                 id: 'id',
-                Header: 'ID',
+                Header: TranslationService.translate('idVehicleFormColumn'),
                 accessor: 'id',
             },
             {
                 id: 'brand.brand',
-                Header: 'Brand',
+                Header: TranslationService.translate('brandVehicleFormColumn'),
                 accessor: 'brand',
                 Filter: (filterProps: React.PropsWithChildren<HeaderProps<BookingResponseDTO>>) => {
                     return (
@@ -60,12 +67,12 @@ export function VehicleListSubpage(): JSX.Element {
             },
             {
                 id: 'model.model',
-                Header: 'Model',
+                Header: TranslationService.translate('modelVehicleFormColumn'),
                 accessor: 'model',
             },
             {
                 id: 'dailyFee',
-                Header: 'Daily fee',
+                Header: TranslationService.translate('dailyFeeVehicleFormColumn'),
                 accessor: (vehicleResponseDTO: VehicleResponseDTO) => `${vehicleResponseDTO.dailyFee.toFixed(2)} $`,
                 Filter: (filterProps: React.PropsWithChildren<HeaderProps<BookingResponseDTO>>) => {
                     return <RangeColumnFilter inputType="number" {...filterProps} />;
@@ -73,12 +80,12 @@ export function VehicleListSubpage(): JSX.Element {
             },
             {
                 id: 'registration',
-                Header: 'Registration',
+                Header: TranslationService.translate('registrationVehicleFormColumn'),
                 accessor: 'registration',
             },
             {
                 id: 'locationId',
-                Header: 'Location',
+                Header: TranslationService.translate('locationIdVehicleFormColumn'),
                 accessor: (vehicleResponseDTO: VehicleResponseDTO) =>
                     `${vehicleResponseDTO.location.country}, ${vehicleResponseDTO.location.city}, ${vehicleResponseDTO.location.streetAndNb}`,
                 Filter: (filterProps: React.PropsWithChildren<HeaderProps<BookingResponseDTO>>) => {
@@ -87,14 +94,23 @@ export function VehicleListSubpage(): JSX.Element {
             },
             {
                 id: 'vehicleStatus',
-                Header: 'Status',
-                accessor: (vehicleResponseDTO: VehicleResponseDTO) => vehicleResponseDTO.vehicleStatus.description,
+                Header: TranslationService.translate('statusVehicleFormColumn'),
+                accessor: (vehicleResponseDTO: VehicleResponseDTO) => {
+                    switch (vehicleResponseDTO.vehicleStatus.vehicleStatCode) {
+                        case VehicleStatCodeEnum.AVI:
+                            return TranslationService.translate('aviStatusVehicleFormOption');
+                        case VehicleStatCodeEnum.UAV:
+                            return TranslationService.translate('uavStatusVehicleFormOption');
+                        case VehicleStatCodeEnum.RMV:
+                            return TranslationService.translate('rmvStatusVehicleFormOption');
+                    }
+                },
                 Filter: (filterProps: React.PropsWithChildren<HeaderProps<BookingResponseDTO>>) => {
                     return (
                         <SelectColumnFilter
                             options={[
-                                { value: 'UAV', label: 'unavailable' },
-                                { value: 'AVI', label: 'available' },
+                                { value: 'UAV', label: TranslationService.translate('uavStatusVehicleFormOption') },
+                                { value: 'AVI', label: TranslationService.translate('aviStatusVehicleFormOption') },
                             ]}
                             {...filterProps}
                         />
@@ -103,7 +119,7 @@ export function VehicleListSubpage(): JSX.Element {
             },
             {
                 id: 'bestOffer',
-                Header: 'Best offer',
+                Header: TranslationService.translate('bestOfferVehicleFormColumn'),
                 accessor: (vehicleResponseDTO: VehicleResponseDTO) => (vehicleResponseDTO.bestOffer ? 'true' : 'false'),
                 Filter: (filterProps: React.PropsWithChildren<HeaderProps<BookingResponseDTO>>) => {
                     return (
@@ -120,7 +136,7 @@ export function VehicleListSubpage(): JSX.Element {
             },
             {
                 id: 'vehicleDetails.bodyType.bodyType',
-                Header: 'Body type',
+                Header: TranslationService.translate('bodyTypeVehicleFormColumn'),
                 accessor: (vehicleResponseDTO: VehicleResponseDTO) => vehicleResponseDTO.vehicleDetails.bodyType,
                 Filter: (filterProps: React.PropsWithChildren<HeaderProps<BookingResponseDTO>>) => {
                     return (
@@ -142,7 +158,7 @@ export function VehicleListSubpage(): JSX.Element {
             },
             {
                 id: 'vehicleDetails.fuelType.fuelType',
-                Header: 'Fuel type',
+                Header: TranslationService.translate('fuelTypeVehicleFormColumn'),
                 accessor: (vehicleResponseDTO: VehicleResponseDTO) => vehicleResponseDTO.vehicleDetails.fuelType,
                 Filter: (filterProps: React.PropsWithChildren<HeaderProps<BookingResponseDTO>>) => {
                     return (
@@ -164,15 +180,18 @@ export function VehicleListSubpage(): JSX.Element {
             },
             {
                 id: 'vehicleDetails.power',
-                Header: 'Power',
-                accessor: (vehicleResponseDTO: VehicleResponseDTO) => `${vehicleResponseDTO.vehicleDetails.power} HP`,
+                Header: TranslationService.translate('powerVehicleFormColumn'),
+                accessor: (vehicleResponseDTO: VehicleResponseDTO) =>
+                    `${vehicleResponseDTO.vehicleDetails.power} ${TranslationService.translate(
+                        'powerCodeVehicleForm'
+                    )}`,
                 Filter: (filterProps: React.PropsWithChildren<HeaderProps<BookingResponseDTO>>) => {
                     return <RangeColumnFilter inputType="number" {...filterProps} />;
                 },
             },
             {
                 id: 'vehicleDetails.productionYear',
-                Header: 'Production year',
+                Header: TranslationService.translate('productionYearVehicleFormColumn'),
                 accessor: (vehicleResponseDTO: VehicleResponseDTO) => vehicleResponseDTO.vehicleDetails.productionYear,
                 Filter: (filterProps: React.PropsWithChildren<HeaderProps<BookingResponseDTO>>) => {
                     return <RangeColumnFilter inputType="number" {...filterProps} />;
@@ -180,10 +199,10 @@ export function VehicleListSubpage(): JSX.Element {
             },
             {
                 id: 'edit',
-                Header: 'Edit',
+                Header: TranslationService.translate('editVehicleFormColumn'),
                 accessor: (vehicleResponseDTO: VehicleResponseDTO) => (
                     <ButtonTableItem
-                        buttonText={'Edit'}
+                        buttonText={TranslationService.translate('editVehicleFormButton')}
                         buttonVariant={'success'}
                         buttonRedirectPath={`/profile/vehicles/${vehicleResponseDTO.id}/edit`}
                     />
@@ -193,10 +212,10 @@ export function VehicleListSubpage(): JSX.Element {
             },
             {
                 id: 'equipment',
-                Header: 'Equipment',
+                Header: TranslationService.translate('equipmentVehicleFormColumn'),
                 accessor: (vehicleResponseDTO: VehicleResponseDTO) => (
                     <ButtonTableItem
-                        buttonText={'Equipment'}
+                        buttonText={TranslationService.translate('equipmentVehicleFormButton')}
                         buttonVariant={'info'}
                         buttonRedirectPath={`/profile/vehicles/${vehicleResponseDTO.id}/equipment`}
                     />
@@ -210,7 +229,7 @@ export function VehicleListSubpage(): JSX.Element {
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'Vehicles'} />
+            <SubpageHeader title={TranslationService.translate('vehicleListSubpageTitle')} />
             <SubpageContent>
                 <Table<VehicleResponseDTO>
                     columns={columns}

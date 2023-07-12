@@ -4,6 +4,7 @@ import ReactPaginate from 'react-paginate';
 import Select, { SingleValue } from 'react-select';
 import qs, { ParsedQs } from 'qs';
 import { useHistory } from 'react-router-dom';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface SubpagePaginationProperties {
     totalPagesCount: number;
@@ -56,8 +57,8 @@ export function SubpagePagination({
     return (
         <div className="subpage-pagination-and-counter-container">
             <ReactPaginate
-                previousLabel="Previous"
-                nextLabel="Next"
+                previousLabel={TranslationService.translate('previousSubpageButton')}
+                nextLabel={TranslationService.translate('nextSubpageButton')}
                 pageClassName="page-item"
                 pageLinkClassName="page-link"
                 previousClassName="page-item"

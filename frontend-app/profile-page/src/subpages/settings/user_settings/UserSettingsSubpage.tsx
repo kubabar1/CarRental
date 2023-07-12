@@ -5,6 +5,7 @@ import { SubpageContent } from '../../../components/subpage/content/SubpageConte
 import { AuthenticatedUserDTO } from '@car-rental/shared/model';
 import './UserSettingsSubpage.scss';
 import { UserSettingsForm } from './UserSettingsForm';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface UserSettingsSubpageProps {
     authenticatedUser?: AuthenticatedUserDTO;
@@ -17,7 +18,7 @@ export function UserSettingsSubpage({
 }: UserSettingsSubpageProps): JSX.Element {
     return (
         <SubpageContainer className="settings-container">
-            <SubpageHeader title={'User settings'} />
+            <SubpageHeader title={TranslationService.translate('userSettingsSubpageTitle')} />
             <SubpageContent>
                 {authenticatedUser && (
                     <UserSettingsForm

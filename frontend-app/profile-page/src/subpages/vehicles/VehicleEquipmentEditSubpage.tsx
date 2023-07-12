@@ -3,7 +3,7 @@ import { SubpageContainer } from '../../components/subpage/container/SubpageCont
 import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { useParams } from 'react-router-dom';
-import { EquipmentService, VehicleService } from '@car-rental/shared/service';
+import { EquipmentService, TranslationService, VehicleService } from '@car-rental/shared/service';
 import { EquipmentResponseDTO, VehicleResponseDTO, ResponseData } from '@car-rental/shared/model';
 import { Table } from '../../components/table/Table';
 import { Column } from 'react-table';
@@ -45,20 +45,20 @@ export function VehicleEquipmentEditSubpage(): JSX.Element {
         () => [
             {
                 id: 'equipmentCode',
-                Header: 'Code',
+                Header: TranslationService.translate('equipmentCodeVehicleEquipmentEditSubpageColumn'),
                 accessor: 'equipmentCode',
             },
             {
                 id: 'description',
-                Header: 'Description',
+                Header: TranslationService.translate('descriptionVehicleEquipmentEditSubpageColumn'),
                 accessor: 'description',
             },
             {
                 id: 'removeAction',
-                Header: 'Remove',
+                Header: TranslationService.translate('removeActionVehicleEquipmentEditSubpageColumn'),
                 accessor: (equipmentResponseDTO: EquipmentResponseExtDTO) => (
                     <ButtonTableItem
-                        buttonText={'Remove'}
+                        buttonText={TranslationService.translate('removeButtonActionVehicleEquipmentEditSubpage')}
                         buttonVariant={'danger'}
                         onClickAction={() =>
                             EquipmentService.removeEquipmentFromVehicle(
@@ -82,11 +82,15 @@ export function VehicleEquipmentEditSubpage(): JSX.Element {
 
     return (
         <SubpageContainer>
-            <SubpageHeader title={'Vehicle equipment edit'} />
+            <SubpageHeader title={TranslationService.translate('vehicleEquipmentEditSubpageTitle')} />
             <SubpageContent>
-                <h5 className={'mb-4 font-weight-bold'}>Vehicle details</h5>
+                <h5 className={'mb-4 font-weight-bold'}>
+                    {TranslationService.translate('vehicleEquipmentEditSubpageVehicleDetailsText')}
+                </h5>
                 {vehicle && <VehicleDetails vehicleResponseDTO={vehicle} />}
-                <h5 className={'mt-4 mb-4 font-weight-bold'}>Vehicle add equipment</h5>
+                <h5 className={'mt-4 mb-4 font-weight-bold'}>
+                    {TranslationService.translate('vehicleEquipmentEditSubpageVehicleAddEqpText')}
+                </h5>
                 {vehicle && (
                     <VehicleAddEquipment
                         vehicleId={vehicleId}
@@ -95,7 +99,9 @@ export function VehicleEquipmentEditSubpage(): JSX.Element {
                         setAllPossibleEquipments={setAllPossibleEquipments}
                     />
                 )}
-                <h5 className={'mt-4 mb-4 font-weight-bold'}>Vehicle equipment</h5>
+                <h5 className={'mt-4 mb-4 font-weight-bold'}>
+                    {TranslationService.translate('vehicleEquipmentEditSubpageVehicleEqpText')}
+                </h5>
                 {vehicle && (
                     <Table<EquipmentResponseExtDTO>
                         columns={columns}

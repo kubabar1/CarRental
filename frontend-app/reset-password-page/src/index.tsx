@@ -7,6 +7,11 @@ import { EmailConfirmationComponent } from './components/EmailSendComponent/Emai
 import { UpdatePasswordComponent } from './components/UpdatePasswordComponent/UpdatePasswordComponent';
 import { ResetPasswordComponent } from './components/ResetPasswordComponent/ResetPasswordComponent';
 import { InvalidTokenComponent } from './components/IncorrectTokenComponent/InvalidTokenComponent';
+import { translationsEn } from './translations/TranslationsEn';
+import { translationsPl } from './translations/TranslationsPl';
+import { TranslationService } from '@car-rental/shared/service';
+
+TranslationService.configureDefault('resetPassword', translationsEn, translationsPl);
 
 const basePath = '/reset-password';
 

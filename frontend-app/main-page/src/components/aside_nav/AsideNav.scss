@@ -1,3 +1,35 @@
 #aside-nav {
     height: 30px;
+
+    .top-bar-flag img {
+        width: 25px;
+    }
+
+    .top-bar-flag:first-child {
+        margin-right: 10px;
+    }
+
+    .lang-navbar-nav {
+        --navbar-text-color: 255, 255, 255;
+
+        color: rgba(var(--navbar-text-color), 50%) !important;
+        font-weight: bold;
+
+        li {
+            margin: 0 5px;
+        }
+
+        .lang-glob-icon {
+            display: flex;
+            align-items: center;
+        }
+
+        .active-lang {
+            color: #fff;
+        }
+
+        .lang:hover {
+            cursor: pointer;
+        }
+    }
 }

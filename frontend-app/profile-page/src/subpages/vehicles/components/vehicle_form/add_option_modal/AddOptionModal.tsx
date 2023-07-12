@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import './AddOptionModal.scss';
 import { RegisterOptions } from 'react-hook-form/dist/types/validator';
+import { TranslationService } from '@car-rental/shared/service';
 
 type Option = {
     value: string;
@@ -69,10 +70,10 @@ export function AddOptionModal({
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={onClose} variant={'outline-primary'}>
-                    Close
+                    {TranslationService.translate('closeButtonAddOptionModal')}
                 </Button>
                 <Button disabled={!formState.isValid} type="submit" onClick={handleSubmit(addOption)}>
-                    Add
+                    {TranslationService.translate('addButtonAddOptionModal')}
                 </Button>
             </Modal.Footer>
         </Modal>

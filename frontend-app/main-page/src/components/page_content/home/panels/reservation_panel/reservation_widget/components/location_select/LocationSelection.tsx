@@ -4,6 +4,7 @@ import { Controller, Control, FieldValues, FieldError, RegisterOptions, Auto, Pa
 import Select from 'react-select';
 import { LocalisationResponseDTO } from '@car-rental/shared/model';
 import './LocationSelection.scss';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface CitySelectionProps<FieldValuesType extends FieldValues> {
     allLocations: LocalisationResponseDTO[];
@@ -37,7 +38,7 @@ export function LocationSelection<FieldValuesType extends FieldValues>({
     );
     return (
         <div className="location-select-group form-group">
-            <label>City:</label>
+            <label>{TranslationService.translate('city')}</label>
             <Controller
                 name={name}
                 control={control}

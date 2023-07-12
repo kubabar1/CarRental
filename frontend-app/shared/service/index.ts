@@ -8,5 +8,6 @@ export * from './LocationService';
 export * from './RatingService';
 export * from './RegistrationService';
 export * from './ResetPasswordService';
+export * from './TranslationService';
 export * from './UserService';
 export * from './VehicleService';

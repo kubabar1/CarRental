@@ -6,6 +6,11 @@ import './registration.scss';
 import { RegistrationComponent } from './components/registration/RegistrationComponent';
 import { RegistrationStatusComponent } from './components/registration-confirmation/RegistrationStatusComponent';
 import { RegistrationInvalidTokenComponent } from './components/registration-invalid-token/RegistrationInvalidTokenComponent';
+import { translationsEn } from './translations/TranslationsEn';
+import { translationsPl } from './translations/TranslationsPl';
+import { TranslationService } from '@car-rental/shared/service';
+
+TranslationService.configureDefault('registration', translationsEn, translationsPl);
 
 const basePath = '/registration';
 

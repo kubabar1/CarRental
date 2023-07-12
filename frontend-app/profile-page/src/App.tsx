@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigation } from './components/nav/Navigation';
 import { Switch } from 'react-router-dom';
-import { AuthService } from '@car-rental/shared/service';
+import { AuthService, TranslationService } from '@car-rental/shared/service';
 import {
     bookingsAuditLogsListPath,
     bookingsListPath,
@@ -298,7 +298,7 @@ export function App(): JSX.Element {
                 ) : (
                     <div className="center-div-vertically-and-horizontally">
                         <div className="container-fluid">
-                            <p>You need to authorize. Go to login page.</p>
+                            <p>{TranslationService.translate('youNeedToAuthorizeText')}</p>
                             <br />
                             <Button
                                 variant="primary"
@@ -306,7 +306,7 @@ export function App(): JSX.Element {
                                     window.location.href = '/login';
                                 }}
                             >
-                                Login
+                                {TranslationService.translate('loginButton')}
                             </Button>
                         </div>
                     </div>

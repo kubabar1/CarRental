@@ -1,5 +1,6 @@
 import React from 'react';
 import { VehicleResponseDTO } from '@car-rental/shared/model';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface CarPropertiesProps {
     vehicle: VehicleResponseDTO;
@@ -21,7 +22,7 @@ export function VehicleProperties(props: CarPropertiesProps): JSX.Element {
     return (
         <section>
             <div className="text-left">
-                <h3 className="mt-2 ml-3 mb-4">Car details</h3>
+                <h3 className="mt-2 ml-3 mb-4">{TranslationService.translate('carDetails')}</h3>
             </div>
 
             <div className="row">

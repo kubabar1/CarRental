@@ -2,6 +2,7 @@ import React from 'react';
 import { DropEvent, DropzoneOptions, FileRejection, useDropzone } from 'react-dropzone';
 import { PathString, FieldPathValue, FieldValues } from 'react-hook-form';
 import { vehicleImageFromServer } from '../../../../constants/PathsServer';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface DropzoneProperties<FieldValuesType extends FieldValues> extends DropzoneOptions {
     onDrop?: (acceptedFiles: FileWithPreview[], fileRejections: FileRejection[], event: DropEvent) => void;
@@ -41,6 +42,7 @@ export function Dropzone<FieldValuesType extends FieldValues>({
                                     URL.revokeObjectURL(fileWithPreview.objectUrlPreview);
                                 }
                             }}
+                            alt="object preview"
                         />
                     </div>
                 </div>
@@ -49,7 +51,7 @@ export function Dropzone<FieldValuesType extends FieldValues>({
             return (
                 <div className="thumb" key={fileWithPreview.name}>
                     <div className="thumb-inner">
-                        <img src={vehicleImageFromServer(fileWithPreview.name)} />
+                        <img src={vehicleImageFromServer(fileWithPreview.name)} alt="vehicle image" />
                     </div>
                 </div>
             );
@@ -62,7 +64,7 @@ export function Dropzone<FieldValuesType extends FieldValues>({
         <section>
             <div {...getRootProps({ className: 'dropzone' })}>
                 <input {...getInputProps()} />
-                <p>{"Drag 'n' drop some files here, or click to select files"}</p>
+                <p>{TranslationService.translate('dropzoneBackgroundText')}</p>
             </div>
             <aside className="thumbs-container">{renderThumb(file)}</aside>
         </section>

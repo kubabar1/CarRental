@@ -2,51 +2,52 @@ import React from 'react';
 import './OurTeam.scss';
 import { Employee, EmployeeProperties } from './employee/Employee';
 import userImage from '../../../../../images/user_images/user_image.png';
+import { TranslationService } from '@car-rental/shared/service';
 
 const employees: EmployeeProperties[] = [
     {
         employeeName: 'Harding Forbes',
-        employeePosition: 'Renting employee',
+        employeePosition: 'rentingEmployee',
         employeeImage: userImage,
     },
     {
         employeeName: 'Zeus Williamson',
-        employeePosition: 'Renting employee',
+        employeePosition: 'rentingEmployee',
         employeeImage: userImage,
     },
     {
         employeeName: 'Madeson Logan',
-        employeePosition: 'Office employee',
+        employeePosition: 'officeEmployee',
         employeeImage: userImage,
     },
     {
         employeeName: 'Hanae Hoover',
-        employeePosition: 'Blogger',
+        employeePosition: 'blogger',
         employeeImage: userImage,
     },
     {
         employeeName: 'Dale Francis',
-        employeePosition: 'Office employee',
+        employeePosition: 'officeEmployee',
         employeeImage: userImage,
     },
     {
         employeeName: 'Gabriel Sears',
-        employeePosition: 'Renting employee',
+        employeePosition: 'rentingEmployee',
         employeeImage: userImage,
     },
     {
         employeeName: 'Isaac Mcgee',
-        employeePosition: 'Renting employee',
+        employeePosition: 'rentingEmployee',
         employeeImage: userImage,
     },
     {
         employeeName: 'Derek Moreno',
-        employeePosition: 'Office employee',
+        employeePosition: 'officeEmployee',
         employeeImage: userImage,
     },
     {
         employeeName: 'Aladdin Michael',
-        employeePosition: 'Renting employee',
+        employeePosition: 'rentingEmployee',
         employeeImage: userImage,
     },
 ];
@@ -54,7 +55,7 @@ const employees: EmployeeProperties[] = [
 export function OurTeam(): JSX.Element {
     return (
         <div id="our-team-container" className="flow-container">
-            <h1 className="pt-4">Our team</h1>
+            <h1 className="pt-4">{TranslationService.translate('ourTeam')}</h1>
             <div className="container">
                 <div className="row">
                     {employees.map((employee: EmployeeProperties, index: number) => (

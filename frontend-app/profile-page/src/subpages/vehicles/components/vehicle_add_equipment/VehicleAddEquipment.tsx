@@ -2,7 +2,7 @@ import React from 'react';
 import Select, { MultiValue } from 'react-select';
 import './VehicleAddEquipment.scss';
 import { Button } from 'react-bootstrap';
-import { EquipmentService } from '@car-rental/shared/service';
+import { EquipmentService, TranslationService } from '@car-rental/shared/service';
 import { EquipmentResponseDTO, VehicleResponseDTO, ResponseData } from '@car-rental/shared/model';
 import { EquipmentResponseExtDTO, mapEqpResponseToExt } from '../../VehicleEquipmentEditSubpage';
 
@@ -60,7 +60,7 @@ export const VehicleAddEquipment = ({
                         setEquipmentsToAddList([]);
                     }}
                 >
-                    Add
+                    {TranslationService.translate('vehicleEquipmentEditSubpageVehicleAddButton')}
                 </Button>
             </div>
         </div>

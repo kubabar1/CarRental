@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import carRentalLogo from '../../images/car_rental_logo_name.png';
 import './ResetPasswordComponent.scss';
 import { homePath, loginPath } from '../../constants/Paths';
-import { ResetPasswordService } from '@car-rental/shared/service';
+import { ResetPasswordService, TranslationService } from '@car-rental/shared/service';
 import { UserEmailExistsDTO, ResponseData } from '@car-rental/shared/model';
 import { useHistory } from 'react-router-dom';
 
@@ -19,7 +19,7 @@ export function ResetPasswordComponent(): JSX.Element {
             ResetPasswordService.checkIfUserWithEmailExists(email)
                 .then((userEmailExists: ResponseData<UserEmailExistsDTO>) => {
                     if (!userEmailExists.responseBody.userEmailExists) {
-                        setEmailError('User with given email does not exists');
+                        setEmailError(TranslationService.translate('emailErrorUserNotExists'));
                     } else {
                         setEmailError(undefined);
                         ResetPasswordService.sendResetPasswordEmail(email)
@@ -35,7 +35,7 @@ export function ResetPasswordComponent(): JSX.Element {
                     setIsSubmitButtonDisabled(false);
                 });
         } else {
-            setEmailError('Email cannot be empty');
+            setEmailError(TranslationService.translate('emailErrorRequired'));
         }
     };
 
@@ -49,7 +49,7 @@ export function ResetPasswordComponent(): JSX.Element {
                             type="email"
                             className="form-control"
                             id="inputEmail"
-                            placeholder="Email"
+                            placeholder={TranslationService.translate('inputEmailPlaceholder')}
                             required
                             autoFocus
                             value={email}
@@ -67,18 +67,18 @@ export function ResetPasswordComponent(): JSX.Element {
                         type="submit"
                         disabled={isSubmitButtonDisabled}
                     >
-                        Reset password
+                        {TranslationService.translate('resetPasswordButton')}
                     </button>
                 </form>
                 <div className="row">
                     <p className="mt-3 reset-password-link pl-3">
                         <a href={homePath} className="linkstyle">
-                            Home
+                            {TranslationService.translate('homeLink')}
                         </a>
                     </p>
                     <p className="mt-3 ml-auto reset-password-link pr-3">
                         <a href={loginPath} className="linkstyle">
-                            Login
+                            {TranslationService.translate('loginLink')}
                         </a>
                     </p>
                 </div>

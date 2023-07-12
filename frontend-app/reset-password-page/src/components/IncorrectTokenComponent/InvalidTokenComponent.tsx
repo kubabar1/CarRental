@@ -2,6 +2,7 @@ import React from 'react';
 import notOkIcon from '../../images/not-ok-icon.png';
 import { loginPath } from '../../constants/Paths';
 import './InvalidTokenComponent.scss';
+import { TranslationService } from '@car-rental/shared/service';
 
 export function InvalidTokenComponent(): JSX.Element {
     return (
@@ -10,13 +11,13 @@ export function InvalidTokenComponent(): JSX.Element {
                 <div className="ok-icon-div">
                     <img className="mb-2 ok-icon" src={notOkIcon} alt="" />
                 </div>
-                <h1 className="h3 mb-4 font-weight-normal text-center">{'Invalid token'}</h1>
-                <p className="mb-4 text-center">
-                    {'Given token is invalid or expired - try reset Your password again.'}
-                </p>
+                <h1 className="h3 mb-4 font-weight-normal text-center">
+                    {TranslationService.translate('invalidTokenErrorHeader')}
+                </h1>
+                <p className="mb-4 text-center">{TranslationService.translate('invalidTokenError')}</p>
                 <p className="login-link pl-3">
                     <a href={loginPath} className="linkstyle">
-                        Login
+                        {TranslationService.translate('loginLink')}
                     </a>
                 </p>
             </div>

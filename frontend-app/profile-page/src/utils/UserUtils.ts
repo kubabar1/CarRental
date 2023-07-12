@@ -1,7 +1,10 @@
 import { UserRoleResponseDTO } from '@car-rental/shared/model';
+import { TranslationService } from '@car-rental/shared/service';
 
 export const mapUserRolesDtoToStringArray = (userRoles: UserRoleResponseDTO[]): string[] => {
-    return userRoles ? userRoles.map((userRole: UserRoleResponseDTO) => userRole.label) : [];
+    return userRoles
+        ? userRoles.map((userRole: UserRoleResponseDTO) => TranslationService.translate(userRole.type))
+        : [];
 };
 
 export const userHasAnyRole = (userRoles: string[], allowedRoles?: string[]): boolean => {

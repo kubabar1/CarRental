@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import carRentalLogo from '../../images/car_rental_logo_name.png';
 import './RegistrationComponent.scss';
 import { homePath } from '../../constants/PathsApi';
-import { RegistrationService } from '@car-rental/shared/service';
+import { RegistrationService, TranslationService } from '@car-rental/shared/service';
 import { CreateUserDTO, UserResponseDTO, ResponseData } from '@car-rental/shared/model';
 import PasswordStrengthBar from 'react-password-strength-bar';
 import { Input } from './components/Input';
@@ -63,93 +63,93 @@ export function RegistrationComponent(): JSX.Element {
     const validateUserData = (): boolean => {
         let isValid = true;
         if (!firstName) {
-            setFirstNameError('First name cannot be empty');
+            setFirstNameError(TranslationService.translate('firstNameErrorRequired'));
             isValid = false;
         }
         if (!!firstName && firstName.length > 40) {
-            setFirstNameError('First name should be shorter than 40 characters');
+            setFirstNameError(TranslationService.translate('firstNameErrorMaxLen'));
             isValid = false;
         }
 
         if (!lastName) {
-            setLastNameError('Last name cannot be empty');
+            setLastNameError(TranslationService.translate('lastNameErrorRequired'));
             isValid = false;
         }
         if (!!lastName && lastName.length > 40) {
-            setLastNameError('Last name should be shorter than 40 characters');
+            setLastNameError(TranslationService.translate('lastNameErrorMaxLen'));
             isValid = false;
         }
 
         if (!email) {
-            setEmailError('Email cannot be empty');
+            setEmailError(TranslationService.translate('emailErrorRequired'));
             isValid = false;
         }
         if (!!email && !email.match(EMAIL_PATTERN)) {
-            setEmailError('Incorrect email');
+            setEmailError(TranslationService.translate('emailErrorPattern'));
             isValid = false;
         }
 
         if (!phone) {
-            setPhoneError('Phone cannot be empty');
+            setPhoneError(TranslationService.translate('phoneErrorRequired'));
             isValid = false;
         }
         if (!!phone && phone.length > 20) {
-            setPhoneError('Phone should be shorter than 20 characters');
+            setPhoneError(TranslationService.translate('phoneErrorMaxLen'));
             isValid = false;
         }
 
         if (!birthDate) {
-            setBirthDateError('Birth date cannot be empty');
+            setBirthDateError(TranslationService.translate('birthDateErrorRequired'));
             isValid = false;
         }
 
         if (!password) {
-            setPasswordError('Password cannot be empty');
+            setPasswordError(TranslationService.translate('passwordErrorRequired'));
             isValid = false;
         }
         if (!!password && password.length < 8) {
-            setPasswordError('Password should be longer than 8 characters');
+            setPasswordError(TranslationService.translate('passwordErrorMinLen'));
             isValid = false;
         }
         if (!!password && password.length > 16) {
-            setPasswordError('Password should be shorter than 16 characters');
+            setPasswordError(TranslationService.translate('passwordErrorMaxLen'));
             isValid = false;
         }
         if (passwordScore < 3) {
-            setPasswordError('Password is too weak');
+            setPasswordError(TranslationService.translate('passwordErrorScore'));
             isValid = false;
         }
         if (!!password && !hasNumber(password)) {
-            setPasswordError('Password should contain at least 1 number');
+            setPasswordError(TranslationService.translate('passwordErrorNumber'));
             isValid = false;
         }
         if (!!password && !hasLowerCase(password)) {
-            setPasswordError('Password should contain at least 1 lower case character');
+            setPasswordError(TranslationService.translate('passwordErrorLowerCase'));
             isValid = false;
         }
         if (!!password && !hasUpperCase(password)) {
-            setPasswordError('Password should contain at least 1 upper case character');
+            setPasswordError(TranslationService.translate('passwordErrorUpperCase'));
             isValid = false;
         }
         if (!!password && hasWhiteSpace(password)) {
-            setPasswordError('Password should not contain whitespace character');
+            setPasswordError(TranslationService.translate('passwordErrorWhiteSpace'));
             isValid = false;
         }
         if (!!password && !hasSpecialCharacter(password)) {
-            setPasswordError('Password should contain at least 1 special character');
+            setPasswordError(TranslationService.translate('passwordErrorSpecialCharacter'));
             isValid = false;
         }
 
         if (!matchingPassword) {
-            setMatchingPasswordError('Matching password cannot be empty');
+            setMatchingPasswordError(TranslationService.translate('matchingPasswordErrorRequired'));
             isValid = false;
         }
         if (!!matchingPassword && matchingPassword.length > 16) {
-            setMatchingPasswordError('Matching password should be shorter than 16 characters');
+            setMatchingPasswordError(TranslationService.translate('matchingPasswordErrorMaxLen'));
             isValid = false;
         }
         if (matchingPassword !== password) {
-            setMatchingPasswordError('Matching password is different from the password');
+            setMatchingPasswordError(TranslationService.translate('matchingPasswordErrorDiff'));
             isValid = false;
         }
         return isValid;
@@ -208,66 +208,66 @@ export function RegistrationComponent(): JSX.Element {
             <div className="col-md-6 offset-md-3 card-body shadow-lg">
                 <form onSubmit={handleSubmit}>
                     <img className="mb-4" src={carRentalLogo} alt="" width="100%" />
-                    <h1 className="h3 mb-3 font-weight-normal">Register</h1>
+                    <h1 className="h3 mb-3 font-weight-normal">{TranslationService.translate('registerHeader')}</h1>
 
                     <Input
-                        label={'Name:'}
+                        label={TranslationService.translate('nameLabel')}
                         inputValue={firstName}
                         setInputValue={setFirstName}
                         inputType={'text'}
-                        inputPlaceholder={'Name'}
+                        inputPlaceholder={TranslationService.translate('namePlaceholder')}
                         inputError={firstNameError}
                         autoFocus
                         required
                     />
 
                     <Input
-                        label={'Last name:'}
+                        label={TranslationService.translate('lastNameLabel')}
                         inputValue={lastName}
                         setInputValue={setLastName}
                         inputType={'text'}
-                        inputPlaceholder={'Last name'}
+                        inputPlaceholder={TranslationService.translate('lastNamePlaceholder')}
                         inputError={lastNameError}
                         required
                     />
 
                     <Input
-                        label={'Phone:'}
+                        label={TranslationService.translate('phoneLabel')}
                         inputValue={phone}
                         setInputValue={setPhone}
                         inputType={'text'}
-                        inputPlaceholder={'Phone'}
+                        inputPlaceholder={TranslationService.translate('phonePlaceholder')}
                         inputError={phoneError}
                         required
                     />
 
                     <Input
-                        label={'Birth date:'}
+                        label={TranslationService.translate('birthDateLabel')}
                         inputValue={birthDate}
                         setInputValue={setBirthDate}
                         inputType={'date'}
-                        inputPlaceholder={'Birth date'}
+                        inputPlaceholder={TranslationService.translate('birthDatePlaceholder')}
                         inputError={birthDateError}
                         max={new Date().toJSON().slice(0, 10)}
                         required
                     />
 
                     <Input
-                        label={'Email:'}
+                        label={TranslationService.translate('emailLabel')}
                         inputValue={email}
                         setInputValue={setEmail}
                         inputType={'email'}
-                        inputPlaceholder={'Email'}
+                        inputPlaceholder={TranslationService.translate('emailPlaceholder')}
                         inputError={emailError}
                         required
                     />
 
                     <Input
-                        label={'Password:'}
+                        label={TranslationService.translate('passwordLabel')}
                         inputValue={password}
                         setInputValue={setPassword}
                         inputType={'password'}
-                        inputPlaceholder={'Password'}
+                        inputPlaceholder={TranslationService.translate('passwordPlaceholder')}
                         inputError={passwordError}
                         required
                         autoComplete={false}
@@ -283,23 +283,23 @@ export function RegistrationComponent(): JSX.Element {
                     </Input>
 
                     <Input
-                        label={'Password again:'}
+                        label={TranslationService.translate('passwordAgainLabel')}
                         inputValue={matchingPassword}
                         setInputValue={setMatchingPassword}
                         inputType={'password'}
-                        inputPlaceholder={'Password again'}
+                        inputPlaceholder={TranslationService.translate('passwordAgainPlaceholder')}
                         inputError={matchingPasswordError}
                         required
                         autoComplete={false}
                     />
 
                     <button className="btn btn-lg btn-primary btn-block mt-5" type="submit">
-                        Register
+                        {TranslationService.translate('registerButton')}
                     </button>
                 </form>
                 <p className="mt-3 login-link pl-3">
                     <a href={homePath} className="linkstyle">
-                        Home
+                        {TranslationService.translate('homeLink')}
                     </a>
                 </p>
             </div>
