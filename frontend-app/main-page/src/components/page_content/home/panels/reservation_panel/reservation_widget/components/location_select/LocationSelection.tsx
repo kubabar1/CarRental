@@ -47,6 +47,7 @@ export function LocationSelection<FieldValuesType extends FieldValues>({
                     <div className="select-row">
                         <Select<LocationOptionType>
                             options={options}
+                            placeholder={TranslationService.translate('selectPlaceholder')}
                             value={options.filter((val: LocationOptionType) => {
                                 return val.value === value;
                             })}

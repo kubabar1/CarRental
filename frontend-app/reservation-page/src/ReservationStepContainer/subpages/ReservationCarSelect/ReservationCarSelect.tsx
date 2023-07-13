@@ -9,6 +9,7 @@ import { UseFormHandleSubmit } from 'react-hook-form/dist/types/form';
 import { FieldError } from 'react-hook-form/dist/types';
 import { VehicleModal } from './components/vehicle_modal/VehicleModal';
 import { ReactHookFormStorage } from '../../../utils/StorageUtil';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface ReservationCarSelectProperties<FieldValuesType extends FieldValues> {
     control: Control<FieldValuesType>;
@@ -50,7 +51,7 @@ export function ReservationCarSelect<FieldValuesType extends FieldValues>({
                 <form onSubmit={onClickNext(handleClickNext)}>
                     <div className="shadow card">
                         <div className="card-header text-center">
-                            <h2>{'Select vehicle'}</h2>
+                            <h2>{TranslationService.translate('reservationCarSelectHeader')}</h2>
                         </div>
                         <div className="car-item-container card-body">
                             {vehicles && (
@@ -67,19 +68,19 @@ export function ReservationCarSelect<FieldValuesType extends FieldValues>({
                             <div className="card-body">
                                 <h4 className="ml-4 mt-3">
                                     <div>
-                                        {'Selected vehicle: '}
+                                        {TranslationService.translate('selectedVehicleReservationCarSelectLabel')}
                                         <strong>
                                             {selectedVehicle && selectedVehicle.brand + ' ' + selectedVehicle.model}
                                         </strong>
                                     </div>
                                     <div className="mt-3">
-                                        {'Price: '}
+                                        {TranslationService.translate('priceReservationCarSelectLabel')}
                                         <strong>{selectedVehicle && selectedVehicle.dailyFee} $</strong>
                                     </div>
                                 </h4>
                                 {vehiclesError && (
                                     <div key="input_Error" className="alert alert-danger my-4">
-                                        Vehicle need to be selected.
+                                        {TranslationService.translate('carSelectReservationCarSelectLabelError')}
                                     </div>
                                 )}
                                 <div className="row mb-3 mt-5">
@@ -87,11 +88,11 @@ export function ReservationCarSelect<FieldValuesType extends FieldValues>({
                                         to={reservationDataSubpageLink}
                                         className="linkstyle btn btn-lg btn-secondary btn-block col-md-3 ml-5"
                                     >
-                                        Back
+                                        {TranslationService.translate('carSelectReservationCarSelectBackButton')}
                                     </Link>
                                     <input
                                         type="submit"
-                                        value="Next"
+                                        value={TranslationService.translate('carSelectReservationCarSelectNextButton')}
                                         className="next-button btn btn-lg btn-primary btn-block  col-md-3 ml-auto mr-5 mt-0"
                                     />
                                 </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { AuthenticatedUserDTO } from '@car-rental/shared/model';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface ReservationConfirmationProperties {
     authenticatedUser: AuthenticatedUserDTO;
@@ -14,13 +15,13 @@ export function PersonalData({
 
     return (
         <div>
-            <h3>{'Personal data'}</h3>
+            <h3>{TranslationService.translate('personalDataHeader')}</h3>
             <hr />
             <div>
-                {renderFormGroupItem('Name: ', name)}
-                {renderFormGroupItem('Surname: ', surname)}
-                {renderFormGroupItem('Phone: ', phone)}
-                {renderFormGroupItem('E-mail: ', email)}
+                {renderFormGroupItem(TranslationService.translate('namePersonalData'), name)}
+                {renderFormGroupItem(TranslationService.translate('surnamePersonalData'), surname)}
+                {renderFormGroupItem(TranslationService.translate('phonePersonalData'), phone)}
+                {renderFormGroupItem(TranslationService.translate('emailPersonalData'), email)}
             </div>
         </div>
     );

@@ -2,6 +2,7 @@ import React from 'react';
 import { carImagesMainPageCarList } from '../../../../../../constants/PathsServer';
 import './VehicleItem.scss';
 import { VehicleResponseDTO } from '@car-rental/shared/model';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface CarItemProperties {
     vehicle: VehicleResponseDTO;
@@ -49,7 +50,7 @@ export function VehicleItem({
                             setModalVehicleDetailsId(vehicle.id);
                         }}
                     >
-                        Details
+                        {TranslationService.translate('vehicleItemDetailsButton')}
                     </a>
                 </div>
             </div>

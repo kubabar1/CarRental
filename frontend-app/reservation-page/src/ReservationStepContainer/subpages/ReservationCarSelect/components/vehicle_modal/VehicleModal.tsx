@@ -6,6 +6,7 @@ import { VehicleResponseDTO } from '@car-rental/shared/model';
 import { VehicleDetailsHeader } from './components/vehicle_details_header/VehicleDetailsHeader';
 import { VehicleProperties } from './components/details_list/VehicleProperties';
 import { VehicleEquipment } from './components/vehicle_equipment/VehicleEquipment';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface AddEquipmentModalProperties {
     isOpen: boolean;
@@ -32,7 +33,7 @@ export function VehicleModal({
             className={'vehicle-details-modal'}
         >
             <Modal.Header>
-                <Modal.Title>{'Vehicle details'}</Modal.Title>
+                <Modal.Title>{TranslationService.translate('vehicleModalHeader')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div>
@@ -44,7 +45,7 @@ export function VehicleModal({
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={onClose}>Close</Button>
+                <Button onClick={onClose}>{TranslationService.translate('vehicleModalCloseButton')}</Button>
             </Modal.Footer>
         </Modal>
     );

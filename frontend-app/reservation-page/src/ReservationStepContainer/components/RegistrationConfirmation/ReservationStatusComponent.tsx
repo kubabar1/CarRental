@@ -3,6 +3,7 @@ import okIcon from '../../../images/ok-icon.png';
 import notOkIcon from '../../../images/not-ok-icon.png';
 import './ReservationStatusComponent.scss';
 import { endpoints } from '../../../constants/PathsAPI';
+import { TranslationService } from '@car-rental/shared/service';
 
 export enum ReservationStatus {
     OK = 'ok',
@@ -22,11 +23,13 @@ export function ReservationStatusComponent(props: ReservationStatusComponentProp
                     <img className="mb-2 ok-icon" src={isStatusOk ? okIcon : notOkIcon} alt="" />
                 </div>
                 <h1 className="h3 mb-4 font-weight-normal text-center">
-                    {isStatusOk ? 'Reservation successful!' : 'Reservation failed!'}
+                    {isStatusOk
+                        ? TranslationService.translate('reservationSuccessMessage')
+                        : TranslationService.translate('reservationFailedMessage')}
                 </h1>
                 <p className="login-link pl-3">
                     <a href={endpoints.homeEndpoint} className="linkstyle">
-                        Home
+                        {TranslationService.translate('homeLink')}
                     </a>
                 </p>
             </div>

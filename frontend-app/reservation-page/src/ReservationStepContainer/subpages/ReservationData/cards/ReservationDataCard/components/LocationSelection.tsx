@@ -5,6 +5,7 @@ import { Auto, Controller, PathString } from 'react-hook-form';
 import Select from 'react-select';
 import { LocalisationResponseDTO } from '@car-rental/shared/model';
 import { ReactHookFormStorage } from '../../../../../../utils/StorageUtil';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface LocationSelectionProps<FieldValuesType extends FieldValues> {
     allLocations: LocalisationResponseDTO[];
@@ -42,7 +43,7 @@ export function LocationSelection<FieldValuesType extends FieldValues>({
     );
     return (
         <div className="location-select-group">
-            <label>Localisation:</label>
+            <label>{TranslationService.translate('localisationSelectionLabel')}</label>
             <Controller
                 name={inputName}
                 control={control}

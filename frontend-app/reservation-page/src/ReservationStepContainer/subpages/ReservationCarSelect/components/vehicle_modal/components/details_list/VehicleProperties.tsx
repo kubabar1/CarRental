@@ -1,5 +1,6 @@
 import React from 'react';
 import { VehicleResponseDTO } from '@car-rental/shared/model';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface CarPropertiesProps {
     vehicle: VehicleResponseDTO;
@@ -15,31 +16,59 @@ function renderProps(name: string, value: string): JSX.Element {
 
 export function VehicleProperties(props: CarPropertiesProps): JSX.Element {
     const vehicle = props.vehicle;
-    const frontWheelDrive = vehicle.vehicleDetails.frontWheelDrive ? 'Yes' : 'No';
-    const metallic = vehicle.vehicleDetails.metallic ? 'Yes' : 'No';
+    const frontWheelDrive = vehicle.vehicleDetails.frontWheelDrive
+        ? TranslationService.translate('vehiclePropertiesFrontWheelDriveYes')
+        : TranslationService.translate('vehiclePropertiesFrontWheelDriveNo');
+    const metallic = vehicle.vehicleDetails.metallic
+        ? TranslationService.translate('vehiclePropertiesMetallicYes')
+        : TranslationService.translate('vehiclePropertiesMetallicNo');
 
     return (
         <section>
             <div className="text-left">
-                <h3 className="mt-2 ml-3 mb-4">Car details</h3>
+                <h3 className="mt-2 ml-3 mb-4">{TranslationService.translate('carDetailsHeaderVehicleProperties')}</h3>
             </div>
 
             <div className="row">
                 <div className="col-md-6 text-left">
-                    {renderProps('Body type', vehicle.vehicleDetails.bodyType)}
-                    {renderProps('Vehicle brand', vehicle.brand)}
-                    {renderProps('Vehicle model', vehicle.model)}
-                    {renderProps('Production year', vehicle.vehicleDetails.productionYear.toString())}
-                    {renderProps('Fuel type', vehicle.vehicleDetails.fuelType)}
-                    {renderProps('Power', vehicle.vehicleDetails.power.toString() + ' KM')}
+                    {renderProps(
+                        TranslationService.translate('bodyTypeVehiclePropertiesLabel'),
+                        vehicle.vehicleDetails.bodyType
+                    )}
+                    {renderProps(TranslationService.translate('vehicleBrandVehiclePropertiesLabel'), vehicle.brand)}
+                    {renderProps(TranslationService.translate('vehicleModelVehiclePropertiesLabel'), vehicle.model)}
+                    {renderProps(
+                        TranslationService.translate('productionYearVehiclePropertiesLabel'),
+                        vehicle.vehicleDetails.productionYear.toString()
+                    )}
+                    {renderProps(
+                        TranslationService.translate('fuelTypeVehiclePropertiesLabel'),
+                        vehicle.vehicleDetails.fuelType
+                    )}
+                    {renderProps(
+                        TranslationService.translate('powerVehiclePropertiesLabel'),
+                        vehicle.vehicleDetails.power.toString() + ' KM'
+                    )}
                 </div>
                 <div className="col-md-6 text-left">
-                    {renderProps('Gearbox', vehicle.vehicleDetails.gearbox)}
-                    {renderProps('Doors number', vehicle.vehicleDetails.doorsNumber.toString())}
-                    {renderProps('Seats number', vehicle.vehicleDetails.seatsNumber.toString())}
-                    {renderProps('Color', vehicle.vehicleDetails.color)}
-                    {renderProps('Front-wheel drive', frontWheelDrive)}
-                    {renderProps('Metallic', metallic)}
+                    {renderProps(
+                        TranslationService.translate('gearboxVehiclePropertiesLabel'),
+                        vehicle.vehicleDetails.gearbox
+                    )}
+                    {renderProps(
+                        TranslationService.translate('doorsVehiclePropertiesLabel'),
+                        vehicle.vehicleDetails.doorsNumber.toString()
+                    )}
+                    {renderProps(
+                        TranslationService.translate('seatsVehiclePropertiesLabel'),
+                        vehicle.vehicleDetails.seatsNumber.toString()
+                    )}
+                    {renderProps(
+                        TranslationService.translate('colorVehiclePropertiesLabel'),
+                        vehicle.vehicleDetails.color
+                    )}
+                    {renderProps(TranslationService.translate('frontWheelVehiclePropertiesLabel'), frontWheelDrive)}
+                    {renderProps(TranslationService.translate('metallicVehiclePropertiesLabel'), metallic)}
                 </div>
             </div>
         </section>

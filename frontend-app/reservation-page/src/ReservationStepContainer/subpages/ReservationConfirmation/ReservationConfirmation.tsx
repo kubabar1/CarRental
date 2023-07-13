@@ -16,7 +16,7 @@ import { SelectedVehicleData } from './components/SelectedVehicleData';
 import './ReservationConfirmation.scss';
 import { ReservationCost } from './components/ReservationCost';
 import { UseFormHandleSubmit } from 'react-hook-form/dist/types/form';
-import { BookingUserService } from '@car-rental/shared/service';
+import { BookingUserService, TranslationService } from '@car-rental/shared/service';
 import { ReactHookFormStorage } from '../../../utils/StorageUtil';
 
 interface ReservationConfirmationProperties<FieldValuesType extends FieldValues> {
@@ -82,7 +82,9 @@ export function ReservationConfirmation<FieldValuesType extends FieldValues>({
                 <form onSubmit={onClickReserve(handleFormSubmit)}>
                     <div className="shadow card">
                         <div className="card-header">
-                            <h2 className="text-center">Confirm reservation</h2>
+                            <h2 className="text-center">
+                                {TranslationService.translate('confirmReservationHeaderReservationConfirmation')}
+                            </h2>
                         </div>
                         <div className="card-body">
                             <PersonalData
@@ -110,13 +112,13 @@ export function ReservationConfirmation<FieldValuesType extends FieldValues>({
                                     to={carSelectSubpageLink}
                                     className="linkstyle btn btn-lg btn-secondary btn-block col-md-2 ml-5"
                                 >
-                                    Back
+                                    {TranslationService.translate('backReservationConfirmationButton')}
                                 </Link>
                                 <button
                                     className="btn btn-lg btn-success btn-block  col-md-2 ml-auto mr-5 mt-0"
                                     type="submit"
                                 >
-                                    Rent car
+                                    {TranslationService.translate('rentCarReservationConfirmationButton')}
                                 </button>
                             </div>
                         </div>

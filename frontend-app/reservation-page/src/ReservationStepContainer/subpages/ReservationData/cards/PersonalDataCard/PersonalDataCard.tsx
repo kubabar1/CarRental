@@ -1,6 +1,7 @@
 import React from 'react';
 import { AuthenticatedUserDTO } from '@car-rental/shared/model';
 import './PersonalDataCard.scss';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface PersonalDataCardProperties {
     authenticatedUser: AuthenticatedUserDTO;
@@ -19,13 +20,13 @@ export function PersonalDataCard({ authenticatedUser }: PersonalDataCardProperti
     return (
         <div className="shadow card personal-data-card">
             <div className="card-header text-center">
-                <h2>{'Personal data'}</h2>
+                <h2>{TranslationService.translate('personalDataCardHeader')}</h2>
             </div>
             <div className="card-body">
-                {renderFormGroup('Name', authenticatedUser.name)}
-                {renderFormGroup('Surname', authenticatedUser.surname)}
-                {renderFormGroup('Phone', authenticatedUser.phone)}
-                {renderFormGroup('E-mail', authenticatedUser.email)}
+                {renderFormGroup(TranslationService.translate('namePersonalDataCard'), authenticatedUser.name)}
+                {renderFormGroup(TranslationService.translate('surnamePersonalDataCard'), authenticatedUser.surname)}
+                {renderFormGroup(TranslationService.translate('phonePersonalDataCard'), authenticatedUser.phone)}
+                {renderFormGroup(TranslationService.translate('emailPersonalDataCard'), authenticatedUser.email)}
             </div>
         </div>
     );

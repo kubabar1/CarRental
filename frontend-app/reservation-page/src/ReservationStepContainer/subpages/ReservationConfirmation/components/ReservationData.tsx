@@ -1,5 +1,6 @@
 import React from 'react';
 import { LocalisationResponseDTO } from '@car-rental/shared/model';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface ReservationConfirmationProperties {
     renderFormGroupItem: (label: string, value: string) => JSX.Element;
@@ -16,16 +17,22 @@ export function ReservationData({
 }: ReservationConfirmationProperties): JSX.Element {
     return (
         <div>
-            <h3>{'Reservation data'}</h3>
+            <h3>{TranslationService.translate('reservationDataCardHeader')}</h3>
             <hr />
             <div>
                 {selectedLocation &&
                     renderFormGroupItem(
-                        'Location: ',
+                        TranslationService.translate('localisationReservationDataCardItem'),
                         `${selectedLocation.country}, ${selectedLocation.city} ${selectedLocation.streetAndNb}, ${selectedLocation.code}`
                     )}
-                {renderFormGroupItem('Reception date: ', `${receptionDate}`)}
-                {renderFormGroupItem('Return date: ', `${returnDate}`)}
+                {renderFormGroupItem(
+                    TranslationService.translate('receptionDateReservationDataCardItem'),
+                    `${receptionDate}`
+                )}
+                {renderFormGroupItem(
+                    TranslationService.translate('returnDateReservationDataCardItem'),
+                    `${returnDate}`
+                )}
             </div>
         </div>
     );

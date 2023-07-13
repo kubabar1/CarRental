@@ -12,6 +12,7 @@ import { DateInput } from './components/DateInput';
 import { UseFormHandleSubmit, UseFormSetValue, UseFormTrigger } from 'react-hook-form/dist/types/form';
 import { ReactHookFormStorage } from '../../../../../utils/StorageUtil';
 import { FieldPathSetValue } from 'react-hook-form/dist/types/path';
+import { TranslationService } from '@car-rental/shared/service';
 
 interface ReservationDataCardProperties<FieldValuesType extends FieldValues> {
     setValue: UseFormSetValue<FieldValuesType>;
@@ -62,14 +63,14 @@ export function ReservationDataCard<FieldValuesType extends FieldValues>({
     return (
         <div id="reservation-data-card" className="shadow card mt-2">
             <div className="card-header text-center">
-                <h2>{'Reservation data'}</h2>
+                <h2>{TranslationService.translate('reservationDataCardHeader')}</h2>
             </div>
             <div className="card-body">
                 <form onSubmit={onClickNext(handleClickNext)}>
                     <LocationSelection<FieldValuesType>
                         allLocations={localisations}
                         inputName={locationSelectName}
-                        rules={{ required: 'Location is required' }}
+                        rules={{ required: TranslationService.translate('localizationSelectionRequired') }}
                         error={localisationError}
                         control={control}
                         reservationStorage={reservationStorage}
@@ -79,26 +80,35 @@ export function ReservationDataCard<FieldValuesType extends FieldValues>({
                         }}
                     />
                     <DateInput<FieldValuesType>
-                        label={'Reception date:'}
+                        label={TranslationService.translate('receptionDateSelectLabel')}
                         inputName={receptionDateSelectName}
                         min={minReceptionDate}
                         max={maxReceptionDate}
                         inputRegisterOptions={{
-                            required: 'Reception date is required',
-                            min: { value: minReceptionDate, message: 'Incorrect reception date' },
-                            max: { value: maxReceptionDate, message: 'Incorrect reception date' },
+                            required: TranslationService.translate('receptionDateSelectRequired'),
+                            min: {
+                                value: minReceptionDate,
+                                message: TranslationService.translate('receptionDateSelectMin'),
+                            },
+                            max: {
+                                value: maxReceptionDate,
+                                message: TranslationService.translate('receptionDateSelectMax'),
+                            },
                         }}
                         inputError={receptionDateError}
                         control={control}
                         reservationStorage={reservationStorage}
                     />
                     <DateInput<FieldValuesType>
-                        label={'Return date:'}
+                        label={TranslationService.translate('returnDateSelectLabel')}
                         inputName={returnDateSelectName}
                         min={minReturnDate}
                         inputRegisterOptions={{
-                            required: 'Return date is required',
-                            min: { value: minReturnDate, message: 'Incorrect return date' },
+                            required: TranslationService.translate('returnDateSelectRequired'),
+                            min: {
+                                value: minReturnDate,
+                                message: TranslationService.translate('returnDateSelectMinLen'),
+                            },
                         }}
                         inputError={returnDateError}
                         control={control}
@@ -112,11 +122,11 @@ export function ReservationDataCard<FieldValuesType extends FieldValues>({
                                 reservationStorage.clear();
                             }}
                         >
-                            Cancel
+                            {TranslationService.translate('reservationDataCancelButton')}
                         </a>
                         <input
                             type="submit"
-                            value="Next"
+                            value={TranslationService.translate('reservationDataNextButton')}
                             className="next-button btn btn-lg btn-primary btn-block col-md-3 ml-auto mr-5 mt-0"
                         />
                     </div>

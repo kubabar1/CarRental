@@ -67,4 +67,5 @@ export const translationsPl = {
     commentPlaceholder: 'Komentarz',
     leaveComment: 'Zostaw komentarz',
     addComment: 'Dodaj',
+    selectPlaceholder: 'Wybierz...',
 };

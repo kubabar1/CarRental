@@ -1,6 +1,6 @@
 import React from 'react';
 import { BookingCostRequestDTO, BookingCostResponseDTO, ResponseData } from '@car-rental/shared/model';
-import { BookingUserService } from '@car-rental/shared/service';
+import { BookingUserService, TranslationService } from '@car-rental/shared/service';
 
 interface ReservationCostProperties {
     selectedVehicleId: string;
@@ -29,9 +29,9 @@ export function ReservationCost({
 
     return (
         <div>
-            <h3>{'Reservation cost'}</h3>
+            <h3>{TranslationService.translate('reservationCostHeader')}</h3>
             <hr />
-            <div>{renderFormGroupItem('Cost: ', `${fullCost} $`)}</div>
+            <div>{renderFormGroupItem(TranslationService.translate('reservationCostCostLabel'), `${fullCost} $`)}</div>
         </div>
     );
 }

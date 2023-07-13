@@ -67,4 +67,5 @@ export const translationsEn = {
     commentPlaceholder: 'Comment',
     leaveComment: 'Leave a comment',
     addComment: 'Add',
+    selectPlaceholder: 'Select...',
 };
