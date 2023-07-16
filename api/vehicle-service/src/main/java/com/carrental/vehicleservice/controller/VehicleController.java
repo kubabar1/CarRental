@@ -51,12 +51,6 @@ public class VehicleController {
         return ResponseEntity.ok().body(vehicleService.getBestOffersVehicles(pageable));
     }
 
-    @GetMapping(value = "/unavailable")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Page<VehicleResponseDTO>> getUnavailableVehiclesController(Pageable pageable) {
-        return ResponseEntity.ok().body(vehicleService.getUnavailableVehicles(pageable));
-    }
-
     @GetMapping(value = "/{vehicleId}")
     public ResponseEntity<VehicleResponseDTO> getVehicleByIdController(@PathVariable(name = "vehicleId") Long vehicleId) {
         try {
@@ -67,9 +61,12 @@ public class VehicleController {
         }
     }
 
-    @GetMapping(value = "/location/{locationId}")
-    public ResponseEntity<Set<VehicleResponseDTO>> getAvailableVehiclesByLocationController(@PathVariable(name = "locationId") Long locationId) {
-        return ResponseEntity.ok().body(vehicleService.getAvailableVehiclesByLocation(locationId));
+    @PostMapping(value = "/available")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Set<VehicleResponseDTO>> getAvailableVehiclesByLocationController(
+        @RequestBody AvailableVehiclesSearchDTO availableVehiclesSearchDTO
+    ) {
+        return ResponseEntity.ok().body(vehicleService.getAvailableVehicles(availableVehiclesSearchDTO));
     }
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

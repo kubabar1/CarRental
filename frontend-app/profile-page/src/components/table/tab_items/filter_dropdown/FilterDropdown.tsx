@@ -10,8 +10,7 @@ export interface FilterDropdownInterface {
 
 export function FilterDropdown({ visible, setVisible, menu, children }: FilterDropdownInterface) {
     return (
-        <a
-            href=""
+        <div
             onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
             }}
@@ -26,6 +25,6 @@ export function FilterDropdown({ visible, setVisible, menu, children }: FilterDr
             >
                 {children}
             </Dropdown>
-        </a>
+        </div>
     );
 }

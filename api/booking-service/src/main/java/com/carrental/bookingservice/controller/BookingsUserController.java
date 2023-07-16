@@ -1,10 +1,7 @@
 package com.carrental.bookingservice.controller;
 
 import com.carrental.bookingservice.exception.BookingStateException;
-import com.carrental.bookingservice.model.dto.BookingAddRequestDTO;
-import com.carrental.bookingservice.model.dto.BookingCostRequestDTO;
-import com.carrental.bookingservice.model.dto.BookingCostResponseDTO;
-import com.carrental.bookingservice.model.dto.BookingResponseDTO;
+import com.carrental.bookingservice.model.dto.*;
 import com.carrental.bookingservice.service.BookingUserService;
 import com.carrental.commons.authentication.exception.AuthorizationException;
 import org.springframework.data.domain.Page;
@@ -19,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequestMapping(value = "/user/bookings")
@@ -42,7 +40,7 @@ public class BookingsUserController implements BookingsController {
         try {
             BookingResponseDTO bookingResponseDTO = bookingUserService.addNewBooking(bookingAddRequestDTO);
             return ResponseEntity.ok().body(bookingResponseDTO);
-        } catch (NoSuchElementException exception) {
+        } catch (NoSuchElementException | BookingStateException exception) {
             return ResponseEntity.badRequest().build();
         } catch (AuthorizationException exception) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -96,6 +94,12 @@ public class BookingsUserController implements BookingsController {
         } catch (BookingStateException exception) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @GetMapping(value = "/states")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Set<BookingStateDTO>> getAllBookingStatesController() {
+        return ResponseEntity.status(HttpStatus.OK).body(bookingUserService.getBookingStates());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

@@ -130,6 +130,8 @@ export async function fetchWithFile<T>(
 function handleFetchResult<T>(res: Response, successNotification?: string): Promise<ResponseData<T>> {
     if (!!successNotification && res.status >= 200 && res.status < 300) {
         toast.success(successNotification);
+    } else if (res.status >= 400) {
+        throw new Error();
     }
     return res.json().then((data) => {
         return { statusCode: res.status, responseBody: data };

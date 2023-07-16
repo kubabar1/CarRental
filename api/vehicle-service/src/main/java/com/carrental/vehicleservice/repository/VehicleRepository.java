@@ -9,20 +9,16 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.Set;
 
 public interface VehicleRepository extends PagingAndSortingRepository<VehicleEntity, Long>, JpaSpecificationExecutor<VehicleEntity> {
 
     Set<VehicleEntity> findAll();
 
-    @Query("select v from vehicles v where v.vehicleStatus.vehicleStatusCode = com.carrental.vehicleservice.model.constants.VehicleStatCodeEnum.AVI")
-    Set<VehicleEntity> findAllAvailable();
+    Set<VehicleEntity> findAllByIdNotInAndLocationId(Set<Long> vehicleIds, Long locationId);
 
-    @Query("select v from vehicles v where v.vehicleStatus.vehicleStatusCode = com.carrental.vehicleservice.model.constants.VehicleStatCodeEnum.AVI and v.locationId = :locationId")
-    Set<VehicleEntity> findAllAvailableByLocationId(@Param("locationId") Long locationId);
-
-    @Query("select v from vehicles v where v.vehicleStatus.vehicleStatusCode = com.carrental.vehicleservice.model.constants.VehicleStatCodeEnum.UAV")
-    Page<VehicleEntity> findAllUnavailable(Pageable pageable);
+    Optional<VehicleEntity> findByRegistration(String registration);
 
     Page<VehicleEntity> findByBestOfferTrue(Pageable pageable);
 }

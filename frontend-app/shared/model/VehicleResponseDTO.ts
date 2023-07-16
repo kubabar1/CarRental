@@ -1,4 +1,3 @@
-import { VehicleStatusResponseDTO } from './VehicleStatusResponseDTO';
 import { VehicleDetailsDTO } from './VehicleDetailsDTO';
 import { EquipmentResponseDTO } from './EquipmentResponseDTO';
 import { LocalisationResponseDTO } from './LocalisationResponseDTO';
@@ -12,7 +11,6 @@ export class VehicleResponseDTO {
     dailyFee: number;
     location: LocalisationResponseDTO;
     bestOffer: boolean;
-    vehicleStatus: VehicleStatusResponseDTO;
     vehicleDetails: VehicleDetailsDTO;
     equipments: EquipmentResponseDTO[];
 
@@ -25,7 +23,6 @@ export class VehicleResponseDTO {
         registration: string,
         location: LocalisationResponseDTO,
         bestOffer: boolean,
-        vehicleStatus: VehicleStatusResponseDTO,
         vehicleDetails: VehicleDetailsDTO,
         equipments: EquipmentResponseDTO[]
     ) {
@@ -37,7 +34,6 @@ export class VehicleResponseDTO {
         this.registration = registration;
         this.location = location;
         this.bestOffer = bestOffer;
-        this.vehicleStatus = vehicleStatus;
         this.vehicleDetails = vehicleDetails;
         this.equipments = equipments;
     }

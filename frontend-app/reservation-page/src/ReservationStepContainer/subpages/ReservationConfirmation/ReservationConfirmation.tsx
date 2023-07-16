@@ -62,6 +62,9 @@ export function ReservationConfirmation<FieldValuesType extends FieldValues>({
             .then((value: ResponseData<BookingResponseDTO>) => {
                 history.push(`/reservation/reservation-status/${value.statusCode === 200 ? 'ok' : 'nok'}`);
             })
+            .catch(() => {
+                history.push('/reservation/reservation-status/nok');
+            })
             .finally(() => {
                 reservationStorage.clear();
             });

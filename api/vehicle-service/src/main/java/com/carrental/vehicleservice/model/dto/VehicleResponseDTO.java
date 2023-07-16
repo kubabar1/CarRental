@@ -22,8 +22,6 @@ public class VehicleResponseDTO {
 
     private boolean bestOffer;
 
-    private VehicleStatusResponseDTO vehicleStatus;
-
     private VehicleDetailsDTO vehicleDetails;
 
     private Set<EquipmentResponseDTO> equipments;

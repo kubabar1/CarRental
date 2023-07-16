@@ -13,6 +13,4 @@ public interface BookingAdminService extends BookingService {
     BookingResponseDTO rentBooking(Long bookingId) throws NoSuchElementException, BookingStateException;
 
     BookingResponseDTO returnBooking(Long bookingId) throws NoSuchElementException, BookingStateException;
-
-    Set<BookingStateDTO> getBookingStates();
 }

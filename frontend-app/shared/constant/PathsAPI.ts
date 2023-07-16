@@ -68,7 +68,7 @@ export const endpoints = {
     saveUserPasswordAfterReset: APP_ADDR + '/reset-password/save-password',
     reservationCost: `${APP_ADDR}/user/bookings/cost`,
     createBooking: `${APP_ADDR}/user/bookings`,
-    getAvailableVehiclesByLocation: (locationId: string): string => APP_ADDR + `/vehicles/location/${locationId}`,
+    getAvailableVehicles: `${APP_ADDR}/vehicles/available`,
 };
 
 const ADMIN_PATH = `${APP_ADDR}/admin`;
@@ -87,7 +87,7 @@ export const CANCEL_ADMIN_BOOKING = (bookingId: string): string => withId(`${ADM
 
 export const RETURN_ADMIN_BOOKING = (bookingId: string): string => withId(`${ADMIN_PATH}/bookings/return`, bookingId);
 
-export const BOOKING_STATES = `${ADMIN_PATH}/bookings/states`;
+export const BOOKING_STATES = `${USER_PATH}/bookings/states`;
 
 export const GET_BOOKINGS_AUDIT_LOGS_PATH = `${APP_ADDR}/bookings-audit-logs`;
 

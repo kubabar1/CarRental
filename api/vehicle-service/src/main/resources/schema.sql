@@ -1,9 +1,3 @@
-CREATE TABLE IF NOT EXISTS vehicle_status(
-  vehicle_status_code NVARCHAR(3) NOT NULL,
-  description NVARCHAR(255) NOT NULL,
-  PRIMARY KEY(vehicle_status_code)
-);
-
 CREATE TABLE IF NOT EXISTS colors(
   color NVARCHAR(30) NOT NULL,
   PRIMARY KEY(color)
@@ -40,9 +34,7 @@ CREATE TABLE IF NOT EXISTS vehicles(
   daily_fee decimal(15,2) NOT NULL,
   location_id INT NOT NULL,
   best_offer TINYINT NOT NULL,
-  vehicle_status_code NVARCHAR(3) NOT NULL,
   PRIMARY KEY(id),
-  FOREIGN KEY(vehicle_status_code) REFERENCES vehicle_status(vehicle_status_code),
   FOREIGN KEY(brand) REFERENCES brands(brand),
   FOREIGN KEY(model) REFERENCES models(model),
   UNIQUE (registration)

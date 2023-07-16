@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { VehicleResponseDTO } from '@car-rental/shared/model';
 import { VehicleDetailsHeader } from './components/vehicle_details_header/VehicleDetailsHeader';
-import { VehicleStatus } from './components/vehicle_status/VehicleStatus';
 import { VehicleProperties } from './components/details_list/VehicleProperties';
 import ReservationButton from './components/reservation_button/ReservationButton';
 import { CommentList } from './components/comments/CommentList';
@@ -58,8 +57,6 @@ export function VehicleDetailsPage({ authenticatedUser, match }: CarDetailsPrope
                     {vehicle ? (
                         <div>
                             <VehicleDetailsHeader vehicle={vehicle} />
-                            <hr className="mt-5" />
-                            <VehicleStatus vehicle={vehicle} />
                             <hr className="mt-5" />
                             <VehicleProperties vehicle={vehicle} />
                             <hr className="mt-5" />

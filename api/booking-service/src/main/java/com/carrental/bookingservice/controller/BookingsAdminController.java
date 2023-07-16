@@ -95,10 +95,4 @@ public class BookingsAdminController implements BookingsController {
             return ResponseEntity.badRequest().build();
         }
     }
-
-    @GetMapping(value = "/states")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Set<BookingStateDTO>> getAllBookingStatesController() {
-        return ResponseEntity.status(HttpStatus.OK).body(bookingAdminService.getBookingStates());
-    }
 }

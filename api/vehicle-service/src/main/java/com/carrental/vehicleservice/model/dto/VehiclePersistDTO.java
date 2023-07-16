@@ -1,6 +1,6 @@
 package com.carrental.vehicleservice.model.dto;
 
-import com.carrental.vehicleservice.model.constants.VehicleStatCodeEnum;
+import com.carrental.vehicleservice.annotation.UniqueRegistration;
 import lombok.Data;
 
 import javax.validation.Valid;
@@ -14,6 +14,7 @@ public class VehiclePersistDTO {
 
     @NotEmpty
     @Size(max = 20)
+    @UniqueRegistration
     private String registration;
 
     @NotEmpty
@@ -32,9 +33,6 @@ public class VehiclePersistDTO {
 
     @NotNull
     private boolean bestOffer;
-
-    @Valid
-    private VehicleStatCodeEnum vehicleStatus;
 
     @Valid
     private VehicleDetailsDTO vehicleDetailsDTO;

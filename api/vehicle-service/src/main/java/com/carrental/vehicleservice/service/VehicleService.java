@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
-import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -17,13 +16,11 @@ public interface VehicleService {
 
     Page<VehicleResponseDTO> getBestOffersVehicles(Pageable pageable);
 
-    Set<VehicleResponseDTO> getAvailableVehicles();
-
-    Page<VehicleResponseDTO> getUnavailableVehicles(Pageable pageable);
-
     VehicleResponseDTO getVehicleById(Long vehicleId) throws NoSuchElementException;
 
-    Set<VehicleResponseDTO> getAvailableVehiclesByLocation(Long locationId);
+    Set<VehicleResponseDTO> getAvailableVehicles(AvailableVehiclesSearchDTO availableVehiclesSearchDTO);
+
+    VehicleResponseDTO getVehicleByIdWithoutLocation(Long vehicleId) throws NoSuchElementException;
 
     VehicleResponseDTO addVehicle(VehiclePersistDTO vehiclePersistDTO, MultipartFile vehicleImage) throws IOException;
 

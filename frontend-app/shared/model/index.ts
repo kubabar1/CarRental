@@ -41,5 +41,4 @@ export * from './VehicleOptionsDTO';
 export * from './VehicleOptionsWithAssocCountDTO';
 export * from './VehiclePersistDTO';
 export * from './VehicleResponseDTO';
-export * from './VehicleStatCodeEnum';
-export * from './VehicleStatusResponseDTO';
+export * from './AvailableVehiclesSearchDTO';

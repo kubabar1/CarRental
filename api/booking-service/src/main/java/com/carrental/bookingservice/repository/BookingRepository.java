@@ -1,10 +1,12 @@
 package com.carrental.bookingservice.repository;
 
 import com.carrental.bookingservice.model.entity.BookingEntity;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Optional;
+import java.util.Set;
 
 public interface BookingRepository extends PagingAndSortingRepository<BookingEntity, Long>, JpaSpecificationExecutor<BookingEntity> {
 

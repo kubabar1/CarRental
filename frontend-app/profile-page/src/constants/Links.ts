@@ -72,9 +72,15 @@ export const roleAddPath: SecureLink = {
     permittedRoles: [UserRolesEnum.ROLE_ADMIN],
 };
 
-export const locationsListPath: SecureLink = { link: `${basePath}/locations` };
+export const locationsListPath: SecureLink = {
+    link: `${basePath}/locations`,
+    permittedRoles: [UserRolesEnum.ROLE_ADMIN],
+};
 
-export const locationAddPath: SecureLink = { link: `${basePath}/locations/add` };
+export const locationAddPath: SecureLink = {
+    link: `${basePath}/locations/add`,
+    permittedRoles: [UserRolesEnum.ROLE_ADMIN],
+};
 
 export const sendEmailPath: SecureLink = {
     link: `${basePath}/email-send`,

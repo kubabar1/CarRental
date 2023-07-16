@@ -20,7 +20,6 @@ import {
     VehicleOptionsDTO,
     LocalisationResponseDTO,
     OptionDTO,
-    VehicleStatCodeEnum,
     VehicleDetailsDTO,
     VehiclePersistDTO,
     ResponseData,
@@ -43,7 +42,6 @@ export type VehicleFormValues = {
     dailyFee: number;
     registration: string;
     location: string;
-    vehicleStatus: VehicleStatCodeEnum;
     bestOffer: boolean;
     bodyType: string;
     fuelType: string;
@@ -213,7 +211,6 @@ export const VehicleForm = ({
                 data.dailyFee,
                 data.location,
                 data.bestOffer,
-                data.vehicleStatus,
                 new VehicleDetailsDTO(
                     data.bodyType,
                     data.productionYear,
@@ -320,29 +317,6 @@ export const VehicleForm = ({
                     }}
                 />
             )}
-            <SelectFormGroup<VehicleFormValues>
-                label={TranslationService.translate('statusLabelVehicleForm')}
-                name={'vehicleStatus'}
-                control={control}
-                options={[
-                    mapToOptionTypeWithKeys(
-                        VehicleStatCodeEnum.UAV,
-                        TranslationService.translate('statusUavLabelVehicleFormOption')
-                    ),
-                    mapToOptionTypeWithKeys(
-                        VehicleStatCodeEnum.AVI,
-                        TranslationService.translate('statusAviLabelVehicleFormOption')
-                    ),
-                    mapToOptionTypeWithKeys(
-                        VehicleStatCodeEnum.RMV,
-                        TranslationService.translate('statusRmvLabelVehicleFormOption')
-                    ),
-                ]}
-                error={formState.errors.vehicleStatus?.message}
-                rules={{
-                    required: TranslationService.translate('vehicleStatusVehicleFormRequired'),
-                }}
-            />
             <SwitchFormGroup<VehicleFormValues>
                 label={TranslationService.translate('bestOfferLabelVehicleForm')}
                 name={'bestOffer'}

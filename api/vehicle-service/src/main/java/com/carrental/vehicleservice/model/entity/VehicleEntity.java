@@ -1,6 +1,5 @@
 package com.carrental.vehicleservice.model.entity;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -45,10 +44,6 @@ public class VehicleEntity implements Serializable {
 
     @Column(name = "best_offer", nullable = false)
     private boolean bestOffer;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "vehicle_status_code", referencedColumnName = "vehicle_status_code", nullable = false)
-    private VehicleStatusEntity vehicleStatus;
 
     @OneToOne(cascade = CascadeType.PERSIST, mappedBy = "vehicle")
     @JoinColumn(name = "id", nullable = false)

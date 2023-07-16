@@ -11,7 +11,6 @@ export class TranslationService {
             TranslationService.instance = i18next.createInstance();
             TranslationService.instance.init({
                 fallbackLng: TranslationService.fallbackLng,
-                debug: true,
             });
             return TranslationService.instance;
         } else {

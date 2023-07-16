@@ -7,6 +7,7 @@ import com.carrental.bookingservice.service.LocationsService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,6 +22,7 @@ public class LocationsController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Page<LocationResponseDTO>> getLocationsController(
             @RequestParam(value = "filter", required = false) String filter, Pageable pageable) {
         return ResponseEntity.ok().body(locationsService.getLocations(pageable, filter));
@@ -33,6 +35,7 @@ public class LocationsController {
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<LocationResponseDTO> addLocationController(@Valid @RequestBody LocationAddDTO locationAddDTO) {
         return ResponseEntity.ok().body(locationsService.addLocation(locationAddDTO));
     }

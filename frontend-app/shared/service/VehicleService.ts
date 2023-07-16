@@ -1,4 +1,4 @@
-import { fetchDelete, fetchGet, fetchPut, fetchWithFile } from './FetchUtil';
+import { fetchDelete, fetchGet, fetchPost, fetchPut, fetchWithFile } from './FetchUtil';
 import {
     GET_VEHICLE_BY_ID_PATH,
     GET_BEST_OFFERS_VEHICLES_PATH,
@@ -31,6 +31,7 @@ import {
     FilteringParamsEnum,
     VehicleResponseDTO,
     ResponseData,
+    AvailableVehiclesSearchDTO,
 } from '../model';
 
 export class VehicleService {
@@ -164,8 +165,8 @@ export class VehicleService {
         return fetchGet<VehicleOptionsWithAssocCountDTO>(GET_VEHICLE_OPTIONS_WITH_ASSOC_PATH);
     };
 
-    static getAvailableVehiclesByLocation = (locationId: string): Promise<VehicleResponseDTO[]> => {
-        return fetchGet<VehicleResponseDTO[]>(endpoints.getAvailableVehiclesByLocation(locationId));
+    static getAvailableVehicles = (params: AvailableVehiclesSearchDTO): Promise<ResponseData<VehicleResponseDTO[]>> => {
+        return fetchPost<VehicleResponseDTO[]>(endpoints.getAvailableVehicles, params);
     };
 
     static deleteOption(vehicleOptionType: string, vehicleOption: string): Promise<ResponseData<OptionDTO>> {

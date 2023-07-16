@@ -15,6 +15,7 @@ import com.carrental.commons.authentication.exception.AuthorizationException;
 import com.carrental.commons.authentication.model.AuthenticatedUser;
 import com.carrental.commons.authentication.service.AuthenticatedUserDataService;
 import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
+import org.apache.commons.collections4.IteratorUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.core.ParameterizedTypeReference;
@@ -25,7 +26,10 @@ import org.springframework.data.jpa.domain.Specification;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BookingUserServiceImpl extends BookingServiceCommons implements BookingUserService {
 
@@ -67,7 +71,11 @@ public class BookingUserServiceImpl extends BookingServiceCommons implements Boo
     }
 
     @Override
-    public BookingResponseDTO addNewBooking(BookingAddRequestDTO bookingAddRequestDTO) throws AuthorizationException, NoSuchElementException {
+    public BookingResponseDTO addNewBooking(BookingAddRequestDTO bookingAddRequestDTO) throws AuthorizationException, NoSuchElementException, BookingStateException {
+        if (isVehicleBooked(bookingAddRequestDTO.getVehicleId(), bookingAddRequestDTO.getReceiptDate(), bookingAddRequestDTO.getReturnDate())) {
+            throw new BookingStateException("Vehicle is already booked");
+        }
+
         AuthenticatedUser authenticatedUser = authenticatedUserDataService.getAuthenticatedUserData();
         VehicleResponseDTO vehicleResponseDTO = getVehicleById(bookingAddRequestDTO.getVehicleId());
 
@@ -100,7 +108,7 @@ public class BookingUserServiceImpl extends BookingServiceCommons implements Boo
     @Override
     public Page<BookingResponseDTO> getBookings(Pageable pageable, String filterString) throws AuthorizationException, NoSuchElementException {
         Specification<BookingEntity> spec = filterSpecificationBuilder.build(filterString);
-        Specification<BookingEntity> userIdSpec = getUserIdSpecification();
+        Specification<BookingEntity> userIdSpec = getUserIdSpec();
         return getAllBookings(spec == null ? userIdSpec : spec.and(userIdSpec), pageable);
     }
 
@@ -116,7 +124,7 @@ public class BookingUserServiceImpl extends BookingServiceCommons implements Boo
     public Page<BookingResponseDTO> getReservedBookings(Pageable pageable, String filterString) throws AuthorizationException {
         Specification<BookingEntity> spec = filterSpecificationBuilder.build(filterString);
         Specification<BookingEntity> reservationSpec = getBookingStateSpecification(BookingStateCodeEnum.RES)
-                .and(getUserIdSpecification());
+                .and(getUserIdSpec());
         return getAllBookings(spec == null ? reservationSpec : spec.and(reservationSpec), pageable);
     }
 
@@ -124,7 +132,7 @@ public class BookingUserServiceImpl extends BookingServiceCommons implements Boo
     public Page<BookingResponseDTO> getRentedBookings(Pageable pageable, String filterString) throws AuthorizationException {
         Specification<BookingEntity> spec = filterSpecificationBuilder.build(filterString);
         Specification<BookingEntity> rentedSpec = getBookingStateSpecification(BookingStateCodeEnum.REN)
-                .and(getUserIdSpecification());
+                .and(getUserIdSpec());
         return getAllBookings(spec == null ? rentedSpec : spec.and(rentedSpec), pageable);
     }
 
@@ -153,9 +161,67 @@ public class BookingUserServiceImpl extends BookingServiceCommons implements Boo
         return bookingCostResponseDTO;
     }
 
-    private Specification<BookingEntity> getUserIdSpecification() {
+    @Override
+    public Set<BookingStateDTO> getBookingStates() {
+        return IteratorUtils.toList(bookingStateRepository.findAll().iterator())
+                .stream()
+                .map(bookingState -> modelMapper.map(bookingState, BookingStateDTO.class))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Long> getBookedVehiclesIds(AvailableVehiclesSearchDTO availableVehiclesSearchDTO) {
+        Specification<BookingEntity> bookedVehiclesSpec = getBookedVehiclesSpec(
+            availableVehiclesSearchDTO.getReceiptDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+            availableVehiclesSearchDTO.getReturnDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+        );
+
+        return bookingRepository.findAll(bookedVehiclesSpec)
+            .stream()
+            .map(BookingEntity::getVehicleId)
+            .collect(Collectors.toSet());
+    }
+
+    private boolean isVehicleBooked(Long vehicleId, LocalDate receiptDate, LocalDate returnDate) {
+        Specification<BookingEntity> bookedVehiclesSpec = getBookedVehiclesSpec(receiptDate, returnDate).and(getVehicleIdSpec(vehicleId));
+        bookingRepository.findAll(bookedVehiclesSpec);
+        return bookingRepository.findAll(bookedVehiclesSpec).size() > 0;
+    }
+
+    private Specification<BookingEntity> getBookedVehiclesSpec(LocalDate receiptDate, LocalDate returnDate) {
+        Specification<BookingEntity> reservedOrRentedBookingsSpec = getBookedVehiclesStateSpec();
+        Specification<BookingEntity> availableVehiclesSearchSpec = getBookedVehiclesDateSpec(receiptDate, returnDate);
+        return availableVehiclesSearchSpec.and(reservedOrRentedBookingsSpec);
+    }
+
+    private Specification<BookingEntity> getBookedVehiclesStateSpec() {
+        Specification<BookingEntity> reservedSpec = (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("bookingStateCode").get("bookingCode"), BookingStateCodeEnum.RES);
+        Specification<BookingEntity> rentedSpec = (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("bookingStateCode").get("bookingCode"), BookingStateCodeEnum.REN);
+        return reservedSpec.or(rentedSpec);
+    }
+
+    private Specification<BookingEntity> getBookedVehiclesDateSpec(LocalDate receiptDate, LocalDate returnDate) {
+        Specification<BookingEntity> receiptDateBetweenSpec = (root, query, criteriaBuilder) ->
+                criteriaBuilder.between(root.get("receiptDate"), receiptDate, returnDate);
+        Specification<BookingEntity> returnDateBetweenSpec = (root, query, criteriaBuilder) ->
+                criteriaBuilder.between(root.get("returnDate"), receiptDate, returnDate);
+        Specification<BookingEntity> receiptDateBelowSpec = (root, query, criteriaBuilder) ->
+                criteriaBuilder.lessThanOrEqualTo(root.get("receiptDate"), receiptDate);
+        Specification<BookingEntity> returnDateAboveSpec = (root, query, criteriaBuilder) ->
+                criteriaBuilder.greaterThanOrEqualTo(root.get("returnDate"), returnDate);
+
+        return receiptDateBetweenSpec.or(returnDateBetweenSpec).or(receiptDateBelowSpec.and(returnDateAboveSpec));
+    }
+
+    private Specification<BookingEntity> getVehicleIdSpec(Long vehicleId) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("vehicleId"), vehicleId);
+    }
+
+    private Specification<BookingEntity> getUserIdSpec() {
         return (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("userId"), authenticatedUserDataService.getAuthenticatedUserData().getUserId());
+            criteriaBuilder.equal(root.get("userId"), authenticatedUserDataService.getAuthenticatedUserData().getUserId());
     }
 
     public VehicleResponseDTO getVehicleById(Long vehicleId) {

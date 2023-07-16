@@ -32,7 +32,6 @@ export function VehicleEditSubpage(): JSX.Element {
             dailyFee: vehicleResponseDTO.dailyFee,
             registration: vehicleResponseDTO.registration,
             location: vehicleResponseDTO.location.id,
-            vehicleStatus: vehicleResponseDTO.vehicleStatus.vehicleStatCode,
             bestOffer: vehicleResponseDTO.bestOffer,
             bodyType: vehicleResponseDTO.vehicleDetails.bodyType,
             fuelType: vehicleResponseDTO.vehicleDetails.fuelType,

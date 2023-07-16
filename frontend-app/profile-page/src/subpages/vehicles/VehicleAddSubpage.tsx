@@ -4,7 +4,7 @@ import { SubpageHeader } from '../../components/subpage/header/SubpageHeader';
 import { SubpageContent } from '../../components/subpage/content/SubpageContent';
 import { TranslationService, VehicleService } from '@car-rental/shared/service';
 import { VehicleForm, VehicleFormValues } from './components/vehicle_form/VehicleForm';
-import { VehicleStatCodeEnum, VehiclePersistDTO, VehicleResponseDTO, ResponseData } from '@car-rental/shared/model';
+import { VehiclePersistDTO, VehicleResponseDTO, ResponseData } from '@car-rental/shared/model';
 import { FileWithPreview } from '../../components/form/form-group/upload/Dropzone';
 
 export function VehicleAddSubpage(): JSX.Element {
@@ -21,7 +21,6 @@ export function VehicleAddSubpage(): JSX.Element {
         dailyFee: 0,
         registration: '',
         location: '0',
-        vehicleStatus: VehicleStatCodeEnum.AVI,
         bestOffer: false,
         bodyType: '',
         fuelType: '',
@@ -45,7 +44,7 @@ export function VehicleAddSubpage(): JSX.Element {
                     onSubmitAction={addVehicleForm}
                     vehicleDefaultValues={vehicleDefaultValues}
                     submitButtonValue={TranslationService.translate('addVehicleSubpageCreateButton')}
-                    redirectToEquipmentList
+                    redirectToEquipmentList={true}
                 />
             </SubpageContent>
         </SubpageContainer>

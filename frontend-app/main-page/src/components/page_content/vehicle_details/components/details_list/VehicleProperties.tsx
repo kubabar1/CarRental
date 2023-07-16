@@ -16,8 +16,12 @@ function renderProps(name: string, value: string): JSX.Element {
 
 export function VehicleProperties(props: CarPropertiesProps): JSX.Element {
     const vehicle = props.vehicle;
-    const frontWheelDrive = vehicle.vehicleDetails.frontWheelDrive ? 'Yes' : 'No';
-    const metallic = vehicle.vehicleDetails.metallic ? 'Yes' : 'No';
+    const frontWheelDrive = vehicle.vehicleDetails.frontWheelDrive
+        ? TranslationService.translate('frontWheelDriveCarDetailsLabelYes')
+        : TranslationService.translate('frontWheelDriveCarDetailsLabelNo');
+    const metallic = vehicle.vehicleDetails.metallic
+        ? TranslationService.translate('metallicCarDetailsLabelYes')
+        : TranslationService.translate('metallicCarDetailsLabelNo');
 
     return (
         <section>
@@ -27,20 +31,42 @@ export function VehicleProperties(props: CarPropertiesProps): JSX.Element {
 
             <div className="row">
                 <div className="col-md-6 text-left">
-                    {renderProps('Body type', vehicle.vehicleDetails.bodyType)}
-                    {renderProps('Vehicle brand', vehicle.brand)}
-                    {renderProps('Vehicle model', vehicle.model)}
-                    {renderProps('Production year', vehicle.vehicleDetails.productionYear.toString())}
-                    {renderProps('Fuel type', vehicle.vehicleDetails.fuelType)}
-                    {renderProps('Power', vehicle.vehicleDetails.power.toString() + ' KM')}
+                    {renderProps(
+                        TranslationService.translate('bodyTypeCarDetailsLabel'),
+                        vehicle.vehicleDetails.bodyType
+                    )}
+                    {renderProps(TranslationService.translate('vehicleBrandCarDetailsLabel'), vehicle.brand)}
+                    {renderProps(TranslationService.translate('vehicleModelCarDetailsLabel'), vehicle.model)}
+                    {renderProps(
+                        TranslationService.translate('productionYearCarDetailsLabel'),
+                        vehicle.vehicleDetails.productionYear.toString()
+                    )}
+                    {renderProps(
+                        TranslationService.translate('fuelTypeCarDetailsLabel'),
+                        vehicle.vehicleDetails.fuelType
+                    )}
+                    {renderProps(
+                        TranslationService.translate('powerCarDetailsLabel'),
+                        vehicle.vehicleDetails.power.toString() +
+                            ` ${TranslationService.translate('powerSymbolCarDetailsLabel')}`
+                    )}
                 </div>
                 <div className="col-md-6 text-left">
-                    {renderProps('Gearbox', vehicle.vehicleDetails.gearbox)}
-                    {renderProps('Doors number', vehicle.vehicleDetails.doorsNumber.toString())}
-                    {renderProps('Seats number', vehicle.vehicleDetails.seatsNumber.toString())}
-                    {renderProps('Color', vehicle.vehicleDetails.color)}
-                    {renderProps('Front-wheel drive', frontWheelDrive)}
-                    {renderProps('Metallic', metallic)}
+                    {renderProps(
+                        TranslationService.translate('gearboxCarDetailsLabel'),
+                        vehicle.vehicleDetails.gearbox
+                    )}
+                    {renderProps(
+                        TranslationService.translate('doorsNumberCarDetailsLabel'),
+                        vehicle.vehicleDetails.doorsNumber.toString()
+                    )}
+                    {renderProps(
+                        TranslationService.translate('seatsNumberCarDetailsLabel'),
+                        vehicle.vehicleDetails.seatsNumber.toString()
+                    )}
+                    {renderProps(TranslationService.translate('colorCarDetailsLabel'), vehicle.vehicleDetails.color)}
+                    {renderProps(TranslationService.translate('frontWheelDriveCarDetailsLabel'), frontWheelDrive)}
+                    {renderProps(TranslationService.translate('metallicCarDetailsLabel'), metallic)}
                 </div>
             </div>
         </section>

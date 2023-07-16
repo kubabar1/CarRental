@@ -12,6 +12,7 @@ interface NavLinkProperties extends RouteComponentProps {
     children?: React.ReactElement<NavSubLinkProperties> | React.ReactElement<NavSubLinkProperties>[];
     linkPath?: string;
     disableRefresh?: boolean;
+    authorized?: boolean;
     onClick?: (event: MouseEvent) => void;
 }
 
@@ -35,6 +36,7 @@ function NavLink({
     linkPath,
     location,
     onClick,
+    authorized = true,
     disableRefresh = false,
 }: NavLinkProperties): JSX.Element {
     const history = useHistory();
@@ -58,29 +60,32 @@ function NavLink({
         return <div style={{ display: isOpen ? '' : 'none' }}>{children}</div>;
     };
 
-    return linkPath ? (
-        <a
-            className="card card-link"
-            {...(disableRefresh
-                ? {
-                      onClick: onClick
-                          ? onClick
-                          : (e) => {
-                                e.preventDefault();
-                                history.push(linkPath);
-                            },
-                  }
-                : { href: linkPath })}
-        >
-            <NavLinkMain />
-            <NavLinkChildren />
-        </a>
-    ) : (
-        <div className="card card-link">
-            <NavLinkMain />
-            <NavLinkChildren />
-        </div>
-    );
+    const NavLinkElement = (): JSX.Element =>
+        linkPath ? (
+            <a
+                className="card card-link"
+                {...(disableRefresh
+                    ? {
+                          onClick: onClick
+                              ? onClick
+                              : (e) => {
+                                    e.preventDefault();
+                                    history.push(linkPath);
+                                },
+                      }
+                    : { href: linkPath })}
+            >
+                <NavLinkMain />
+                <NavLinkChildren />
+            </a>
+        ) : (
+            <div className="card card-link">
+                <NavLinkMain />
+                <NavLinkChildren />
+            </div>
+        );
+
+    return authorized ? <NavLinkElement /> : <></>;
 }
 
 export default withRouter(NavLink);

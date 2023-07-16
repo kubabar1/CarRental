@@ -1,4 +1,3 @@
-import { VehicleStatCodeEnum } from './VehicleStatCodeEnum';
 import { VehicleDetailsDTO } from './VehicleDetailsDTO';
 
 export class VehiclePersistDTO {
@@ -8,7 +7,6 @@ export class VehiclePersistDTO {
     dailyFee: number;
     locationId: string;
     bestOffer: boolean;
-    vehicleStatus: VehicleStatCodeEnum;
     vehicleDetailsDTO: VehicleDetailsDTO;
 
     constructor(
@@ -18,7 +16,6 @@ export class VehiclePersistDTO {
         dailyFee: number,
         locationId: string,
         bestOffer: boolean,
-        vehicleStatus: VehicleStatCodeEnum,
         vehicleDetails: VehicleDetailsDTO
     ) {
         this.brand = brand;
@@ -26,7 +23,6 @@ export class VehiclePersistDTO {
         this.dailyFee = dailyFee;
         this.registration = registration;
         this.locationId = locationId;
-        this.vehicleStatus = vehicleStatus;
         this.bestOffer = bestOffer;
         this.vehicleDetailsDTO = vehicleDetails;
     }

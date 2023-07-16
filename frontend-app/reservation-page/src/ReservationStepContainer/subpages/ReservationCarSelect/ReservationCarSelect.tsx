@@ -75,7 +75,7 @@ export function ReservationCarSelect<FieldValuesType extends FieldValues>({
                                     </div>
                                     <div className="mt-3">
                                         {TranslationService.translate('priceReservationCarSelectLabel')}
-                                        <strong>{selectedVehicle && selectedVehicle.dailyFee} $</strong>
+                                        <strong>{selectedVehicle && `${selectedVehicle.dailyFee} $`}</strong>
                                     </div>
                                 </h4>
                                 {vehiclesError && (

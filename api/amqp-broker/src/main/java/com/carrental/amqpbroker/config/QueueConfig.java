@@ -66,6 +66,11 @@ public class QueueConfig {
         return buildQueue("reloadAuthenticatedUserDataQueue");
     }
 
+    @Bean
+    public Queue getBookedVehiclesIdsQueue() {
+        return buildQueue("getBookedVehiclesIdsQueue");
+    }
+
     private Queue buildQueue(String queueName) {
         return QueueBuilder
                 .nonDurable(queueName)

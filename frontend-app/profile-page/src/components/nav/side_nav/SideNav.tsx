@@ -83,16 +83,34 @@ export function SideNav({ userRoles = [], runLogout }: SideNavProperties): JSX.E
                 />
             </NavLink>
 
-            {userHasAnyRole(userRoles, usersListPath.permittedRoles) && (
-                <NavLink navItemName={TranslationService.translate('usersNavLinkName')} iconName={faUser}>
-                    <NavSubLink
-                        navItemName={TranslationService.translate('usersListNavLinkName')}
-                        linkPath={usersListPath.link}
-                    />
-                </NavLink>
-            )}
+            <NavLink
+                navItemName={TranslationService.translate('usersNavLinkName')}
+                iconName={faUser}
+                authorized={userHasAnyRole(userRoles, usersListPath.permittedRoles)}
+            >
+                <NavSubLink
+                    navItemName={TranslationService.translate('usersListNavLinkName')}
+                    linkPath={usersListPath.link}
+                />
+            </NavLink>
 
-            <NavLink navItemName={TranslationService.translate('vehiclesNavLinkName')} iconName={faCar}>
+            <NavLink
+                navItemName={TranslationService.translate('vehiclesNavLinkName')}
+                iconName={faCar}
+                authorized={userHasAnyRole(
+                    userRoles,
+                    [
+                        vehiclesListPath.permittedRoles,
+                        vehicleAddPath.permittedRoles,
+                        equipmentListPath.permittedRoles,
+                        vehicleOptionsListPath.permittedRoles,
+                    ].reduce(
+                        (accumulator: string[] = [], value) =>
+                            value ? accumulator.concat(value) : accumulator.concat([]),
+                        [] as string[]
+                    )
+                )}
+            >
                 <NavSubLink
                     navItemName={TranslationService.translate('vehiclesListNavLinkName')}
                     linkPath={vehiclesListPath.link}
@@ -115,36 +133,46 @@ export function SideNav({ userRoles = [], runLogout }: SideNavProperties): JSX.E
                 />
             </NavLink>
 
-            {userHasAnyRole(userRoles, userRolesListPath.permittedRoles) && (
-                <NavLink navItemName={TranslationService.translate('userRolesNavLinkName')} iconName={faUserLock}>
-                    <NavSubLink
-                        navItemName={TranslationService.translate('userRolesListNavLinkName')}
-                        linkPath={userRolesListPath.link}
-                    />
-                </NavLink>
-            )}
-
-            {userHasAnyRole(userRoles, locationsListPath.permittedRoles) && (
-                <NavLink navItemName={TranslationService.translate('locationsNavLinkName')} iconName={faMapMarkedAlt}>
-                    <NavSubLink
-                        navItemName={TranslationService.translate('locationsListNavLinkName')}
-                        linkPath={locationsListPath.link}
-                    />
-                    <NavSubLink
-                        navItemName={TranslationService.translate('addLocationNavLinkName')}
-                        linkPath={locationAddPath.link}
-                    />
-                </NavLink>
-            )}
-
-            {userHasAnyRole(userRoles, sendEmailPath.permittedRoles) && (
-                <NavLink
-                    navItemName={TranslationService.translate('sendEmailNavLinkName')}
-                    iconName={faEnvelope}
-                    linkPath={sendEmailPath.link}
-                    disableRefresh={true}
+            <NavLink
+                navItemName={TranslationService.translate('userRolesNavLinkName')}
+                iconName={faUserLock}
+                authorized={userHasAnyRole(userRoles, userRolesListPath.permittedRoles)}
+            >
+                <NavSubLink
+                    navItemName={TranslationService.translate('userRolesListNavLinkName')}
+                    linkPath={userRolesListPath.link}
                 />
-            )}
+            </NavLink>
+
+            <NavLink
+                navItemName={TranslationService.translate('locationsNavLinkName')}
+                iconName={faMapMarkedAlt}
+                authorized={userHasAnyRole(
+                    userRoles,
+                    [locationsListPath.permittedRoles, locationAddPath.permittedRoles].reduce(
+                        (accumulator: string[] = [], value) =>
+                            value ? accumulator.concat(value) : accumulator.concat([]),
+                        [] as string[]
+                    )
+                )}
+            >
+                <NavSubLink
+                    navItemName={TranslationService.translate('locationsListNavLinkName')}
+                    linkPath={locationsListPath.link}
+                />
+                <NavSubLink
+                    navItemName={TranslationService.translate('addLocationNavLinkName')}
+                    linkPath={locationAddPath.link}
+                />
+            </NavLink>
+
+            <NavLink
+                navItemName={TranslationService.translate('sendEmailNavLinkName')}
+                iconName={faEnvelope}
+                linkPath={sendEmailPath.link}
+                disableRefresh={true}
+                authorized={userHasAnyRole(userRoles, sendEmailPath.permittedRoles)}
+            />
 
             <NavLink navItemName={TranslationService.translate('settingsNavLinkName')} iconName={faCog}>
                 <NavSubLink

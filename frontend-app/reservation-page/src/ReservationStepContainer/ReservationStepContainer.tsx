@@ -14,6 +14,8 @@ import {
     LocalisationsResponseDTO,
     LocalisationResponseDTO,
     VehicleResponseDTO,
+    AvailableVehiclesSearchDTO,
+    ResponseData,
 } from '@car-rental/shared/model';
 import { LocationService, VehicleService } from '@car-rental/shared/service';
 import { useForm } from 'react-hook-form';
@@ -59,6 +61,8 @@ export function ReservationStepContainer({ authenticatedUser }: ReservationStepC
     const [vehicles, setVehicles] = React.useState<VehicleResponseDTO[]>([]);
     const location = useLocation();
     const selectedLocalisationId = watch('localisationId');
+    const selectedReceptionDate = watch('receptionDate');
+    const selectedReturnDate = watch('returnDate');
 
     React.useEffect(() => {
         LocationService.getAllLocationsList().then((localisations: LocalisationsResponseDTO) => {
@@ -67,12 +71,14 @@ export function ReservationStepContainer({ authenticatedUser }: ReservationStepC
     }, []);
 
     React.useEffect(() => {
-        if (selectedLocalisationId) {
-            VehicleService.getAvailableVehiclesByLocation(selectedLocalisationId).then((v: VehicleResponseDTO[]) => {
-                setVehicles(v);
+        if (selectedLocalisationId && selectedReceptionDate && selectedReturnDate) {
+            VehicleService.getAvailableVehicles(
+                new AvailableVehiclesSearchDTO(selectedLocalisationId, selectedReceptionDate, selectedReturnDate)
+            ).then((v: ResponseData<VehicleResponseDTO[]>) => {
+                setVehicles(v.responseBody);
             });
         }
-    }, [selectedLocalisationId]);
+    }, [selectedLocalisationId, selectedReceptionDate, selectedReturnDate]);
 
     const reservationStorage = reactHookFormStorage<ReservationFormValues>(
         'reservationSessionStorage',

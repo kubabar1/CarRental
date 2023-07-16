@@ -61,7 +61,7 @@ export function ReservationDataCard<FieldValuesType extends FieldValues>({
     };
 
     return (
-        <div id="reservation-data-card" className="shadow card mt-2">
+        <div id="reservation-data-card" className="shadow card mt-4">
             <div className="card-header text-center">
                 <h2>{TranslationService.translate('reservationDataCardHeader')}</h2>
             </div>

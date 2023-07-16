@@ -165,7 +165,6 @@ export const translationsPl = {
     powerVehicleFormRequired: 'Moc jest wymagana',
     fuelTypeVehicleFormRequired: 'Typ paliwa jest wymagany',
     bodyTypeVehicleFormRequired: 'Typ nadwozia jest wymagany',
-    vehicleStatusVehicleFormRequired: 'Status pojazdu jest wymagany',
     statusUavLabelVehicleFormOption: 'Niedostępny',
     statusAviLabelVehicleFormOption: 'Dostępny',
     statusRmvLabelVehicleFormOption: 'Usunięty',

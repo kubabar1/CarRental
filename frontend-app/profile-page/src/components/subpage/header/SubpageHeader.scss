@@ -1,3 +1,42 @@
 .subpage-header {
     border-radius: 0 !important;
+
+    .card-header {
+        display: flex;
+        text-align: center;
+
+        strong {
+            flex: auto;
+        }
+
+        .lang-navbar-nav {
+            margin-left: auto;
+            display: flex;
+            flex-flow: row;
+            color: gray;
+            font-weight: bold;
+
+            li {
+                margin: 0 5px;
+            }
+
+            .lang-glob-icon {
+                display: flex;
+                align-items: center;
+                vertical-align: middle;
+            }
+
+            .active-lang {
+                color: black;
+            }
+
+            .lang {
+                margin: 0 5px;
+            }
+
+            .lang:hover {
+                cursor: pointer;
+            }
+        }
+    }
 }

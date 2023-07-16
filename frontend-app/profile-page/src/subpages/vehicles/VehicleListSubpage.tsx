@@ -6,17 +6,10 @@ import { SubpageContent } from '../../components/subpage/content/SubpageContent'
 import { Column, HeaderProps } from 'react-table';
 import { TranslationService, VehicleService } from '@car-rental/shared/service';
 import { ButtonTableItem } from '../../components/table/tab_items/button_table_item/ButtonTableItem';
-import {
-    BookingResponseDTO,
-    VehicleOptionsDTO,
-    VehicleResponseDTO,
-    Page,
-    VehicleStatCodeEnum,
-} from '@car-rental/shared/model';
+import { BookingResponseDTO, VehicleOptionsDTO, VehicleResponseDTO, Page } from '@car-rental/shared/model';
 import { SelectColumnFilter } from '../../components/table/tab_items/select_column_filter/SelectColumnFilter';
 import { RangeColumnFilter } from '../../components/table/tab_items/slider_column_filter/RangeColumnFilter';
 import { LocationSelectColumnFilter } from '../../components/table/tab_items/location_select_column_filter/LocationSelectColumnFilter';
-import { scryRenderedComponentsWithType } from 'react-dom/test-utils';
 
 export function VehicleListSubpage(): JSX.Element {
     const [vehiclesPage, setVehiclesPage] = useState<Page<VehicleResponseDTO> | undefined>(undefined);
@@ -90,31 +83,6 @@ export function VehicleListSubpage(): JSX.Element {
                     `${vehicleResponseDTO.location.country}, ${vehicleResponseDTO.location.city}, ${vehicleResponseDTO.location.streetAndNb}`,
                 Filter: (filterProps: React.PropsWithChildren<HeaderProps<BookingResponseDTO>>) => {
                     return <LocationSelectColumnFilter {...filterProps} />;
-                },
-            },
-            {
-                id: 'vehicleStatus',
-                Header: TranslationService.translate('statusVehicleFormColumn'),
-                accessor: (vehicleResponseDTO: VehicleResponseDTO) => {
-                    switch (vehicleResponseDTO.vehicleStatus.vehicleStatCode) {
-                        case VehicleStatCodeEnum.AVI:
-                            return TranslationService.translate('aviStatusVehicleFormOption');
-                        case VehicleStatCodeEnum.UAV:
-                            return TranslationService.translate('uavStatusVehicleFormOption');
-                        case VehicleStatCodeEnum.RMV:
-                            return TranslationService.translate('rmvStatusVehicleFormOption');
-                    }
-                },
-                Filter: (filterProps: React.PropsWithChildren<HeaderProps<BookingResponseDTO>>) => {
-                    return (
-                        <SelectColumnFilter
-                            options={[
-                                { value: 'UAV', label: TranslationService.translate('uavStatusVehicleFormOption') },
-                                { value: 'AVI', label: TranslationService.translate('aviStatusVehicleFormOption') },
-                            ]}
-                            {...filterProps}
-                        />
-                    );
                 },
             },
             {

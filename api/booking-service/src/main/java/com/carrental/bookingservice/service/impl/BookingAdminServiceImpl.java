@@ -2,8 +2,8 @@ package com.carrental.bookingservice.service.impl;
 
 import com.carrental.bookingservice.exception.BookingStateException;
 import com.carrental.bookingservice.model.constants.BookingStateCodeEnum;
+import com.carrental.bookingservice.model.dto.AvailableVehiclesSearchDTO;
 import com.carrental.bookingservice.model.dto.BookingResponseDTO;
-import com.carrental.bookingservice.model.dto.BookingStateDTO;
 import com.carrental.bookingservice.model.entity.BookingEntity;
 import com.carrental.bookingservice.model.entity.BookingStateEntity;
 import com.carrental.bookingservice.repository.BookingRepository;
@@ -11,14 +11,12 @@ import com.carrental.bookingservice.repository.BookingStateRepository;
 import com.carrental.bookingservice.service.BookingAdminService;
 import com.carrental.bookingservice.service.impl.validator.BookingStateValidator;
 import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
-import org.apache.commons.collections4.IteratorUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class BookingAdminServiceImpl extends BookingServiceCommons implements BookingAdminService {
 
@@ -87,16 +85,6 @@ public class BookingAdminServiceImpl extends BookingServiceCommons implements Bo
     public BookingResponseDTO returnBooking(Long bookingId) throws NoSuchElementException, BookingStateException {
         return updateBookingStatus(bookingId, BookingStateCodeEnum.RET);
     }
-
-    @Override
-    public Set<BookingStateDTO> getBookingStates() {
-        return IteratorUtils.toList(bookingStateRepository.findAll().iterator())
-                .stream()
-                .map(bookingState -> modelMapper.map(bookingState, BookingStateDTO.class))
-                .collect(Collectors.toSet());
-    }
-
-
 
     private BookingResponseDTO updateBookingStatus(Long bookingId, BookingStateCodeEnum newBookingState) throws NoSuchElementException, BookingStateException {
         BookingEntity bookingEntity = bookingRepository.findById(bookingId).orElseThrow();

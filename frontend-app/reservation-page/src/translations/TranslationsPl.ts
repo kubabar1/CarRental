@@ -66,4 +66,6 @@ export const translationsPl = {
     reservationSuccessMessage: 'Rezerwacja udana!',
     reservationFailedMessage: 'Rezerwacja nie powiodła się!',
     homeLink: 'Strona główna',
+    loginButton: 'Zaloguj się',
+    youNeedToAuthorizeText: 'Musisz autoryzować. Przejdź do strony logowania.',
 };

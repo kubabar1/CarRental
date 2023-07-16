@@ -7,7 +7,6 @@ import com.carrental.vehicleservice.repository.*;
 import com.carrental.vehicleservice.service.VehicleRatingService;
 import com.carrental.vehicleservice.service.VehicleService;
 import org.apache.commons.io.FilenameUtils;
-import org.h2.engine.Mode;
 import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.core.ParameterizedTypeReference;
@@ -17,12 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.Tuple;
-import javax.persistence.criteria.*;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.*;
 
 import java.util.stream.Collectors;
@@ -41,8 +36,6 @@ public class VehicleServiceImpl implements VehicleService {
 
     private final ModelRepository modelRepository;
 
-    private final VehicleStatusRepository vehicleStatusRepository;
-
     private final ModelMapper modelMapper;
 
     private final VehicleRatingService vehicleRatingService;
@@ -59,7 +52,6 @@ public class VehicleServiceImpl implements VehicleService {
             FuelTypeRepository fuelTypeRepository,
             BrandRepository brandRepository,
             ModelRepository modelRepository,
-            VehicleStatusRepository vehicleStatusRepository,
             ModelMapper modelMapper,
             VehicleRatingService vehicleRatingService,
             RabbitTemplate rabbitTemplate,
@@ -71,7 +63,6 @@ public class VehicleServiceImpl implements VehicleService {
         this.fuelTypeRepository = fuelTypeRepository;
         this.brandRepository = brandRepository;
         this.modelRepository = modelRepository;
-        this.vehicleStatusRepository = vehicleStatusRepository;
         this.modelMapper = modelMapper;
         this.vehicleRatingService = vehicleRatingService;
         this.rabbitTemplate = rabbitTemplate;
@@ -117,23 +108,26 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public Set<VehicleResponseDTO> getAvailableVehicles() {
-        return vehicleRepository
-                .findAllAvailable()
+    public Set<VehicleResponseDTO> getAvailableVehicles(AvailableVehiclesSearchDTO availableVehiclesSearchDTO) {
+        Set<Long> bookedVehiclesIds = rabbitTemplate.convertSendAndReceiveAsType(
+            "getBookedVehiclesIdsQueue",
+            availableVehiclesSearchDTO,
+            new ParameterizedTypeReference<>() {
+            }
+        );
+
+        if (bookedVehiclesIds != null && !bookedVehiclesIds.isEmpty()) {
+            return vehicleRepository.findAllByIdNotInAndLocationId(bookedVehiclesIds, availableVehiclesSearchDTO.getLocationId())
                 .stream()
                 .map(vehicleEntity -> modelMapper.map(vehicleEntity, VehicleResponseDTO.class))
                 .collect(Collectors.toSet());
-    }
-
-    @Override
-    public Page<VehicleResponseDTO> getUnavailableVehicles(Pageable pageable) {
-        Page<VehicleEntity> vehicleEntities = vehicleRepository.findAllUnavailable(pageable);
-        List<VehicleResponseDTO> vehicleResponseDTOS = vehicleEntities
-                .getContent()
+        } else {
+            return vehicleRepository.findAll((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("locationId"), availableVehiclesSearchDTO.getLocationId()))
                 .stream()
                 .map(vehicleEntity -> modelMapper.map(vehicleEntity, VehicleResponseDTO.class))
-                .collect(Collectors.toList());
-        return new PageImpl<>(vehicleResponseDTOS, pageable, vehicleEntities.getTotalElements());
+                .collect(Collectors.toSet());
+        }
     }
 
     @Override
@@ -151,6 +145,12 @@ public class VehicleServiceImpl implements VehicleService {
         vehicleResponseDTO.setLocation(locationResponseDTO);
 
         return vehicleResponseDTO;
+    }
+
+    @Override
+    public VehicleResponseDTO getVehicleByIdWithoutLocation(Long vehicleId) throws NoSuchElementException {
+        VehicleEntity vehicleEntity = vehicleRepository.findById(vehicleId).orElseThrow();
+        return modelMapper.map(vehicleEntity, VehicleResponseDTO.class);
     }
 
     @Override
@@ -297,15 +297,6 @@ public class VehicleServiceImpl implements VehicleService {
         return new OptionDTO(colorEntity.getColor());
     }
 
-    @Override
-    public Set<VehicleResponseDTO> getAvailableVehiclesByLocation(Long locationId) {
-        return vehicleRepository
-                .findAllAvailableByLocationId(locationId)
-                .stream()
-                .map(v -> modelMapper.map(v, VehicleResponseDTO.class))
-                .collect(Collectors.toSet());
-    }
-
     private void uploadImage(String vehicleImageName, MultipartFile vehicleImage) throws IOException {
         UploadVehicleImageDTO uploadVehicleImageDTO = new UploadVehicleImageDTO();
         uploadVehicleImageDTO.setImageName(vehicleImageName);
@@ -324,7 +315,6 @@ public class VehicleServiceImpl implements VehicleService {
         vehicleEntity.setDailyFee(vehiclePersistDTO.getDailyFee());
         vehicleEntity.setLocationId(vehiclePersistDTO.getLocationId());
         vehicleEntity.setBestOffer(vehiclePersistDTO.isBestOffer());
-        vehicleEntity.setVehicleStatus(vehicleStatusRepository.getById(vehiclePersistDTO.getVehicleStatus()));
         return vehicleEntity;
     }
 

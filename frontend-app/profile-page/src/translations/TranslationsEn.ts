@@ -165,7 +165,6 @@ export const translationsEn = {
     powerVehicleFormRequired: 'Power is required',
     fuelTypeVehicleFormRequired: 'Fuel type is required',
     bodyTypeVehicleFormRequired: 'Body type is required',
-    vehicleStatusVehicleFormRequired: 'Vehicle status is required',
     statusUavLabelVehicleFormOption: 'Unavailable',
     statusAviLabelVehicleFormOption: 'Available',
     statusRmvLabelVehicleFormOption: 'Removed',

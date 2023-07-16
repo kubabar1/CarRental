@@ -11,12 +11,11 @@ import com.carrental.vehicleservice.service.EquipmentService;
 import com.carrental.vehicleservice.service.FilteringService;
 import com.carrental.vehicleservice.service.VehicleRatingService;
 import com.carrental.vehicleservice.service.VehicleService;
-import com.carrental.vehicleservice.service.filter.EquipmentFilterOperations;
 import com.carrental.vehicleservice.service.impl.EquipmentServiceImpl;
 import com.carrental.vehicleservice.service.impl.FilteringServiceImpl;
 import com.carrental.vehicleservice.service.impl.VehicleRatingServiceImpl;
 import com.carrental.vehicleservice.service.impl.VehicleServiceImpl;
-import com.carrental.vehicleservice.service.listener.VehicleListener;
+import com.carrental.vehicleservice.listener.VehicleListener;
 import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +32,7 @@ public class VehicleServiceCoreConfig {
 
     @Bean
     public DefaultFilterOperations<VehicleEntity> vehicleFilterOperations() {
-        return new EquipmentFilterOperations<>();
+        return new DefaultFilterOperations<>();
     }
 
     @Bean
@@ -76,7 +75,6 @@ public class VehicleServiceCoreConfig {
             FuelTypeRepository fuelTypeRepository,
             BrandRepository brandRepository,
             ModelRepository modelRepository,
-            VehicleStatusRepository vehicleStatusRepository,
             ModelMapper modelMapper,
             VehicleRatingService vehicleRatingService,
             RabbitTemplate rabbitTemplate,
@@ -89,7 +87,6 @@ public class VehicleServiceCoreConfig {
                 fuelTypeRepository,
                 brandRepository,
                 modelRepository,
-                vehicleStatusRepository,
                 modelMapper,
                 vehicleRatingService,
                 rabbitTemplate,
@@ -111,7 +108,7 @@ public class VehicleServiceCoreConfig {
     }
 
     @Bean
-    public VehicleListener vehicleListener(VehicleRepository vehicleRepository, ModelMapper modelMapper) {
-        return new VehicleListener(vehicleRepository, modelMapper);
+    public VehicleListener vehicleListener(VehicleService vehicleService) {
+        return new VehicleListener(vehicleService);
     }
 }

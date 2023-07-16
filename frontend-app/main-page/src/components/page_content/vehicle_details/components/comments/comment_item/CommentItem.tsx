@@ -18,10 +18,8 @@ export function CommentItem({ comment }: CommentItemProperties): JSX.Element {
             <img src={userImagePath} className="mr-3 mt-3 rounded-circle user-image" alt={'User image'} />
             <div className="media-body">
                 <h4>
-                    {comment.userId + ' '}
                     <small>
                         <i>
-                            {' '}
                             {TranslationService.translate('postedOn')}{' '}
                             {date.format(new Date(comment.creationDate), 'YYYY-MM-DD HH:mm:ss')}
                         </i>

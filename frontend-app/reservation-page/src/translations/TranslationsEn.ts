@@ -50,7 +50,7 @@ export const translationsEn = {
     powerVehiclePropertiesLabel: 'Power',
     equipmentsVehicleEquipmentHeader: 'Equipments',
     confirmReservationHeaderReservationConfirmation: 'Confirm reservation',
-    rentCarReservationConfirmationButton: 'Rent car',
+    rentCarReservationConfirmationButton: 'Reserve',
     backReservationConfirmationButton: 'Back',
     reservationCostHeader: 'Reservation cost',
     reservationCostCostLabel: 'Cost: ',
@@ -66,4 +66,6 @@ export const translationsEn = {
     reservationSuccessMessage: 'Reservation successful!',
     reservationFailedMessage: 'Reservation failed!',
     homeLink: 'Home',
+    loginButton: 'Login',
+    youNeedToAuthorizeText: 'You need to authorize. Go to login page.',
 };

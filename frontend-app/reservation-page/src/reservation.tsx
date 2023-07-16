@@ -49,7 +49,7 @@ ReactDOM.render(
                     return (
                         <div className="center-div-vertically-and-horizontally">
                             <div className="container-fluid">
-                                <p>You need to authorize. Go to login page.</p>
+                                <p>{TranslationService.translate('youNeedToAuthorizeText')}</p>
                                 <br />
                                 <Button
                                     variant="primary"
@@ -57,7 +57,7 @@ ReactDOM.render(
                                         window.location.href = '/login';
                                     }}
                                 >
-                                    Login
+                                    {TranslationService.translate('loginButton')}
                                 </Button>
                             </div>
                         </div>
