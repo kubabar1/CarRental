@@ -1,6 +1,5 @@
 package com.carrental.setup;
 
-import com.carrental.amqpbroker.config.AmqpBrokerCoreConfig;
 import com.carrental.authservice.config.AuthServiceCoreConfig;
 import com.carrental.bookingservice.config.BookingServiceCoreConfig;
 import com.carrental.mailservice.config.MailServiceCoreConfig;
@@ -19,7 +18,6 @@ import org.springframework.context.annotation.Import;
                 "com.carrental.vehicleservice",
                 "com.carrental.authservice",
                 "com.carrental.mailservice",
-                "com.carrental.amqpbroker",
                 "com.carrental.storageservicestub"
         }
 )
@@ -30,7 +28,6 @@ import org.springframework.context.annotation.Import;
         VehicleServiceCoreConfig.class,
         AuthServiceCoreConfig.class,
         MailServiceCoreConfig.class,
-        AmqpBrokerCoreConfig.class,
         MailServiceCoreConfig.class
 })
 public class SetupApplication {

@@ -20,6 +20,7 @@ repositories {
 
 dependencies {
     implementation 'com.carrental.shared:shared-auth-commons'
+    implementation 'com.carrental.shared:shared-amqp-commons'
     implementation 'com.carrental.shared:shared-config-commons'
     implementation 'com.carrental.shared:shared-filtering-commons'
     implementation 'org.springframework.boot:spring-boot-starter:2.6.3'

@@ -2,4 +2,5 @@ rootProject.name = 'booking-service'
 
 includeBuild '../shared/config-commons'
 includeBuild '../shared/auth-commons'
+includeBuild '../shared/amqp-commons'
 includeBuild '../shared/filtering-commons'

@@ -19,10 +19,12 @@ import com.carrental.vehicleservice.listener.VehicleListener;
 import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 
 import javax.persistence.EntityManager;
 
 
+@Import({VehicleServiceQueueConfig.class})
 public class VehicleServiceCoreConfig {
 
     @Bean

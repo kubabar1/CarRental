@@ -6,6 +6,7 @@ import com.carrental.commons.config.SpringFoxConfig;
 import com.carrental.userservice.config.UserServiceCoreConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Import;
 
 @Import({
@@ -14,7 +15,7 @@ import org.springframework.context.annotation.Import;
         SpringFoxConfig.class,
         UserServiceCoreConfig.class
 })
-@SpringBootApplication
+@SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class UserServiceApplication {
 
     public static void main(String[] args) {

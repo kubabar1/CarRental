@@ -3,7 +3,9 @@ package com.carrental.storageservicestub.config;
 import com.carrental.storageservicestub.config.resourcehandlers.VehiclesImagesResourceHandler;
 import com.carrental.storageservicestub.model.BaseTmpDir;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 
+@Import({StorageServiceStubQueueConfig.class})
 public class StorageServiceStubCoreConfig {
 
     @Bean

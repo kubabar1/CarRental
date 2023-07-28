@@ -10,7 +10,9 @@ import com.carrental.ratingservice.service.impl.CommentServiceImpl;
 import com.carrental.ratingservice.service.impl.RateServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 
+@Import({RatingServiceQueueConfig.class})
 public class RatingServiceCoreConfig {
 
     @Bean

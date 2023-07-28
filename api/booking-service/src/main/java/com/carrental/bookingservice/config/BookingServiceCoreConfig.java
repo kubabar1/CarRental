@@ -29,7 +29,9 @@ import com.carrental.commons.utils.filtering.specification.operations.impl.Defau
 import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 
+@Import({BookingServiceQueueConfig.class})
 public class BookingServiceCoreConfig {
 
     @Bean

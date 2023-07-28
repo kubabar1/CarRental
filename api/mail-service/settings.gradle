@@ -1,1 +1,3 @@
 rootProject.name = 'mail-service'
+
+includeBuild '../shared/amqp-commons'

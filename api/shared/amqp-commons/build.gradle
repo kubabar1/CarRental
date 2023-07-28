@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'com.carrental.shared'
+version = 'HEAD-SNAPSHOT'
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+//    implementation 'org.springframework.boot:spring-boot-starter:2.6.3'
+//    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
+//    implementation 'org.springframework.boot:spring-boot-starter-parent:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp:2.6.3'
+//    implementation 'javax.inject:javax.inject:1'
+}

@@ -22,7 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
         SecurityConfig.class,
         CorsConfig.class,
         AuthProviderConfig.class,
-        RememberMeConfig.class
+        RememberMeConfig.class,
+        AuthServiceQueueConfig.class
 })
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)

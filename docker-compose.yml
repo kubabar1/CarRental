@@ -56,20 +56,9 @@ services:
         ports:
             - "8085:8080"
         mem_limit: 160m
-    amqp-broker:
-        image: amqp-broker
-        container_name: amqp-broker
-        build:
-            context: ./api
-            dockerfile: Dockerfile
-            args:
-                - APP_DIR=auth-service
-        ports:
-            - "8086:8080"
-        mem_limit: 160m
     mail-service:
-        image: amqp-broker
-        container_name: amqp-broker
+        image: mail-service
+        container_name: mail-service
         build:
             context: ./api
             dockerfile: Dockerfile
