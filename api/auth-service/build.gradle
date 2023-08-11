@@ -5,6 +5,8 @@ plugins {
     id 'application'
 }
 
+apply from: '../shared/config-commons/boot-run.gradle'
+
 group = 'com.carrental.api'
 version = 'HEAD-SNAPSHOT'
 sourceCompatibility = '11'

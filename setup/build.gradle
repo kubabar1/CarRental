@@ -5,6 +5,8 @@ plugins {
     id 'application'
 }
 
+apply from: '../api/shared/config-commons/boot-run.gradle'
+
 group = 'com.carrental.setup'
 version = 'HEAD-SNAPSHOT'
 sourceCompatibility = '11'
@@ -26,13 +28,7 @@ dependencies {
     implementation 'com.carrental.api:auth-service'
     implementation 'com.carrental.api:mail-service'
     implementation 'com.carrental.api:storage-service-stub'
+    implementation 'com.carrental.shared:shared-config-commons'
     implementation 'org.springframework.boot:spring-boot-starter:2.6.3'
     implementation 'org.springframework.boot:spring-boot-devtools'
-}
-
-bootRun {
-    debug true
-    debugOptions {
-        suspend.set(false)
-    }
 }

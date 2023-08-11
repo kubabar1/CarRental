@@ -2,3 +2,4 @@ rootProject.name = 'storage-service-stub'
 
 includeBuild '../shared/files-commons'
 includeBuild '../shared/amqp-commons'
+includeBuild '../shared/auth-commons'

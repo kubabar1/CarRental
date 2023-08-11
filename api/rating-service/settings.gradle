@@ -2,3 +2,4 @@ rootProject.name = 'rating-service'
 
 includeBuild '../shared/config-commons'
 includeBuild '../shared/amqp-commons'
+includeBuild '../shared/auth-commons'

@@ -1,4 +1,4 @@
-package com.carrental.storageservicestub.config;
+package com.carrental.storageservicestub.config.queue;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;

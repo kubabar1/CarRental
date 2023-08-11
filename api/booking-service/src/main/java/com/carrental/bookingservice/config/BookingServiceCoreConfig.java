@@ -1,5 +1,7 @@
 package com.carrental.bookingservice.config;
 
+import com.carrental.bookingservice.config.queue.BookingServiceQueueConfig;
+import com.carrental.bookingservice.config.security.IgnoreAuthenticationBookingService;
 import com.carrental.bookingservice.controller.BookingsAdminController;
 import com.carrental.bookingservice.controller.BookingsAuditLogsController;
 import com.carrental.bookingservice.controller.BookingsUserController;
@@ -28,10 +30,14 @@ import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
 import com.carrental.commons.utils.filtering.specification.operations.impl.DefaultFilterOperations;
 import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@Import({BookingServiceQueueConfig.class})
+@Import({BookingServiceQueueConfig.class, IgnoreAuthenticationBookingService.class})
+@EnableJpaRepositories("com.carrental.bookingservice.repository")
+@EntityScan("com.carrental.bookingservice.model.entity")
 public class BookingServiceCoreConfig {
 
     @Bean

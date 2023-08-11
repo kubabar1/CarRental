@@ -1,4 +1,4 @@
-package com.carrental.bookingservice.config;
+package com.carrental.bookingservice.config.queue;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;

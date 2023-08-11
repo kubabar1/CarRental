@@ -2,8 +2,10 @@ package com.carrental.ratingservice;
 
 import com.carrental.commons.config.AuthenticationServiceConfig;
 import com.carrental.commons.config.ModelMapperConfig;
+import com.carrental.commons.config.RabbitMQConfig;
 import com.carrental.commons.config.SpringFoxConfig;
 import com.carrental.ratingservice.config.RatingServiceCoreConfig;
+import com.carrental.ratingservice.config.security.WebSecurityConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
@@ -12,7 +14,9 @@ import org.springframework.context.annotation.Import;
         AuthenticationServiceConfig.class,
         ModelMapperConfig.class,
         SpringFoxConfig.class,
-        RatingServiceCoreConfig.class
+        RatingServiceCoreConfig.class,
+        WebSecurityConfig.class,
+        RabbitMQConfig.class
 })
 @SpringBootApplication
 public class RatingServiceApplication {

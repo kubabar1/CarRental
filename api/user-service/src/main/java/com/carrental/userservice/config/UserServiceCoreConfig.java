@@ -2,6 +2,8 @@ package com.carrental.userservice.config;
 
 import com.carrental.commons.authentication.service.AuthenticatedUserDataService;
 import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
+import com.carrental.userservice.config.queue.UserServiceQueueConfig;
+import com.carrental.userservice.config.security.IgnoreAuthenticationUserService;
 import com.carrental.userservice.controller.RegistrationController;
 import com.carrental.userservice.controller.ResetPasswordController;
 import com.carrental.userservice.controller.UserController;
@@ -21,16 +23,18 @@ import com.carrental.userservice.service.impl.UserRoleServiceImpl;
 import com.carrental.userservice.service.impl.UserServiceImpl;
 import com.carrental.userservice.service.impl.filtering.UserFilterOperation;
 import org.modelmapper.ModelMapper;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Import({UserServiceQueueConfig.class})
+@EnableJpaRepositories("com.carrental.userservice.repository")
+@EntityScan("com.carrental.userservice.model.entity")
+@Import({UserServiceQueueConfig.class, IgnoreAuthenticationUserService.class})
 public class UserServiceCoreConfig {
 
     @Bean
@@ -119,21 +123,6 @@ public class UserServiceCoreConfig {
     @Bean
     public UserRoleController userRoleController(UserRoleService userRoleService) {
         return new UserRoleController(userRoleService);
-    }
-
-    @Bean
-    public RabbitTemplate rabbitTemplate(
-            ConnectionFactory connectionFactory,
-            Jackson2JsonMessageConverter jackson2JsonMessageConverter
-    ) {
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setMessageConverter(jackson2JsonMessageConverter);
-        return rabbitTemplate;
-    }
-
-    @Bean
-    public Jackson2JsonMessageConverter producerJackson2MessageConverter() {
-        return new Jackson2JsonMessageConverter();
     }
 
     @Bean

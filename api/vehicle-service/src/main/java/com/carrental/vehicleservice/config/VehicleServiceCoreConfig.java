@@ -2,6 +2,8 @@ package com.carrental.vehicleservice.config;
 
 import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
 import com.carrental.commons.utils.filtering.specification.operations.impl.DefaultFilterOperations;
+import com.carrental.vehicleservice.config.queue.VehicleServiceQueueConfig;
+import com.carrental.vehicleservice.config.security.IgnoreAuthenticationVehicleService;
 import com.carrental.vehicleservice.controller.EquipmentController;
 import com.carrental.vehicleservice.controller.VehicleController;
 import com.carrental.vehicleservice.model.entity.EquipmentEntity;
@@ -18,13 +20,16 @@ import com.carrental.vehicleservice.service.impl.VehicleServiceImpl;
 import com.carrental.vehicleservice.listener.VehicleListener;
 import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import javax.persistence.EntityManager;
 
-
-@Import({VehicleServiceQueueConfig.class})
+@EnableJpaRepositories("com.carrental.vehicleservice.repository")
+@EntityScan("com.carrental.vehicleservice.model.entity")
+@Import({VehicleServiceQueueConfig.class, IgnoreAuthenticationVehicleService.class})
 public class VehicleServiceCoreConfig {
 
     @Bean

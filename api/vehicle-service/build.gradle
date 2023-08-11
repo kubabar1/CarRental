@@ -6,6 +6,8 @@ plugins {
     id 'war'
 }
 
+apply from: '../shared/config-commons/boot-run.gradle'
+
 group = 'com.carrental.api'
 version = 'HEAD-SNAPSHOT'
 sourceCompatibility = '11'
@@ -30,7 +32,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation:2.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-amqp:2.6.3'
-    implementation 'org.springframework.security:spring-security-core:5.6.1'
+    implementation 'org.springframework.boot:spring-boot-starter-security:2.6.3'
     implementation 'org.modelmapper:modelmapper:3.0.0'
     implementation 'io.springfox:springfox-swagger2:3.0.0'
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
@@ -42,4 +44,5 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
     implementation 'javax.validation:validation-api:2.0.1.Final'
     implementation 'commons-io:commons-io:2.11.0'
+    implementation 'javax.inject:javax.inject:1'
 }

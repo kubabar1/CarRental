@@ -15,6 +15,7 @@ repositories {
 dependencies {
     implementation 'com.carrental.shared:shared-auth-commons'
     implementation 'org.springframework.boot:spring-boot-starter:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp:2.6.3'
     implementation 'org.modelmapper:modelmapper:3.0.0'
     implementation 'io.springfox:springfox-swagger2:3.0.0'
     implementation 'io.springfox:springfox-boot-starter:3.0.0'

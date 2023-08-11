@@ -1,50 +1,20 @@
 version: '2.2'
 
 services:
-    rating-service:
-        image: rating-service
-        container_name: rating-service
-        build:
-            context: ./api
-            dockerfile: Dockerfile
-            args:
-                - APP_DIR=rating-service
+    rabbitmq:
+        image: rabbitmq:3-management-alpine
+        container_name: rabbitmq
         ports:
-            - "8081:8080"
-        mem_limit: 160m
-    booking-service:
-        image: booking-service
-        container_name: booking-service
-        build:
-            context: ./api
-            dockerfile: Dockerfile
-            args:
-                - APP_DIR=booking-service
-        ports:
-            - "8082:8080"
-        mem_limit: 160m
-    user-service:
-        image: user-service
-        container_name: user-service
-        build:
-            context: ./api
-            dockerfile: Dockerfile
-            args:
-                - APP_DIR=user-service
-        ports:
-            - "8083:8080"
-        mem_limit: 160m
-    vehicle-service:
-        image: vehicle-service
-        container_name: vehicle-service
-        build:
-            context: ./api
-            dockerfile: Dockerfile
-            args:
-                - APP_DIR=vehicle-service
-        ports:
-            - "8084:8080"
-        mem_limit: 160m
+            - 5672:5672
+            - 15672:15672
+#        volumes:
+#            - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+#            - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+        healthcheck:
+            test: rabbitmq-diagnostics -q ping
+            interval: 30s
+            timeout: 30s
+            retries: 3
     auth-service:
         image: auth-service
         container_name: auth-service
@@ -54,8 +24,77 @@ services:
             args:
                 - APP_DIR=auth-service
         ports:
+            - "8081:8080"
+        mem_limit: 160m
+        depends_on:
+            rabbitmq:
+                condition: service_healthy
+        environment:
+            RABBIT_HOST: rabbitmq
+    user-service:
+        image: user-service
+        container_name: user-service
+        build:
+            context: ./api
+            dockerfile: Dockerfile
+            args:
+                - APP_DIR=user-service
+        ports:
+            - "8082:8080"
+        mem_limit: 160m
+        depends_on:
+            rabbitmq:
+                condition: service_healthy
+        environment:
+            RABBIT_HOST: rabbitmq
+    vehicle-service:
+        image: vehicle-service
+        container_name: vehicle-service
+        build:
+            context: ./api
+            dockerfile: Dockerfile
+            args:
+                - APP_DIR=vehicle-service
+        ports:
+            - "8083:8080"
+        mem_limit: 160m
+        depends_on:
+            rabbitmq:
+                condition: service_healthy
+        environment:
+            RABBIT_HOST: rabbitmq
+    rating-service:
+        image: rating-service
+        container_name: rating-service
+        build:
+            context: ./api
+            dockerfile: Dockerfile
+            args:
+                - APP_DIR=rating-service
+        ports:
+            - "8084:8080"
+        mem_limit: 160m
+        depends_on:
+            rabbitmq:
+                condition: service_healthy
+        environment:
+            RABBIT_HOST: rabbitmq
+    booking-service:
+        image: booking-service
+        container_name: booking-service
+        build:
+            context: ./api
+            dockerfile: Dockerfile
+            args:
+                - APP_DIR=booking-service
+        ports:
             - "8085:8080"
         mem_limit: 160m
+        depends_on:
+            rabbitmq:
+                condition: service_healthy
+        environment:
+            RABBIT_HOST: rabbitmq
     mail-service:
         image: mail-service
         container_name: mail-service
@@ -65,8 +104,13 @@ services:
             args:
                 - APP_DIR=mail-service
         ports:
-            - "8087:8080"
+            - "8086:8080"
         mem_limit: 160m
+        depends_on:
+            rabbitmq:
+                condition: service_healthy
+        environment:
+            RABBIT_HOST: rabbitmq
     storage-service-stub:
         image: storage-service-stub
         container_name: storage-service-stub
@@ -76,5 +120,10 @@ services:
             args:
                 - APP_DIR=storage-service-stub
         ports:
-            - "8088:8080"
+            - "8087:8080"
         mem_limit: 160m
+        depends_on:
+            rabbitmq:
+                condition: service_healthy
+        environment:
+            RABBIT_HOST: rabbitmq

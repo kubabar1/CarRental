@@ -1,5 +1,7 @@
 package com.carrental.ratingservice.config;
 
+import com.carrental.ratingservice.config.queue.RatingServiceQueueConfig;
+import com.carrental.ratingservice.config.security.IgnoreAuthenticationRatingService;
 import com.carrental.ratingservice.controller.CommentController;
 import com.carrental.ratingservice.listener.VehicleRatingListener;
 import com.carrental.ratingservice.repository.CommentRepository;
@@ -9,10 +11,14 @@ import com.carrental.ratingservice.service.RateService;
 import com.carrental.ratingservice.service.impl.CommentServiceImpl;
 import com.carrental.ratingservice.service.impl.RateServiceImpl;
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@Import({RatingServiceQueueConfig.class})
+@Import({RatingServiceQueueConfig.class, IgnoreAuthenticationRatingService.class})
+@EnableJpaRepositories("com.carrental.ratingservice.repository")
+@EntityScan("com.carrental.ratingservice.model.entity")
 public class RatingServiceCoreConfig {
 
     @Bean
