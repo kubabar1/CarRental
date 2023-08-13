@@ -2,13 +2,13 @@ package com.carrental.bookingservice.config.security;
 
 import com.carrental.commons.authentication.config.*;
 import com.carrental.commons.authentication.config.cors.CorsConfig;
+import com.carrental.commons.authentication.config.cors.CorsConfigSource;
 import com.carrental.commons.authentication.config.jwt.JwtSecurityContextConfig;
 import com.carrental.commons.authentication.config.jwt.JwtSecurityContextRepository;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.web.cors.CorsConfigurationSource;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Inject
-    public CorsConfigurationSource corsConfigurationSource;
+    private CorsConfigSource corsConfigurationSource;
 
     @Inject
     public IgnoreAuthentication ignoreAuthentication;

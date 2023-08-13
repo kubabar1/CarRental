@@ -2,6 +2,7 @@ package com.carrental.authservice.config.security;
 
 import com.carrental.commons.authentication.config.cors.CorsConfig;
 import com.carrental.commons.authentication.config.IgnoreAuthentication;
+import com.carrental.commons.authentication.config.cors.CorsConfigSource;
 import com.carrental.commons.authentication.config.jwt.JwtProperties;
 import com.carrental.commons.authentication.config.jwt.JwtSecurityContextRepository;
 import org.springframework.context.annotation.Import;
@@ -15,7 +16,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
-import org.springframework.web.cors.CorsConfigurationSource;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Inject
-    private CorsConfigurationSource corsConfigurationSource;
+    private CorsConfigSource corsConfigurationSource;
 
     @Inject
     private UserDetailsService userDetailsService;
@@ -74,8 +74,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.exceptionHandling().authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"));
         // headers
         http.headers().frameOptions().sameOrigin();
-        // remember me
-        // http.rememberMe().key("qwerty").tokenRepository(persistentTokenRepository).userDetailsService(userDetailsService);
         // request authorization
         http.authorizeRequests()
             .antMatchers(

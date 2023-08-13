@@ -1,17 +1,24 @@
 package com.carrental.commons.authentication.config.cors;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotNull;
+
+@Validated
 @ConfigurationProperties(prefix = "cors")
 public class CorsProperties {
 
+    @NotNull
     private String[] allowedOrigins;
 
+    @NotNull
     private String[] allowedMethods;
 
+    @NotNull
     private String[] allowedHeaders;
 
+    @NotNull
     private Boolean allowCredentials;
 
     public String[] getAllowedOrigins() {

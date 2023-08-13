@@ -2,6 +2,7 @@ package com.carrental.userservice.config.security;
 
 import com.carrental.commons.authentication.config.*;
 import com.carrental.commons.authentication.config.cors.CorsConfig;
+import com.carrental.commons.authentication.config.cors.CorsConfigSource;
 import com.carrental.commons.authentication.config.jwt.JwtSecurityContextConfig;
 import com.carrental.commons.authentication.config.jwt.JwtSecurityContextRepository;
 import org.springframework.context.annotation.Import;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Inject
-    public CorsConfigurationSource corsConfigurationSource;
+    private CorsConfigSource corsConfigurationSource;
 
     @Inject
     public IgnoreAuthentication ignoreAuthentication;

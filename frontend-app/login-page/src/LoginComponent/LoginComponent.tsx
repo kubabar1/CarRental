@@ -3,12 +3,10 @@ import carRentalLogo from '../images/car_rental_logo_name.png';
 import './LoginComponent.scss';
 import { homePath, registrationPath } from '../constants/Paths';
 import { TranslationService, AuthService } from '@car-rental/shared/service';
-import { JwtRequestDTO, JwtResponseDTO, ResponseData } from '@car-rental/shared/model';
 
 export function LoginComponent(): JSX.Element {
     const [username, setUsername] = useState<string | undefined>(undefined);
     const [password, setPassword] = useState<string | undefined>(undefined);
-    const [rememberMe, setRememberMe] = useState<boolean>(false);
     const [usernameError, setUsernameError] = useState<boolean>(false);
     const [passwordError, setPasswordError] = useState<boolean>(false);
     const [loginError, setLoginError] = useState<boolean>(false);
@@ -16,23 +14,22 @@ export function LoginComponent(): JSX.Element {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
+        const data: URLSearchParams = new URLSearchParams();
         if (!!username && !!password) {
             setUsernameError(false);
             setPasswordError(false);
-            // if (rememberMe) {
-            //     data.append('remember-me', 'true');
-            // }
+            data.append('username', username);
+            data.append('password', password);
             setIsSubmitButtonDisabled(true);
-            AuthService.login(new JwtRequestDTO(username, password))
-                .then((res: ResponseData<JwtResponseDTO>) => {
-                    console.log('$$$$$$$$$$$$$$$$$$$$$$$');
-                    console.log(res);
-                    if (res.statusCode == 200) {
+            AuthService.login(data)
+                .then((res: Response) => {
+                    if (res.status == 200) {
                         setLoginError(false);
-                        // window.location.href = homePath;
+                        window.location.href = homePath;
                     } else {
                         setLoginError(true);
                     }
+                    setIsSubmitButtonDisabled(false);
                 })
                 .finally(() => {
                     setIsSubmitButtonDisabled(false);
@@ -49,10 +46,6 @@ export function LoginComponent(): JSX.Element {
                 setPasswordError(true);
             }
         }
-    };
-
-    const handleRememberMe = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRememberMe(event.target.checked);
     };
 
     return (
@@ -93,18 +86,6 @@ export function LoginComponent(): JSX.Element {
                                 {TranslationService.translate('passwordError')}
                             </div>
                         )}
-                    </div>
-
-                    <div className="checkbox mb-3">
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="remember-me"
-                                checked={rememberMe}
-                                onChange={handleRememberMe}
-                            />{' '}
-                            {TranslationService.translate('rememberMe')}
-                        </label>
                     </div>
 
                     <button

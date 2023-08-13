@@ -5,12 +5,15 @@ import org.springframework.context.annotation.Bean;
 public class CorsConfig {
 
     @Bean
-    private CorsProperties corsProperties() {
+    public CorsProperties corsProperties() {
         return new CorsProperties();
     }
 
     @Bean
-    private CorsConfigSource corsConfigSource(CorsProperties corsProperties) {
+    public CorsConfigSource corsConfigSource(CorsProperties corsProperties) {
+//        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
         return new CorsConfigSource(corsProperties);
     }
 }

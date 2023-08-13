@@ -1,13 +1,12 @@
 package com.carrental.commons.authentication.config.cors;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
-public class CorsConfigSource {
+public class CorsConfigSource implements CorsConfigurationSource {
 
     private final CorsProperties corsProperties;
 
@@ -15,15 +14,13 @@ public class CorsConfigSource {
         this.corsProperties = corsProperties;
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    @Override
+    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
         final CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(corsProperties.getAllowedOrigins()));
         configuration.setAllowedMethods(Arrays.asList(corsProperties.getAllowedMethods()));
         configuration.setAllowCredentials(corsProperties.getAllowCredentials());
         configuration.setAllowedHeaders(Arrays.asList(corsProperties.getAllowedHeaders()));
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+        return configuration;
     }
 }

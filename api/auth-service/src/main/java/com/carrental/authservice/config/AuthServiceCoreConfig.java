@@ -10,7 +10,6 @@ import com.carrental.authservice.service.impl.TokenServiceImpl;
 import com.carrental.authservice.service.impl.UserDetailsServiceImpl;
 import com.carrental.commons.authentication.config.jwt.JwtSecurityContextConfig;
 import com.carrental.commons.authentication.config.jwt.JwtProperties;
-import com.carrental.commons.authentication.config.cors.CorsConfig;
 import com.carrental.commons.authentication.service.AuthenticatedUserDataService;
 import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -27,8 +26,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Import({
     WebSecurityConfig.class,
     JwtSecurityContextConfig.class,
-    CorsConfig.class,
-    RememberMeConfig.class,
     AuthServiceQueueConfig.class
 })
 @EnableWebSecurity
