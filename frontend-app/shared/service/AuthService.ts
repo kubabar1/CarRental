@@ -1,10 +1,14 @@
-import { fetchGet } from './FetchUtil';
-import { GET_AUTHENTICATED_USER_DATA_PATH, LOGOUT_PATH } from '../constant';
-import { AuthenticatedUserDTO } from '../model';
+import { fetchGet, fetchPost } from './FetchUtil';
+import { GET_AUTHENTICATED_USER_DATA_PATH, LOGIN_PATH, LOGOUT_PATH } from '../constant';
+import { AuthenticatedUserDTO, JwtRequestDTO, JwtResponseDTO, ResponseData } from '../model';
 
 export class AuthService {
     static getAuthenticatedUserData = (): Promise<AuthenticatedUserDTO> => {
         return fetchGet<AuthenticatedUserDTO>(GET_AUTHENTICATED_USER_DATA_PATH);
+    };
+
+    static login = (jwtRequestDTO: JwtRequestDTO): Promise<ResponseData<JwtResponseDTO>> => {
+        return fetchPost<JwtResponseDTO>(LOGIN_PATH, jwtRequestDTO);
     };
 
     static logout = (): Promise<Response> => {

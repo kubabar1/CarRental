@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import carRentalLogo from '../images/car_rental_logo_name.png';
 import './LoginComponent.scss';
 import { homePath, registrationPath } from '../constants/Paths';
-import { endpoints } from '../constants/PathsApi';
-import { TranslationService } from '@car-rental/shared/service';
+import { TranslationService, AuthService } from '@car-rental/shared/service';
+import { JwtRequestDTO, JwtResponseDTO, ResponseData } from '@car-rental/shared/model';
 
 export function LoginComponent(): JSX.Element {
     const [username, setUsername] = useState<string | undefined>(undefined);
@@ -16,28 +16,20 @@ export function LoginComponent(): JSX.Element {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
-        const data = new URLSearchParams();
         if (!!username && !!password) {
             setUsernameError(false);
             setPasswordError(false);
-            data.append('username', username);
-            data.append('password', password);
-            if (rememberMe) {
-                data.append('remember-me', 'true');
-            }
+            // if (rememberMe) {
+            //     data.append('remember-me', 'true');
+            // }
             setIsSubmitButtonDisabled(true);
-            fetch(endpoints.login, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: data,
-            })
-                .then((res: Response) => {
-                    if (res.status == 200) {
+            AuthService.login(new JwtRequestDTO(username, password))
+                .then((res: ResponseData<JwtResponseDTO>) => {
+                    console.log('$$$$$$$$$$$$$$$$$$$$$$$');
+                    console.log(res);
+                    if (res.statusCode == 200) {
                         setLoginError(false);
-                        window.location.href = homePath;
+                        // window.location.href = homePath;
                     } else {
                         setLoginError(true);
                     }

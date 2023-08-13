@@ -1,4 +1,4 @@
-package com.carrental.commons.authentication.config;
+package com.carrental.commons.authentication.config.jwt;
 
 import com.carrental.commons.authentication.model.AuthenticatedUser;
 import com.carrental.commons.authentication.utils.JWTTokenUtils;
