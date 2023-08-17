@@ -1,7 +1,7 @@
 import React from 'react';
 import { DropEvent, DropzoneOptions, FileRejection, useDropzone } from 'react-dropzone';
 import { PathString, FieldPathValue, FieldValues } from 'react-hook-form';
-import { vehicleImageFromServer } from '../../../../constants/PathsServer';
+import { vehicleImageFromServer } from '@car-rental/shared/constant';
 import { TranslationService } from '@car-rental/shared/service';
 
 interface DropzoneProperties<FieldValuesType extends FieldValues> extends DropzoneOptions {

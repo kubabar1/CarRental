@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { UserRoleResponseDTO } from '@car-rental/shared/model';
 import { FormContainer } from '../../components/form/form-group/FormContainer';
 import { useHistory, useParams } from 'react-router-dom';
-import { usersListPath } from '../../constants/Links';
+import { usersListLink } from '../../constants/Links';
 import { TranslationService, UserService } from '@car-rental/shared/service';
 import {
     mapToOptionTypeWithKeys,
@@ -42,7 +42,7 @@ export function AddRoleForm({ currentUserRoles }: AddRoleFormProperties): JSX.El
 
     const onSubmit = (data: AddRoleFormValues): void => {
         UserService.addRolesToUser(data.userRoles, userId).then(() => {
-            history.push(usersListPath.link);
+            history.push(usersListLink.link);
         });
     };
 

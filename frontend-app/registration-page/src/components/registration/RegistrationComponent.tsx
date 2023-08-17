@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import carRentalLogo from '../../images/car_rental_logo_name.png';
 import './RegistrationComponent.scss';
-import { homePath } from '../../constants/PathsApi';
+import { homePath } from '@car-rental/shared/constant';
 import { RegistrationService, TranslationService } from '@car-rental/shared/service';
 import { CreateUserDTO, UserResponseDTO, ResponseData } from '@car-rental/shared/model';
 import PasswordStrengthBar from 'react-password-strength-bar';

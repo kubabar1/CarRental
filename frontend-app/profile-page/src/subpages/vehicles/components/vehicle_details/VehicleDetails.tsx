@@ -1,6 +1,6 @@
 import React from 'react';
 import { VehicleResponseDTO } from '@car-rental/shared/model';
-import { vehicleImageFromServer } from '../../../../constants/PathsServer';
+import { vehicleImageFromServer } from '@car-rental/shared/constant';
 import './VehicleDetails.scss';
 import { TranslationService } from '@car-rental/shared/service';
 

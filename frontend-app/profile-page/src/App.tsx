@@ -3,29 +3,29 @@ import { Navigation } from './components/nav/Navigation';
 import { Switch } from 'react-router-dom';
 import { AuthService, TranslationService } from '@car-rental/shared/service';
 import {
-    bookingsAuditLogsListPath,
-    bookingsListPath,
-    equipmentListPath,
-    locationAddPath,
-    locationsListPath,
-    myBookingsListPath,
-    myRentedBookingsListPath,
-    myReservedBookingsListPath,
+    bookingsAuditLogsListLink,
+    bookingsListLink,
+    equipmentListLink,
+    locationAddLink,
+    locationsListLink,
+    myBookingsListLink,
+    myRentedBookingsListLink,
+    myReservedBookingsListLink,
     profileRootLink,
-    rentedBookingsListPath,
-    reservedBookingsListPath,
-    roleAddPath,
-    sendEmailPath,
-    settingsChangePasswordPath,
-    settingsUserSettingsPath,
-    userEditPath,
-    userRolesListPath,
-    usersListPath,
-    vehicleAddPath,
-    vehicleEditPath,
-    vehicleEquipmentEditPath,
-    vehicleOptionsListPath,
-    vehiclesListPath,
+    rentedBookingsListLink,
+    reservedBookingsListLink,
+    roleAddLink,
+    sendEmailLink,
+    settingsChangePasswordLink,
+    settingsUserSettingsLink,
+    userEditLink,
+    userRolesListLink,
+    usersListLink,
+    vehicleAddLink,
+    vehicleEditLink,
+    vehicleEquipmentEditLink,
+    vehicleOptionsListLink,
+    vehiclesListLink,
 } from './constants/Links';
 import { WelcomeSubpage } from './subpages/welcome/WelcomeSubpage';
 import { UserSettingsSubpage } from './subpages/settings/user_settings/UserSettingsSubpage';
@@ -94,77 +94,77 @@ export function App(): JSX.Element {
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(
                                     authenticatedUser.userRoles,
-                                    bookingsListPath.permittedRoles
+                                    bookingsListLink.permittedRoles
                                 )}
-                                path={bookingsListPath.link}
+                                path={bookingsListLink.link}
                                 exact
                                 component={BookingsListSubpage}
                             />
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(
                                     authenticatedUser.userRoles,
-                                    reservedBookingsListPath.permittedRoles
+                                    reservedBookingsListLink.permittedRoles
                                 )}
-                                path={reservedBookingsListPath.link}
+                                path={reservedBookingsListLink.link}
                                 exact
                                 component={ReservedBookingsListSubpage}
                             />
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(
                                     authenticatedUser.userRoles,
-                                    rentedBookingsListPath.permittedRoles
+                                    rentedBookingsListLink.permittedRoles
                                 )}
-                                path={rentedBookingsListPath.link}
+                                path={rentedBookingsListLink.link}
                                 exact
                                 component={RentedBookingsListSubpage}
                             />
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(
                                     authenticatedUser.userRoles,
-                                    myBookingsListPath.permittedRoles
+                                    myBookingsListLink.permittedRoles
                                 )}
-                                path={myBookingsListPath.link}
+                                path={myBookingsListLink.link}
                                 exact
                                 component={MyBookingsListSubpage}
                             />
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(
                                     authenticatedUser.userRoles,
-                                    myReservedBookingsListPath.permittedRoles
+                                    myReservedBookingsListLink.permittedRoles
                                 )}
-                                path={myReservedBookingsListPath.link}
+                                path={myReservedBookingsListLink.link}
                                 exact
                                 component={MyReservedBookingsListSubpage}
                             />
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(
                                     authenticatedUser.userRoles,
-                                    myRentedBookingsListPath.permittedRoles
+                                    myRentedBookingsListLink.permittedRoles
                                 )}
-                                path={myRentedBookingsListPath.link}
+                                path={myRentedBookingsListLink.link}
                                 exact
                                 component={MyRentedBookingsListSubpage}
                             />
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(
                                     authenticatedUser.userRoles,
-                                    bookingsAuditLogsListPath.permittedRoles
+                                    bookingsAuditLogsListLink.permittedRoles
                                 )}
-                                path={bookingsAuditLogsListPath.link}
+                                path={bookingsAuditLogsListLink.link}
                                 exact
                                 component={BookingsAuditLogsListSubpage}
                             />
 
                             {/*USERS_PAGE*/}
                             <ProtectedRoute
-                                isAuthorized={userHasAnyRole(authenticatedUser.userRoles, usersListPath.permittedRoles)}
-                                path={usersListPath.link}
+                                isAuthorized={userHasAnyRole(authenticatedUser.userRoles, usersListLink.permittedRoles)}
+                                path={usersListLink.link}
                                 exact
                                 component={UsersListSubpage}
                             />
                             <ProtectedRoute
-                                isAuthorized={userHasAnyRole(authenticatedUser.userRoles, userEditPath.permittedRoles)}
-                                path={userEditPath.link}
+                                isAuthorized={userHasAnyRole(authenticatedUser.userRoles, userEditLink.permittedRoles)}
+                                path={userEditLink.link}
                                 exact
                                 component={UsersEditSubpage}
                             />
@@ -173,54 +173,54 @@ export function App(): JSX.Element {
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(
                                     authenticatedUser.userRoles,
-                                    vehiclesListPath.permittedRoles
+                                    vehiclesListLink.permittedRoles
                                 )}
-                                path={vehiclesListPath.link}
+                                path={vehiclesListLink.link}
                                 exact
                                 component={VehicleListSubpage}
                             />
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(
                                     authenticatedUser.userRoles,
-                                    vehicleEditPath.permittedRoles
+                                    vehicleEditLink.permittedRoles
                                 )}
-                                path={vehicleEditPath.link}
+                                path={vehicleEditLink.link}
                                 exact
                                 component={VehicleEditSubpage}
                             />
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(
                                     authenticatedUser.userRoles,
-                                    vehicleEquipmentEditPath.permittedRoles
+                                    vehicleEquipmentEditLink.permittedRoles
                                 )}
-                                path={vehicleEquipmentEditPath.link}
+                                path={vehicleEquipmentEditLink.link}
                                 exact
                                 component={VehicleEquipmentEditSubpage}
                             />
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(
                                     authenticatedUser.userRoles,
-                                    vehicleAddPath.permittedRoles
+                                    vehicleAddLink.permittedRoles
                                 )}
-                                path={vehicleAddPath.link}
+                                path={vehicleAddLink.link}
                                 exact
                                 component={VehicleAddSubpage}
                             />
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(
                                     authenticatedUser.userRoles,
-                                    equipmentListPath.permittedRoles
+                                    equipmentListLink.permittedRoles
                                 )}
-                                path={equipmentListPath.link}
+                                path={equipmentListLink.link}
                                 exact
                                 component={EquipmentListSubpage}
                             />
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(
                                     authenticatedUser.userRoles,
-                                    vehicleOptionsListPath.permittedRoles
+                                    vehicleOptionsListLink.permittedRoles
                                 )}
-                                path={vehicleOptionsListPath.link}
+                                path={vehicleOptionsListLink.link}
                                 exact
                                 component={VehicleOptionsSubpage}
                             />
@@ -229,15 +229,15 @@ export function App(): JSX.Element {
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(
                                     authenticatedUser.userRoles,
-                                    userRolesListPath.permittedRoles
+                                    userRolesListLink.permittedRoles
                                 )}
-                                path={userRolesListPath.link}
+                                path={userRolesListLink.link}
                                 exact
                                 component={UsersRolesListSubpage}
                             />
                             <ProtectedRoute
-                                isAuthorized={userHasAnyRole(authenticatedUser.userRoles, roleAddPath.permittedRoles)}
-                                path={roleAddPath.link}
+                                isAuthorized={userHasAnyRole(authenticatedUser.userRoles, roleAddLink.permittedRoles)}
+                                path={roleAddLink.link}
                                 component={AddRoleSubpage}
                             />
 
@@ -245,26 +245,26 @@ export function App(): JSX.Element {
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(
                                     authenticatedUser.userRoles,
-                                    locationsListPath.permittedRoles
+                                    locationsListLink.permittedRoles
                                 )}
-                                path={locationsListPath.link}
+                                path={locationsListLink.link}
                                 exact
                                 component={LocationsListSubpage}
                             />
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(
                                     authenticatedUser.userRoles,
-                                    settingsUserSettingsPath.permittedRoles
+                                    settingsUserSettingsLink.permittedRoles
                                 )}
-                                path={locationAddPath.link}
+                                path={locationAddLink.link}
                                 exact
                                 component={LocationAddSubpage}
                             />
 
                             {/*EMAIL_PAGE*/}
                             <ProtectedRoute
-                                isAuthorized={userHasAnyRole(authenticatedUser.userRoles, sendEmailPath.permittedRoles)}
-                                path={sendEmailPath.link}
+                                isAuthorized={userHasAnyRole(authenticatedUser.userRoles, sendEmailLink.permittedRoles)}
+                                path={sendEmailLink.link}
                                 exact
                                 component={EmailSubpage}
                             />
@@ -273,9 +273,9 @@ export function App(): JSX.Element {
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(
                                     authenticatedUser.userRoles,
-                                    settingsUserSettingsPath.permittedRoles
+                                    settingsUserSettingsLink.permittedRoles
                                 )}
-                                path={settingsUserSettingsPath.link}
+                                path={settingsUserSettingsLink.link}
                                 exact
                                 component={() => (
                                     <UserSettingsSubpage
@@ -287,9 +287,9 @@ export function App(): JSX.Element {
                             <ProtectedRoute
                                 isAuthorized={userHasAnyRole(
                                     authenticatedUser.userRoles,
-                                    settingsChangePasswordPath.permittedRoles
+                                    settingsChangePasswordLink.permittedRoles
                                 )}
-                                path={settingsChangePasswordPath.link}
+                                path={settingsChangePasswordLink.link}
                                 exact
                                 component={ChangePasswordSubpage}
                             />

@@ -1,7 +1,7 @@
 import React from 'react';
 import './AsideNav.scss';
-import { loginLink, profileLink, registrationLink } from '../../constants/Links';
 import { AuthenticatedUserDTO } from '@car-rental/shared/model';
+import { loginPath, profilePath, registrationPath } from '@car-rental/shared/constant';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGlobe } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
@@ -66,13 +66,13 @@ export function AsideNav({ language, authenticatedUser, logout, setLanguage }: A
             <ul className="navbar-nav pr-3 ml-auto">
                 <li className="nav-item p-2">
                     {!!authenticatedUser && isAuthenticated
-                        ? renderLink(TranslationService.translate('profile'), profileLink)
-                        : renderLink(TranslationService.translate('logIn'), loginLink)}
+                        ? renderLink(TranslationService.translate('profile'), profilePath)
+                        : renderLink(TranslationService.translate('logIn'), loginPath)}
                 </li>
                 <li className="nav-item p-2">
                     {!!authenticatedUser && isAuthenticated
                         ? renderLogout(TranslationService.translate('logOut'))
-                        : renderLink(TranslationService.translate('signUp'), registrationLink)}
+                        : renderLink(TranslationService.translate('signUp'), registrationPath)}
                 </li>
             </ul>
         </nav>

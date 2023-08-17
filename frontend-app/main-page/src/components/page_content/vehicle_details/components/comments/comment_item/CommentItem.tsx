@@ -1,5 +1,5 @@
 import React from 'react';
-import { userImagesMainPage } from '../../../../../../constants/PathsServer';
+import userImage from '../../../../../..//images/user_images/user.png';
 import StarRatingComponent from 'react-star-rating-component';
 import date from 'date-and-time';
 import './CommentItem.scss';
@@ -11,11 +11,9 @@ interface CommentItemProperties {
 }
 
 export function CommentItem({ comment }: CommentItemProperties): JSX.Element {
-    const userImagePath: string = userImagesMainPage('user.png');
-
     return (
         <article className="media border p-3 my-4 text-left comment-item">
-            <img src={userImagePath} className="mr-3 mt-3 rounded-circle user-image" alt={'User image'} />
+            <img src={userImage} className="mr-3 mt-3 rounded-circle user-image" alt={'User image'} />
             <div className="media-body">
                 <h4>
                     <small>

@@ -90,7 +90,7 @@ export function Table<T extends TableInterface>({
         setPageSize,
         state,
     } = useTable<T>(
-        {
+        ({
             columns,
             data,
             initialState: {
@@ -107,7 +107,7 @@ export function Table<T extends TableInterface>({
             defaultColumn: {
                 Filter: DefaultColumnFilter,
             },
-        } as TableOptions<T>,
+        } as unknown) as TableOptions<T>,
         useFilters,
         useSortBy,
         usePagination,

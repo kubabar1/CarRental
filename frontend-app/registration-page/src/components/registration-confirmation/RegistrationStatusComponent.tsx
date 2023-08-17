@@ -2,7 +2,7 @@ import React from 'react';
 import okIcon from '../../images/ok-icon.png';
 import notOkIcon from '../../images/not-ok-icon.png';
 import './RegistrationConfirmationComponent.scss';
-import { homePath } from '../../constants/PathsApi';
+import { homePath } from '@car-rental/shared/constant';
 import qs from 'qs';
 import { TranslationService } from '@car-rental/shared/service';
 

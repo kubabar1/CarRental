@@ -18,6 +18,8 @@ const withId = (basePath: string, id: string): string => {
     return `${basePath}/${id}`;
 };
 
+export const vehicleImageFromServer = (photoName: string): string => `${APP_ADDR}/vehicles-images/${photoName}`;
+
 export const GET_VEHICLES_PATH = `${APP_ADDR}/vehicles`;
 
 export const GET_AUTHENTICATED_USER_DATA_PATH = `${APP_ADDR}/authentication/user-data`;

@@ -5,88 +5,83 @@ interface SecureLink {
     permittedRoles?: string[];
 }
 
-export const logoutLink = '/logout';
-
-export const homeLink = '/';
-
-export const basePath = '/profile';
-export const profileRootLink: SecureLink = { link: `${basePath}/` };
-export const bookingsListPath: SecureLink = {
-    link: `${basePath}/bookings/list`,
+const baseLink = '/profile';
+export const profileRootLink: SecureLink = { link: `${baseLink}/` };
+export const bookingsListLink: SecureLink = {
+    link: `${baseLink}/bookings/list`,
     permittedRoles: [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE, UserRolesEnum.ROLE_OFFICE_EMPLOYEE],
 };
-export const reservedBookingsListPath: SecureLink = {
-    link: `${basePath}/bookings/reserved`,
+export const reservedBookingsListLink: SecureLink = {
+    link: `${baseLink}/bookings/reserved`,
     permittedRoles: [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE],
 };
-export const rentedBookingsListPath: SecureLink = {
-    link: `${basePath}/bookings/rented`,
+export const rentedBookingsListLink: SecureLink = {
+    link: `${baseLink}/bookings/rented`,
     permittedRoles: [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE],
 };
-export const myBookingsListPath: SecureLink = { link: `${basePath}/my-bookings/list` };
-export const myReservedBookingsListPath: SecureLink = { link: `${basePath}/my-bookings/reserved` };
-export const myRentedBookingsListPath: SecureLink = { link: `${basePath}/my-bookings/rented` };
-export const reservedVehiclesListPath: SecureLink = { link: `${basePath}/vehicles/reserved` };
-export const bookingsAuditLogsListPath: SecureLink = {
-    link: `${basePath}/bookings/audit-logs`,
+export const myBookingsListLink: SecureLink = { link: `${baseLink}/my-bookings/list` };
+export const myReservedBookingsListLink: SecureLink = { link: `${baseLink}/my-bookings/reserved` };
+export const myRentedBookingsListLink: SecureLink = { link: `${baseLink}/my-bookings/rented` };
+export const bookingsAuditLogsListLink: SecureLink = {
+    link: `${baseLink}/bookings/audit-logs`,
     permittedRoles: [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE],
 };
 
-export const usersListPath: SecureLink = { link: `${basePath}/users/list`, permittedRoles: [UserRolesEnum.ROLE_ADMIN] };
-export const userEditPath: SecureLink = {
-    link: `${basePath}/users/:userId/edit`,
+export const usersListLink: SecureLink = { link: `${baseLink}/users/list`, permittedRoles: [UserRolesEnum.ROLE_ADMIN] };
+export const userEditLink: SecureLink = {
+    link: `${baseLink}/users/:userId/edit`,
     permittedRoles: [UserRolesEnum.ROLE_ADMIN],
 };
 
-export const vehiclesListPath: SecureLink = {
-    link: `${basePath}/vehicles/list`,
+export const vehiclesListLink: SecureLink = {
+    link: `${baseLink}/vehicles/list`,
     permittedRoles: [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE],
 };
-export const vehicleAddPath: SecureLink = {
-    link: `${basePath}/vehicles/add`,
+export const vehicleAddLink: SecureLink = {
+    link: `${baseLink}/vehicles/add`,
     permittedRoles: [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE],
 };
-export const vehicleEditPath: SecureLink = {
-    link: `${basePath}/vehicles/:vehicleId/edit`,
+export const vehicleEditLink: SecureLink = {
+    link: `${baseLink}/vehicles/:vehicleId/edit`,
     permittedRoles: [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE],
 };
-export const vehicleEquipmentEditPath: SecureLink = {
-    link: `${basePath}/vehicles/:vehicleId/equipment`,
+export const vehicleEquipmentEditLink: SecureLink = {
+    link: `${baseLink}/vehicles/:vehicleId/equipment`,
     permittedRoles: [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE],
 };
-export const equipmentListPath: SecureLink = {
-    link: `${basePath}/equipments`,
+export const equipmentListLink: SecureLink = {
+    link: `${baseLink}/equipments`,
     permittedRoles: [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE],
 };
-export const vehicleOptionsListPath: SecureLink = {
-    link: `${basePath}/vehicles/options`,
+export const vehicleOptionsListLink: SecureLink = {
+    link: `${baseLink}/vehicles/options`,
     permittedRoles: [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_RENTING_EMPLOYEE],
 };
 
-export const userRolesListPath: SecureLink = {
-    link: `${basePath}/user-roles`,
+export const userRolesListLink: SecureLink = {
+    link: `${baseLink}/user-roles`,
     permittedRoles: [UserRolesEnum.ROLE_ADMIN],
 };
-export const roleAddPath: SecureLink = {
-    link: `${basePath}/user-roles/add/:userId`,
-    permittedRoles: [UserRolesEnum.ROLE_ADMIN],
-};
-
-export const locationsListPath: SecureLink = {
-    link: `${basePath}/locations`,
+export const roleAddLink: SecureLink = {
+    link: `${baseLink}/user-roles/add/:userId`,
     permittedRoles: [UserRolesEnum.ROLE_ADMIN],
 };
 
-export const locationAddPath: SecureLink = {
-    link: `${basePath}/locations/add`,
+export const locationsListLink: SecureLink = {
+    link: `${baseLink}/locations`,
     permittedRoles: [UserRolesEnum.ROLE_ADMIN],
 };
 
-export const sendEmailPath: SecureLink = {
-    link: `${basePath}/email-send`,
+export const locationAddLink: SecureLink = {
+    link: `${baseLink}/locations/add`,
+    permittedRoles: [UserRolesEnum.ROLE_ADMIN],
+};
+
+export const sendEmailLink: SecureLink = {
+    link: `${baseLink}/email-send`,
     permittedRoles: [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_OFFICE_EMPLOYEE, UserRolesEnum.ROLE_RENTING_EMPLOYEE],
 };
 
-export const settingsUserSettingsPath: SecureLink = { link: `${basePath}/settings/user-settings` };
+export const settingsUserSettingsLink: SecureLink = { link: `${baseLink}/settings/user-settings` };
 
-export const settingsChangePasswordPath: SecureLink = { link: `${basePath}/settings/change-password` };
+export const settingsChangePasswordLink: SecureLink = { link: `${baseLink}/settings/change-password` };

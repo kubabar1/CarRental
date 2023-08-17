@@ -1,7 +1,3 @@
-export const profileLink = '/profile';
-export const loginLink = '/login';
-export const logoutLink = '/logout';
-export const registrationLink = '/registration';
 export const homeLink = '/';
 export const carListLink = '/car-list';
 export const carListPageableLink = '/car-list?page=:page';

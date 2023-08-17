@@ -7,7 +7,7 @@ import { FormContainer } from '../../components/form/form-group/FormContainer';
 import { useForm } from 'react-hook-form';
 import { LocationService, TranslationService } from '@car-rental/shared/service';
 import { LocationAddDTO } from '@car-rental/shared/model';
-import { locationsListPath } from '../../constants/Links';
+import { locationsListLink } from '../../constants/Links';
 import { useHistory } from 'react-router-dom';
 
 interface LocationAddFormValues {
@@ -45,7 +45,7 @@ export function LocationAddSubpage(): JSX.Element {
         LocationService.addLocation(
             new LocationAddDTO(data.country, data.city, data.streetAndNb, data.code, data.email, data.phone)
         ).then(() => {
-            history.push(locationsListPath.link);
+            history.push(locationsListLink.link);
         });
     };
 

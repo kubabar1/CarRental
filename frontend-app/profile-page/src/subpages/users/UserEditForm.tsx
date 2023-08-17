@@ -3,7 +3,7 @@ import { InputFormGroup } from '../../components/form/form-group/input/InputForm
 import { FormContainer } from '../../components/form/form-group/FormContainer';
 import { UserUpdateDTO, UserResponseDTO } from '@car-rental/shared/model';
 import { useHistory, useParams } from 'react-router-dom';
-import { usersListPath } from '../../constants/Links';
+import { usersListLink } from '../../constants/Links';
 import { useForm } from 'react-hook-form';
 import { TranslationService, UserService } from '@car-rental/shared/service';
 
@@ -34,7 +34,7 @@ export function UserEditForm({ user }: UserEditForm): JSX.Element {
     const onSubmit = (data: UserEditFormValues): void => {
         UserService.updateUserData(userId, new UserUpdateDTO(data.name, data.surname, data.phone, data.birthDate)).then(
             () => {
-                history.push(usersListPath.link);
+                history.push(usersListLink.link);
             }
         );
     };

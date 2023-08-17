@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import carRentalLogo from '../images/car_rental_logo_name.png';
 import './LoginComponent.scss';
-import { homePath, registrationPath } from '../constants/Paths';
+import { homePath, registrationPath } from '@car-rental/shared/constant';
 import { TranslationService, AuthService } from '@car-rental/shared/service';
 
 export function LoginComponent(): JSX.Element {

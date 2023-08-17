@@ -7,7 +7,7 @@ import { Column, HeaderProps } from 'react-table';
 import { BookingAuditLogService, TranslationService } from '@car-rental/shared/service';
 import { RangeColumnFilter } from '../../components/table/tab_items/slider_column_filter/RangeColumnFilter';
 import { BookingStatesSelectColumnFilter } from '../../components/table/tab_items/booking_states_select_column_filter/BookingStatesSelectColumnFilter';
-import { BookingStateCodeEnum, Page, BookingAuditLogResponseDTO, BookingResponseDTO } from '@car-rental/shared/model';
+import { BookingStateCodeEnum, Page, BookingAuditLogResponseDTO } from '@car-rental/shared/model';
 import { translateBookingCode } from '../../utils/TranslationUtils';
 
 export function BookingsAuditLogsListSubpage(): JSX.Element {

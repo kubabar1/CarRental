@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './UpdatePasswordComponent.scss';
 import { useLocation } from 'react-router-dom';
 import carRentalLogo from '../../images/car_rental_logo_name.png';
-import { homePath, loginPath } from '../../constants/Paths';
+import { homePath, loginPath } from '@car-rental/shared/constant';
 import qs from 'qs';
 import { PasswordResetDTO } from '@car-rental/shared/model';
 import PasswordStrengthBar from 'react-password-strength-bar';

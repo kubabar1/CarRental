@@ -1,7 +1,7 @@
 import React from 'react';
 import okIcon from '../../images/ok-icon.png';
 import notOkIcon from '../../images/not-ok-icon.png';
-import { loginPath } from '../../constants/Paths';
+import { loginPath } from '@car-rental/shared/constant';
 import './EmailConfirmationComponent.scss';
 import qs from 'qs';
 import { TranslationService } from '@car-rental/shared/service';

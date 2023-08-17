@@ -1,6 +1,6 @@
 import React from 'react';
 import notOkIcon from '../../images/not-ok-icon.png';
-import { loginPath } from '../../constants/Paths';
+import { loginPath } from '@car-rental/shared/constant';
 import './InvalidTokenComponent.scss';
 import { TranslationService } from '@car-rental/shared/service';
 

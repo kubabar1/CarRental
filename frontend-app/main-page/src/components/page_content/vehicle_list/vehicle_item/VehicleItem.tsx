@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './VehicleItem.scss';
 import { VehicleResponseDTO } from '@car-rental/shared/model';
-import { carImagesMainPageCarList } from '../../../../constants/PathsServer';
+import { vehicleImageFromServer } from '@car-rental/shared/constant';
 import StarRatingComponent from 'react-star-rating-component';
 import { carDetailsByIdLink } from '../../../../constants/Links';
 import { TranslationService } from '@car-rental/shared/service';
@@ -12,7 +12,7 @@ interface CarItemProperties {
 }
 
 export function VehicleItem({ vehicle }: CarItemProperties): JSX.Element {
-    const vehicleImage: string = carImagesMainPageCarList(vehicle.vehicleDetails.imageName);
+    const vehicleImage: string = vehicleImageFromServer(vehicle.vehicleDetails.imageName);
 
     return (
         <Link to={carDetailsByIdLink(vehicle.id)} style={{ textDecoration: 'none' }}>

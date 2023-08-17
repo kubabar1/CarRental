@@ -23,9 +23,9 @@ const checkIsCollapsed = (
     return children
         ? Array.isArray(children)
             ? children.some(
-                  (subLink: React.ReactElement<NavSubLinkProperties>) => subLink.props.linkPath === location.pathname
+                  (subLink: React.ReactElement<NavSubLinkProperties>) => subLink.props.link === location.pathname
               )
-            : children.props.linkPath === location.pathname
+            : children.props.link === location.pathname
         : false;
 };
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import carRentalLogo from '../../images/car_rental_logo_name.png';
 import './ResetPasswordComponent.scss';
-import { homePath, loginPath } from '../../constants/Paths';
+import { homePath, loginPath } from '@car-rental/shared/constant';
 import { ResetPasswordService, TranslationService } from '@car-rental/shared/service';
 import { UserEmailExistsDTO, ResponseData } from '@car-rental/shared/model';
 import { useHistory } from 'react-router-dom';

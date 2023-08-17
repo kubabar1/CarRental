@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import notOkIcon from '../../images/not-ok-icon.png';
 import './RegistrationInvalidTokenComponent.scss';
-import { loginPath } from '../../constants/PathsApi';
+import { loginPath } from '@car-rental/shared/constant';
 import qs from 'qs';
 import { useLocation } from 'react-router-dom';
 import { TranslationService } from '@car-rental/shared/service';
