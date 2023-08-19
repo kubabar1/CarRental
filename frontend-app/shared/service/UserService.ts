@@ -1,16 +1,5 @@
 import { fetchGet, fetchPost, fetchPut } from './FetchUtil';
-import {
-    ADD_ROLE_TO_USER_PATH,
-    GET_ALL_USERS_EMAILS,
-    GET_SELECTED_USERS_EMAILS,
-    GET_USER_BY_ID_PATH,
-    GET_USERS_PATH,
-    GET_USERS_ROLES_PATH,
-    PAGE_REQUEST,
-    UPDATE_AUTHORIZED_USER_PATH,
-    UPDATE_USER_PASSWORD_PATH,
-    UPDATE_USER_PATH,
-} from '../constant';
+import { PAGE_REQUEST, USER_SERVICE_ENDPOINTS } from '../constant';
 import {
     RoleAddDTO,
     Page,
@@ -24,7 +13,7 @@ import {
 
 export class UserService {
     static getUserById = (userId: string): Promise<UserResponseDTO> => {
-        return fetchGet<UserResponseDTO>(GET_USER_BY_ID_PATH(userId));
+        return fetchGet<UserResponseDTO>(USER_SERVICE_ENDPOINTS.GET_USER_BY_ID(userId));
     };
 
     static getUsersList = (
@@ -34,24 +23,26 @@ export class UserService {
         sortBy?: string,
         desc?: boolean
     ): Promise<Page<UserResponseDTO>> => {
-        return fetchGet<Page<UserResponseDTO>>(`${PAGE_REQUEST(GET_USERS_PATH, page, size, filter, sortBy, desc)}`);
+        return fetchGet<Page<UserResponseDTO>>(
+            `${PAGE_REQUEST(USER_SERVICE_ENDPOINTS.GET_USERS, page, size, filter, sortBy, desc)}`
+        );
     };
 
     static getAllUsersEmails = (): Promise<UsersEmailsResponseDTO> => {
-        return fetchGet<UsersEmailsResponseDTO>(GET_ALL_USERS_EMAILS);
+        return fetchGet<UsersEmailsResponseDTO>(USER_SERVICE_ENDPOINTS.GET_ALL_USERS_EMAILS);
     };
 
     static getAllUsersEmailsByIds = (userIds: string[]): Promise<ResponseData<UsersEmailsResponseDTO>> => {
-        return fetchPost<UsersEmailsResponseDTO>(GET_SELECTED_USERS_EMAILS, userIds);
+        return fetchPost<UsersEmailsResponseDTO>(USER_SERVICE_ENDPOINTS.GET_SELECTED_USERS_EMAILS, userIds);
     };
 
     static getAllUserRoles = (): Promise<UserRoleResponseDTO[]> => {
-        return fetchGet<UserRoleResponseDTO[]>(GET_USERS_ROLES_PATH);
+        return fetchGet<UserRoleResponseDTO[]>(USER_SERVICE_ENDPOINTS.GET_USERS_ROLES);
     };
 
     static addRolesToUser = (userRolesId: string[], userId: string): Promise<ResponseData<UserResponseDTO>> => {
         return fetchPost<UserResponseDTO>(
-            ADD_ROLE_TO_USER_PATH(userId),
+            USER_SERVICE_ENDPOINTS.ADD_ROLE_TO_USER(userId),
             userRolesId.map((userRoleId: string) => new RoleAddDTO(userRoleId)),
             `Roles for user with id '${userId}' updated`,
             `Cannot update roles for user with id '${userId}' - error occurred`
@@ -62,7 +53,7 @@ export class UserService {
         passwordUpdateDRO: PasswordUpdateDTO
     ): Promise<ResponseData<UserResponseDTO | PasswordUpdateDTO>> => {
         return fetchPut<UserResponseDTO | PasswordUpdateDTO>(
-            UPDATE_USER_PASSWORD_PATH,
+            USER_SERVICE_ENDPOINTS.UPDATE_USER_PASSWORD,
             passwordUpdateDRO,
             'Password updated',
             'Cannot update password - error occurred'
@@ -74,7 +65,7 @@ export class UserService {
         settingsUpdateDTO: UserUpdateDTO
     ): Promise<ResponseData<UserResponseDTO>> => {
         return fetchPost<UserResponseDTO>(
-            UPDATE_USER_PATH(userId),
+            USER_SERVICE_ENDPOINTS.UPDATE_USER(userId),
             settingsUpdateDTO,
             `User with id '${userId}' updated`,
             `Cannot update user with id '${userId}' - error occurred`
@@ -83,7 +74,7 @@ export class UserService {
 
     static updateAuthorizedUserData = (settingsUpdateDTO: UserUpdateDTO): Promise<ResponseData<UserResponseDTO>> => {
         return fetchPut<UserResponseDTO>(
-            UPDATE_AUTHORIZED_USER_PATH,
+            USER_SERVICE_ENDPOINTS.UPDATE_AUTHORIZED_USER,
             settingsUpdateDTO,
             'Data updated',
             'Cannot update data'

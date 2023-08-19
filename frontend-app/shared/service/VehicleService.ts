@@ -1,23 +1,5 @@
 import { fetchDelete, fetchGet, fetchPost, fetchPut, fetchWithFile } from './FetchUtil';
-import {
-    GET_VEHICLE_BY_ID_PATH,
-    GET_BEST_OFFERS_VEHICLES_PATH,
-    endpoints,
-    GET_VEHICLES_PATH,
-    UPDATE_VEHICLE_PATH,
-    ADD_VEHICLE_PATH,
-    PAGE_REQUEST,
-    GET_VEHICLE_OPTIONS_PATH,
-    ADD_BRAND_PATH,
-    ADD_BODY_TYPE_PATH,
-    ADD_FUEL_TYPE_PATH,
-    ADD_COLOR_PATH,
-    GET_VEHICLE_MODELS_BY_BRAND_PATH,
-    ADD_VEHICLE_MODEL_PATH,
-    ADD_EQUIPMENT,
-    GET_VEHICLE_OPTIONS_WITH_ASSOC_PATH,
-    DELETE_SPECIFIC_VEHICLE_OPTION_PATH,
-} from '../constant';
+import { VEHICLE_SERVICE_ENDPOINTS, PAGE_REQUEST } from '../constant';
 import qs, { ParsedQs } from 'qs';
 import {
     VehicleOptionsWithAssocCountDTO,
@@ -36,7 +18,9 @@ import {
 
 export class VehicleService {
     static getBestOffersVehiclesList = (page?: number, size?: number): Promise<Page<VehicleResponseDTO>> => {
-        return fetchGet<Page<VehicleResponseDTO>>(PAGE_REQUEST(GET_BEST_OFFERS_VEHICLES_PATH, page, size));
+        return fetchGet<Page<VehicleResponseDTO>>(
+            PAGE_REQUEST(VEHICLE_SERVICE_ENDPOINTS.GET_BEST_OFFERS_VEHICLES, page, size)
+        );
     };
 
     static mapVehicleFiltersToQs = (vehicleFiltersMap: Map<FilteringParamsEnum, string | undefined>): ParsedQs => {
@@ -55,7 +39,9 @@ export class VehicleService {
         const filterQueryParamsUrl: ParsedQs = VehicleService.mapVehicleFiltersToQs(vehicleFiltersMap);
         filterQueryParamsUrl['page'] = `${page}`;
         filterQueryParamsUrl['size'] = `${size}`;
-        return fetchGet<Page<VehicleResponseDTO>>(`${GET_VEHICLES_PATH}/filter?${qs.stringify(filterQueryParamsUrl)}`);
+        return fetchGet<Page<VehicleResponseDTO>>(
+            `${VEHICLE_SERVICE_ENDPOINTS.GET_VEHICLE}/filter?${qs.stringify(filterQueryParamsUrl)}`
+        );
     };
 
     static addVehicle(
@@ -70,7 +56,7 @@ export class VehicleService {
         data.append('vehicleImage', vehicleImage);
         return fetchWithFile<VehicleResponseDTO>(
             'PUT',
-            ADD_VEHICLE_PATH,
+            VEHICLE_SERVICE_ENDPOINTS.ADD_VEHICLE,
             data,
             'Vehicle added',
             'Cannot add vehicle - error occurred'
@@ -92,7 +78,7 @@ export class VehicleService {
         }
         return fetchWithFile<VehicleResponseDTO>(
             'POST',
-            UPDATE_VEHICLE_PATH(vehicleId),
+            VEHICLE_SERVICE_ENDPOINTS.UPDATE_VEHICLE(vehicleId),
             data,
             'Vehicle updated',
             'Cannot update vehicle - error occurred'
@@ -100,12 +86,17 @@ export class VehicleService {
     }
 
     static addBrand(optionDTO: OptionDTO): Promise<ResponseData<OptionDTO>> {
-        return fetchPut<OptionDTO>(ADD_BRAND_PATH, optionDTO, 'Brand added', 'Cannot add brand - error occurred');
+        return fetchPut<OptionDTO>(
+            VEHICLE_SERVICE_ENDPOINTS.ADD_BRAND,
+            optionDTO,
+            'Brand added',
+            'Cannot add brand - error occurred'
+        );
     }
 
     static addBodyType(optionDTO: OptionDTO): Promise<ResponseData<OptionDTO>> {
         return fetchPut<OptionDTO>(
-            ADD_BODY_TYPE_PATH,
+            VEHICLE_SERVICE_ENDPOINTS.ADD_BODY_TYPE,
             optionDTO,
             'Body type added',
             'Cannot add body type - error occurred'
@@ -114,7 +105,7 @@ export class VehicleService {
 
     static addFuelType(optionDTO: OptionDTO): Promise<ResponseData<OptionDTO>> {
         return fetchPut<OptionDTO>(
-            ADD_FUEL_TYPE_PATH,
+            VEHICLE_SERVICE_ENDPOINTS.ADD_FUEL_TYPE,
             optionDTO,
             'Fuel type added',
             'Cannot add fuel type - error occurred'
@@ -122,12 +113,17 @@ export class VehicleService {
     }
 
     static addColor(optionDTO: OptionDTO): Promise<ResponseData<OptionDTO>> {
-        return fetchPut<OptionDTO>(ADD_COLOR_PATH, optionDTO, 'Color added', 'Cannot add color - error occurred');
+        return fetchPut<OptionDTO>(
+            VEHICLE_SERVICE_ENDPOINTS.ADD_COLOR,
+            optionDTO,
+            'Color added',
+            'Cannot add color - error occurred'
+        );
     }
 
     static addModel(vehicleModelDTO: VehicleModelDTO): Promise<ResponseData<VehicleModelDTO>> {
         return fetchPut<VehicleModelDTO>(
-            ADD_VEHICLE_MODEL_PATH,
+            VEHICLE_SERVICE_ENDPOINTS.ADD_VEHICLE_MODEL,
             vehicleModelDTO,
             'Vehicle model added',
             'Cannot add model - error occurred'
@@ -135,11 +131,11 @@ export class VehicleService {
     }
 
     static getVehicleOptions = (): Promise<VehicleOptionsDTO> => {
-        return fetchGet<VehicleOptionsDTO>(GET_VEHICLE_OPTIONS_PATH);
+        return fetchGet<VehicleOptionsDTO>(VEHICLE_SERVICE_ENDPOINTS.GET_VEHICLE_OPTIONS);
     };
 
     static getVehicleModelsByBrand = (brand: string): Promise<string[]> => {
-        return fetchGet<string[]>(GET_VEHICLE_MODELS_BY_BRAND_PATH(brand));
+        return fetchGet<string[]>(VEHICLE_SERVICE_ENDPOINTS.GET_VEHICLE_MODELS_BY_BRAND(brand));
     };
 
     static getVehiclesList = (
@@ -149,12 +145,14 @@ export class VehicleService {
         sortBy?: string,
         desc?: boolean
     ): Promise<Page<VehicleResponseDTO>> => {
-        return fetchGet<Page<VehicleResponseDTO>>(PAGE_REQUEST(GET_VEHICLES_PATH, page, size, filter, sortBy, desc));
+        return fetchGet<Page<VehicleResponseDTO>>(
+            PAGE_REQUEST(VEHICLE_SERVICE_ENDPOINTS.GET_VEHICLE, page, size, filter, sortBy, desc)
+        );
     };
 
     static addEquipment(equipmentAddDTO: EquipmentAddDTO): Promise<ResponseData<EquipmentResponseDTO>> {
         return fetchPut<EquipmentResponseDTO>(
-            ADD_EQUIPMENT,
+            VEHICLE_SERVICE_ENDPOINTS.ADD_EQUIPMENT,
             equipmentAddDTO,
             'Equipment added',
             'Cannot add equipment - error occurred'
@@ -162,16 +160,16 @@ export class VehicleService {
     }
 
     static getVehicleOptionsWithAssoc = (): Promise<VehicleOptionsWithAssocCountDTO> => {
-        return fetchGet<VehicleOptionsWithAssocCountDTO>(GET_VEHICLE_OPTIONS_WITH_ASSOC_PATH);
+        return fetchGet<VehicleOptionsWithAssocCountDTO>(VEHICLE_SERVICE_ENDPOINTS.GET_VEHICLE_OPTIONS_WITH_ASSOC);
     };
 
     static getAvailableVehicles = (params: AvailableVehiclesSearchDTO): Promise<ResponseData<VehicleResponseDTO[]>> => {
-        return fetchPost<VehicleResponseDTO[]>(endpoints.getAvailableVehicles, params);
+        return fetchPost<VehicleResponseDTO[]>(VEHICLE_SERVICE_ENDPOINTS.GET_AVAILABLE_VEHICLES, params);
     };
 
     static deleteOption(vehicleOptionType: string, vehicleOption: string): Promise<ResponseData<OptionDTO>> {
         return fetchDelete<OptionDTO>(
-            DELETE_SPECIFIC_VEHICLE_OPTION_PATH(vehicleOptionType, vehicleOption),
+            VEHICLE_SERVICE_ENDPOINTS.DELETE_SPECIFIC_VEHICLE_OPTION(vehicleOptionType, vehicleOption),
             undefined,
             'Option deleted',
             'Cannot delete option - error occurred'
@@ -179,6 +177,6 @@ export class VehicleService {
     }
 
     static getVehicleById = (vehicleId: string): Promise<VehicleResponseDTO> => {
-        return fetchGet<VehicleResponseDTO>(GET_VEHICLE_BY_ID_PATH(vehicleId));
+        return fetchGet<VehicleResponseDTO>(VEHICLE_SERVICE_ENDPOINTS.GET_VEHICLE_BY_ID(vehicleId));
     };
 }

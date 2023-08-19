@@ -1,14 +1,14 @@
 import { fetchGet } from './FetchUtil';
-import { GET_AUTHENTICATED_USER_DATA_PATH, LOGIN_PATH, LOGOUT_PATH } from '../constant';
+import { AUTH_SERVICE_ENDPOINTS } from '../constant';
 import { AuthenticatedUserDTO } from '../model';
 
 export class AuthService {
     static getAuthenticatedUserData = (): Promise<AuthenticatedUserDTO> => {
-        return fetchGet<AuthenticatedUserDTO>(GET_AUTHENTICATED_USER_DATA_PATH);
+        return fetchGet<AuthenticatedUserDTO>(AUTH_SERVICE_ENDPOINTS.GET_AUTHENTICATED_USER_DATA);
     };
 
     static login = (data: URLSearchParams): Promise<Response> => {
-        return fetch(LOGIN_PATH, {
+        return fetch(AUTH_SERVICE_ENDPOINTS.LOGIN, {
             method: 'POST',
             // mode: 'cors',
             // cache: 'no-cache',
@@ -23,7 +23,7 @@ export class AuthService {
     };
 
     static logout = (): Promise<Response> => {
-        return fetch(LOGOUT_PATH, {
+        return fetch(AUTH_SERVICE_ENDPOINTS.LOGOUT, {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',

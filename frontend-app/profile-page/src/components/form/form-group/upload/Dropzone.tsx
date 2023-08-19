@@ -1,7 +1,7 @@
 import React from 'react';
 import { DropEvent, DropzoneOptions, FileRejection, useDropzone } from 'react-dropzone';
 import { PathString, FieldPathValue, FieldValues } from 'react-hook-form';
-import { vehicleImageFromServer } from '@car-rental/shared/constant';
+import { STORAGE_SERVICE_ENDPOINTS } from '@car-rental/shared/constant';
 import { TranslationService } from '@car-rental/shared/service';
 
 interface DropzoneProperties<FieldValuesType extends FieldValues> extends DropzoneOptions {
@@ -51,7 +51,7 @@ export function Dropzone<FieldValuesType extends FieldValues>({
             return (
                 <div className="thumb" key={fileWithPreview.name}>
                     <div className="thumb-inner">
-                        <img src={vehicleImageFromServer(fileWithPreview.name)} alt="vehicle image" />
+                        <img src={STORAGE_SERVICE_ENDPOINTS.VEHICLE_IMAGE(fileWithPreview.name)} alt="vehicle image" />
                     </div>
                 </div>
             );

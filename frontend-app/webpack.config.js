@@ -7,8 +7,6 @@ const path = require('path');
 
 process.env.NODE_ENV = 'development';
 
-const host = process.env.HOST || 'localhost';
-
 const eslintOptions = {
     extensions: ['ts', 'tsx', 'js', 'json'],
     exclude: ['**/node_modules/**', '**/build/**', '**/dist/**'],
@@ -71,12 +69,4 @@ module.exports = {
         ],
     },
     plugins: [new ESLintPlugin(eslintOptions), new StylelintPlugin(stylelintOptions)],
-    devServer: {
-        hot: true,
-        host,
-        port: 3000,
-        publicPath: '/',
-        historyApiFallback: true,
-        open: true,
-    },
 };

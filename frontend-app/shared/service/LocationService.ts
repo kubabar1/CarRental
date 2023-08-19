@@ -1,11 +1,11 @@
 import { fetchGet, fetchPut } from './FetchUtil';
-import { ADD_LOCATION_PATH, GET_ALL_LOCATIONS_PATH, GET_LOCATIONS_PATH, PAGE_REQUEST } from '../constant';
+import { BOOKING_SERVICE_ENDPOINTS, PAGE_REQUEST } from '../constant';
 import { LocalisationsResponseDTO, LocalisationResponseDTO, LocationAddDTO, Page, ResponseData } from '../model';
 
 export class LocationService {
     static addLocation = (locationAddDTO: LocationAddDTO): Promise<ResponseData<LocalisationResponseDTO>> => {
         return fetchPut<LocalisationResponseDTO>(
-            ADD_LOCATION_PATH,
+            BOOKING_SERVICE_ENDPOINTS.ADD_LOCATION,
             locationAddDTO,
             'Location added',
             `Cannot add location - error occurred`
@@ -20,11 +20,11 @@ export class LocationService {
         desc?: boolean
     ): Promise<Page<LocalisationResponseDTO>> => {
         return fetchGet<Page<LocalisationResponseDTO>>(
-            PAGE_REQUEST(GET_LOCATIONS_PATH, page, size, filter, sortBy, desc)
+            PAGE_REQUEST(BOOKING_SERVICE_ENDPOINTS.GET_LOCATIONS, page, size, filter, sortBy, desc)
         );
     };
 
     static getAllLocationsList = (): Promise<LocalisationsResponseDTO> => {
-        return fetchGet<LocalisationsResponseDTO>(GET_ALL_LOCATIONS_PATH);
+        return fetchGet<LocalisationsResponseDTO>(BOOKING_SERVICE_ENDPOINTS.GET_ALL_LOCATIONS);
     };
 }

@@ -7,24 +7,15 @@ import {
     ResponseData,
 } from '../model';
 import { fetchGet, fetchPost, fetchPut } from './FetchUtil';
-import {
-    CANCEL_USER_BOOKING,
-    DEFAULT_PAGE_INDEX,
-    DEFAULT_PAGE_SIZE,
-    endpoints,
-    GET_USER_BOOKINGS_PATH,
-    GET_USER_BOOKINGS_RENTED_PATH,
-    GET_USER_BOOKINGS_RESERVED_PATH,
-    PAGE_REQUEST,
-} from '../constant';
+import { BOOKING_SERVICE_ENDPOINTS, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, PAGE_REQUEST } from '../constant';
 
 export class BookingUserService {
     static getBookingCost = (data: BookingCostRequestDTO): Promise<ResponseData<BookingCostResponseDTO>> => {
-        return fetchPost<BookingCostResponseDTO>(endpoints.reservationCost, data);
+        return fetchPost<BookingCostResponseDTO>(BOOKING_SERVICE_ENDPOINTS.RESERVATION_COST, data);
     };
 
     static createBooking = (data: BookingAddRequestDTO): Promise<ResponseData<BookingResponseDTO>> => {
-        return fetchPut<BookingResponseDTO>(endpoints.createBooking, data);
+        return fetchPut<BookingResponseDTO>(BOOKING_SERVICE_ENDPOINTS.CREATE_BOOKING, data);
     };
 
     static getAuthenticatedUserBookingsList = (
@@ -35,13 +26,13 @@ export class BookingUserService {
         desc?: boolean
     ): Promise<Page<BookingResponseDTO>> => {
         return fetchGet<Page<BookingResponseDTO>>(
-            PAGE_REQUEST(GET_USER_BOOKINGS_PATH, page, size, filter, sortBy, desc)
+            PAGE_REQUEST(BOOKING_SERVICE_ENDPOINTS.GET_USER_BOOKINGS, page, size, filter, sortBy, desc)
         );
     };
 
     static cancelAuthorizedUserBooking = (bookingId: string): Promise<ResponseData<BookingResponseDTO>> => {
         return fetchPost<BookingResponseDTO>(
-            CANCEL_USER_BOOKING(bookingId),
+            BOOKING_SERVICE_ENDPOINTS.CANCEL_USER_BOOKING(bookingId),
             undefined,
             `Booking '${bookingId}' canceled`,
             `Cannot cancel booking '${bookingId}' - error occurred`
@@ -56,7 +47,7 @@ export class BookingUserService {
         desc?: boolean
     ): Promise<Page<BookingResponseDTO>> => {
         return fetchGet<Page<BookingResponseDTO>>(
-            PAGE_REQUEST(GET_USER_BOOKINGS_RESERVED_PATH, page, size, filter, sortBy, desc)
+            PAGE_REQUEST(BOOKING_SERVICE_ENDPOINTS.GET_USER_BOOKINGS_RESERVED, page, size, filter, sortBy, desc)
         );
     };
 
@@ -68,7 +59,7 @@ export class BookingUserService {
         desc?: boolean
     ): Promise<Page<BookingResponseDTO>> => {
         return fetchGet<Page<BookingResponseDTO>>(
-            PAGE_REQUEST(GET_USER_BOOKINGS_RENTED_PATH, page, size, filter, sortBy, desc)
+            PAGE_REQUEST(BOOKING_SERVICE_ENDPOINTS.GET_USER_BOOKINGS_RENTED, page, size, filter, sortBy, desc)
         );
     };
 }

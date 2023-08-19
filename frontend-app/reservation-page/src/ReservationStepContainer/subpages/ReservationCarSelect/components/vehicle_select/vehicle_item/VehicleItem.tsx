@@ -1,8 +1,8 @@
 import React from 'react';
-import { carImagesMainPageCarList } from '../../../../../../constants/PathsServer';
 import './VehicleItem.scss';
 import { VehicleResponseDTO } from '@car-rental/shared/model';
 import { TranslationService } from '@car-rental/shared/service';
+import { STORAGE_SERVICE_ENDPOINTS } from '@car-rental/shared/constant';
 
 interface CarItemProperties {
     vehicle: VehicleResponseDTO;
@@ -17,7 +17,7 @@ export function VehicleItem({
     onClick,
     setModalVehicleDetailsId,
 }: CarItemProperties): JSX.Element {
-    const vehicleImage: string = carImagesMainPageCarList(vehicle.vehicleDetails.imageName);
+    const vehicleImage: string = STORAGE_SERVICE_ENDPOINTS.VEHICLE_IMAGE(vehicle.vehicleDetails.imageName);
 
     return (
         <div id={vehicle.id} className="col-md-6" onClick={onClick}>

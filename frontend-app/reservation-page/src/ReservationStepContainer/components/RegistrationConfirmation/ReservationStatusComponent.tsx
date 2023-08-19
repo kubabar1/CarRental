@@ -2,8 +2,8 @@ import React from 'react';
 import okIcon from '../../../images/ok-icon.png';
 import notOkIcon from '../../../images/not-ok-icon.png';
 import './ReservationStatusComponent.scss';
-import { endpoints } from '../../../constants/PathsAPI';
 import { TranslationService } from '@car-rental/shared/service';
+import { homePath } from '@car-rental/shared/constant';
 
 export enum ReservationStatus {
     OK = 'ok',
@@ -28,7 +28,7 @@ export function ReservationStatusComponent(props: ReservationStatusComponentProp
                         : TranslationService.translate('reservationFailedMessage')}
                 </h1>
                 <p className="login-link pl-3">
-                    <a href={endpoints.homeEndpoint} className="linkstyle">
+                    <a href={homePath} className="linkstyle">
                         {TranslationService.translate('homeLink')}
                     </a>
                 </p>

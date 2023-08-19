@@ -1,2 +1,3 @@
-export * from './Paths';
-export * from './PathsAPI';
+export * from './PathsApp';
+export * from './PathsApi';
+export * from './PathUtils';

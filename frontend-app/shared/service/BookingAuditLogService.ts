@@ -1,6 +1,6 @@
 import { BookingAuditLogResponseDTO, Page } from '../model';
 import { fetchGet } from './FetchUtil';
-import { GET_BOOKINGS_AUDIT_LOGS_PATH, PAGE_REQUEST } from '../constant';
+import { BOOKING_SERVICE_ENDPOINTS, PAGE_REQUEST } from '../constant';
 
 export class BookingAuditLogService {
     static getBookingsAuditLogsList = (
@@ -11,7 +11,7 @@ export class BookingAuditLogService {
         desc?: boolean
     ): Promise<Page<BookingAuditLogResponseDTO>> => {
         return fetchGet<Page<BookingAuditLogResponseDTO>>(
-            PAGE_REQUEST(GET_BOOKINGS_AUDIT_LOGS_PATH, page, size, filter, sortBy, desc)
+            PAGE_REQUEST(BOOKING_SERVICE_ENDPOINTS.GET_BOOKINGS_AUDIT_LOGS, page, size, filter, sortBy, desc)
         );
     };
 }

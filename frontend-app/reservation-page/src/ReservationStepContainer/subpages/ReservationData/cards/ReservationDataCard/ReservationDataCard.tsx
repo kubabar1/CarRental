@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom';
 import date from 'date-and-time';
 import { LocalisationResponseDTO } from '@car-rental/shared/model';
 import { carSelectSubpageLink } from '../../../../../constants/Links';
-import { endpoints } from '../../../../../constants/PathsAPI';
 import { Auto, FieldValues, PathString, SubmitHandler, useWatch } from 'react-hook-form';
 import { Control, FieldError } from 'react-hook-form/dist/types';
 import { DateInput } from './components/DateInput';
@@ -13,6 +12,7 @@ import { UseFormHandleSubmit, UseFormSetValue, UseFormTrigger } from 'react-hook
 import { ReactHookFormStorage } from '../../../../../utils/StorageUtil';
 import { FieldPathSetValue } from 'react-hook-form/dist/types/path';
 import { TranslationService } from '@car-rental/shared/service';
+import { homePath } from '@car-rental/shared/constant';
 
 interface ReservationDataCardProperties<FieldValuesType extends FieldValues> {
     setValue: UseFormSetValue<FieldValuesType>;
@@ -116,7 +116,7 @@ export function ReservationDataCard<FieldValuesType extends FieldValues>({
                     />
                     <div className="row">
                         <a
-                            href={endpoints.homeEndpoint}
+                            href={homePath}
                             className="linkstyle btn btn-lg btn-secondary btn-block col-md-3 ml-5"
                             onClick={() => {
                                 reservationStorage.clear();

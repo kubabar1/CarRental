@@ -7,15 +7,7 @@ import {
     Page,
     ResponseData,
 } from '../model';
-import {
-    ADD_EQUIPMENT_TO_VEHICLE_PATH,
-    DEFAULT_PAGE_INDEX,
-    DEFAULT_PAGE_SIZE,
-    GET_EQUIPMENTS_NOT_ASSIGNED_TO_VEHICLE_PATH,
-    GET_EQUIPMENTS_PATH,
-    PAGE_REQUEST,
-    REMOVE_EQUIPMENT_FROM_VEHICLE_PATH,
-} from '../constant';
+import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, PAGE_REQUEST, VEHICLE_SERVICE_ENDPOINTS } from '../constant';
 
 export class EquipmentService {
     static getAllEquipmentsList = (
@@ -26,7 +18,7 @@ export class EquipmentService {
         desc?: boolean
     ): Promise<Page<EquipmentResponseDTO>> => {
         return fetchGet<Page<EquipmentResponseDTO>>(
-            PAGE_REQUEST(GET_EQUIPMENTS_PATH, page, size, filter, sortBy, desc)
+            PAGE_REQUEST(VEHICLE_SERVICE_ENDPOINTS.GET_EQUIPMENTS, page, size, filter, sortBy, desc)
         );
     };
 
@@ -35,7 +27,7 @@ export class EquipmentService {
         vehicleEquipmentCodeArray: string[]
     ): Promise<ResponseData<VehicleResponseDTO>> => {
         return fetchPost<VehicleResponseDTO>(
-            ADD_EQUIPMENT_TO_VEHICLE_PATH(vehicleId),
+            VEHICLE_SERVICE_ENDPOINTS.ADD_EQUIPMENT_TO_VEHICLE(vehicleId),
             EquipmentService.mapVehicleEquipmentCodeArrayToEquipmentSetPersistDTO(vehicleEquipmentCodeArray),
             'Equipment added',
             'Cannot add equipment - error occurred'
@@ -47,7 +39,7 @@ export class EquipmentService {
         vehicleEquipmentCode: string
     ): Promise<ResponseData<VehicleResponseDTO>> => {
         return fetchPost<VehicleResponseDTO>(
-            REMOVE_EQUIPMENT_FROM_VEHICLE_PATH(vehicleId),
+            VEHICLE_SERVICE_ENDPOINTS.REMOVE_EQUIPMENT_FROM_VEHICLE(vehicleId),
             new EquipmentPersistDTO(vehicleEquipmentCode),
             'Equipment removed',
             'Cannot removed equipment - error occurred'
@@ -65,6 +57,8 @@ export class EquipmentService {
     };
 
     static getAllEquipmentsNotAssignedToVehicleList = (vehicleId: string): Promise<EquipmentResponseDTO[]> => {
-        return fetchGet<EquipmentResponseDTO[]>(GET_EQUIPMENTS_NOT_ASSIGNED_TO_VEHICLE_PATH(vehicleId));
+        return fetchGet<EquipmentResponseDTO[]>(
+            VEHICLE_SERVICE_ENDPOINTS.GET_EQUIPMENTS_NOT_ASSIGNED_TO_VEHICLE(vehicleId)
+        );
     };
 }

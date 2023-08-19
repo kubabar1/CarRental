@@ -1,6 +1,6 @@
 import React from 'react';
 import { VehicleResponseDTO } from '@car-rental/shared/model';
-import { vehicleImageFromServer } from '@car-rental/shared/constant';
+import { STORAGE_SERVICE_ENDPOINTS } from '@car-rental/shared/constant';
 import './VehicleDetails.scss';
 import { TranslationService } from '@car-rental/shared/service';
 
@@ -14,7 +14,7 @@ export const VehicleDetails = ({ vehicleResponseDTO }: VehicleDetailsProperties)
             <div className={'vehicle-details-container'}>
                 <div className={'vehicle-details-item-image'}>
                     <img
-                        src={vehicleImageFromServer(vehicleResponseDTO.vehicleDetails.imageName)}
+                        src={STORAGE_SERVICE_ENDPOINTS.VEHICLE_IMAGE(vehicleResponseDTO.vehicleDetails.imageName)}
                         alt="Vehicle image"
                         className="vehicle-details-image"
                     />

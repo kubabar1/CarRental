@@ -1,16 +1,5 @@
 import { BookingResponseDTO, Page, BookingStateDTO, ResponseData } from '../model';
-import {
-    BOOKING_STATES,
-    CANCEL_ADMIN_BOOKING,
-    DEFAULT_PAGE_INDEX,
-    DEFAULT_PAGE_SIZE,
-    GET_ADMIN_BOOKINGS_PATH,
-    GET_ADMIN_BOOKINGS_RENTED_PATH,
-    GET_ADMIN_BOOKINGS_RESERVED_PATH,
-    PAGE_REQUEST,
-    RENT_ADMIN_BOOKING,
-    RETURN_ADMIN_BOOKING,
-} from '../constant';
+import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, BOOKING_SERVICE_ENDPOINTS, PAGE_REQUEST } from '../constant';
 import { fetchGet, fetchPost } from './FetchUtil';
 
 export class BookingAdminService {
@@ -22,7 +11,7 @@ export class BookingAdminService {
         desc?: boolean
     ): Promise<Page<BookingResponseDTO>> => {
         return fetchGet<Page<BookingResponseDTO>>(
-            PAGE_REQUEST(GET_ADMIN_BOOKINGS_PATH, page, size, filter, sortBy, desc)
+            PAGE_REQUEST(BOOKING_SERVICE_ENDPOINTS.GET_ADMIN_BOOKINGS, page, size, filter, sortBy, desc)
         );
     };
 
@@ -34,7 +23,7 @@ export class BookingAdminService {
         desc?: boolean
     ): Promise<Page<BookingResponseDTO>> => {
         return fetchGet<Page<BookingResponseDTO>>(
-            PAGE_REQUEST(GET_ADMIN_BOOKINGS_RESERVED_PATH, page, size, filter, sortBy, desc)
+            PAGE_REQUEST(BOOKING_SERVICE_ENDPOINTS.GET_ADMIN_BOOKINGS_RESERVED, page, size, filter, sortBy, desc)
         );
     };
 
@@ -46,13 +35,13 @@ export class BookingAdminService {
         desc?: boolean
     ): Promise<Page<BookingResponseDTO>> => {
         return fetchGet<Page<BookingResponseDTO>>(
-            PAGE_REQUEST(GET_ADMIN_BOOKINGS_RENTED_PATH, page, size, filter, sortBy, desc)
+            PAGE_REQUEST(BOOKING_SERVICE_ENDPOINTS.GET_ADMIN_BOOKINGS_RENTED, page, size, filter, sortBy, desc)
         );
     };
 
     static rentBooking = (bookingId: string): Promise<ResponseData<BookingResponseDTO>> => {
         return fetchPost<BookingResponseDTO>(
-            RENT_ADMIN_BOOKING(bookingId),
+            BOOKING_SERVICE_ENDPOINTS.RENT_ADMIN_BOOKING(bookingId),
             undefined,
             `Booking '${bookingId}' rented`,
             `Cannot rent booking '${bookingId}' - error occurred`
@@ -61,7 +50,7 @@ export class BookingAdminService {
 
     static cancelBooking = (bookingId: string): Promise<ResponseData<BookingResponseDTO>> => {
         return fetchPost<BookingResponseDTO>(
-            CANCEL_ADMIN_BOOKING(bookingId),
+            BOOKING_SERVICE_ENDPOINTS.CANCEL_ADMIN_BOOKING(bookingId),
             undefined,
             `Booking '${bookingId}' canceled`,
             `Cannot cancel booking '${bookingId}' - error occurred`
@@ -70,7 +59,7 @@ export class BookingAdminService {
 
     static returnBooking = (bookingId: string): Promise<ResponseData<BookingResponseDTO>> => {
         return fetchPost<BookingResponseDTO>(
-            RETURN_ADMIN_BOOKING(bookingId),
+            BOOKING_SERVICE_ENDPOINTS.RETURN_ADMIN_BOOKING(bookingId),
             undefined,
             `Booking '${bookingId}' returned`,
             `Cannot return booking '${bookingId}' - error occurred`
@@ -78,6 +67,6 @@ export class BookingAdminService {
     };
 
     static getAllBookingStates = (): Promise<BookingStateDTO[]> => {
-        return fetchGet<BookingStateDTO[]>(BOOKING_STATES);
+        return fetchGet<BookingStateDTO[]>(BOOKING_SERVICE_ENDPOINTS.BOOKING_STATES);
     };
 }

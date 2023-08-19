@@ -1,7 +1,7 @@
 import React from 'react';
 import './VehicleDetailsHeader.scss';
 import { VehicleResponseDTO } from '@car-rental/shared/model';
-import { carImagesMainPageCarList } from '../../../../../../../constants/PathsServer';
+import { STORAGE_SERVICE_ENDPOINTS } from '@car-rental/shared/constant';
 
 interface CarDetailsHeaderProperties {
     vehicle: VehicleResponseDTO;
@@ -9,7 +9,7 @@ interface CarDetailsHeaderProperties {
 
 export function VehicleDetailsHeader(props: CarDetailsHeaderProperties): JSX.Element {
     const vehicle: VehicleResponseDTO = props.vehicle;
-    const vehicleImage: string = carImagesMainPageCarList(vehicle.vehicleDetails.imageName);
+    const vehicleImage: string = STORAGE_SERVICE_ENDPOINTS.VEHICLE_IMAGE(vehicle.vehicleDetails.imageName);
 
     return (
         <section>
