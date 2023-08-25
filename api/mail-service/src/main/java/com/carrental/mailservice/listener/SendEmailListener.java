@@ -4,6 +4,7 @@ import com.carrental.mailservice.model.MailDTO;
 import com.carrental.mailservice.model.MultipleRecipientsMailsDTO;
 import com.carrental.mailservice.service.MailService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.messaging.handler.annotation.Payload;
 
 public class SendEmailListener {
 
@@ -14,12 +15,12 @@ public class SendEmailListener {
     }
 
     @RabbitListener(queues = {"sendEmailQueue"})
-    public void sendEmail(MailDTO mailDTO) {
+    public void sendEmail(@Payload MailDTO mailDTO) {
         mailService.sendEmail(mailDTO);
     }
 
     @RabbitListener(queues = {"sendMultipleEmailsQueue"})
-    public void sendMultipleRecipientsMails(MultipleRecipientsMailsDTO multipleRecipientsMailsDTO) {
+    public void sendMultipleRecipientsMails(@Payload MultipleRecipientsMailsDTO multipleRecipientsMailsDTO) {
         mailService.sendMultipleRecipientsMails(multipleRecipientsMailsDTO);
     }
 }

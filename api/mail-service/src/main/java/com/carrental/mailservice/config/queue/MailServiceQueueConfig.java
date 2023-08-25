@@ -1,4 +1,4 @@
-package com.carrental.mailservice.config;
+package com.carrental.mailservice.config.queue;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;

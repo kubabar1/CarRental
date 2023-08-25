@@ -1,6 +1,7 @@
 package com.carrental.userservice.controller;
 
 import com.carrental.commons.authentication.model.VerificationTokenDTO;
+import com.carrental.userservice.config.properties.UserServiceProperties;
 import com.carrental.userservice.exception.UserAlreadyExistException;
 import com.carrental.userservice.model.dto.CreateUserDTO;
 import com.carrental.userservice.model.dto.UserResponseDTO;
@@ -35,21 +36,25 @@ public class RegistrationController {
 
     private final RabbitTemplate rabbitTemplate;
 
+    private final UserServiceProperties userServiceProperties;
+
     public RegistrationController(
         UserService userService,
         ApplicationEventPublisher eventPublisher,
-        RabbitTemplate rabbitTemplate
+        RabbitTemplate rabbitTemplate,
+        UserServiceProperties userServiceProperties
     ) {
         this.userService = userService;
         this.eventPublisher = eventPublisher;
         this.rabbitTemplate = rabbitTemplate;
+        this.userServiceProperties = userServiceProperties;
     }
 
     @PutMapping(value = "/register-user")
     public ResponseEntity<UserResponseDTO> registerUserController(@Valid @RequestBody CreateUserDTO createUserDTO) {
         try {
             UserResponseDTO createdUser = userService.createUser(createUserDTO);
-            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(this, createdUser.getId()));
+            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(this, createdUser.getId(), createdUser.getEmail()));
             return ResponseEntity.ok().body(createdUser);
         } catch (UserAlreadyExistException exception) {
             return ResponseEntity.badRequest().build();
@@ -66,12 +71,12 @@ public class RegistrationController {
         String redirectUrl;
         if (isTokenValid(verificationToken)) {
             userService.enableUser(verificationToken.getUserId(), verificationToken.getToken());
-            redirectUrl = "http://localhost:3030/login";
+            redirectUrl = userServiceProperties.getLoginPageUrl();
         } else {
             if (verificationToken != null && verificationToken.getExpiryDate() != null && isTokenExpired(verificationToken.getExpiryDate())) {
-                redirectUrl = "http://localhost:3030/registration/expired-token?token=" + token;
+                redirectUrl = userServiceProperties.getRegistrationExpiredTokenUrl() + token;
             } else {
-                redirectUrl = "http://localhost:3030/registration/invalid-token";
+                redirectUrl = userServiceProperties.getRegistrationInvalidTokenUrl();
             }
         }
         HttpHeaders headers = new HttpHeaders();
@@ -88,10 +93,11 @@ public class RegistrationController {
         );
         String redirectUrl;
         if (verificationToken != null && verificationToken.getUserId() != null) {
-            eventPublisher.publishEvent(new OnResendRegistrationConfirmTokenEvent(this, verificationToken.getUserId()));
-            redirectUrl = "http://localhost:3030/registration/confirm-mail";
+            UserResponseDTO user = userService.getUserById(verificationToken.getUserId());
+            eventPublisher.publishEvent(new OnResendRegistrationConfirmTokenEvent(this, verificationToken.getUserId(), user.getEmail()));
+            redirectUrl = userServiceProperties.getRegistrationConfirmMailUrl();
         } else {
-            redirectUrl = "http://localhost:3030/registration/invalid-token";
+            redirectUrl = userServiceProperties.getRegistrationInvalidTokenUrl();
         }
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", redirectUrl);

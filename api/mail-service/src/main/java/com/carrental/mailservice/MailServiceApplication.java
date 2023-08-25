@@ -1,11 +1,15 @@
 package com.carrental.mailservice;
 
+import com.carrental.commons.config.RabbitMQConfig;
 import com.carrental.mailservice.config.MailServiceCoreConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
-@Import({MailServiceCoreConfig.class})
+@Import({
+    MailServiceCoreConfig.class,
+    RabbitMQConfig.class
+})
 @SpringBootApplication
 public class MailServiceApplication {
 

@@ -38,7 +38,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     @Override
     public PasswordResetResponseDTO sendResetPasswordEmail(String email) throws NoSuchElementException {
         UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
-        eventPublisher.publishEvent(new OnSendResetPasswordEmailEvent(this, userEntity.getId()));
+        eventPublisher.publishEvent(new OnSendResetPasswordEmailEvent(this, userEntity.getId(), email));
         return new PasswordResetResponseDTO(email);
     }
 

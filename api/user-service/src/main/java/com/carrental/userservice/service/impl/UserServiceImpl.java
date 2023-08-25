@@ -1,9 +1,12 @@
 package com.carrental.userservice.service.impl;
 
+import com.carrental.commons.authentication.config.jwt.JwtProperties;
 import com.carrental.commons.authentication.exception.AuthorizationException;
 import com.carrental.commons.authentication.model.AuthenticatedUser;
 import com.carrental.commons.authentication.service.AuthenticatedUserDataService;
+import com.carrental.commons.authentication.utils.JWTTokenUtils;
 import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
+import com.carrental.userservice.exception.IncorrectPasswordException;
 import com.carrental.userservice.exception.UserAlreadyExistException;
 import com.carrental.userservice.model.dto.*;
 import com.carrental.userservice.model.entity.UserEntity;
@@ -17,8 +20,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -39,6 +46,8 @@ public class UserServiceImpl implements UserService {
 
     private final FilterSpecificationBuilder<UserEntity> filterSpecificationBuilder;
 
+    private final JwtProperties jwtProperties;
+
     public UserServiceImpl(
             UserRepository userRepository,
             UserRoleRepository userRoleRepository,
@@ -46,7 +55,8 @@ public class UserServiceImpl implements UserService {
             ModelMapper modelMapper,
             PasswordEncoder passwordEncoder,
             RabbitTemplate rabbitTemplate,
-            FilterSpecificationBuilder<UserEntity> filterSpecificationBuilder
+            FilterSpecificationBuilder<UserEntity> filterSpecificationBuilder,
+            JwtProperties jwtProperties
     ) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
@@ -55,6 +65,7 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
         this.rabbitTemplate = rabbitTemplate;
         this.filterSpecificationBuilder = filterSpecificationBuilder;
+        this.jwtProperties = jwtProperties;
     }
 
     @Override
@@ -133,12 +144,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDTO updateUserPassword(PasswordUpdateDTO passwordUpdateDTO) throws AuthorizationException, NoSuchElementException {
+    public UserResponseDTO updateUserPassword(PasswordUpdateDTO passwordUpdateDTO) throws IncorrectPasswordException, NoSuchElementException {
         AuthenticatedUser authenticatedUser = authenticatedUserDataService.getAuthenticatedUserData();
         UserEntity userEntity = userRepository.findById(authenticatedUser.getUserId()).orElseThrow();
         boolean isCurrentPasswordCorrect = passwordEncoder.matches(passwordUpdateDTO.getCurrentPassword(), userEntity.getPassword());
         if (!isCurrentPasswordCorrect) {
-            throw new AuthorizationException("Given current password is not correct.");
+            throw new IncorrectPasswordException("Given current password is not correct.");
         }
         userEntity.setPassword(passwordEncoder.encode(passwordUpdateDTO.getNewPassword()));
         return modelMapper.map(userRepository.save(userEntity), UserResponseDTO.class);
@@ -176,7 +187,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDTO updateAuthenticatedUser(UserUpdateDTO userUpdateDTO) throws NoSuchElementException {
+    public UserResponseDTO updateAuthenticatedUser(UserUpdateDTO userUpdateDTO, HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException {
         AuthenticatedUser authenticatedUser = authenticatedUserDataService.getAuthenticatedUserData();
 
         UserEntity userEntity = userRepository.findById(authenticatedUser.getUserId()).orElseThrow(NoSuchElementException::new);
@@ -187,10 +198,22 @@ public class UserServiceImpl implements UserService {
 
         UserEntity updatedUser = userRepository.save(userEntity);
 
-        authenticatedUser.setName(userUpdateDTO.getName());
-        authenticatedUser.setSurname(userUpdateDTO.getSurname());
-        authenticatedUser.setPhone(userUpdateDTO.getPhone());
-        authenticatedUser.setBirthDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(userUpdateDTO.getBirthDate()));
+        Optional<String> jwtToken =  JWTTokenUtils.getInstance().getTokenFromCookie(request, jwtProperties.getCookieName());
+
+        if (jwtToken.isPresent()) {
+            AuthenticatedUser userDetails = JWTTokenUtils.getInstance()
+                .getAuthenticatedUserFromToken(jwtToken.get(), jwtProperties.getSecret());
+            userDetails.setName(userUpdateDTO.getName());
+            userDetails.setSurname(userUpdateDTO.getSurname());
+            userDetails.setPhone(userUpdateDTO.getPhone());
+            userDetails.setBirthDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(userUpdateDTO.getBirthDate()));
+            response.addCookie(JWTTokenUtils.getInstance().generateAuthCookie(
+                jwtProperties.getCookieName(),
+                userDetails,
+                jwtProperties.getSecret(),
+                jwtProperties.getExpirationInSeconds()
+            ));
+        }
 
         return modelMapper.map(updatedUser, UserResponseDTO.class);
     }

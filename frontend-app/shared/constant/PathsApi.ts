@@ -1,38 +1,32 @@
 import { createAppAddr, withId } from './PathUtils';
 
-export const PROTOCOL = 'http';
+const AUTH_SERVICE_PROTOCOL: string = process.env.AUTH_SERVICE_PROTOCOL!;
+const BOOKING_SERVICE_PROTOCOL: string = process.env.BOOKING_SERVICE_PROTOCOL!;
+const RATING_SERVICE_PROTOCOL: string = process.env.RATING_SERVICE_PROTOCOL!;
+const STORAGE_STUB_SERVICE_PROTOCOL: string = process.env.STORAGE_STUB_SERVICE_PROTOCOL!;
+const USER_SERVICE_PROTOCOL: string = process.env.USER_SERVICE_PROTOCOL!;
+const VEHICLE_SERVICE_PROTOCOL: string = process.env.VEHICLE_SERVICE_PROTOCOL!;
 
-export const HOSTNAME = 'localhost';
+const AUTH_SERVICE_HOSTNAME: string = process.env.AUTH_SERVICE_HOSTNAME!;
+const BOOKING_SERVICE_HOSTNAME: string = process.env.BOOKING_SERVICE_HOSTNAME!;
+const RATING_SERVICE_HOSTNAME: string = process.env.RATING_SERVICE_HOSTNAME!;
+const STORAGE_STUB_SERVICE_HOSTNAME: string = process.env.STORAGE_STUB_SERVICE_HOSTNAME!;
+const USER_SERVICE_HOSTNAME: string = process.env.USER_SERVICE_HOSTNAME!;
+const VEHICLE_SERVICE_HOSTNAME: string = process.env.VEHICLE_SERVICE_HOSTNAME!;
 
-export const PORT = 8080;
+const AUTH_SERVICE_PORT: number = (process.env.AUTH_SERVICE_PORT as unknown) as number;
+const BOOKING_SERVICE_PORT: number = (process.env.BOOKING_SERVICE_PORT as unknown) as number;
+const RATING_SERVICE_PORT: number = (process.env.RATING_SERVICE_PORT as unknown) as number;
+const STORAGE_STUB_SERVICE_PORT: number = (process.env.STORAGE_STUB_SERVICE_PORT as unknown) as number;
+const USER_SERVICE_PORT: number = (process.env.USER_SERVICE_PORT as unknown) as number;
+const VEHICLE_SERVICE_PORT: number = (process.env.VEHICLE_SERVICE_PORT as unknown) as number;
 
-const AUTH_SERVICE_PROTOCOL: string = PROTOCOL;
-const BOOKING_SERVICE_PROTOCOL: string = PROTOCOL;
-const RATING_SERVICE_PROTOCOL: string = PROTOCOL;
-const STORAGE_STUB_SERVICE_PROTOCOL: string = PROTOCOL;
-const USER_SERVICE_PROTOCOL: string = PROTOCOL;
-const VEHICLE_SERVICE_PROTOCOL: string = PROTOCOL;
-
-const AUTH_SERVICE_HOSTNAME: string = HOSTNAME;
-const BOOKING_SERVICE_HOSTNAME: string = HOSTNAME;
-const RATING_SERVICE_HOSTNAME: string = HOSTNAME;
-const STORAGE_STUB_SERVICE_HOSTNAME: string = HOSTNAME;
-const USER_SERVICE_HOSTNAME: string = HOSTNAME;
-const VEHICLE_SERVICE_HOSTNAME: string = HOSTNAME;
-
-const AUTH_SERVICE_PORT: number | undefined = PORT;
-const BOOKING_SERVICE_PORT: number | undefined = PORT;
-const RATING_SERVICE_PORT: number | undefined = PORT;
-const STORAGE_STUB_SERVICE_PORT: number | undefined = PORT;
-const USER_SERVICE_PORT: number | undefined = PORT;
-const VEHICLE_SERVICE_PORT: number | undefined = PORT;
-
-const AUTH_SERVICE_CONTEXT: string | undefined = ''; // 'auth-service';
-const BOOKING_SERVICE_CONTEXT: string | undefined = ''; // 'booking-service';
-const RATING_SERVICE_CONTEXT: string | undefined = ''; // 'rating-service';
-const STORAGE_STUB_SERVICE_CONTEXT: string | undefined = ''; // 'storage-stub-service';
-const USER_SERVICE_CONTEXT: string | undefined = ''; // 'user-service';
-const VEHICLE_SERVICE_CONTEXT: string | undefined = ''; // 'vehicle-service';
+const AUTH_SERVICE_CONTEXT: string | undefined = process.env.AUTH_SERVICE_CONTEXT;
+const BOOKING_SERVICE_CONTEXT: string | undefined = process.env.BOOKING_SERVICE_CONTEXT;
+const RATING_SERVICE_CONTEXT: string | undefined = process.env.RATING_SERVICE_CONTEXT;
+const STORAGE_STUB_SERVICE_CONTEXT: string | undefined = process.env.STORAGE_STUB_SERVICE_CONTEXT;
+const USER_SERVICE_CONTEXT: string | undefined = process.env.USER_SERVICE_CONTEXT;
+const VEHICLE_SERVICE_CONTEXT: string | undefined = process.env.VEHICLE_SERVICE_CONTEXT;
 
 const AUTH_SERVICE_ADDR: string = createAppAddr(
     AUTH_SERVICE_PROTOCOL,
@@ -121,6 +115,8 @@ export const USER_SERVICE_ENDPOINTS = {
     UPDATE_AUTHORIZED_USER: `${USER_SERVICE_ADDR}/users/update-authenticated-user`,
     GET_USER_BY_ID: (userId: string): string => withId(`${USER_SERVICE_ADDR}/users`, userId),
     ADD_ROLE_TO_USER: (userId: string): string => `${withId(`${USER_SERVICE_ADDR}/users`, userId)}/roles`,
+    RESEND_REGISTRATION_CONFIRM: (token: string) =>
+        `${USER_SERVICE_ADDR}/registration/resend-registration-confirm?token=${token}`,
 };
 export const VEHICLE_SERVICE_ENDPOINTS = {
     GET_VEHICLE: `${VEHICLE_SERVICE_ADDR}/vehicles`,

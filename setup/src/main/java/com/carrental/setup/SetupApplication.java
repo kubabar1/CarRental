@@ -15,17 +15,7 @@ import org.springframework.context.annotation.Import;
 import com.carrental.commons.config.ModelMapperConfig;
 import com.carrental.commons.config.SpringFoxConfig;
 
-@SpringBootApplication(
-//        scanBasePackages = {
-//                "com.carrental.bookingservice",
-//                "com.carrental.ratingservice",
-//                "com.carrental.userservice",
-//                "com.carrental.vehicleservice",
-//                "com.carrental.authservice",
-//                "com.carrental.mailservice",
-//                "com.carrental.storageservicestub"
-//        }
-)
+@SpringBootApplication
 @Import({
         BookingServiceCoreConfig.class,
         RatingServiceCoreConfig.class,

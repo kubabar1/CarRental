@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import notOkIcon from '../../images/not-ok-icon.png';
 import './RegistrationInvalidTokenComponent.scss';
-import { loginPath } from '@car-rental/shared/constant';
+import { loginPath, USER_SERVICE_ENDPOINTS } from '@car-rental/shared/constant';
 import qs from 'qs';
 import { useLocation } from 'react-router-dom';
 import { TranslationService } from '@car-rental/shared/service';
@@ -24,11 +24,11 @@ export function RegistrationInvalidTokenComponent({
         setToken(getTokenFromUrl(location.search));
     }, [location.search]);
 
-    const expiredTokenMessage = (): JSX.Element => {
+    const expiredTokenMessage = (tokenToSend: string): JSX.Element => {
         return (
             <div>
                 {TranslationService.translate('tokenExpiredBegin')}
-                <a href={`http://localhost:8080/registration/resend-registration-confirm?token=${token}`}>
+                <a href={USER_SERVICE_ENDPOINTS.RESEND_REGISTRATION_CONFIRM(tokenToSend)}>
                     {TranslationService.translate('tokenExpiredHere')}
                 </a>
                 {TranslationService.translate('tokenExpiredEnd')}
@@ -49,8 +49,8 @@ export function RegistrationInvalidTokenComponent({
                     {TranslationService.translate('invalidToken')}
                 </h1>
                 <p className="mb-4 text-center">
-                    {displayTokenExpiredMessage
-                        ? expiredTokenMessage()
+                    {displayTokenExpiredMessage && !!token
+                        ? expiredTokenMessage(token)
                         : TranslationService.translate('invalidTokenMessage')}
                 </p>
                 <p className="login-link pl-3">

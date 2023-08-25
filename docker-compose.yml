@@ -1,6 +1,14 @@
 version: '2.2'
 
 services:
+    nginx:
+        image: nginx
+        container_name: nginx
+        volumes:
+            - ./.nginx/nginx.conf:/etc/nginx/nginx.conf
+        ports:
+            - 8080:8080
+        network_mode: "host"
     rabbitmq:
         image: rabbitmq:3-management-alpine
         container_name: rabbitmq
@@ -12,9 +20,9 @@ services:
 #            - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
         healthcheck:
             test: rabbitmq-diagnostics -q ping
-            interval: 30s
+            interval: 10s
             timeout: 30s
-            retries: 3
+            retries: 6
     auth-service:
         image: auth-service
         container_name: auth-service
@@ -25,12 +33,17 @@ services:
                 - APP_DIR=auth-service
         ports:
             - "8081:8080"
-        mem_limit: 160m
+            - "5006:5005"
+#        mem_limit: 200m
         depends_on:
             rabbitmq:
                 condition: service_healthy
         environment:
             RABBIT_HOST: rabbitmq
+            FRONTEND_APP_PROTOCOL: http
+            FRONTEND_APP_HOSTNAME: localhost
+            FRONTEND_APP_PORT: 3030
+            FRONTEND_APP_CONTEXT: ""
     user-service:
         image: user-service
         container_name: user-service
@@ -41,12 +54,21 @@ services:
                 - APP_DIR=user-service
         ports:
             - "8082:8080"
-        mem_limit: 160m
+            - "5007:5005"
+#        mem_limit: 200m
         depends_on:
             rabbitmq:
                 condition: service_healthy
         environment:
             RABBIT_HOST: rabbitmq
+            USER_SERVICE_PROTOCOL: http
+            USER_SERVICE_HOSTNAME: localhost
+            USER_SERVICE_PORT: 8080
+            USER_SERVICE_CONTEXT: /user-service
+            FRONTEND_APP_PROTOCOL: http
+            FRONTEND_APP_HOSTNAME: localhost
+            FRONTEND_APP_PORT: 3030
+            FRONTEND_APP_CONTEXT: ""
     vehicle-service:
         image: vehicle-service
         container_name: vehicle-service
@@ -57,12 +79,16 @@ services:
                 - APP_DIR=vehicle-service
         ports:
             - "8083:8080"
-        mem_limit: 160m
+#        mem_limit: 200m
         depends_on:
             rabbitmq:
                 condition: service_healthy
         environment:
             RABBIT_HOST: rabbitmq
+            FRONTEND_APP_PROTOCOL: http
+            FRONTEND_APP_HOSTNAME: localhost
+            FRONTEND_APP_PORT: 3030
+            FRONTEND_APP_CONTEXT: ""
     rating-service:
         image: rating-service
         container_name: rating-service
@@ -73,12 +99,16 @@ services:
                 - APP_DIR=rating-service
         ports:
             - "8084:8080"
-        mem_limit: 160m
+#        mem_limit: 200m
         depends_on:
             rabbitmq:
                 condition: service_healthy
         environment:
             RABBIT_HOST: rabbitmq
+            FRONTEND_APP_PROTOCOL: http
+            FRONTEND_APP_HOSTNAME: localhost
+            FRONTEND_APP_PORT: 3030
+            FRONTEND_APP_CONTEXT: ""
     booking-service:
         image: booking-service
         container_name: booking-service
@@ -89,12 +119,16 @@ services:
                 - APP_DIR=booking-service
         ports:
             - "8085:8080"
-        mem_limit: 160m
+#        mem_limit: 200m
         depends_on:
             rabbitmq:
                 condition: service_healthy
         environment:
             RABBIT_HOST: rabbitmq
+            FRONTEND_APP_PROTOCOL: http
+            FRONTEND_APP_HOSTNAME: localhost
+            FRONTEND_APP_PORT: 3030
+            FRONTEND_APP_CONTEXT: ""
     mail-service:
         image: mail-service
         container_name: mail-service
@@ -105,7 +139,9 @@ services:
                 - APP_DIR=mail-service
         ports:
             - "8086:8080"
-        mem_limit: 160m
+            - "3143:3143"
+            - "3025:3025"
+#        mem_limit: 200m
         depends_on:
             rabbitmq:
                 condition: service_healthy
@@ -121,9 +157,18 @@ services:
                 - APP_DIR=storage-service-stub
         ports:
             - "8087:8080"
-        mem_limit: 160m
+#        mem_limit: 200m
         depends_on:
             rabbitmq:
                 condition: service_healthy
         environment:
             RABBIT_HOST: rabbitmq
+    frontend-app:
+        image: frontend-app
+        container_name: frontend-app
+        build:
+            context: ./frontend-app
+            dockerfile: Dockerfile
+        ports:
+            - "3030:3030"
+#        mem_limit: 200m

@@ -56,7 +56,8 @@ export class UserService {
             USER_SERVICE_ENDPOINTS.UPDATE_USER_PASSWORD,
             passwordUpdateDRO,
             'Password updated',
-            'Cannot update password - error occurred'
+            'Cannot update password - error occurred',
+            false
         );
     };
 

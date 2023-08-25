@@ -12,6 +12,7 @@ public class JwtProperties {
     @NotNull
     private String secret;
 
+    @NotNull
     private Long expirationInSeconds;
 
     @NotNull

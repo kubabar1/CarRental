@@ -1,6 +1,7 @@
 package com.carrental.userservice.listener;
 
 import com.carrental.commons.authentication.model.VerificationTokenDTO;
+import com.carrental.userservice.config.properties.UserServiceProperties;
 import com.carrental.userservice.model.dto.MailDTO;
 import com.carrental.userservice.model.dto.TokenRequestDTO;
 import com.carrental.userservice.model.event.OnRegistrationCompleteEvent;
@@ -12,8 +13,11 @@ public class RegistrationCompleteListener implements ApplicationListener<OnRegis
 
     private final RabbitTemplate rabbitTemplate;
 
-    public RegistrationCompleteListener(RabbitTemplate rabbitTemplate) {
+    private final UserServiceProperties userServiceProperties;
+
+    public RegistrationCompleteListener(RabbitTemplate rabbitTemplate, UserServiceProperties userServiceProperties) {
         this.rabbitTemplate = rabbitTemplate;
+        this.userServiceProperties = userServiceProperties;
     }
 
     @Override
@@ -25,11 +29,9 @@ public class RegistrationCompleteListener implements ApplicationListener<OnRegis
         );
 
         if (verificationToken != null) {
-            // TODO: fix
-            String recipientAddress = "greenmail@localhost";
             rabbitTemplate.convertAndSend(
                 "sendEmailQueue",
-                createResendVerificationTokenMailText(recipientAddress, verificationToken.getToken())
+                createResendVerificationTokenMailText(event.getUserEmail(), verificationToken.getToken())
             );
         }
     }
@@ -39,7 +41,7 @@ public class RegistrationCompleteListener implements ApplicationListener<OnRegis
         mailDTO.setRecipient(recipientAddress);
         mailDTO.setSubject("Registration confirmation");
         mailDTO.setText("Your account was successfully created.\n"
-            + "http://localhost:8080/registration/registration-confirm?token="
+            + userServiceProperties.getRegistrationConfirmUrl()
             + token);
         return mailDTO;
     }

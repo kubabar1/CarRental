@@ -1,6 +1,7 @@
 package com.carrental.userservice.listener;
 
 import com.carrental.commons.authentication.model.VerificationTokenDTO;
+import com.carrental.userservice.config.properties.UserServiceProperties;
 import com.carrental.userservice.model.dto.MailDTO;
 import com.carrental.userservice.model.dto.TokenRequestDTO;
 import com.carrental.userservice.model.event.OnSendResetPasswordEmailEvent;
@@ -12,8 +13,11 @@ public class SendResetPasswordEmailListener implements ApplicationListener<OnSen
 
     private final RabbitTemplate rabbitTemplate;
 
-    public SendResetPasswordEmailListener(RabbitTemplate rabbitTemplate) {
+    private final UserServiceProperties userServiceProperties;
+
+    public SendResetPasswordEmailListener(RabbitTemplate rabbitTemplate, UserServiceProperties userServiceProperties) {
         this.rabbitTemplate = rabbitTemplate;
+        this.userServiceProperties = userServiceProperties;
     }
 
     @Override
@@ -25,10 +29,9 @@ public class SendResetPasswordEmailListener implements ApplicationListener<OnSen
         );
 
         if (verificationToken != null) {
-            String recipientAddress = "greenmail@localhost";
             rabbitTemplate.convertAndSend(
                     "sendEmailQueue",
-                    createConfirmPasswordResetMailText(recipientAddress, verificationToken.getToken())
+                    createConfirmPasswordResetMailText(event.getUserEmail(), verificationToken.getToken())
             );
         }
     }
@@ -38,7 +41,7 @@ public class SendResetPasswordEmailListener implements ApplicationListener<OnSen
         mailDTO.setRecipient(recipientAddress);
         mailDTO.setSubject("Password Reset Confirmation");
         mailDTO.setText("Click below link to change your password.\n"
-                + "http://localhost:8080/reset-password/change-password?token="
+                + userServiceProperties.getResetPasswordChangePasswordUrl()
                 + token);
         return mailDTO;
     }

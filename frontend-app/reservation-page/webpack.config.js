@@ -27,21 +27,5 @@ module.exports = Object.assign({}, mainConfig, {
             favicon: path.join(__dirname, 'src/images/car_rental_page_logo.png'),
             filename: '../reservation-page/reservation_status.html',
         }),
-    ],
-    devServer: {
-        ...mainConfig.devServer,
-        // contentBase: dist,
-        proxy: {
-            '/*': {
-                target: 'http://localhost:3000',
-                bypass: (req) => {
-                    if (req.url.indexOf('/reservation-status') !== -1) {
-                        return '/reservation_status.html';
-                    } else {
-                        return '/reservation.html';
-                    }
-                },
-            },
-        },
-    },
+    ]
 });

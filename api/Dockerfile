@@ -12,4 +12,4 @@ ENV APP_HOME=/usr/app/
 ARG APP_DIR
 WORKDIR $APP_HOME
 COPY --from=BUILD $APP_HOME/$APP_DIR/build/libs/${APP_DIR}-HEAD-SNAPSHOT.jar /app/spring-boot-application.jar
-ENTRYPOINT ["java","-jar","-Dspring.profiles.active=docker","/app/spring-boot-application.jar"]
+ENTRYPOINT ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar","-Dspring.profiles.active=docker","/app/spring-boot-application.jar"]

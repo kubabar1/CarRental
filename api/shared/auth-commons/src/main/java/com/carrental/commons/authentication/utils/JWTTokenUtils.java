@@ -6,6 +6,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +34,12 @@ public final class JWTTokenUtils {
 
     public Cookie generateAuthCookie(String cookieName, AuthenticatedUser userDetails, String secret, Long expirationInSeconds) {
         Cookie authCookie = new Cookie(cookieName, generateToken(userDetails, secret, expirationInSeconds));
+        authCookie.setPath("/");
+        authCookie.setSecure(true);
+        authCookie.setHttpOnly(true);
+//        authCookie.setComment();
+//        authCookie.setDomain();
+//        authCookie.setVersion();
         authCookie.setMaxAge(expirationInSeconds.intValue());
         return authCookie;
     }
@@ -44,7 +52,10 @@ public final class JWTTokenUtils {
         String phone = claims.get("phone", String.class);
         String birthDate = claims.get("birthDate", String.class);
         String email = claims.get("email", String.class);
-        List<String> authorities = Arrays.asList(claims.get("authorities", String.class).split(","));
+        String authoritiesString = claims.get("authorities", String.class);
+        List<String> authorities = ObjectUtils.isEmpty(authoritiesString)
+            ? Collections.emptyList()
+            : Arrays.asList(claims.get("authorities", String.class).split(","));
         Boolean enabled = claims.get("enabled", Boolean.class);
         Boolean isAccountNonExpired = claims.get("isAccountNonExpired", Boolean.class);
         Boolean credentialsNonExpired = claims.get("credentialsNonExpired", Boolean.class);

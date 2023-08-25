@@ -1,7 +1,9 @@
 package com.carrental.userservice.config;
 
+import com.carrental.commons.authentication.config.jwt.JwtProperties;
 import com.carrental.commons.authentication.service.AuthenticatedUserDataService;
 import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
+import com.carrental.userservice.config.properties.UserServiceProperties;
 import com.carrental.userservice.config.queue.UserServiceQueueConfig;
 import com.carrental.userservice.config.security.IgnoreAuthenticationUserService;
 import com.carrental.userservice.controller.RegistrationController;
@@ -55,7 +57,8 @@ public class UserServiceCoreConfig {
             ModelMapper modelMapper,
             PasswordEncoder passwordEncoder,
             RabbitTemplate rabbitTemplate,
-            UserFilterOperation<UserEntity> userFilterOperation
+            UserFilterOperation<UserEntity> userFilterOperation,
+            JwtProperties jwtProperties
     ) {
         return new UserServiceImpl(
                 userRepository,
@@ -64,7 +67,8 @@ public class UserServiceCoreConfig {
                 modelMapper,
                 passwordEncoder,
                 rabbitTemplate,
-                new FilterSpecificationBuilder<>(userFilterOperation)
+                new FilterSpecificationBuilder<>(userFilterOperation),
+                jwtProperties
         );
     }
 
@@ -92,32 +96,51 @@ public class UserServiceCoreConfig {
     }
 
     @Bean
-    public ResetPasswordController resetPasswordController(RabbitTemplate rabbitTemplate, ResetPasswordService resetPasswordService) {
-        return new ResetPasswordController(rabbitTemplate, resetPasswordService);
+    public ResetPasswordController resetPasswordController(
+            RabbitTemplate rabbitTemplate,
+            ResetPasswordService resetPasswordService,
+            UserServiceProperties userServiceProperties
+    ) {
+        return new ResetPasswordController(rabbitTemplate, resetPasswordService, userServiceProperties);
+    }
+
+    @Bean
+    public UserServiceProperties userServiceProperties() {
+        return new UserServiceProperties();
     }
 
     @Bean
     public RegistrationController registrationController(
             UserService userService,
             ApplicationEventPublisher eventPublisher,
-            RabbitTemplate rabbitTemplate
+            RabbitTemplate rabbitTemplate,
+            UserServiceProperties userServiceProperties
     ) {
-        return new RegistrationController(userService, eventPublisher, rabbitTemplate);
+        return new RegistrationController(userService, eventPublisher, rabbitTemplate, userServiceProperties);
     }
 
     @Bean
-    public RegistrationCompleteListener registrationListener(RabbitTemplate rabbitTemplate) {
-        return new RegistrationCompleteListener(rabbitTemplate);
+    public RegistrationCompleteListener registrationListener(
+            RabbitTemplate rabbitTemplate,
+            UserServiceProperties userServiceProperties
+    ) {
+        return new RegistrationCompleteListener(rabbitTemplate, userServiceProperties);
     }
 
     @Bean
-    public ResendRegistrationConfirmTokenListener resendRegistrationConfirmTokenListener(RabbitTemplate rabbitTemplate) {
-        return new ResendRegistrationConfirmTokenListener(rabbitTemplate);
+    public ResendRegistrationConfirmTokenListener resendRegistrationConfirmTokenListener(
+            RabbitTemplate rabbitTemplate,
+            UserServiceProperties userServiceProperties
+    ) {
+        return new ResendRegistrationConfirmTokenListener(rabbitTemplate, userServiceProperties);
     }
 
     @Bean
-    public SendResetPasswordEmailListener sendResetPasswordEmailListener(RabbitTemplate rabbitTemplate) {
-        return new SendResetPasswordEmailListener(rabbitTemplate);
+    public SendResetPasswordEmailListener sendResetPasswordEmailListener(
+            RabbitTemplate rabbitTemplate,
+            UserServiceProperties userServiceProperties
+    ) {
+        return new SendResetPasswordEmailListener(rabbitTemplate, userServiceProperties);
     }
 
     @Bean

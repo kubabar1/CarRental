@@ -5,6 +5,7 @@
   "author": "Jakub Barański",
   "license": "MIT",
   "scripts": {
+    "postinstall": "yarn --cwd shared install && yarn --cwd reset-password-page install && yarn --cwd reservation-page install && yarn --cwd registration-page install && yarn --cwd profile-page install && yarn --cwd main-page install && yarn --cwd login-page install",
     "compile": "node ./setup/compile.js",
     "deploy": "node ./setup/deploy.js",
     "clean": "node ./setup/clean.js",
@@ -64,6 +65,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "bootstrap": "4.6.0",
+    "child_process": "^1.0.2",
     "i18next": "^23.2.11",
     "qs": "^6.9.6",
     "rc-dropdown": "^4.0.1",

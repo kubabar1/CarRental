@@ -6,7 +6,8 @@ export async function fetchPost<T>(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
     data?: any,
     successNotification?: string,
-    errorNotification?: string
+    errorNotification?: string,
+    shouldFailOnBadHttpResponse: boolean = true
 ): Promise<ResponseData<T>> {
     return fetch(getPath, {
         method: 'POST',
@@ -21,7 +22,7 @@ export async function fetchPost<T>(
         referrerPolicy: 'no-referrer',
         ...(!!data && { body: JSON.stringify(data) }),
     })
-        .then((res: Response) => handleFetchResult<T>(res, successNotification))
+        .then((res: Response) => handleFetchResult<T>(res, shouldFailOnBadHttpResponse, successNotification))
         .catch(() => handleCatch<T>(errorNotification));
 }
 
@@ -30,7 +31,8 @@ export async function fetchPut<T>(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
     data?: any,
     successNotification?: string,
-    errorNotification?: string
+    errorNotification?: string,
+    shouldFailOnBadHttpResponse: boolean = true
 ): Promise<ResponseData<T>> {
     return fetch(getPath, {
         method: 'PUT',
@@ -44,7 +46,7 @@ export async function fetchPut<T>(
         referrerPolicy: 'no-referrer',
         ...(!!data && { body: JSON.stringify(data) }),
     })
-        .then((res: Response) => handleFetchResult<T>(res, successNotification))
+        .then((res: Response) => handleFetchResult<T>(res, shouldFailOnBadHttpResponse, successNotification))
         .catch(() => handleCatch<T>(errorNotification));
 }
 
@@ -86,7 +88,8 @@ export async function fetchDelete<T>(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
     data?: any,
     successNotification?: string,
-    errorNotification?: string
+    errorNotification?: string,
+    shouldFailOnBadHttpResponse: boolean = true
 ): Promise<ResponseData<T>> {
     return fetch(getPath, {
         method: 'DELETE',
@@ -100,7 +103,7 @@ export async function fetchDelete<T>(
         referrerPolicy: 'no-referrer',
         ...(!!data && { body: JSON.stringify(data) }),
     })
-        .then((res: Response) => handleFetchResult<T>(res, successNotification))
+        .then((res: Response) => handleFetchResult<T>(res, shouldFailOnBadHttpResponse, successNotification))
         .catch(() => handleCatch<T>(errorNotification));
 }
 
@@ -109,7 +112,8 @@ export async function fetchWithFile<T>(
     getPath: string,
     data: FormData,
     successNotification?: string,
-    errorNotification?: string
+    errorNotification?: string,
+    shouldFailOnBadHttpResponse: boolean = true
 ): Promise<ResponseData<T>> {
     return fetch(getPath, {
         method: method,
@@ -123,14 +127,18 @@ export async function fetchWithFile<T>(
         referrerPolicy: 'no-referrer',
         body: data,
     })
-        .then((res: Response) => handleFetchResult<T>(res, successNotification))
+        .then((res: Response) => handleFetchResult<T>(res, shouldFailOnBadHttpResponse, successNotification))
         .catch(() => handleCatch<T>(errorNotification));
 }
 
-function handleFetchResult<T>(res: Response, successNotification?: string): Promise<ResponseData<T>> {
+function handleFetchResult<T>(
+    res: Response,
+    shouldFailOnBadHttpResponse: boolean,
+    successNotification?: string
+): Promise<ResponseData<T>> {
     if (!!successNotification && res.status >= 200 && res.status < 300) {
         toast.success(successNotification);
-    } else if (res.status >= 400) {
+    } else if (res.status >= 400 && shouldFailOnBadHttpResponse) {
         throw new Error();
     }
     return res.json().then((data) => {

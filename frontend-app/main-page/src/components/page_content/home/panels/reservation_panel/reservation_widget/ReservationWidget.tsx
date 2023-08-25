@@ -6,6 +6,7 @@ import { LocationService, TranslationService } from '@car-rental/shared/service'
 import { useForm } from 'react-hook-form';
 import { DateInput } from './components/date_input/DateInput';
 import date from 'date-and-time';
+import { reservationPath } from '@car-rental/shared/constant';
 
 interface ReservationWidgetProperties {
     authenticatedUser: AuthenticatedUserDTO | undefined;
@@ -57,7 +58,7 @@ export function ReservationWidget({ authenticatedUser }: ReservationWidgetProper
         } else {
             clearErrors('notAuthenticated');
             window.location.replace(
-                `http://localhost:3030/reservation?localisationId=${getValues(
+                `${reservationPath}?localisationId=${getValues(
                     'location'
                 )}&receptionDate=${receptionDate}&returnDate=${returnDate}`
             );

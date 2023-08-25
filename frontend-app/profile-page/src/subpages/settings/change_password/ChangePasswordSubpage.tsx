@@ -118,7 +118,11 @@ export function ChangePasswordSubpage(): JSX.Element {
             /* eslint-enable @typescript-eslint/no-non-null-assertion */
             UserService.updateUserPassword(passwordUpdateDTO).then(
                 (passwordResponse: ResponseData<UserResponseDTO | PasswordUpdateDTO>) => {
-                    if (passwordResponse.statusCode != 200) {
+                    if (passwordResponse.statusCode == 200) {
+                        setCurrentPassword('');
+                        setNewPassword('');
+                        setConfirmPassword('');
+                    } else {
                         const passwordResponseErrors: PasswordUpdateDTO = passwordResponse.responseBody as PasswordUpdateDTO;
                         if (passwordResponseErrors.currentPassword) {
                             setCurrentPasswordError(passwordResponseErrors.currentPassword);
@@ -130,9 +134,6 @@ export function ChangePasswordSubpage(): JSX.Element {
                             setConfirmPasswordError(passwordResponseErrors.confirmPassword);
                         }
                     }
-                    setCurrentPassword('');
-                    setNewPassword('');
-                    setConfirmPassword('');
                 }
             );
         }

@@ -1,6 +1,7 @@
 package com.carrental.userservice.controller;
 
 import com.carrental.commons.authentication.model.VerificationTokenDTO;
+import com.carrental.userservice.config.properties.UserServiceProperties;
 import com.carrental.userservice.model.dto.PasswordResetDTO;
 import com.carrental.userservice.model.dto.PasswordResetRequestDTO;
 import com.carrental.userservice.model.dto.PasswordResetResponseDTO;
@@ -31,9 +32,16 @@ public class ResetPasswordController {
 
     private final ResetPasswordService resetPasswordService;
 
-    public ResetPasswordController(RabbitTemplate rabbitTemplate, ResetPasswordService resetPasswordService) {
+    private final UserServiceProperties userServiceProperties;
+
+    public ResetPasswordController(
+            RabbitTemplate rabbitTemplate,
+            ResetPasswordService resetPasswordService,
+            UserServiceProperties userServiceProperties
+    ) {
         this.rabbitTemplate = rabbitTemplate;
         this.resetPasswordService = resetPasswordService;
+        this.userServiceProperties = userServiceProperties;
     }
 
     @PostMapping("/send-email")
@@ -58,11 +66,11 @@ public class ResetPasswordController {
         );
         if (isTokenValid(verificationToken)) {
             HttpHeaders headers = new HttpHeaders();
-            headers.add("Location", "http://localhost:3030/reset-password/update?token=" + verificationToken.getToken());
+            headers.add("Location", userServiceProperties.getResetPasswordUpdateTokenUrl() + verificationToken.getToken());
             return ResponseEntity.status(HttpStatus.FOUND).headers(headers).build();
         } else {
             HttpHeaders headers = new HttpHeaders();
-            headers.add("Location", "http://localhost:3030/reset-password/invalid-token");
+            headers.add("Location", userServiceProperties.getResetPasswordInvalidTokenUrl());
             return ResponseEntity.status(HttpStatus.FOUND).headers(headers).build();
         }
     }

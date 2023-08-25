@@ -4,6 +4,8 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const StylelintPlugin = require('stylelint-webpack-plugin');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const webpack = require('webpack');
 
 process.env.NODE_ENV = 'development';
 
@@ -68,5 +70,42 @@ module.exports = {
             },
         ],
     },
-    plugins: [new ESLintPlugin(eslintOptions), new StylelintPlugin(stylelintOptions)],
+    plugins: [
+        new ESLintPlugin(eslintOptions),
+        new StylelintPlugin(stylelintOptions),
+        new webpack.DefinePlugin({
+            'process.env.AUTH_SERVICE_PROTOCOL': JSON.stringify(process.env.AUTH_SERVICE_PROTOCOL ?? 'http'),
+            'process.env.BOOKING_SERVICE_PROTOCOL': JSON.stringify(process.env.BOOKING_SERVICE_PROTOCOL ?? 'http'),
+            'process.env.RATING_SERVICE_PROTOCOL': JSON.stringify(process.env.RATING_SERVICE_PROTOCOL ?? 'http'),
+            'process.env.STORAGE_STUB_SERVICE_PROTOCOL': JSON.stringify(process.env.STORAGE_STUB_SERVICE_PROTOCOL ?? 'http'),
+            'process.env.USER_SERVICE_PROTOCOL': JSON.stringify(process.env.USER_SERVICE_PROTOCOL ?? 'http'),
+            'process.env.VEHICLE_SERVICE_PROTOCOL': JSON.stringify(process.env.VEHICLE_SERVICE_PROTOCOL ?? 'http'),
+
+            'process.env.AUTH_SERVICE_HOSTNAME': JSON.stringify(process.env.AUTH_SERVICE_HOSTNAME ?? 'localhost'),
+            'process.env.BOOKING_SERVICE_HOSTNAME': JSON.stringify(process.env.BOOKING_SERVICE_HOSTNAME ?? 'localhost'),
+            'process.env.RATING_SERVICE_HOSTNAME': JSON.stringify(process.env.RATING_SERVICE_HOSTNAME ?? 'localhost'),
+            'process.env.STORAGE_STUB_SERVICE_HOSTNAME': JSON.stringify(process.env.STORAGE_STUB_SERVICE_HOSTNAME ?? 'localhost'),
+            'process.env.USER_SERVICE_HOSTNAME': JSON.stringify(process.env.USER_SERVICE_HOSTNAME ?? 'localhost'),
+            'process.env.VEHICLE_SERVICE_HOSTNAME': JSON.stringify(process.env.VEHICLE_SERVICE_HOSTNAME ?? 'localhost'),
+
+            'process.env.AUTH_SERVICE_PORT': JSON.stringify(process.env.AUTH_SERVICE_PORT ?? 8080),
+            'process.env.BOOKING_SERVICE_PORT': JSON.stringify(process.env.BOOKING_SERVICE_PORT ?? 8080),
+            'process.env.RATING_SERVICE_PORT': JSON.stringify(process.env.RATING_SERVICE_PORT ?? 8080),
+            'process.env.STORAGE_STUB_SERVICE_PORT': JSON.stringify(process.env.STORAGE_STUB_SERVICE_PORT ?? 8080),
+            'process.env.USER_SERVICE_PORT': JSON.stringify(process.env.USER_SERVICE_PORT ?? 8080),
+            'process.env.VEHICLE_SERVICE_PORT': JSON.stringify(process.env.VEHICLE_SERVICE_PORT ?? 8080),
+
+            'process.env.AUTH_SERVICE_CONTEXT': JSON.stringify(process.env.AUTH_SERVICE_CONTEXT),
+            'process.env.BOOKING_SERVICE_CONTEXT': JSON.stringify(process.env.BOOKING_SERVICE_CONTEXT),
+            'process.env.RATING_SERVICE_CONTEXT': JSON.stringify(process.env.RATING_SERVICE_CONTEXT),
+            'process.env.STORAGE_STUB_SERVICE_CONTEXT': JSON.stringify(process.env.STORAGE_STUB_SERVICE_CONTEXT),
+            'process.env.USER_SERVICE_CONTEXT': JSON.stringify(process.env.USER_SERVICE_CONTEXT),
+            'process.env.VEHICLE_SERVICE_CONTEXT': JSON.stringify(process.env.VEHICLE_SERVICE_CONTEXT),
+
+            'process.env.FRONTEND_APP_PROTOCOL': JSON.stringify(process.env.FRONTEND_APP_PROTOCOL ?? 'http'),
+            'process.env.FRONTEND_APP_HOSTNAME': JSON.stringify(process.env.FRONTEND_APP_HOSTNAME ?? 'localhost'),
+            'process.env.FRONTEND_APP_PORT': JSON.stringify(process.env.FRONTEND_APP_PORT ?? 3030),
+            'process.env.FRONTEND_APP_CONTEXT': JSON.stringify(process.env.FRONTEND_APP_CONTEXT),
+        })
+    ],
 };

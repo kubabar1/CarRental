@@ -3,6 +3,6 @@ bootRun {
     args += ["--server.port=${serverPort}"]
     debugOptions {
         port = Integer.valueOf(debugPort)
-        suspend = true
+        suspend = false
     }
 }

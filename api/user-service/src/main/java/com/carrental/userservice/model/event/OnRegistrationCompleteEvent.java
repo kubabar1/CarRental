@@ -10,8 +10,11 @@ public class OnRegistrationCompleteEvent extends ApplicationEvent {
 
     private Long userId;
 
-    public OnRegistrationCompleteEvent(Object source, Long userId) {
+    private String userEmail;
+
+    public OnRegistrationCompleteEvent(Object source, Long userId, String userEmail) {
         super(source);
         this.userId = userId;
+        this.userEmail = userEmail;
     }
 }

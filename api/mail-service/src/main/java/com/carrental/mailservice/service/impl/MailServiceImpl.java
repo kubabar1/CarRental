@@ -1,5 +1,6 @@
 package com.carrental.mailservice.service.impl;
 
+import com.carrental.mailservice.config.properties.MailServiceProperties;
 import com.carrental.mailservice.model.MailDTO;
 import com.carrental.mailservice.model.MultipleRecipientsMailsDTO;
 import com.carrental.mailservice.service.MailService;
@@ -13,8 +14,11 @@ public class MailServiceImpl implements MailService {
 
     private final MailSender mailSender;
 
-    public MailServiceImpl(MailSender mailSender) {
+    private final MailServiceProperties mailServiceProperties;
+
+    public MailServiceImpl(MailSender mailSender, MailServiceProperties mailServiceProperties) {
         this.mailSender = mailSender;
+        this.mailServiceProperties = mailServiceProperties;
     }
 
     @Override
@@ -30,7 +34,8 @@ public class MailServiceImpl implements MailService {
 
     private SimpleMailMessage createMail(MailDTO mailDTO) {
         SimpleMailMessage email = new SimpleMailMessage();
-        email.setTo(mailDTO.getRecipient());
+        // TODO - fix
+        email.setTo(mailServiceProperties.getDemoRecipientAddress());
         email.setSubject(mailDTO.getSubject());
         email.setText(mailDTO.getText());
         return email;
@@ -41,8 +46,7 @@ public class MailServiceImpl implements MailService {
     ) {
         return multipleRecipientsMailsDTO.getRecipients().stream().map(recipient -> {
             SimpleMailMessage email = new SimpleMailMessage();
-            // TODO: fix (change recipientAddress to recipient)
-            String recipientAddress = "greenmail@localhost";
+            String recipientAddress = mailServiceProperties.getDemoRecipientAddress();
             email.setTo(recipientAddress);
             email.setSubject(multipleRecipientsMailsDTO.getSubject());
             email.setText(multipleRecipientsMailsDTO.getText());

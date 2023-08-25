@@ -10,8 +10,11 @@ public class OnSendResetPasswordEmailEvent extends ApplicationEvent {
 
     private Long userId;
 
-    public OnSendResetPasswordEmailEvent(Object source, Long userId) {
+    private String userEmail;
+
+    public OnSendResetPasswordEmailEvent(Object source, Long userId, String userEmail) {
         super(source);
         this.userId = userId;
+        this.userEmail = userEmail;
     }
 }

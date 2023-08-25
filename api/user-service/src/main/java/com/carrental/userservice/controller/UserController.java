@@ -1,6 +1,7 @@
 package com.carrental.userservice.controller;
 
 import com.carrental.commons.authentication.exception.AuthorizationException;
+import com.carrental.userservice.exception.IncorrectPasswordException;
 import com.carrental.userservice.exception.UserAlreadyExistException;
 import com.carrental.userservice.model.dto.*;
 import com.carrental.userservice.service.UserService;
@@ -13,7 +14,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -87,10 +91,12 @@ public class UserController {
     @PutMapping("/update-authenticated-user")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserResponseDTO> updateAuthenticatedUserController(
-        @Valid @RequestBody UserUpdateDTO userUpdateDTO
+        @Valid @RequestBody UserUpdateDTO userUpdateDTO,
+        HttpServletRequest request,
+        HttpServletResponse response
     ) {
         try {
-            return ResponseEntity.ok().body(userService.updateAuthenticatedUser(userUpdateDTO));
+            return ResponseEntity.ok().body(userService.updateAuthenticatedUser(userUpdateDTO, request, response));
         } catch (NoSuchElementException exception) {
             return ResponseEntity.badRequest().build();
         }
@@ -113,7 +119,7 @@ public class UserController {
     public ResponseEntity<UserResponseDTO> updatePasswordController(@Valid @RequestBody PasswordUpdateDTO passwordUpdateDTO) {
         try {
             return ResponseEntity.ok().body(userService.updateUserPassword(passwordUpdateDTO));
-        } catch (AuthorizationException | UserAlreadyExistException exception) {
+        } catch (NoSuchElementException exception) {
             return ResponseEntity.badRequest().build();
         }
     }
@@ -127,5 +133,14 @@ public class UserController {
                 e -> e.getDefaultMessage() == null ? "" : e.getDefaultMessage())
             );
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IncorrectPasswordException.class)
+    public ResponseEntity<Map<String, String>> handleIncorrectPasswordException(IncorrectPasswordException ex) {
+        Map<String, String> error = new HashMap<>() {{
+            put("currentPassword", ex.getMessage());
+        }};
+        return ResponseEntity.badRequest().body(error);
     }
 }

@@ -3,8 +3,6 @@ const express = require('express');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const chalkAnimation = require('chalk-animation');
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const chalk = require('chalk');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const banner = require('./banner');
@@ -17,7 +15,7 @@ const PORT = 3030;
 
 app.listen(PORT, () => {
     console.log(`Server started on port: ${chalk.green(PORT)}`);
-    chalkAnimation.rainbow(banner);
+    console.log(`${chalk.red(banner)}`);
 });
 
 app.use(express.static(static));

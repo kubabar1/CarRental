@@ -1,11 +1,13 @@
 package com.carrental.userservice.service;
 
-import com.carrental.commons.authentication.exception.AuthorizationException;
+import com.carrental.userservice.exception.IncorrectPasswordException;
 import com.carrental.userservice.exception.UserAlreadyExistException;
 import com.carrental.userservice.model.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -15,7 +17,7 @@ public interface UserService {
 
     UserResponseDTO createUser(CreateUserDTO createUserDTO) throws UserAlreadyExistException;
 
-    UserResponseDTO updateUserPassword(PasswordUpdateDTO passwordUpdateDTO) throws AuthorizationException, NoSuchElementException;
+    UserResponseDTO updateUserPassword(PasswordUpdateDTO passwordUpdateDTO) throws IncorrectPasswordException, NoSuchElementException;
 
     UserResponseDTO addRolesToUser(Long userId, List<RoleAddDTO> roleAddDTOs) throws NoSuchElementException;
 
@@ -35,5 +37,5 @@ public interface UserService {
 
     UserEmailExistsDTO isUserEmailExists(String email);
 
-    UserResponseDTO updateAuthenticatedUser(UserUpdateDTO userUpdateDTO) throws NoSuchElementException;
+    UserResponseDTO updateAuthenticatedUser(UserUpdateDTO userUpdateDTO, HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException;
 }

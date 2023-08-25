@@ -10,8 +10,11 @@ public class OnResendRegistrationConfirmTokenEvent extends ApplicationEvent {
 
     private Long userId;
 
-    public OnResendRegistrationConfirmTokenEvent(Object source, Long userId) {
+    private String userEmail;
+
+    public OnResendRegistrationConfirmTokenEvent(Object source, Long userId, String userEmail) {
         super(source);
         this.userId = userId;
+        this.userEmail = userEmail;
     }
 }

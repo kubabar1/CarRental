@@ -21,6 +21,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'com.carrental.shared:shared-config-commons'
     implementation 'com.carrental.shared:shared-amqp-commons'
     implementation 'org.springframework.boot:spring-boot-starter:2.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
