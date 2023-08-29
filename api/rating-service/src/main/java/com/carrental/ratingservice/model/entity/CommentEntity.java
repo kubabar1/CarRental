@@ -13,9 +13,8 @@ import java.time.LocalDateTime;
 public class CommentEntity implements Serializable {
 
     @Id
-    @Column(name = "id", nullable = false)
-    @GenericGenerator(name="kaugen" , strategy="increment")
-    @GeneratedValue(generator="kaugen")
+    @Column(name = "id", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "content", nullable = false, length = 10000)

@@ -15,10 +15,10 @@ public class VerificationTokenEntity {
     public static final int VERIFICATION_TOKEN_EXPIRATION_SEC = 60 * 60 * 1;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "token", nullable = false, length = 255)
+    @Column(name = "token", nullable = false)
     private String token;
 
     @Column(name = "user_id", nullable = false)

@@ -19,17 +19,14 @@ services:
     rabbitmq:
         image: rabbitmq:3-management-alpine
         container_name: rabbitmq
-        ports:
-            - 5672:5672
-            - 15672:15672
-#        volumes:
-#            - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-#            - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+#        ports:
+#            - 5672:5672
+#            - 15672:15672
         healthcheck:
             test: rabbitmq-diagnostics -q ping
-            interval: 10s
-            timeout: 30s
-            retries: 6
+            interval: 3s
+            timeout: 15s
+            retries: 15
     auth-service:
         image: auth-service
         container_name: auth-service
@@ -45,12 +42,37 @@ services:
         depends_on:
             rabbitmq:
                 condition: service_healthy
+            auth-service-database:
+                condition: service_healthy
         environment:
             RABBIT_HOST: rabbitmq
             FRONTEND_APP_PROTOCOL: http
             FRONTEND_APP_HOSTNAME: localhost
             FRONTEND_APP_PORT: 3030
             FRONTEND_APP_CONTEXT: ""
+            DATASOURCE_URL: "jdbc:postgresql://auth-service-database:5432/auth_service"
+            DATASOURCE_USERNAME: "docker"
+            DATASOURCE_PASSWORD: "docker"
+            SQL_PLATFORM: "psql"
+            DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+            DATASOURCE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+    auth-service-database:
+        container_name: auth-service-database
+        image: postgres
+        restart: always
+        volumes:
+            - ./api/auth-service/src/main/resources/schema-psql.sql:/docker-entrypoint-initdb.d/1_auth_service_schema.sql
+#            - ./api/auth-service/src/main/resources/db_scripts/postgresql/booking_service_demo_psql.sql:/docker-entrypoint-initdb.d/2_booking_service_demo.sql
+        healthcheck:
+            test: ["CMD", "pg_isready", "-q", "-d", "auth_service", "-U", "docker"]
+            interval: 3s
+            retries: 10
+        environment:
+            POSTGRES_DB: auth_service
+            POSTGRES_USER: docker
+            POSTGRES_PASSWORD: docker
+            POSTGRES_PORT: 5432
+
     user-service:
         image: user-service
         container_name: user-service
@@ -66,6 +88,8 @@ services:
         depends_on:
             rabbitmq:
                 condition: service_healthy
+            user-service-database:
+                condition: service_healthy
         environment:
             RABBIT_HOST: rabbitmq
             USER_SERVICE_PROTOCOL: http
@@ -76,6 +100,29 @@ services:
             FRONTEND_APP_HOSTNAME: localhost
             FRONTEND_APP_PORT: 3030
             FRONTEND_APP_CONTEXT: ""
+            DATASOURCE_URL: "jdbc:postgresql://user-service-database:5432/user_service"
+            DATASOURCE_USERNAME: "docker"
+            DATASOURCE_PASSWORD: "docker"
+            SQL_PLATFORM: "psql"
+            DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+            DATASOURCE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+    user-service-database:
+        container_name: user-service-database
+        image: postgres
+        restart: always
+        volumes:
+            - ./api/user-service/src/main/resources/schema-psql.sql:/docker-entrypoint-initdb.d/1_user_service_schema.sql
+            - ./api/user-service/src/main/resources/data.sql:/docker-entrypoint-initdb.d/2_user_service_demo.sql
+        healthcheck:
+            test: [ "CMD", "pg_isready", "-q", "-d", "user_service", "-U", "docker" ]
+            interval: 3s
+            retries: 10
+        environment:
+            POSTGRES_DB: user_service
+            POSTGRES_USER: docker
+            POSTGRES_PASSWORD: docker
+            POSTGRES_PORT: 5432
+
     vehicle-service:
         image: vehicle-service
         container_name: vehicle-service
@@ -96,6 +143,29 @@ services:
             FRONTEND_APP_HOSTNAME: localhost
             FRONTEND_APP_PORT: 3030
             FRONTEND_APP_CONTEXT: ""
+            DATASOURCE_URL: "jdbc:postgresql://vehicle-service-database:5432/vehicle_service"
+            DATASOURCE_USERNAME: "docker"
+            DATASOURCE_PASSWORD: "docker"
+            SQL_PLATFORM: "psql"
+            DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+            DATASOURCE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+    vehicle-service-database:
+        container_name: vehicle-service-database
+        image: postgres
+        restart: always
+        volumes:
+            - ./api/vehicle-service/src/main/resources/schema-psql.sql:/docker-entrypoint-initdb.d/1_vehicle_service_schema.sql
+            - ./api/vehicle-service/src/main/resources/data.sql:/docker-entrypoint-initdb.d/2_vehicle_service_demo.sql
+        healthcheck:
+            test: [ "CMD", "pg_isready", "-q", "-d", "vehicle_service", "-U", "docker" ]
+            interval: 3s
+            retries: 10
+        environment:
+            POSTGRES_DB: vehicle_service
+            POSTGRES_USER: docker
+            POSTGRES_PASSWORD: docker
+            POSTGRES_PORT: 5432
+
     rating-service:
         image: rating-service
         container_name: rating-service
@@ -116,6 +186,29 @@ services:
             FRONTEND_APP_HOSTNAME: localhost
             FRONTEND_APP_PORT: 3030
             FRONTEND_APP_CONTEXT: ""
+            DATASOURCE_URL: "jdbc:postgresql://rating-service-database:5432/rating_service"
+            DATASOURCE_USERNAME: "docker"
+            DATASOURCE_PASSWORD: "docker"
+            SQL_PLATFORM: "psql"
+            DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+            DATASOURCE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+    rating-service-database:
+        container_name: rating-service-database
+        image: postgres
+        restart: always
+        volumes:
+            - ./api/rating-service/src/main/resources/schema-psql.sql:/docker-entrypoint-initdb.d/1_rating_service_schema.sql
+            - ./api/rating-service/src/main/resources/data.sql:/docker-entrypoint-initdb.d/2_rating_service_demo.sql
+        healthcheck:
+            test: [ "CMD", "pg_isready", "-q", "-d", "rating_service", "-U", "docker" ]
+            interval: 3s
+            retries: 10
+        environment:
+            POSTGRES_DB: rating_service
+            POSTGRES_USER: docker
+            POSTGRES_PASSWORD: docker
+            POSTGRES_PORT: 5432
+
     booking-service:
         image: booking-service
         container_name: booking-service
@@ -136,6 +229,23 @@ services:
             FRONTEND_APP_HOSTNAME: localhost
             FRONTEND_APP_PORT: 3030
             FRONTEND_APP_CONTEXT: ""
+    booking-service-database:
+        container_name: booking-service-database
+        image: postgres
+        restart: always
+        volumes:
+            - ./api/booking-service/src/main/resources/schema-psql.sql:/docker-entrypoint-initdb.d/1_booking_service_schema.sql
+            - ./api/booking-service/src/main/resources/data.sql:/docker-entrypoint-initdb.d/2_booking_service_demo.sql
+        healthcheck:
+            test: [ "CMD", "pg_isready", "-q", "-d", "booking_service", "-U", "docker" ]
+            interval: 3s
+            retries: 10
+        environment:
+            POSTGRES_DB: booking_service
+            POSTGRES_USER: docker
+            POSTGRES_PASSWORD: docker
+            POSTGRES_PORT: 5432
+
     mail-service:
         image: mail-service
         container_name: mail-service
@@ -154,6 +264,7 @@ services:
                 condition: service_healthy
         environment:
             RABBIT_HOST: rabbitmq
+
     storage-service-stub:
         image: storage-service-stub
         container_name: storage-service-stub
@@ -170,6 +281,7 @@ services:
                 condition: service_healthy
         environment:
             RABBIT_HOST: rabbitmq
+
     frontend-app:
         image: frontend-app
         container_name: frontend-app

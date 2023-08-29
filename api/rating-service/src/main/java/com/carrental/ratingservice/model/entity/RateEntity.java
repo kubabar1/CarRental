@@ -14,11 +14,8 @@ import java.util.Date;
 public class RateEntity implements Serializable {
 
     @Id
-    @Column(name = "id", nullable = false)
-    @GenericGenerator(name="kaugen" , strategy="increment")
-    @GeneratedValue(generator="kaugen")
-
-
+    @Column(name = "id", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "rate", nullable = false)

@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS body_types(
 
 CREATE TABLE IF NOT EXISTS fuel_types(
   fuel_type NVARCHAR(30) NOT NULL,
-  PRIMARY KEY(body_type)
+  PRIMARY KEY(fuel_type)
 );
 
 CREATE TABLE IF NOT EXISTS brands(
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS vehicles(
   model NVARCHAR(50) NOT NULL,
   daily_fee decimal(15,2) NOT NULL,
   location_id INT NOT NULL,
-  best_offer TINYINT NOT NULL,
+  best_offer BOOLEAN NOT NULL,
   PRIMARY KEY(id),
   FOREIGN KEY(brand) REFERENCES brands(brand),
   FOREIGN KEY(model) REFERENCES models(model),
@@ -47,11 +47,11 @@ CREATE TABLE IF NOT EXISTS vehicle_details(
   fuel_type NVARCHAR(30) NOT NULL,
   power INT NOT NULL,
   gearbox NVARCHAR(30) NOT NULL,
-  front_wheel_drive TINYINT NOT NULL,
+  front_wheel_drive BOOLEAN NOT NULL,
   doors_number INT NOT NULL,
   seats_number INT NOT NULL,
   color NVARCHAR(50) NOT NULL,
-  metallic TINYINT NOT NULL,
+  metallic BOOLEAN NOT NULL,
   image_name NVARCHAR(70) NOT NULL,
   description NVARCHAR(100) NOT NULL,
   FOREIGN KEY (vehicle_id) REFERENCES vehicles(id),
