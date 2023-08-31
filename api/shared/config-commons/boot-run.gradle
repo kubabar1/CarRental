@@ -1,8 +1,7 @@
 bootRun {
     debug true
-    args += ["--server.port=${serverPort}"]
     debugOptions {
-        port = Integer.valueOf(debugPort)
+        port = project.hasProperty('debugPort') ? project.property('debugPort') as Integer : 5005
         suspend = false
     }
 }

@@ -16,6 +16,7 @@ services:
             - booking-service
             - mail-service
             - storage-service-stub
+
     rabbitmq:
         image: rabbitmq:3-management-alpine
         container_name: rabbitmq
@@ -27,6 +28,7 @@ services:
             interval: 3s
             timeout: 15s
             retries: 15
+
     auth-service:
         image: auth-service
         container_name: auth-service
@@ -35,16 +37,13 @@ services:
             dockerfile: Dockerfile
             args:
                 - APP_DIR=auth-service
-        ports:
-            - "8081:8080"
-            - "5006:5005"
-#        mem_limit: 200m
         depends_on:
             rabbitmq:
                 condition: service_healthy
             auth-service-database:
                 condition: service_healthy
         environment:
+            DEV: false
             RABBIT_HOST: rabbitmq
             FRONTEND_APP_PROTOCOL: http
             FRONTEND_APP_HOSTNAME: localhost
@@ -62,7 +61,6 @@ services:
         restart: always
         volumes:
             - ./api/auth-service/src/main/resources/schema-psql.sql:/docker-entrypoint-initdb.d/1_auth_service_schema.sql
-#            - ./api/auth-service/src/main/resources/db_scripts/postgresql/booking_service_demo_psql.sql:/docker-entrypoint-initdb.d/2_booking_service_demo.sql
         healthcheck:
             test: ["CMD", "pg_isready", "-q", "-d", "auth_service", "-U", "docker"]
             interval: 3s
@@ -81,16 +79,13 @@ services:
             dockerfile: Dockerfile
             args:
                 - APP_DIR=user-service
-        ports:
-            - "8082:8080"
-            - "5007:5005"
-#        mem_limit: 200m
         depends_on:
             rabbitmq:
                 condition: service_healthy
             user-service-database:
                 condition: service_healthy
         environment:
+            DEV: false
             RABBIT_HOST: rabbitmq
             USER_SERVICE_PROTOCOL: http
             USER_SERVICE_HOSTNAME: localhost
@@ -131,13 +126,13 @@ services:
             dockerfile: Dockerfile
             args:
                 - APP_DIR=vehicle-service
-        ports:
-            - "8083:8080"
-#        mem_limit: 200m
         depends_on:
             rabbitmq:
                 condition: service_healthy
+            vehicle-service-database:
+                condition: service_healthy
         environment:
+            DEV: true
             RABBIT_HOST: rabbitmq
             FRONTEND_APP_PROTOCOL: http
             FRONTEND_APP_HOSTNAME: localhost
@@ -174,13 +169,13 @@ services:
             dockerfile: Dockerfile
             args:
                 - APP_DIR=rating-service
-        ports:
-            - "8084:8080"
-#        mem_limit: 200m
         depends_on:
             rabbitmq:
                 condition: service_healthy
+            rating-service-database:
+                condition: service_healthy
         environment:
+            DEV: false
             RABBIT_HOST: rabbitmq
             FRONTEND_APP_PROTOCOL: http
             FRONTEND_APP_HOSTNAME: localhost
@@ -217,13 +212,13 @@ services:
             dockerfile: Dockerfile
             args:
                 - APP_DIR=booking-service
-        ports:
-            - "8085:8080"
-#        mem_limit: 200m
         depends_on:
             rabbitmq:
                 condition: service_healthy
+            booking-service-database:
+                condition: service_healthy
         environment:
+            DEV: false
             RABBIT_HOST: rabbitmq
             FRONTEND_APP_PROTOCOL: http
             FRONTEND_APP_HOSTNAME: localhost
@@ -255,14 +250,13 @@ services:
             args:
                 - APP_DIR=mail-service
         ports:
-            - "8086:8080"
             - "3143:3143"
             - "3025:3025"
-#        mem_limit: 200m
         depends_on:
             rabbitmq:
                 condition: service_healthy
         environment:
+            DEV: false
             RABBIT_HOST: rabbitmq
 
     storage-service-stub:
@@ -273,13 +267,11 @@ services:
             dockerfile: Dockerfile
             args:
                 - APP_DIR=storage-service-stub
-        ports:
-            - "8087:8080"
-#        mem_limit: 200m
         depends_on:
             rabbitmq:
                 condition: service_healthy
         environment:
+            DEV: false
             RABBIT_HOST: rabbitmq
 
     frontend-app:
@@ -290,4 +282,5 @@ services:
             dockerfile: Dockerfile
         ports:
             - "3030:3030"
-#        mem_limit: 200m
+        environment:
+            DEV: false
