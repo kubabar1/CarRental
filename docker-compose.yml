@@ -16,6 +16,7 @@ services:
             - booking-service
             - mail-service
             - storage-service-stub
+            - eureka-server
 
     rabbitmq:
         image: rabbitmq:3-management-alpine
@@ -28,6 +29,19 @@ services:
             interval: 3s
             timeout: 15s
             retries: 15
+
+    eureka-server:
+        image: eureka-server
+        container_name: eureka-server
+        build:
+            context: ./api
+            dockerfile: Dockerfile
+            args:
+                - APP_DIR=eureka-server
+        ports:
+          - 8761:8761
+        environment:
+            DEV: false
 
     auth-service:
         image: auth-service
@@ -55,6 +69,7 @@ services:
             SQL_PLATFORM: "psql"
             DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
             DATASOURCE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+            EUREKA_URI: http://eureka-server:8761/eureka
     auth-service-database:
         container_name: auth-service-database
         image: postgres
@@ -101,6 +116,7 @@ services:
             SQL_PLATFORM: "psql"
             DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
             DATASOURCE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+            EUREKA_URI: http://eureka-server:8761/eureka
     user-service-database:
         container_name: user-service-database
         image: postgres
@@ -144,6 +160,7 @@ services:
             SQL_PLATFORM: "psql"
             DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
             DATASOURCE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+            EUREKA_URI: http://eureka-server:8761/eureka
     vehicle-service-database:
         container_name: vehicle-service-database
         image: postgres
@@ -187,6 +204,7 @@ services:
             SQL_PLATFORM: "psql"
             DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
             DATASOURCE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+            EUREKA_URI: http://eureka-server:8761/eureka
     rating-service-database:
         container_name: rating-service-database
         image: postgres
@@ -224,6 +242,7 @@ services:
             FRONTEND_APP_HOSTNAME: localhost
             FRONTEND_APP_PORT: 3030
             FRONTEND_APP_CONTEXT: ""
+            EUREKA_URI: http://eureka-server:8761/eureka
     booking-service-database:
         container_name: booking-service-database
         image: postgres
@@ -258,6 +277,7 @@ services:
         environment:
             DEV: false
             RABBIT_HOST: rabbitmq
+            EUREKA_URI: http://eureka-server:8761/eureka
 
     storage-service-stub:
         image: storage-service-stub
@@ -273,6 +293,7 @@ services:
         environment:
             DEV: false
             RABBIT_HOST: rabbitmq
+            EUREKA_URI: http://eureka-server:8761/eureka
 
     frontend-app:
         image: frontend-app

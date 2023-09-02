@@ -8,6 +8,7 @@ import com.carrental.ratingservice.config.RatingServiceCoreConfig;
 import com.carrental.ratingservice.config.security.WebSecurityConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Import;
 
 @Import({
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.Import;
         RabbitMQConfig.class
 })
 @SpringBootApplication
+@EnableFeignClients
 public class RatingServiceApplication {
 
     public static void main(String[] args) {

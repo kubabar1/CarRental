@@ -16,6 +16,7 @@ def projectsToInclude = [
         'api/shared/config-commons',
         'api/shared/files-commons',
         'api/shared/filtering-commons',
+        'api/eureka-server',
 ]
 
 projectsToInclude.each {

@@ -41,4 +41,6 @@ dependencies {
     implementation 'com.h2database:h2:2.1.210'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
     implementation 'javax.inject:javax.inject:1'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.7'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.7'
 }
