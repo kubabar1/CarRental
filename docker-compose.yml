@@ -70,6 +70,7 @@ services:
             DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
             DATASOURCE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
             EUREKA_URI: http://eureka-server:8761/eureka
+            EUREKA_ENABLED: true
     auth-service-database:
         container_name: auth-service-database
         image: postgres
@@ -117,6 +118,7 @@ services:
             DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
             DATASOURCE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
             EUREKA_URI: http://eureka-server:8761/eureka
+            EUREKA_ENABLED: true
     user-service-database:
         container_name: user-service-database
         image: postgres
@@ -161,6 +163,7 @@ services:
             DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
             DATASOURCE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
             EUREKA_URI: http://eureka-server:8761/eureka
+            EUREKA_ENABLED: true
     vehicle-service-database:
         container_name: vehicle-service-database
         image: postgres
@@ -205,6 +208,7 @@ services:
             DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
             DATASOURCE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
             EUREKA_URI: http://eureka-server:8761/eureka
+            EUREKA_ENABLED: true
     rating-service-database:
         container_name: rating-service-database
         image: postgres
@@ -243,6 +247,7 @@ services:
             FRONTEND_APP_PORT: 3030
             FRONTEND_APP_CONTEXT: ""
             EUREKA_URI: http://eureka-server:8761/eureka
+            EUREKA_ENABLED: true
     booking-service-database:
         container_name: booking-service-database
         image: postgres
@@ -278,6 +283,7 @@ services:
             DEV: false
             RABBIT_HOST: rabbitmq
             EUREKA_URI: http://eureka-server:8761/eureka
+            EUREKA_ENABLED: true
 
     storage-service-stub:
         image: storage-service-stub
@@ -294,6 +300,7 @@ services:
             DEV: false
             RABBIT_HOST: rabbitmq
             EUREKA_URI: http://eureka-server:8761/eureka
+            EUREKA_ENABLED: true
 
     frontend-app:
         image: frontend-app
