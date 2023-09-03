@@ -14,7 +14,7 @@ public class UserListener {
         this.userService = userService;
     }
 
-    @RabbitListener(queues = {"getUserByEmailQueue"})
+    @RabbitListener(queues = {"${car-rental.user-service.queue.getUserByEmailQueue}"})
     public UserDetailsDTO getUserByEmailListener(String email) {
         try {
             return userService.getUserByEmail(email);

@@ -4,7 +4,7 @@ import com.carrental.bookingservice.config.BookingServiceCoreConfig;
 import com.carrental.bookingservice.config.security.WebSecurityConfig;
 import com.carrental.commons.config.AuthenticationServiceConfig;
 import com.carrental.commons.config.ModelMapperConfig;
-import com.carrental.commons.config.RabbitMQConfig;
+import com.carrental.commons.config.rabbitmq.RabbitMQConfig;
 import com.carrental.commons.config.SpringFoxConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

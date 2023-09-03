@@ -14,7 +14,7 @@ public class BookingListener {
         this.bookingUserService = bookingUserService;
     }
 
-    @RabbitListener(queues = {"getBookedVehiclesIdsQueue"})
+    @RabbitListener(queues = {"${car-rental.booking-service.queue.getBookedVehiclesIdsQueue}"})
     public Set<Long> getBookedVehiclesIdsListener(AvailableVehiclesSearchDTO availableVehiclesSearchDTO) {
         return bookingUserService.getBookedVehiclesIds(availableVehiclesSearchDTO);
     }

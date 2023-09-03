@@ -2,7 +2,7 @@ package com.carrental.vehicleservice;
 
 import com.carrental.commons.config.AuthenticationServiceConfig;
 import com.carrental.commons.config.ModelMapperConfig;
-import com.carrental.commons.config.RabbitMQConfig;
+import com.carrental.commons.config.rabbitmq.RabbitMQConfig;
 import com.carrental.commons.config.SpringFoxConfig;
 import com.carrental.vehicleservice.config.VehicleServiceCoreConfig;
 import com.carrental.vehicleservice.config.security.WebSecurityConfig;

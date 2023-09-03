@@ -17,5 +17,4 @@ dependencies {
 //    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
 //    implementation 'org.springframework.boot:spring-boot-starter-parent:2.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-amqp:2.6.3'
-//    implementation 'javax.inject:javax.inject:1'
 }

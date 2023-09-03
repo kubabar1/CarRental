@@ -1,6 +1,7 @@
 package com.carrental.userservice.service.impl;
 
 import com.carrental.commons.authentication.model.VerificationTokenDTO;
+import com.carrental.userservice.config.properties.UserServiceProperties;
 import com.carrental.userservice.model.dto.PasswordResetDTO;
 import com.carrental.userservice.model.dto.PasswordResetResponseDTO;
 import com.carrental.userservice.model.entity.UserEntity;
@@ -23,16 +24,20 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     private final RabbitTemplate rabbitTemplate;
 
+    private final UserServiceProperties userServiceProperties;
+
     public ResetPasswordServiceImpl(
             UserRepository userRepository,
             ApplicationEventPublisher eventPublisher,
             PasswordEncoder passwordEncoder,
-            RabbitTemplate rabbitTemplate
+            RabbitTemplate rabbitTemplate,
+            UserServiceProperties userServiceProperties
     ) {
         this.userRepository = userRepository;
         this.eventPublisher = eventPublisher;
         this.passwordEncoder = passwordEncoder;
         this.rabbitTemplate = rabbitTemplate;
+        this.userServiceProperties = userServiceProperties;
     }
 
     @Override
@@ -47,7 +52,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         UserEntity userEntity = userRepository.findById(verificationToken.getUserId()).orElseThrow(NoSuchElementException::new);
         userEntity.setPassword(passwordEncoder.encode(passwordResetDTO.getNewPassword()));
         userRepository.save(userEntity);
-        rabbitTemplate.convertAndSend("deleteTokenQueue", passwordResetDTO.getToken());
+        rabbitTemplate.convertAndSend(userServiceProperties.getDeleteTokenQueue(), passwordResetDTO.getToken());
         return new PasswordResetResponseDTO(userEntity.getEmail());
     }
 }

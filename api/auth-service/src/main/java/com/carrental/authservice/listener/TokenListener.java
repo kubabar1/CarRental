@@ -13,17 +13,17 @@ public class TokenListener {
         this.tokenService = tokenService;
     }
 
-    @RabbitListener(queues = {"generateTokenQueue"})
+    @RabbitListener(queues = {"${car-rental.auth-service.queue.generateTokenQueue}"})
     public VerificationTokenDTO generateTokenQueue(GenerateTokenRequestDTO generateTokenRequestDTO) {
         return tokenService.createVerificationToken(generateTokenRequestDTO.getUserId());
     }
 
-    @RabbitListener(queues = {"getTokenQueue"})
+    @RabbitListener(queues = {"${car-rental.auth-service.queue.getTokenQueue}"})
     public VerificationTokenDTO getTokenQueue(String token) {
         return tokenService.getToken(token);
     }
 
-    @RabbitListener(queues = {"deleteTokenQueue"})
+    @RabbitListener(queues = {"${car-rental.auth-service.queue.deleteTokenQueue}"})
     public void deleteTokenQueue(String token) {
         tokenService.deleteTokenQueue(token);
     }

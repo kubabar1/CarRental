@@ -3,7 +3,7 @@ package com.carrental.setup;
 import com.carrental.authservice.config.AuthServiceCoreConfig;
 import com.carrental.bookingservice.config.BookingServiceCoreConfig;
 import com.carrental.commons.config.AuthenticationServiceConfig;
-import com.carrental.commons.config.RabbitMQConfig;
+import com.carrental.commons.config.rabbitmq.RabbitMQConfig;
 import com.carrental.mailservice.config.MailServiceCoreConfig;
 import com.carrental.ratingservice.config.RatingServiceCoreConfig;
 import com.carrental.storageservicestub.StorageServiceStubApplication;

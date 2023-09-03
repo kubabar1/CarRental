@@ -23,14 +23,14 @@ public class ResendRegistrationConfirmTokenListener implements ApplicationListen
     @Override
     public void onApplicationEvent(OnResendRegistrationConfirmTokenEvent event) {
         VerificationTokenDTO verificationToken = rabbitTemplate.convertSendAndReceiveAsType(
-            "generateTokenQueue",
+            userServiceProperties.getGenerateTokenQueue(),
             new TokenRequestDTO(event.getUserId()),
             new ParameterizedTypeReference<>() {}
         );
 
         if (verificationToken != null) {
             rabbitTemplate.convertAndSend(
-                "sendEmailQueue",
+                userServiceProperties.getSendEmailQueue(),
                 createConfirmRegistrationMailText(event.getUserEmail(), verificationToken.getToken())
             );
         }

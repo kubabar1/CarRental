@@ -6,6 +6,7 @@ import com.carrental.commons.authentication.model.AuthenticatedUser;
 import com.carrental.commons.authentication.service.AuthenticatedUserDataService;
 import com.carrental.commons.authentication.utils.JWTTokenUtils;
 import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
+import com.carrental.userservice.config.properties.UserServiceProperties;
 import com.carrental.userservice.exception.IncorrectPasswordException;
 import com.carrental.userservice.exception.UserAlreadyExistException;
 import com.carrental.userservice.model.dto.*;
@@ -48,6 +49,8 @@ public class UserServiceImpl implements UserService {
 
     private final JwtProperties jwtProperties;
 
+    private final UserServiceProperties userServiceProperties;
+
     public UserServiceImpl(
             UserRepository userRepository,
             UserRoleRepository userRoleRepository,
@@ -56,7 +59,8 @@ public class UserServiceImpl implements UserService {
             PasswordEncoder passwordEncoder,
             RabbitTemplate rabbitTemplate,
             FilterSpecificationBuilder<UserEntity> filterSpecificationBuilder,
-            JwtProperties jwtProperties
+            JwtProperties jwtProperties,
+            UserServiceProperties userServiceProperties
     ) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
@@ -66,6 +70,7 @@ public class UserServiceImpl implements UserService {
         this.rabbitTemplate = rabbitTemplate;
         this.filterSpecificationBuilder = filterSpecificationBuilder;
         this.jwtProperties = jwtProperties;
+        this.userServiceProperties = userServiceProperties;
     }
 
     @Override
@@ -101,7 +106,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UsersEmailsResponseDTO sendEmailsToMultipleRecipients(MultipleRecipientsMailsDTO multipleRecipientsMailsDTO) {
-        rabbitTemplate.convertAndSend("sendMultipleEmailsQueue", multipleRecipientsMailsDTO);
+        rabbitTemplate.convertAndSend(userServiceProperties.getSendMultipleEmailsQueue(), multipleRecipientsMailsDTO);
         UsersEmailsResponseDTO usersEmailsResponseDTO = new UsersEmailsResponseDTO();
         usersEmailsResponseDTO.setEmails(multipleRecipientsMailsDTO.getRecipients());
         return usersEmailsResponseDTO;
@@ -171,7 +176,7 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntityToUpdate = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
         userEntityToUpdate.setEnabled(true);
         UserEntity userEntityAfterUpdate = userRepository.save(userEntityToUpdate);
-        rabbitTemplate.convertAndSend("deleteTokenQueue", token);
+        rabbitTemplate.convertAndSend(userServiceProperties.getDeleteTokenQueue(), token);
         return modelMapper.map(userEntityAfterUpdate, UserResponseDTO.class);
     }
 

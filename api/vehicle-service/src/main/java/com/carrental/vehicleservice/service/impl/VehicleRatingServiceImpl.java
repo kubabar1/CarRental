@@ -1,5 +1,6 @@
 package com.carrental.vehicleservice.service.impl;
 
+import com.carrental.vehicleservice.config.properties.VehicleServiceProperties;
 import com.carrental.vehicleservice.model.dto.AverageRateResponseDTO;
 import com.carrental.vehicleservice.model.dto.VehicleResponseDTO;
 import com.carrental.vehicleservice.service.VehicleRatingService;
@@ -13,15 +14,18 @@ public class VehicleRatingServiceImpl implements VehicleRatingService {
 
     private final RabbitTemplate rabbitTemplate;
 
-    public VehicleRatingServiceImpl(RabbitTemplate rabbitTemplate) {
+    private final VehicleServiceProperties vehicleServiceProperties;
+
+    public VehicleRatingServiceImpl(RabbitTemplate rabbitTemplate, VehicleServiceProperties vehicleServiceProperties) {
         this.rabbitTemplate = rabbitTemplate;
+        this.vehicleServiceProperties = vehicleServiceProperties;
     }
 
     @Override
     public void setVehiclesAverageRating(List<VehicleResponseDTO> vehicles) {
         List<Long> vehicleIds = vehicles.stream().map(VehicleResponseDTO::getId).collect(Collectors.toList());
         List<AverageRateResponseDTO> averageRateResponseListDTO = rabbitTemplate.convertSendAndReceiveAsType(
-                "getAverageVehiclesRatingQueue", vehicleIds, new ParameterizedTypeReference<>() {
+                vehicleServiceProperties.getGetAverageVehiclesRatingQueue(), vehicleIds, new ParameterizedTypeReference<>() {
                 });
 
         if (averageRateResponseListDTO != null) {

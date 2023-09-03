@@ -1,5 +1,6 @@
 package com.carrental.bookingservice.config;
 
+import com.carrental.bookingservice.config.properties.BookingServiceProperties;
 import com.carrental.bookingservice.config.queue.BookingServiceQueueConfig;
 import com.carrental.bookingservice.config.security.IgnoreAuthenticationBookingService;
 import com.carrental.bookingservice.controller.BookingsAdminController;
@@ -29,11 +30,14 @@ import com.carrental.commons.authentication.service.AuthenticatedUserDataService
 import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
 import com.carrental.commons.utils.filtering.specification.operations.impl.DefaultFilterOperations;
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import javax.inject.Inject;
 
 @Import({BookingServiceQueueConfig.class, IgnoreAuthenticationBookingService.class})
 @EnableJpaRepositories("com.carrental.bookingservice.repository")
@@ -43,6 +47,11 @@ public class BookingServiceCoreConfig {
     @Bean
     public BookingStateValidator bookingStateValidator() {
         return new BookingStateValidator();
+    }
+
+    @Bean
+    public BookingServiceProperties bookingServiceProperties() {
+        return new BookingServiceProperties();
     }
 
     @Bean
@@ -108,6 +117,8 @@ public class BookingServiceCoreConfig {
             BookingStateRepository bookingStateRepository,
             LocationsRepository locationsRepository,
             RabbitTemplate rabbitTemplate,
+            DirectExchange rabbitMqExchange,
+            BookingServiceProperties bookingServiceProperties,
             BookingFilterOperation<BookingEntity> bookingFilterOperation
     ) {
         return new BookingUserServiceImpl(
@@ -118,6 +129,8 @@ public class BookingServiceCoreConfig {
                 bookingStateRepository,
                 locationsRepository,
                 rabbitTemplate,
+                rabbitMqExchange,
+                bookingServiceProperties,
                 new FilterSpecificationBuilder<>(bookingFilterOperation)
         );
     }

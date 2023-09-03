@@ -15,12 +15,12 @@ public class LocationListener {
         this.locationsService = locationsService;
     }
 
-    @RabbitListener(queues = {"getLocationQueue"})
+    @RabbitListener(queues = {"${car-rental.booking-service.queue.getLocationQueue}"})
     public Set<LocationResponseDTO> getLocationListener(@Payload(required = false) String country) {
         return locationsService.getAllLocations(country);
     }
 
-    @RabbitListener(queues = {"getLocationByIdQueue"})
+    @RabbitListener(queues = {"${car-rental.booking-service.queue.getLocationByIdQueue}"})
     public LocationResponseDTO getLocationByIdQueue(@Payload(required = false) Long locationId) {
         return locationsService.getLocationById(locationId);
     }

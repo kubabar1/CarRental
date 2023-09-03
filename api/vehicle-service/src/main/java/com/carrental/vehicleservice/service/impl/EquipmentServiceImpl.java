@@ -1,6 +1,7 @@
 package com.carrental.vehicleservice.service.impl;
 
 import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
+import com.carrental.vehicleservice.config.properties.VehicleServiceProperties;
 import com.carrental.vehicleservice.model.dto.*;
 import com.carrental.vehicleservice.model.entity.ColorEntity;
 import com.carrental.vehicleservice.model.entity.EquipmentEntity;
@@ -31,6 +32,8 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     private final RabbitTemplate rabbitTemplate;
 
+    private final VehicleServiceProperties vehicleServiceProperties;
+
     private final FilterSpecificationBuilder<EquipmentEntity> filterSpecificationBuilder;
 
     public EquipmentServiceImpl(
@@ -38,12 +41,14 @@ public class EquipmentServiceImpl implements EquipmentService {
             VehicleRepository vehicleRepository,
             ModelMapper modelMapper,
             RabbitTemplate rabbitTemplate,
+            VehicleServiceProperties vehicleServiceProperties,
             FilterSpecificationBuilder<EquipmentEntity> filterSpecificationBuilder
     ) {
         this.equipmentRepository = equipmentRepository;
         this.vehicleRepository = vehicleRepository;
         this.modelMapper = modelMapper;
         this.rabbitTemplate = rabbitTemplate;
+        this.vehicleServiceProperties = vehicleServiceProperties;
         this.filterSpecificationBuilder = filterSpecificationBuilder;
     }
 
@@ -87,7 +92,7 @@ public class EquipmentServiceImpl implements EquipmentService {
         });
 
         LocationResponseDTO locationResponseDTO = rabbitTemplate.convertSendAndReceiveAsType(
-            "getLocationByIdQueue",
+            vehicleServiceProperties.getGetLocationByIdQueue(),
             vehicleEntity.getLocationId(),
             new ParameterizedTypeReference<>() {
             }
@@ -107,7 +112,7 @@ public class EquipmentServiceImpl implements EquipmentService {
         VehicleEntity vehicleEntityAfterUpdate = vehicleRepository.save(vehicleEntity);
 
         LocationResponseDTO locationResponseDTO = rabbitTemplate.convertSendAndReceiveAsType(
-            "getLocationByIdQueue",
+            vehicleServiceProperties.getGetLocationByIdQueue(),
             vehicleEntityAfterUpdate.getLocationId(),
             new ParameterizedTypeReference<>() {
             }

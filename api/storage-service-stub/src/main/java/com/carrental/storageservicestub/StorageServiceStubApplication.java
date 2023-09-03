@@ -1,6 +1,6 @@
 package com.carrental.storageservicestub;
 
-import com.carrental.commons.config.RabbitMQConfig;
+import com.carrental.commons.config.rabbitmq.RabbitMQConfig;
 import com.carrental.storageservicestub.config.StorageServiceStubCoreConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

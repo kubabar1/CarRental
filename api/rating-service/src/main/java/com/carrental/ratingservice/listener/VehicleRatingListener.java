@@ -14,7 +14,7 @@ public class VehicleRatingListener {
         this.rateService = rateService;
     }
 
-    @RabbitListener(queues = {"getAverageVehiclesRatingQueue"})
+    @RabbitListener(queues = {"${car-rental.rating-service.queue.getAverageVehiclesRatingQueue}"})
     public List<AverageRateResponseDTO> getVehicleRatingsListener(List<Long> averageVehiclesRatingRequestDTO) {
         return rateService.getAverageRateForVehicles(averageVehiclesRatingRequestDTO);
     }

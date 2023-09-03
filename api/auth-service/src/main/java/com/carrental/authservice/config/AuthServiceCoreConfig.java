@@ -1,5 +1,6 @@
 package com.carrental.authservice.config;
 
+import com.carrental.authservice.config.properties.AuthServiceProperties;
 import com.carrental.authservice.config.queue.AuthServiceQueueConfig;
 import com.carrental.authservice.config.security.*;
 import com.carrental.authservice.controller.AuthenticatedUserDataController;
@@ -40,13 +41,18 @@ public class AuthServiceCoreConfig {
     }
 
     @Bean
+    public AuthServiceProperties authServiceProperties() {
+        return new AuthServiceProperties();
+    }
+
+    @Bean
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public UserDetailsService userDetailsService(RabbitTemplate rabbitTemplate) {
-        return new UserDetailsServiceImpl(rabbitTemplate);
+    public UserDetailsService userDetailsService(RabbitTemplate rabbitTemplate, AuthServiceProperties authServiceProperties) {
+        return new UserDetailsServiceImpl(rabbitTemplate, authServiceProperties);
     }
 
     @Bean

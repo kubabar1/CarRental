@@ -1,6 +1,7 @@
 package com.carrental.vehicleservice.service.impl;
 
 import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
+import com.carrental.vehicleservice.config.properties.VehicleServiceProperties;
 import com.carrental.vehicleservice.model.dto.*;
 import com.carrental.vehicleservice.model.entity.*;
 import com.carrental.vehicleservice.repository.*;
@@ -8,6 +9,7 @@ import com.carrental.vehicleservice.service.VehicleRatingService;
 import com.carrental.vehicleservice.service.VehicleService;
 import org.apache.commons.io.FilenameUtils;
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
@@ -44,6 +46,9 @@ public class VehicleServiceImpl implements VehicleService {
 
     private final FilterSpecificationBuilder<VehicleEntity> filterSpecificationBuilder;
 
+    private final DirectExchange rabbitMqExchange;
+
+    private final VehicleServiceProperties vehicleServiceProperties;
 
     public VehicleServiceImpl(
             VehicleRepository vehicleRepository,
@@ -55,6 +60,8 @@ public class VehicleServiceImpl implements VehicleService {
             ModelMapper modelMapper,
             VehicleRatingService vehicleRatingService,
             RabbitTemplate rabbitTemplate,
+            DirectExchange rabbitMqExchange,
+            VehicleServiceProperties vehicleServiceProperties,
             FilterSpecificationBuilder<VehicleEntity> filterSpecificationBuilder
     ) {
         this.vehicleRepository = vehicleRepository;
@@ -66,6 +73,8 @@ public class VehicleServiceImpl implements VehicleService {
         this.modelMapper = modelMapper;
         this.vehicleRatingService = vehicleRatingService;
         this.rabbitTemplate = rabbitTemplate;
+        this.rabbitMqExchange = rabbitMqExchange;
+        this.vehicleServiceProperties = vehicleServiceProperties;
         this.filterSpecificationBuilder = filterSpecificationBuilder;
     }
 
@@ -74,7 +83,7 @@ public class VehicleServiceImpl implements VehicleService {
         Specification<VehicleEntity> spec = filterSpecificationBuilder.build(filterString);
         Page<VehicleEntity> vehicles = vehicleRepository.findAll(spec, pageable);
         Set<LocationResponseDTO> locationResponseDTOS = rabbitTemplate.convertSendAndReceiveAsType(
-                "getLocationQueue",
+                vehicleServiceProperties.getGetLocationQueue(),
                 "",
                 new ParameterizedTypeReference<>() {
                 }
@@ -110,7 +119,8 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public Set<VehicleResponseDTO> getAvailableVehicles(AvailableVehiclesSearchDTO availableVehiclesSearchDTO) {
         Set<Long> bookedVehiclesIds = rabbitTemplate.convertSendAndReceiveAsType(
-            "getBookedVehiclesIdsQueue",
+            rabbitMqExchange.getName(),
+            vehicleServiceProperties.getGetBookedVehiclesIdsQueue(),
             availableVehiclesSearchDTO,
             new ParameterizedTypeReference<>() {
             }
@@ -135,7 +145,7 @@ public class VehicleServiceImpl implements VehicleService {
         VehicleEntity vehicleEntity = vehicleRepository.findById(vehicleId).orElseThrow();
 
         LocationResponseDTO locationResponseDTO = rabbitTemplate.convertSendAndReceiveAsType(
-            "getLocationByIdQueue",
+            vehicleServiceProperties.getGetLocationByIdQueue(),
             vehicleEntity.getLocationId(),
             new ParameterizedTypeReference<>() {
             }
@@ -232,10 +242,10 @@ public class VehicleServiceImpl implements VehicleService {
         vehicleOptionsDTO.setFuelTypes(fuelTypeRepository.findAll().stream().map(FuelTypeEntity::getFuelType).collect(Collectors.toSet()));
 
         Set<LocationResponseDTO> locationResponseDTOS = rabbitTemplate.convertSendAndReceiveAsType(
-                "getLocationQueue",
-                "",
-                new ParameterizedTypeReference<>() {
-                }
+            vehicleServiceProperties.getGetLocationQueue(),
+            "",
+            new ParameterizedTypeReference<>() {
+            }
         );
 
         vehicleOptionsDTO.setLocations(locationResponseDTOS);
@@ -301,7 +311,7 @@ public class VehicleServiceImpl implements VehicleService {
         UploadVehicleImageDTO uploadVehicleImageDTO = new UploadVehicleImageDTO();
         uploadVehicleImageDTO.setImageName(vehicleImageName);
         uploadVehicleImageDTO.setImageFile(vehicleImage.getBytes());
-        rabbitTemplate.convertAndSend("uploadVehicleImageQueue", uploadVehicleImageDTO);
+        rabbitTemplate.convertAndSend(vehicleServiceProperties.getUploadVehicleImageQueue(), uploadVehicleImageDTO);
     }
 
     private String generateVehicleFileName(MultipartFile image) {

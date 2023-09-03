@@ -1,5 +1,6 @@
 package com.carrental.bookingservice.service.impl;
 
+import com.carrental.bookingservice.config.properties.BookingServiceProperties;
 import com.carrental.bookingservice.exception.BookingStateException;
 import com.carrental.bookingservice.model.constants.BookingStateCodeEnum;
 import com.carrental.bookingservice.model.dto.*;
@@ -11,12 +12,14 @@ import com.carrental.bookingservice.repository.BookingStateRepository;
 import com.carrental.bookingservice.repository.LocationsRepository;
 import com.carrental.bookingservice.service.BookingUserService;
 import com.carrental.bookingservice.service.impl.validator.BookingStateValidator;
+import com.carrental.commons.amqp.utils.RabbitMqUtil;
 import com.carrental.commons.authentication.exception.AuthorizationException;
 import com.carrental.commons.authentication.model.AuthenticatedUser;
 import com.carrental.commons.authentication.service.AuthenticatedUserDataService;
 import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
 import org.apache.commons.collections4.IteratorUtils;
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
@@ -47,6 +50,10 @@ public class BookingUserServiceImpl extends BookingServiceCommons implements Boo
 
     private final RabbitTemplate rabbitTemplate;
 
+    private final DirectExchange rabbitMqExchange;
+
+    private final BookingServiceProperties bookingServiceProperties;
+
     private final FilterSpecificationBuilder<BookingEntity> filterSpecificationBuilder;
 
     public BookingUserServiceImpl(
@@ -57,6 +64,8 @@ public class BookingUserServiceImpl extends BookingServiceCommons implements Boo
             BookingStateRepository bookingStateRepository,
             LocationsRepository locationsRepository,
             RabbitTemplate rabbitTemplate,
+            DirectExchange rabbitMqExchange,
+            BookingServiceProperties bookingServiceProperties,
             FilterSpecificationBuilder<BookingEntity> filterSpecificationBuilder
     ) {
         super(bookingRepository, modelMapper);
@@ -67,6 +76,8 @@ public class BookingUserServiceImpl extends BookingServiceCommons implements Boo
         this.bookingStateRepository = bookingStateRepository;
         this.locationsRepository = locationsRepository;
         this.rabbitTemplate = rabbitTemplate;
+        this.rabbitMqExchange = rabbitMqExchange;
+        this.bookingServiceProperties = bookingServiceProperties;
         this.filterSpecificationBuilder = filterSpecificationBuilder;
     }
 
@@ -225,12 +236,7 @@ public class BookingUserServiceImpl extends BookingServiceCommons implements Boo
     }
 
     public VehicleResponseDTO getVehicleById(Long vehicleId) {
-        return rabbitTemplate.convertSendAndReceiveAsType(
-                "getVehicleByIdQueue",
-                vehicleId,
-                new ParameterizedTypeReference<>() {
-                }
-        );
+        return rabbitTemplate.convertSendAndReceiveAsType(rabbitMqExchange.getName(), bookingServiceProperties.getGetVehicleByIdQueue(), vehicleId, new ParameterizedTypeReference<>() {});
     }
 
     public BigDecimal calculateReservationCost(
@@ -243,7 +249,7 @@ public class BookingUserServiceImpl extends BookingServiceCommons implements Boo
     }
 
     public long reservationDuration(LocalDate reservationDate, LocalDate returnDate) throws IllegalArgumentException {
-        long duration = Duration.between(reservationDate.atStartOfDay(), returnDate.atStartOfDay()).toDays(); // TODO: FIX
+        long duration = Duration.between(reservationDate.atStartOfDay(), returnDate.atStartOfDay()).toDays();
         if (duration < 1) {
             throw new IllegalArgumentException("Duration between return and reservation date cannot be below 1 day");
         }

@@ -6,7 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotNull;
 
 @Validated
-@ConfigurationProperties(prefix = "user-service")
+@ConfigurationProperties(prefix = "car-rental.user-service")
 public class UserServiceProperties {
 
     @NotNull
@@ -32,6 +32,21 @@ public class UserServiceProperties {
 
     @NotNull
     private String resetPasswordChangePasswordUrl;
+
+    @NotNull
+    private String generateTokenQueue;
+
+    @NotNull
+    private String getTokenQueue;
+
+    @NotNull
+    private String deleteTokenQueue;
+
+    @NotNull
+    private String sendEmailQueue;
+
+    @NotNull
+    private String sendMultipleEmailsQueue;
 
     public String getRegistrationConfirmMailUrl() {
         return registrationConfirmMailUrl;
@@ -95,5 +110,45 @@ public class UserServiceProperties {
 
     public void setResetPasswordChangePasswordUrl(String resetPasswordChangePasswordUrl) {
         this.resetPasswordChangePasswordUrl = resetPasswordChangePasswordUrl;
+    }
+
+    public String getGenerateTokenQueue() {
+        return generateTokenQueue;
+    }
+
+    public void setGenerateTokenQueue(String generateTokenQueue) {
+        this.generateTokenQueue = generateTokenQueue;
+    }
+
+    public String getGetTokenQueue() {
+        return getTokenQueue;
+    }
+
+    public void setGetTokenQueue(String getTokenQueue) {
+        this.getTokenQueue = getTokenQueue;
+    }
+
+    public String getDeleteTokenQueue() {
+        return deleteTokenQueue;
+    }
+
+    public void setDeleteTokenQueue(String deleteTokenQueue) {
+        this.deleteTokenQueue = deleteTokenQueue;
+    }
+
+    public String getSendEmailQueue() {
+        return sendEmailQueue;
+    }
+
+    public void setSendEmailQueue(String sendEmailQueue) {
+        this.sendEmailQueue = sendEmailQueue;
+    }
+
+    public String getSendMultipleEmailsQueue() {
+        return sendMultipleEmailsQueue;
+    }
+
+    public void setSendMultipleEmailsQueue(String sendMultipleEmailsQueue) {
+        this.sendMultipleEmailsQueue = sendMultipleEmailsQueue;
     }
 }

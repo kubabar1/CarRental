@@ -1,19 +1,36 @@
 package com.carrental.mailservice.config.queue;
 
+import com.carrental.commons.amqp.utils.RabbitMqUtil;
+import org.springframework.amqp.core.Declarables;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 
-import static com.carrental.commons.amqp.utils.QueueConfig.buildQueue;
+import javax.inject.Inject;
 
 public class MailServiceQueueConfig {
 
+    @Inject
+    private DirectExchange rabbitMqExchange;
+
+    @Inject
+    private DirectExchange rabbitMqDeadLetterExchange;
+
+    @Inject
+    private Queue dlqDefaultQueue;
+
     @Bean
-    public Queue sendEmailQueue() {
-        return buildQueue("sendEmailQueue");
+    public MailServiceQueueProperties mailServiceQueueProperties() {
+        return new MailServiceQueueProperties();
     }
 
     @Bean
-    public Queue sendMultipleEmailsQueue() {
-        return buildQueue("sendMultipleEmailsQueue");
+    public Declarables sendEmailQueue(MailServiceQueueProperties mailServiceQueueProperties) {
+        return RabbitMqUtil.buildQueue(mailServiceQueueProperties.getSendEmailQueue(), dlqDefaultQueue, rabbitMqExchange, rabbitMqDeadLetterExchange);
+    }
+
+    @Bean
+    public Declarables sendMultipleEmailsQueue(MailServiceQueueProperties mailServiceQueueProperties) {
+        return RabbitMqUtil.buildQueue(mailServiceQueueProperties.getSendMultipleEmailsQueue(), dlqDefaultQueue, rabbitMqExchange, rabbitMqDeadLetterExchange);
     }
 }

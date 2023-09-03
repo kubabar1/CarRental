@@ -64,7 +64,7 @@ public class RegistrationController {
     @GetMapping(value = "/registration-confirm")
     public ResponseEntity<?> registrationConfirmController(@RequestParam("token") String token) {
         VerificationTokenDTO verificationToken = rabbitTemplate.convertSendAndReceiveAsType(
-            "getTokenQueue",
+            userServiceProperties.getGetTokenQueue(),
             token,
             new ParameterizedTypeReference<>() {}
         );
@@ -87,7 +87,7 @@ public class RegistrationController {
     @GetMapping(value = "/resend-registration-confirm")
     public ResponseEntity<?> resendRegistrationToken(@RequestParam("token") String token) {
         VerificationTokenDTO verificationToken = rabbitTemplate.convertSendAndReceiveAsType(
-            "getTokenQueue",
+            userServiceProperties.getGetTokenQueue(),
             token,
             new ParameterizedTypeReference<>() {}
         );

@@ -20,7 +20,7 @@ public class VehiclesImagesResourceHandler implements WebMvcConfigurer {
         this.baseTmpDir = baseTmpDir;
     }
 
-    @RabbitListener(queues = {"uploadVehicleImageQueue"})
+    @RabbitListener(queues = {"${car-rental.storage-service-stub.queue.getUploadVehicleImageQueue}"})
     public void getLocationListener(UploadVehicleImageDTO uploadVehicleImageDTO) {
         try {
             File vehicleImagesDir = new File(baseTmpDir.getDir().toFile(), "vehicles_images");

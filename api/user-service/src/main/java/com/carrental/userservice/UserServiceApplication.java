@@ -2,7 +2,7 @@ package com.carrental.userservice;
 
 import com.carrental.commons.config.AuthenticationServiceConfig;
 import com.carrental.commons.config.ModelMapperConfig;
-import com.carrental.commons.config.RabbitMQConfig;
+import com.carrental.commons.config.rabbitmq.RabbitMQConfig;
 import com.carrental.commons.config.SpringFoxConfig;
 import com.carrental.userservice.config.security.WebSecurityConfig;
 import com.carrental.userservice.config.UserServiceCoreConfig;

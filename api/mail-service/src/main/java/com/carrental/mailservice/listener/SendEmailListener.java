@@ -14,12 +14,12 @@ public class SendEmailListener {
         this.mailService = mailService;
     }
 
-    @RabbitListener(queues = {"sendEmailQueue"})
+    @RabbitListener(queues = {"${car-rental.mail-service.queue.sendEmailQueue}"})
     public void sendEmail(@Payload MailDTO mailDTO) {
         mailService.sendEmail(mailDTO);
     }
 
-    @RabbitListener(queues = {"sendMultipleEmailsQueue"})
+    @RabbitListener(queues = {"${car-rental.mail-service.queue.sendMultipleEmailsQueue}"})
     public void sendMultipleRecipientsMails(@Payload MultipleRecipientsMailsDTO multipleRecipientsMailsDTO) {
         mailService.sendMultipleRecipientsMails(multipleRecipientsMailsDTO);
     }

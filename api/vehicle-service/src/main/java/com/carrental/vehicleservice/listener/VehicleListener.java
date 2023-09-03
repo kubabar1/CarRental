@@ -1,6 +1,5 @@
 package com.carrental.vehicleservice.listener;
 
-import com.carrental.vehicleservice.model.dto.AvailableVehiclesSearchDTO;
 import com.carrental.vehicleservice.model.dto.VehicleResponseDTO;
 import com.carrental.vehicleservice.service.VehicleService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -17,7 +16,7 @@ public class VehicleListener {
         this.vehicleService = vehicleService;
     }
 
-    @RabbitListener(queues = {"getVehicleByIdQueue"})
+    @RabbitListener(queues = {"${car-rental.vehicle-service.queue.getVehicleById}"})
     public VehicleResponseDTO getVehicleByIdListener(@Payload Long vehicleId) {
         return vehicleService.getVehicleByIdWithoutLocation(vehicleId);
     }

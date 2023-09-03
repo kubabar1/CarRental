@@ -23,14 +23,14 @@ public class RegistrationCompleteListener implements ApplicationListener<OnRegis
     @Override
     public void onApplicationEvent(OnRegistrationCompleteEvent event) {
         VerificationTokenDTO verificationToken = rabbitTemplate.convertSendAndReceiveAsType(
-            "generateTokenQueue",
+            userServiceProperties.getGenerateTokenQueue(),
             new TokenRequestDTO(event.getUserId()),
             new ParameterizedTypeReference<>() {}
         );
 
         if (verificationToken != null) {
             rabbitTemplate.convertAndSend(
-                "sendEmailQueue",
+                userServiceProperties.getSendEmailQueue(),
                 createResendVerificationTokenMailText(event.getUserEmail(), verificationToken.getToken())
             );
         }

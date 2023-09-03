@@ -60,9 +60,9 @@ public class ResetPasswordController {
             @RequestParam("token") String token
     ) {
         VerificationTokenDTO verificationToken = rabbitTemplate.convertSendAndReceiveAsType(
-                "getTokenQueue",
-                token,
-                new ParameterizedTypeReference<>() {}
+            userServiceProperties.getGetTokenQueue(),
+            token,
+            new ParameterizedTypeReference<>() {}
         );
         if (isTokenValid(verificationToken)) {
             HttpHeaders headers = new HttpHeaders();
@@ -80,9 +80,9 @@ public class ResetPasswordController {
             @Valid @RequestBody PasswordResetDTO passwordResetDTO
     ) throws NoSuchMethodException, MethodArgumentNotValidException {
         VerificationTokenDTO verificationToken = rabbitTemplate.convertSendAndReceiveAsType(
-                "getTokenQueue",
-                passwordResetDTO.getToken(),
-                new ParameterizedTypeReference<>() {}
+            userServiceProperties.getGetTokenQueue(),
+            passwordResetDTO.getToken(),
+            new ParameterizedTypeReference<>() {}
         );
         if (isTokenValid(verificationToken)) {
             PasswordResetResponseDTO passwordResetResponseDTO;

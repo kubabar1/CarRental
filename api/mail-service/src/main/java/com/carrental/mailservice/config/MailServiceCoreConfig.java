@@ -7,21 +7,17 @@ import com.carrental.mailservice.service.MailService;
 import com.carrental.mailservice.service.impl.MailServiceImpl;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
-import com.icegreen.greenmail.util.ServerSetupTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-import java.util.Properties;
-
 @Import({MailServiceQueueConfig.class})
 public class MailServiceCoreConfig {
 
     @Bean
     public GreenMail startMailServer(MailServiceProperties mailServiceProperties) {
-//        GreenMail greenMail = new GreenMail(new ServerSetup(8585, "0.0.0.0", "smtp"));
         GreenMail greenMail = new GreenMail(new ServerSetup[]{
                 new ServerSetup(3025, "0.0.0.0", ServerSetup.PROTOCOL_SMTP),
                 new ServerSetup(3143, "0.0.0.0", ServerSetup.PROTOCOL_IMAP)

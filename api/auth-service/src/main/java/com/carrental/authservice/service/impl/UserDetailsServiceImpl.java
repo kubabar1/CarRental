@@ -1,6 +1,7 @@
 package com.carrental.authservice.service.impl;
 
 
+import com.carrental.authservice.config.properties.AuthServiceProperties;
 import com.carrental.authservice.model.dto.UserDetailsDTO;
 import com.carrental.authservice.model.dto.UserRoleResponseDTO;
 import com.carrental.commons.authentication.model.AuthenticatedUser;
@@ -19,14 +20,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final RabbitTemplate rabbitTemplate;
 
-    public UserDetailsServiceImpl(RabbitTemplate rabbitTemplate) {
+    private final AuthServiceProperties authServiceProperties;
+
+    public UserDetailsServiceImpl(RabbitTemplate rabbitTemplate, AuthServiceProperties authServiceProperties) {
         this.rabbitTemplate = rabbitTemplate;
+        this.authServiceProperties = authServiceProperties;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserDetailsDTO user = rabbitTemplate.convertSendAndReceiveAsType(
-                "getUserByEmailQueue", email, new ParameterizedTypeReference<>() {
+                authServiceProperties.getGetUserByEmailQueue(), email, new ParameterizedTypeReference<>() {
                 });
 
         if (user == null) {

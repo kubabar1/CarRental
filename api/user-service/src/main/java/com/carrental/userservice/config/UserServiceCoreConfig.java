@@ -58,7 +58,8 @@ public class UserServiceCoreConfig {
             PasswordEncoder passwordEncoder,
             RabbitTemplate rabbitTemplate,
             UserFilterOperation<UserEntity> userFilterOperation,
-            JwtProperties jwtProperties
+            JwtProperties jwtProperties,
+            UserServiceProperties userServiceProperties
     ) {
         return new UserServiceImpl(
                 userRepository,
@@ -68,7 +69,8 @@ public class UserServiceCoreConfig {
                 passwordEncoder,
                 rabbitTemplate,
                 new FilterSpecificationBuilder<>(userFilterOperation),
-                jwtProperties
+                jwtProperties,
+                userServiceProperties
         );
     }
 
@@ -77,9 +79,10 @@ public class UserServiceCoreConfig {
             UserRepository userRepository,
             ApplicationEventPublisher eventPublisher,
             PasswordEncoder passwordEncoder,
-            RabbitTemplate rabbitTemplate
+            RabbitTemplate rabbitTemplate,
+            UserServiceProperties userServiceProperties
     ) {
-        return new ResetPasswordServiceImpl(userRepository, eventPublisher, passwordEncoder, rabbitTemplate);
+        return new ResetPasswordServiceImpl(userRepository, eventPublisher, passwordEncoder, rabbitTemplate, userServiceProperties);
     }
 
     @Bean

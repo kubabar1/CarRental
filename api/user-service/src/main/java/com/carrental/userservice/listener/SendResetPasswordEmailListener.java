@@ -23,15 +23,15 @@ public class SendResetPasswordEmailListener implements ApplicationListener<OnSen
     @Override
     public void onApplicationEvent(OnSendResetPasswordEmailEvent event) {
         VerificationTokenDTO verificationToken = rabbitTemplate.convertSendAndReceiveAsType(
-                "generateTokenQueue",
-                new TokenRequestDTO(event.getUserId()),
-                new ParameterizedTypeReference<>() {}
+            userServiceProperties.getGenerateTokenQueue(),
+            new TokenRequestDTO(event.getUserId()),
+            new ParameterizedTypeReference<>() {}
         );
 
         if (verificationToken != null) {
             rabbitTemplate.convertAndSend(
-                    "sendEmailQueue",
-                    createConfirmPasswordResetMailText(event.getUserEmail(), verificationToken.getToken())
+                userServiceProperties.getSendEmailQueue(),
+                createConfirmPasswordResetMailText(event.getUserEmail(), verificationToken.getToken())
             );
         }
     }

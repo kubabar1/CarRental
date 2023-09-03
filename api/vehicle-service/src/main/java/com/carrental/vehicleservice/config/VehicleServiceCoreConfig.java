@@ -2,6 +2,7 @@ package com.carrental.vehicleservice.config;
 
 import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
 import com.carrental.commons.utils.filtering.specification.operations.impl.DefaultFilterOperations;
+import com.carrental.vehicleservice.config.properties.VehicleServiceProperties;
 import com.carrental.vehicleservice.config.queue.VehicleServiceQueueConfig;
 import com.carrental.vehicleservice.config.security.IgnoreAuthenticationVehicleService;
 import com.carrental.vehicleservice.controller.EquipmentController;
@@ -19,6 +20,7 @@ import com.carrental.vehicleservice.service.impl.VehicleRatingServiceImpl;
 import com.carrental.vehicleservice.service.impl.VehicleServiceImpl;
 import com.carrental.vehicleservice.listener.VehicleListener;
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -48,6 +50,7 @@ public class VehicleServiceCoreConfig {
             VehicleRepository vehicleRepository,
             ModelMapper modelMapper,
             RabbitTemplate rabbitTemplate,
+            VehicleServiceProperties vehicleServiceProperties,
             DefaultFilterOperations<EquipmentEntity> equipmentFilterOperations
     ) {
         return new EquipmentServiceImpl(
@@ -55,13 +58,19 @@ public class VehicleServiceCoreConfig {
                 vehicleRepository,
                 modelMapper,
                 rabbitTemplate,
+                vehicleServiceProperties,
                 new FilterSpecificationBuilder<>(equipmentFilterOperations)
         );
     }
 
     @Bean
-    public VehicleRatingService vehicleRatingService(RabbitTemplate rabbitTemplate) {
-        return new VehicleRatingServiceImpl(rabbitTemplate);
+    public VehicleRatingService vehicleRatingService(RabbitTemplate rabbitTemplate, VehicleServiceProperties vehicleServiceProperties) {
+        return new VehicleRatingServiceImpl(rabbitTemplate, vehicleServiceProperties);
+    }
+
+    @Bean
+    public VehicleServiceProperties vehicleServiceProperties() {
+        return new VehicleServiceProperties();
     }
 
     @Bean
@@ -85,6 +94,8 @@ public class VehicleServiceCoreConfig {
             ModelMapper modelMapper,
             VehicleRatingService vehicleRatingService,
             RabbitTemplate rabbitTemplate,
+            DirectExchange rabbitMqExchange,
+            VehicleServiceProperties vehicleServiceProperties,
             DefaultFilterOperations<VehicleEntity> vehicleFilterOperations
     ) {
         return new VehicleServiceImpl(
@@ -97,6 +108,8 @@ public class VehicleServiceCoreConfig {
                 modelMapper,
                 vehicleRatingService,
                 rabbitTemplate,
+                rabbitMqExchange,
+                vehicleServiceProperties,
                 new FilterSpecificationBuilder<>(vehicleFilterOperations)
         );
     }
