@@ -3,6 +3,7 @@ package com.carrental.bookingservice.controller;
 import com.carrental.bookingservice.exception.BookingStateException;
 import com.carrental.bookingservice.model.dto.BookingResponseDTO;
 import com.carrental.bookingservice.model.dto.BookingStateDTO;
+import com.carrental.bookingservice.model.dto.ExpiredBookingsSchedulerResponseDTO;
 import com.carrental.bookingservice.service.BookingAdminService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -70,6 +71,18 @@ public class BookingsAdminController implements BookingsController {
         } catch (BookingStateException exception) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @PostMapping(value = "/cancel-expired")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Set<BookingResponseDTO>> cancelExpiredBookingsController() {
+        return ResponseEntity.status(HttpStatus.OK).body(bookingAdminService.cancelExpiredBookings());
+    }
+
+    @GetMapping(value = "/cancel-expired-scheduler")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ExpiredBookingsSchedulerResponseDTO> getExpiredBookingsSchedulerController() {
+        return ResponseEntity.status(HttpStatus.OK).body(bookingAdminService.getExpiredBookingsSchedulerParams());
     }
 
     @PostMapping(value = "/rent/{bookingId}")

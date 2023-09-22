@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 import com.carrental.commons.config.ModelMapperConfig;
 import com.carrental.commons.config.SpringFoxConfig;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @Import({
@@ -29,6 +30,7 @@ import com.carrental.commons.config.SpringFoxConfig;
         SpringFoxConfig.class,
         RabbitMQConfig.class
 })
+@EnableScheduling
 public class SetupApplication {
 
     public static void main(String[] args) {

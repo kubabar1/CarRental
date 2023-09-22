@@ -2,12 +2,13 @@ package com.carrental.bookingservice.service.impl;
 
 import com.carrental.bookingservice.exception.BookingStateException;
 import com.carrental.bookingservice.model.constants.BookingStateCodeEnum;
-import com.carrental.bookingservice.model.dto.AvailableVehiclesSearchDTO;
 import com.carrental.bookingservice.model.dto.BookingResponseDTO;
+import com.carrental.bookingservice.model.dto.ExpiredBookingsSchedulerResponseDTO;
 import com.carrental.bookingservice.model.entity.BookingEntity;
 import com.carrental.bookingservice.model.entity.BookingStateEntity;
 import com.carrental.bookingservice.repository.BookingRepository;
 import com.carrental.bookingservice.repository.BookingStateRepository;
+import com.carrental.bookingservice.scheduler.BookingSchedulerProperties;
 import com.carrental.bookingservice.service.BookingAdminService;
 import com.carrental.bookingservice.service.impl.validator.BookingStateValidator;
 import com.carrental.commons.utils.filtering.FilterSpecificationBuilder;
@@ -16,7 +17,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class BookingAdminServiceImpl extends BookingServiceCommons implements BookingAdminService {
 
@@ -30,12 +33,15 @@ public class BookingAdminServiceImpl extends BookingServiceCommons implements Bo
 
     private final FilterSpecificationBuilder<BookingEntity> filterSpecificationBuilder;
 
+    private final BookingSchedulerProperties bookingSchedulerProperties;
+
     public BookingAdminServiceImpl(
             BookingRepository bookingRepository,
             BookingStateRepository bookingStateRepository,
             ModelMapper modelMapper,
             BookingStateValidator bookingStateValidator,
-            FilterSpecificationBuilder<BookingEntity> filterSpecificationBuilder
+            FilterSpecificationBuilder<BookingEntity> filterSpecificationBuilder,
+            BookingSchedulerProperties bookingSchedulerProperties
     ) {
         super(bookingRepository, modelMapper);
         this.bookingRepository = bookingRepository;
@@ -43,6 +49,7 @@ public class BookingAdminServiceImpl extends BookingServiceCommons implements Bo
         this.modelMapper = modelMapper;
         this.bookingStateValidator = bookingStateValidator;
         this.filterSpecificationBuilder = filterSpecificationBuilder;
+        this.bookingSchedulerProperties = bookingSchedulerProperties;
     }
 
     @Override
@@ -84,6 +91,25 @@ public class BookingAdminServiceImpl extends BookingServiceCommons implements Bo
     @Override
     public BookingResponseDTO returnBooking(Long bookingId) throws NoSuchElementException, BookingStateException {
         return updateBookingStatus(bookingId, BookingStateCodeEnum.RET);
+    }
+
+    @Override
+    public Set<BookingResponseDTO> cancelExpiredBookings() {
+        Set<BookingEntity> expiredBookingEntities = bookingRepository.findByReceiptDateIsBeforeAndBookingStateCode_BookingCodeEquals(LocalDate.now().minusDays(1L), BookingStateCodeEnum.RES);
+        BookingStateEntity newBookingStateEntity = bookingStateRepository
+            .findById(BookingStateCodeEnum.CAN)
+            .orElseThrow(InternalError::new);
+        expiredBookingEntities.forEach(b -> b.setBookingStateCode(newBookingStateEntity));
+        bookingRepository.saveAll(expiredBookingEntities);
+        return expiredBookingEntities.stream().map(b -> modelMapper.map(b, BookingResponseDTO.class)).collect(Collectors.toSet());
+    }
+
+    @Override
+    public ExpiredBookingsSchedulerResponseDTO getExpiredBookingsSchedulerParams() {
+        ExpiredBookingsSchedulerResponseDTO expiredBookingsScheduler = new ExpiredBookingsSchedulerResponseDTO();
+        expiredBookingsScheduler.setCancelExpiredBookingEnabled(bookingSchedulerProperties.isCancelExpiredBookingEnabled());
+        expiredBookingsScheduler.setCancelExpiredBookingCron(bookingSchedulerProperties.getCancelExpiredBookingCron());
+        return expiredBookingsScheduler;
     }
 
     private BookingResponseDTO updateBookingStatus(Long bookingId, BookingStateCodeEnum newBookingState) throws NoSuchElementException, BookingStateException {

@@ -16,6 +16,7 @@ import {
     reservedBookingsListLink,
     roleAddLink,
     sendEmailLink,
+    settingsAutomationLink,
     settingsChangePasswordLink,
     settingsUserSettingsLink,
     userEditLink,
@@ -56,6 +57,7 @@ import { LocationAddSubpage } from './subpages/locations/LocationAddSubpage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthenticatedUserDTO } from '@car-rental/shared/model';
+import { AutomationSubpage } from './subpages/settings/automation/AutomationSubpage';
 
 export function App(): JSX.Element {
     const [authenticatedUser, setAuthenticatedUser] = useState<AuthenticatedUserDTO | undefined>(undefined);
@@ -292,6 +294,15 @@ export function App(): JSX.Element {
                                 path={settingsChangePasswordLink.link}
                                 exact
                                 component={ChangePasswordSubpage}
+                            />
+                            <ProtectedRoute
+                                isAuthorized={userHasAnyRole(
+                                    authenticatedUser.userRoles,
+                                    settingsAutomationLink.permittedRoles
+                                )}
+                                path={settingsAutomationLink.link}
+                                exact
+                                component={AutomationSubpage}
                             />
                         </Switch>
                     </div>

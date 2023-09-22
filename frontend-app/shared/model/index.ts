@@ -15,6 +15,7 @@ export * from './EquipmentResponseDTO';
 export * from './EquipmentAddDTO';
 export * from './EquipmentPersistDTO';
 export * from './EquipmentSetPersistDTO';
+export * from './ExpiredBookingsSchedulerResponseDTO';
 export * from './FilteringParamsEnum';
 export * from './LocalisationResponseDTO';
 export * from './LocalisationsResponseDTO';

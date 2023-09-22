@@ -74,6 +74,8 @@ export const BOOKING_SERVICE_ENDPOINTS = {
     GET_ADMIN_BOOKINGS: `${BOOKING_SERVICE_ADDR}/admin/bookings`,
     GET_ADMIN_BOOKINGS_RESERVED: `${BOOKING_SERVICE_ADDR}/admin/bookings/reserved`,
     GET_ADMIN_BOOKINGS_RENTED: `${BOOKING_SERVICE_ADDR}/admin/bookings/rented`,
+    GET_CANCEL_EXPIRED_SCHEDULER: `${BOOKING_SERVICE_ADDR}/admin/bookings/cancel-expired-scheduler`,
+    CANCEL_EXPIRED_BOOKINGS: `${BOOKING_SERVICE_ADDR}/admin/bookings/cancel-expired`,
     RENT_ADMIN_BOOKING: (bookingId: string): string => withId(`${BOOKING_SERVICE_ADDR}/admin/bookings/rent`, bookingId),
     CANCEL_ADMIN_BOOKING: (bookingId: string): string =>
         withId(`${BOOKING_SERVICE_ADDR}/admin/bookings/cancel`, bookingId),

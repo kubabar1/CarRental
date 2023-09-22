@@ -82,6 +82,11 @@ export const sendEmailLink: SecureLink = {
     permittedRoles: [UserRolesEnum.ROLE_ADMIN, UserRolesEnum.ROLE_OFFICE_EMPLOYEE, UserRolesEnum.ROLE_RENTING_EMPLOYEE],
 };
 
+export const settingsAutomationLink: SecureLink = {
+    link: `${baseLink}/automation`,
+    permittedRoles: [UserRolesEnum.ROLE_ADMIN],
+};
+
 export const settingsUserSettingsLink: SecureLink = { link: `${baseLink}/settings/user-settings` };
 
 export const settingsChangePasswordLink: SecureLink = { link: `${baseLink}/settings/change-password` };

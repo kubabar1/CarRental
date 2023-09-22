@@ -16,6 +16,8 @@ import com.carrental.bookingservice.repository.BookingAuditLogRepository;
 import com.carrental.bookingservice.repository.BookingRepository;
 import com.carrental.bookingservice.repository.BookingStateRepository;
 import com.carrental.bookingservice.repository.LocationsRepository;
+import com.carrental.bookingservice.scheduler.BookingScheduler;
+import com.carrental.bookingservice.scheduler.BookingSchedulerProperties;
 import com.carrental.bookingservice.service.BookingAdminService;
 import com.carrental.bookingservice.service.BookingAuditLogService;
 import com.carrental.bookingservice.service.BookingUserService;
@@ -37,7 +39,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import javax.inject.Inject;
 
 @Import({BookingServiceQueueConfig.class, IgnoreAuthenticationBookingService.class})
 @EnableJpaRepositories("com.carrental.bookingservice.repository")
@@ -88,14 +89,16 @@ public class BookingServiceCoreConfig {
             BookingStateRepository bookingStateRepository,
             ModelMapper modelMapper,
             BookingStateValidator bookingStateValidator,
-            BookingFilterOperation<BookingEntity> bookingFilterOperation
+            BookingFilterOperation<BookingEntity> bookingFilterOperation,
+            BookingSchedulerProperties bookingSchedulerProperties
     ) {
         return new BookingAdminServiceImpl(
                 bookingRepository,
                 bookingStateRepository,
                 modelMapper,
                 bookingStateValidator,
-                new FilterSpecificationBuilder<>(bookingFilterOperation)
+                new FilterSpecificationBuilder<>(bookingFilterOperation),
+                bookingSchedulerProperties
         );
     }
 
@@ -163,5 +166,18 @@ public class BookingServiceCoreConfig {
     @Bean
     public BookingListener bookingListener(BookingUserService bookingUserService) {
         return new BookingListener(bookingUserService);
+    }
+
+    @Bean
+    public BookingSchedulerProperties bookingSchedulerProperties() {
+        return new BookingSchedulerProperties();
+    }
+
+    @Bean
+    public BookingScheduler bookingScheduler(
+        BookingAdminService bookingAdminService,
+        BookingSchedulerProperties bookingSchedulerProperties
+    ) {
+        return new BookingScheduler(bookingAdminService, bookingSchedulerProperties);
     }
 }

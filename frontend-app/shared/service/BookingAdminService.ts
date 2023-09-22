@@ -1,4 +1,4 @@
-import { BookingResponseDTO, Page, BookingStateDTO, ResponseData } from '../model';
+import { BookingResponseDTO, Page, BookingStateDTO, ResponseData, ExpiredBookingsSchedulerResponseDTO } from '../model';
 import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, BOOKING_SERVICE_ENDPOINTS, PAGE_REQUEST } from '../constant';
 import { fetchGet, fetchPost } from './FetchUtil';
 
@@ -55,6 +55,19 @@ export class BookingAdminService {
             `Booking '${bookingId}' canceled`,
             `Cannot cancel booking '${bookingId}' - error occurred`
         );
+    };
+
+    static cancelExpiredBookings = (): Promise<ResponseData<BookingResponseDTO[]>> => {
+        return fetchPost<BookingResponseDTO[]>(
+            BOOKING_SERVICE_ENDPOINTS.CANCEL_EXPIRED_BOOKINGS,
+            undefined,
+            `All expired bookings canceled`,
+            `Cannot cancel all expired bookings - error occurred`
+        );
+    };
+
+    static getCancelExpiredScheduler = (): Promise<ExpiredBookingsSchedulerResponseDTO> => {
+        return fetchGet<ExpiredBookingsSchedulerResponseDTO>(BOOKING_SERVICE_ENDPOINTS.GET_CANCEL_EXPIRED_SCHEDULER);
     };
 
     static returnBooking = (bookingId: string): Promise<ResponseData<BookingResponseDTO>> => {

@@ -1,0 +1,30 @@
+.switch-form-group-container {
+    .checkbox-input-container {
+        display: flex;
+        align-items: center;
+
+        input {
+            height: 20px;
+            width: 20px;
+        }
+    }
+
+    .execute-now-button-container {
+        text-align: center;
+    }
+
+    label {
+        margin-bottom: 0;
+    }
+
+    .custom-alert {
+        margin: 20px auto;
+        text-align: center;
+    }
+
+    .switch-col-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

@@ -31,6 +31,7 @@ import {
     settingsUserSettingsLink,
     vehicleOptionsListLink,
     locationAddLink,
+    settingsAutomationLink,
 } from '../../../constants/Links';
 import { logoutPath, homePath } from '@car-rental/shared/constant';
 import { userHasAnyRole } from '../../../utils/UserUtils';
@@ -181,6 +182,10 @@ export function SideNav({ userRoles = [], runLogout }: SideNavProperties): JSX.E
                 <NavSubLink
                     navItemName={TranslationService.translate('changePasswordNavLinkName')}
                     link={settingsChangePasswordLink.link}
+                />
+                <NavSubLink
+                    navItemName={TranslationService.translate('automationNavLinkName')}
+                    link={settingsAutomationLink.link}
                 />
             </NavLink>
 
