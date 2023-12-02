@@ -35,7 +35,7 @@ public final class JWTTokenUtils {
     public Cookie generateAuthCookie(String cookieName, AuthenticatedUser userDetails, String secret, Long expirationInSeconds) {
         Cookie authCookie = new Cookie(cookieName, generateToken(userDetails, secret, expirationInSeconds));
         authCookie.setPath("/");
-        authCookie.setSecure(true);
+        authCookie.setSecure(false);
         authCookie.setHttpOnly(true);
 //        authCookie.setComment();
 //        authCookie.setDomain();

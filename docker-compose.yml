@@ -150,7 +150,7 @@ services:
             vehicle-service-database:
                 condition: service_healthy
         environment:
-            DEV: true
+            DEV: false
             RABBIT_HOST: rabbitmq
             FRONTEND_APP_PROTOCOL: http
             FRONTEND_APP_HOSTNAME: localhost
