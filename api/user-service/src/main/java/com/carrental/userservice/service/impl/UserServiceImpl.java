@@ -15,6 +15,7 @@ import com.carrental.userservice.model.entity.UserRoleEntity;
 import com.carrental.userservice.repository.UserRepository;
 import com.carrental.userservice.repository.UserRoleRepository;
 import com.carrental.userservice.service.UserService;
+import com.google.common.net.HttpHeaders;
 import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
@@ -212,12 +213,13 @@ public class UserServiceImpl implements UserService {
             userDetails.setSurname(userUpdateDTO.getSurname());
             userDetails.setPhone(userUpdateDTO.getPhone());
             userDetails.setBirthDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(userUpdateDTO.getBirthDate()));
-            response.addCookie(JWTTokenUtils.getInstance().generateAuthCookie(
+            response.addHeader(HttpHeaders.SET_COOKIE, JWTTokenUtils.getInstance().generateAuthCookie(
                 jwtProperties.getCookieName(),
+                jwtProperties.getCookiePath(),
                 userDetails,
                 jwtProperties.getSecret(),
                 jwtProperties.getExpirationInSeconds()
-            ));
+            ).toString());
         }
 
         return modelMapper.map(updatedUser, UserResponseDTO.class);

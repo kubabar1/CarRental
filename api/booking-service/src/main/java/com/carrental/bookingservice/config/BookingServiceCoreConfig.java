@@ -36,12 +36,14 @@ import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
 @Import({BookingServiceQueueConfig.class, IgnoreAuthenticationBookingService.class})
 @EnableJpaRepositories("com.carrental.bookingservice.repository")
+@ComponentScan(basePackages = { "com.carrental.bookingservice.*" })
 @EntityScan("com.carrental.bookingservice.model.entity")
 public class BookingServiceCoreConfig {
 

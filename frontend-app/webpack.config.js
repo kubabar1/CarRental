@@ -95,12 +95,12 @@ module.exports = {
             'process.env.USER_SERVICE_PORT': JSON.stringify(process.env.USER_SERVICE_PORT ?? 8080),
             'process.env.VEHICLE_SERVICE_PORT': JSON.stringify(process.env.VEHICLE_SERVICE_PORT ?? 8080),
 
-            'process.env.AUTH_SERVICE_CONTEXT': JSON.stringify(process.env.AUTH_SERVICE_CONTEXT),
-            'process.env.BOOKING_SERVICE_CONTEXT': JSON.stringify(process.env.BOOKING_SERVICE_CONTEXT),
-            'process.env.RATING_SERVICE_CONTEXT': JSON.stringify(process.env.RATING_SERVICE_CONTEXT),
-            'process.env.STORAGE_STUB_SERVICE_CONTEXT': JSON.stringify(process.env.STORAGE_STUB_SERVICE_CONTEXT),
-            'process.env.USER_SERVICE_CONTEXT': JSON.stringify(process.env.USER_SERVICE_CONTEXT),
-            'process.env.VEHICLE_SERVICE_CONTEXT': JSON.stringify(process.env.VEHICLE_SERVICE_CONTEXT),
+            'process.env.AUTH_SERVICE_CONTEXT': JSON.stringify(process.env.AUTH_SERVICE_CONTEXT ?? '/car-rental'),
+            'process.env.BOOKING_SERVICE_CONTEXT': JSON.stringify(process.env.BOOKING_SERVICE_CONTEXT ?? '/car-rental'),
+            'process.env.RATING_SERVICE_CONTEXT': JSON.stringify(process.env.RATING_SERVICE_CONTEXT ?? '/car-rental'),
+            'process.env.STORAGE_STUB_SERVICE_CONTEXT': JSON.stringify(process.env.STORAGE_STUB_SERVICE_CONTEXT ?? '/car-rental'),
+            'process.env.USER_SERVICE_CONTEXT': JSON.stringify(process.env.USER_SERVICE_CONTEXT ?? '/car-rental'),
+            'process.env.VEHICLE_SERVICE_CONTEXT': JSON.stringify(process.env.VEHICLE_SERVICE_CONTEXT ?? '/car-rental'),
 
             'process.env.FRONTEND_APP_PROTOCOL': JSON.stringify(process.env.FRONTEND_APP_PROTOCOL ?? 'http'),
             'process.env.FRONTEND_APP_HOSTNAME': JSON.stringify(process.env.FRONTEND_APP_HOSTNAME ?? 'localhost'),

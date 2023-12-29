@@ -29,6 +29,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,6 +37,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableJpaRepositories("com.carrental.userservice.repository")
 @EntityScan("com.carrental.userservice.model.entity")
+@ComponentScan(basePackages = { "com.carrental.userservice.*" })
 @Import({UserServiceQueueConfig.class, IgnoreAuthenticationUserService.class})
 public class UserServiceCoreConfig {
 

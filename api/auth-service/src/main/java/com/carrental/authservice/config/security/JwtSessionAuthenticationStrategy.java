@@ -3,6 +3,7 @@ package com.carrental.authservice.config.security;
 import com.carrental.commons.authentication.config.jwt.JwtProperties;
 import com.carrental.commons.authentication.model.AuthenticatedUser;
 import com.carrental.commons.authentication.utils.JWTTokenUtils;
+import com.google.common.net.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
@@ -25,11 +26,12 @@ public class JwtSessionAuthenticationStrategy implements SessionAuthenticationSt
         HttpServletResponse response
     ) throws SessionAuthenticationException {
         AuthenticatedUser user = (AuthenticatedUser) authentication.getPrincipal();
-        response.addCookie(JWTTokenUtils.getInstance().generateAuthCookie(
+        response.addHeader(HttpHeaders.SET_COOKIE, JWTTokenUtils.getInstance().generateAuthCookie(
             jwtProperties.getCookieName(),
+            jwtProperties.getCookiePath(),
             user,
             jwtProperties.getSecret(),
             jwtProperties.getExpirationInSeconds()
-        ));
+        ).toString());
     }
 }

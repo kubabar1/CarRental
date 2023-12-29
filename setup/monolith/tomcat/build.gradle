@@ -1,0 +1,15 @@
+import com.carrental.setup.plugins.tomcat.TomcatPlugin
+
+apply plugin: TomcatPlugin
+
+tomcatPlugin {
+    tomcatTarLocation = project.property('tomcatTarLocation')
+    tomcatDestination = new File(project.buildDir, 'setup/tomcat').absolutePath
+    tomcatUsersConfig = new File(project.projectDir, 'src/main/resources/tomcat-users.xml').absolutePath
+    tomcatServerConfig = project.property('useHttps') == 'true' ? new File(project.projectDir, 'src/main/resources/server-ssl.xml').absolutePath : null
+    warPath = new File(project(':setup:monolith').buildDir, 'libs/car-rental.war').absolutePath
+    keystoreFile = project.property('useHttps') == 'true' ? project.property('keystorePath') : null
+    envFilePath = new File(project(':setup:monolith').projectDir, '.env').absolutePath
+}
+
+copyWarToTomcatWebapps.dependsOn ':setup:monolith:bootWar'

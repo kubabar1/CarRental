@@ -3,15 +3,20 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'application'
-    id 'war'
 }
-
-apply from: '../shared/config-commons/boot-run.gradle'
 
 group = 'com.carrental.api'
 version = 'HEAD-SNAPSHOT'
 sourceCompatibility = '11'
 targetCompatibility = '11'
+
+bootRun {
+    debug true
+    debugOptions {
+        port = project.hasProperty('debugPort') ? project.property('debugPort') as Integer : 5005
+        suspend = false
+    }
+}
 
 springBoot {
     mainClassName = 'com.carrental.vehicleservice.VehicleServiceApplication'
@@ -48,4 +53,5 @@ dependencies {
     implementation 'javax.inject:javax.inject:1'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.7'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.7'
+    compileOnly 'javax.servlet:servlet-api:2.5'
 }

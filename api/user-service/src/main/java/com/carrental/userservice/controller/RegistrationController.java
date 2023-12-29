@@ -26,7 +26,6 @@ import static com.carrental.commons.authentication.utils.VerificationTokenHelper
 import static com.carrental.commons.authentication.utils.VerificationTokenHelper.isTokenValid;
 
 
-@CrossOrigin
 @RequestMapping(value = "/registration")
 public class RegistrationController {
 

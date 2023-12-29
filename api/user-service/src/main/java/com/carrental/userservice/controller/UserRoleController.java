@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-@CrossOrigin
 @RequestMapping("/users-roles")
 public class UserRoleController {
 

@@ -1,22 +1,28 @@
 rootProject.name = 'car-rental'
 
 include ':setup'
+include ':setup:database'
+include ':setup:monolith'
+include ':setup:monolith:tomcat'
+include ':setup:microservices'
+include ':setup:microservices:docker'
+include ':setup:microservices:kubernetes'
 
 def projectsToInclude = [
-        'frontend-app',
-        'api/rating-service',
-        'api/user-service',
-        'api/booking-service',
-        'api/vehicle-service',
-        'api/auth-service',
-        'api/mail-service',
-        'api/storage-service-stub',
-        'api/shared/auth-commons',
-        'api/shared/amqp-commons',
-        'api/shared/config-commons',
-        'api/shared/files-commons',
-        'api/shared/filtering-commons',
-        'api/eureka-server',
+    'frontend-app',
+    'api/rating-service',
+    'api/user-service',
+    'api/booking-service',
+    'api/vehicle-service',
+    'api/auth-service',
+    'api/mail-service',
+    'api/storage-service-stub',
+    'api/shared/auth-commons',
+    'api/shared/amqp-commons',
+    'api/shared/config-commons',
+    'api/shared/files-commons',
+    'api/shared/filtering-commons',
+    'api/eureka-server',
 ]
 
 projectsToInclude.each {

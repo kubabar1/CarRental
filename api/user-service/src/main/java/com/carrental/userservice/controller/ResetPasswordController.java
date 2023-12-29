@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 
 import static com.carrental.commons.authentication.utils.VerificationTokenHelper.isTokenValid;
 
-@CrossOrigin
 @RequestMapping("/reset-password")
 public class ResetPasswordController {
 

@@ -8,10 +8,8 @@ import com.carrental.vehicleservice.config.VehicleServiceCoreConfig;
 import com.carrental.vehicleservice.config.security.WebSecurityConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.WebApplicationInitializer;
 
 @SpringBootApplication
 @Import({
@@ -23,7 +21,7 @@ import org.springframework.web.WebApplicationInitializer;
         RabbitMQConfig.class
 })
 @EnableFeignClients
-public class VehicleServiceApplication extends SpringBootServletInitializer implements WebApplicationInitializer {
+public class VehicleServiceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(VehicleServiceApplication.class, args);

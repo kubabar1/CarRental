@@ -22,7 +22,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@CrossOrigin
 @RequestMapping(value = "/vehicles")
 public class VehicleController {
 

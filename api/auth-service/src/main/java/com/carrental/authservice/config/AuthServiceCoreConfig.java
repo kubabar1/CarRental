@@ -16,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -33,6 +34,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableJpaRepositories("com.carrental.authservice.repository")
 @EntityScan("com.carrental.authservice.model.entity")
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@ComponentScan(basePackages = { "com.carrental.authservice.*" })
 public class AuthServiceCoreConfig {
 
     @Bean

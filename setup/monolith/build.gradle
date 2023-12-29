@@ -1,0 +1,56 @@
+plugins {
+    id 'org.springframework.boot' version '2.6.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'application'
+    id 'war'
+}
+
+import com.carrental.utils.EnvUtil
+
+bootRun {
+    debug true
+    debugOptions {
+        port = project.hasProperty('debugPort') ? project.property('debugPort') as Integer : 5005
+        suspend = false
+    }
+    systemProperties(EnvUtil.getSystemEnvs(file('.env')))
+}
+
+repositories {
+    mavenCentral()
+}
+
+group = 'com.carrental.monolith'
+version = 'HEAD-SNAPSHOT'
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+springBoot {
+    mainClassName = 'com.carrental.monolith.SetupApplication'
+}
+
+if (project.property('useHttps') == 'true') {
+    processResources {
+        from(project.properties['keystorePath'])
+    }
+}
+
+bootWar {
+    archiveName 'car-rental.war'
+}
+
+dependencies {
+    implementation 'com.carrental.api:booking-service'
+    implementation 'com.carrental.api:rating-service'
+    implementation 'com.carrental.api:user-service'
+    implementation 'com.carrental.api:vehicle-service'
+    implementation 'com.carrental.api:auth-service'
+    implementation 'com.carrental.api:mail-service'
+    implementation 'com.carrental.api:storage-service-stub'
+    implementation 'com.carrental.shared:shared-config-commons'
+    implementation 'org.springframework.boot:spring-boot-starter:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
+    implementation 'com.h2database:h2:2.1.210'
+    compileOnly group: 'javax.servlet', name: 'servlet-api', version: '2.5'
+}

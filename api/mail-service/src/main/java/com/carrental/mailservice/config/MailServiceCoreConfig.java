@@ -13,11 +13,14 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 @Import({MailServiceQueueConfig.class})
 public class MailServiceCoreConfig {
 
     @Bean
-    public GreenMail startMailServer(MailServiceProperties mailServiceProperties) {
+    public GreenMail greenMail(MailServiceProperties mailServiceProperties) {
         GreenMail greenMail = new GreenMail(new ServerSetup[]{
                 new ServerSetup(3025, "0.0.0.0", ServerSetup.PROTOCOL_SMTP),
                 new ServerSetup(3143, "0.0.0.0", ServerSetup.PROTOCOL_IMAP)
@@ -27,8 +30,38 @@ public class MailServiceCoreConfig {
             mailServiceProperties.getDemoRecipientLogin(),
             mailServiceProperties.getDemoRecipientPassword()
         );
-        greenMail.start();
         return greenMail;
+    }
+
+    @Bean
+    public GreenMailWrapper greenMailWrapper(MailServiceProperties mailServiceProperties) {
+        GreenMailWrapper greenMail = new GreenMailWrapper(new ServerSetup[]{
+                new ServerSetup(3025, "0.0.0.0", ServerSetup.PROTOCOL_SMTP),
+                new ServerSetup(3143, "0.0.0.0", ServerSetup.PROTOCOL_IMAP)
+        });
+        greenMail.setUser(
+            mailServiceProperties.getDemoRecipientAddress(),
+            mailServiceProperties.getDemoRecipientLogin(),
+            mailServiceProperties.getDemoRecipientPassword()
+        );
+        return greenMail;
+    }
+
+    private static class GreenMailWrapper extends GreenMail {
+
+        public GreenMailWrapper(ServerSetup[] config) {
+            super(config);
+        }
+
+        @PostConstruct
+        public void stopPostConstruct() {
+            start();
+        }
+
+        @PreDestroy
+        public void stopPreDestroy() {
+            stop();
+        }
     }
 
     @Bean
@@ -39,11 +72,6 @@ public class MailServiceCoreConfig {
         mailSender.setPort(mailServiceProperties.getPort());
         mailSender.setUsername(mailServiceProperties.getUsername());
         mailSender.setPassword(mailServiceProperties.getPassword());
-
-//        Properties props = mailSender.getJavaMailProperties();
-//        props.put("spring.mail.properties.mail.smtp.auth", "true");
-//        props.put("spring.mail.properties.mail.smtp.starttls.enable", "true");
-//        props.put("spring.mail.properties.mail.smtp.starttls.required", "true");
 
         return mailSender;
     }

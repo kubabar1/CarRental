@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.NoSuchElementException;
 
-@CrossOrigin
 @RequestMapping("/comments")
 public class CommentController {
 

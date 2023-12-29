@@ -1,0 +1,107 @@
+version: '2.2'
+
+services:
+    nginx:
+        extends:
+            file: ../docker/docker-compose.yml
+            service: nginx
+
+    rabbitmq:
+        extends:
+            file: ../docker/docker-compose.yml
+            service: rabbitmq
+
+    eureka-server:
+        extends:
+            file: ../docker/docker-compose.yml
+            service: eureka-server
+
+    auth-service:
+        extends:
+            file: ../docker/docker-compose.yml
+            service: auth-service
+    auth-service-database:
+        extends:
+            file: ../docker/docker-compose.yml
+            service: auth-service-database
+
+    user-service:
+        extends:
+            file: ../docker/docker-compose.yml
+            service: user-service
+    user-service-database:
+        extends:
+            file: ../docker/docker-compose.yml
+            service: user-service-database
+
+    vehicle-service:
+        extends:
+            file: ../docker/docker-compose.yml
+            service: vehicle-service
+    vehicle-service-database:
+        extends:
+            file: ../docker/docker-compose.yml
+            service: vehicle-service-database
+
+    rating-service:
+        extends:
+            file: ../docker/docker-compose.yml
+            service: rating-service
+    rating-service-database:
+        extends:
+            file: ../docker/docker-compose.yml
+            service: rating-service-database
+
+    booking-service:
+        extends:
+            file: ../docker/docker-compose.yml
+            service: booking-service
+    booking-service-database:
+        extends:
+            file: ../docker/docker-compose.yml
+            service: booking-service-database
+
+    mail-service:
+        extends:
+            file: ../docker/docker-compose.yml
+            service: mail-service
+
+    storage-service-stub:
+        extends:
+            file: ../docker/docker-compose.yml
+            service: storage-service-stub
+
+    frontend-app:
+        extends:
+            file: ../docker/docker-compose.yml
+            service: frontend-app
+        build:
+            args:
+                - AUTH_SERVICE_PROTOCOL=http
+                - BOOKING_SERVICE_PROTOCOL=http
+                - RATING_SERVICE_PROTOCOL=http
+                - STORAGE_STUB_SERVICE_PROTOCOL=http
+                - USER_SERVICE_PROTOCOL=http
+                - VEHICLE_SERVICE_PROTOCOL=http
+                - AUTH_SERVICE_HOSTNAME=<HOSTNAME>
+                - BOOKING_SERVICE_HOSTNAME=<HOSTNAME>
+                - RATING_SERVICE_HOSTNAME=<HOSTNAME>
+                - STORAGE_STUB_SERVICE_HOSTNAME=<HOSTNAME>
+                - USER_SERVICE_HOSTNAME=<HOSTNAME>
+                - VEHICLE_SERVICE_HOSTNAME=<HOSTNAME>
+                - AUTH_SERVICE_PORT=30008
+                - BOOKING_SERVICE_PORT=30008
+                - RATING_SERVICE_PORT=30008
+                - STORAGE_STUB_SERVICE_PORT=30008
+                - USER_SERVICE_PORT=30008
+                - VEHICLE_SERVICE_PORT=30008
+                - AUTH_SERVICE_CONTEXT=/auth-service
+                - BOOKING_SERVICE_CONTEXT=/booking-service
+                - RATING_SERVICE_CONTEXT=/rating-service
+                - STORAGE_STUB_SERVICE_CONTEXT=/storage-service-stub
+                - USER_SERVICE_CONTEXT=/user-service
+                - VEHICLE_SERVICE_CONTEXT=/vehicle-service
+                - FRONTEND_APP_PROTOCOL=http
+                - FRONTEND_APP_HOSTNAME=<HOSTNAME>
+                - FRONTEND_APP_PORT=30449
+                - FRONTEND_APP_CONTEXT=

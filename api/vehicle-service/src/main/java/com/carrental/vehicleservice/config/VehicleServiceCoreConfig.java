@@ -23,14 +23,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import javax.persistence.EntityManager;
 
 @EnableJpaRepositories("com.carrental.vehicleservice.repository")
 @EntityScan("com.carrental.vehicleservice.model.entity")
+@ComponentScan(basePackages = { "com.carrental.vehicleservice.*" })
 @Import({VehicleServiceQueueConfig.class, IgnoreAuthenticationVehicleService.class})
 public class VehicleServiceCoreConfig {
 

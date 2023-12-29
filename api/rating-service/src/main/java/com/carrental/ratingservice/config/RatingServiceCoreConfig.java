@@ -13,12 +13,14 @@ import com.carrental.ratingservice.service.impl.RateServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Import({RatingServiceQueueConfig.class, IgnoreAuthenticationRatingService.class})
 @EnableJpaRepositories("com.carrental.ratingservice.repository")
 @EntityScan("com.carrental.ratingservice.model.entity")
+@ComponentScan(basePackages = { "com.carrental.ratingservice.*" })
 public class RatingServiceCoreConfig {
 
     @Bean

@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-@CrossOrigin
 @RequestMapping("/users")
 public class UserController {
 

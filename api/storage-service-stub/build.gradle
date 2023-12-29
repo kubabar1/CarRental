@@ -5,12 +5,18 @@ plugins {
     id 'application'
 }
 
-apply from: '../shared/config-commons/boot-run.gradle'
-
 group = 'com.carrental.api'
 version = 'HEAD-SNAPSHOT'
 sourceCompatibility = '11'
 targetCompatibility = '11'
+
+bootRun {
+    debug true
+    debugOptions {
+        port = project.hasProperty('debugPort') ? project.property('debugPort') as Integer : 5005
+        suspend = false
+    }
+}
 
 springBoot {
     mainClassName = 'com.carrental.storageservicestub.StorageServiceStubApplication'
@@ -35,4 +41,5 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.22'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.7'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.7'
+    implementation 'commons-io:commons-io:2.6'
 }

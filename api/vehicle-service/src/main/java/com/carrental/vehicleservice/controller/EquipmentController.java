@@ -13,7 +13,6 @@ import javax.validation.Valid;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-@CrossOrigin
 @RequestMapping(value = "/equipments")
 public class EquipmentController {
 

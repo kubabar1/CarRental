@@ -4,6 +4,8 @@ import com.carrental.commons.authentication.model.AuthenticatedUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.boot.web.server.Cookie.SameSite;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.util.ObjectUtils;
@@ -32,16 +34,21 @@ public final class JWTTokenUtils {
         return getClaimFromToken(token, Claims::getSubject, secret);
     }
 
-    public Cookie generateAuthCookie(String cookieName, AuthenticatedUser userDetails, String secret, Long expirationInSeconds) {
-        Cookie authCookie = new Cookie(cookieName, generateToken(userDetails, secret, expirationInSeconds));
-        authCookie.setPath("/");
-        authCookie.setSecure(false);
-        authCookie.setHttpOnly(true);
-//        authCookie.setComment();
-//        authCookie.setDomain();
-//        authCookie.setVersion();
-        authCookie.setMaxAge(expirationInSeconds.intValue());
-        return authCookie;
+    public ResponseCookie generateAuthCookie(
+        String cookieName,
+        String cookiePath,
+        AuthenticatedUser userDetails,
+        String secret,
+        Long expirationInSeconds
+    ) {
+        return ResponseCookie
+            .from(cookieName, generateToken(userDetails, secret, expirationInSeconds))
+            .secure(false)
+            .httpOnly(true)
+            .path(cookiePath)
+            .maxAge(expirationInSeconds.intValue())
+            .sameSite(SameSite.STRICT.attributeValue())
+            .build();
     }
 
     public AuthenticatedUser getAuthenticatedUserFromToken(String token, String secret) {

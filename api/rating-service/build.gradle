@@ -5,12 +5,18 @@ plugins {
     id 'application'
 }
 
-apply from: '../shared/config-commons/boot-run.gradle'
-
 group = 'com.carrental.api'
 version = 'HEAD-SNAPSHOT'
 sourceCompatibility = '11'
 targetCompatibility = '11'
+
+bootRun {
+    debug true
+    debugOptions {
+        port = project.hasProperty('debugPort') ? project.property('debugPort') as Integer : 5005
+        suspend = false
+    }
+}
 
 springBoot {
     mainClassName = 'com.carrental.ratingservice.RatingServiceApplication'

@@ -1,0 +1,28 @@
+version: '2.2'
+
+services:
+  car-rental-database:
+    container_name: car-rental-database
+    image: postgres
+    restart: always
+    volumes:
+      - ../../api/vehicle-service/src/main/resources/schema-psql.sql:/docker-entrypoint-initdb.d/1_vehicle_service_schema.sql
+      - ../../api/vehicle-service/src/main/resources/data.sql:/docker-entrypoint-initdb.d/2_vehicle_service_demo.sql
+      - ../../api/user-service/src/main/resources/schema-psql.sql:/docker-entrypoint-initdb.d/1_user_service_schema.sql
+      - ../../api/user-service/src/main/resources/data.sql:/docker-entrypoint-initdb.d/2_user_service_demo.sql
+      - ../../api/auth-service/src/main/resources/schema-psql.sql:/docker-entrypoint-initdb.d/1_auth_service_schema.sql
+      - ../../api/rating-service/src/main/resources/schema-psql.sql:/docker-entrypoint-initdb.d/1_rating_service_schema.sql
+      - ../../api/rating-service/src/main/resources/data.sql:/docker-entrypoint-initdb.d/2_rating_service_demo.sql
+      - ../../api/booking-service/src/main/resources/schema-psql.sql:/docker-entrypoint-initdb.d/1_booking_service_schema.sql
+      - ../../api/booking-service/src/main/resources/data.sql:/docker-entrypoint-initdb.d/2_booking_service_demo.sql
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "carrental", "-U", "postgres" ]
+      interval: 3s
+      retries: 10
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: carrental
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_PORT: 5432

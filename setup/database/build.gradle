@@ -1,0 +1,18 @@
+import com.carrental.database.plugins.DatabaseUtils
+import com.carrental.database.plugins.DatabaseType
+import com.carrental.database.plugins.DatabasePlugin
+
+apply plugin: DatabasePlugin
+
+repositories {
+    mavenCentral()
+}
+
+databasePlugin {
+    url = 'jdbc:postgresql://localhost:5432/carrental'
+    user = 'postgres'
+    password = 'postgres'
+    driver = 'org.postgresql.Driver'
+    schemaFiles = DatabaseUtils.getAllSchemaFilesPaths(gradle.includedBuilds, DatabaseType.PSQL)
+    dataFiles = DatabaseUtils.getAllDataFilesPaths(gradle.includedBuilds)
+}

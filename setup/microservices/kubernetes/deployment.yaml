@@ -1,0 +1,279 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-api-config
+data:
+  DEV: "false"
+  RABBIT_HOST: "127.0.0.1"
+  EUREKA_ENABLED: "true"
+  EUREKA_URI: "http://127.0.0.1:8761/eureka"
+  AUTH_SERVICE_PROTOCOL: "http"
+  BOOKING_SERVICE_PROTOCOL: "http"
+  RATING_SERVICE_PROTOCOL: "http"
+  STORAGE_STUB_SERVICE_PROTOCOL: "http"
+  USER_SERVICE_PROTOCOL: "http"
+  VEHICLE_SERVICE_PROTOCOL: "http"
+  AUTH_SERVICE_HOSTNAME: "<HOSTNAME>"
+  BOOKING_SERVICE_HOSTNAME: "<HOSTNAME>"
+  RATING_SERVICE_HOSTNAME: "<HOSTNAME>"
+  STORAGE_STUB_SERVICE_HOSTNAME: "<HOSTNAME>"
+  USER_SERVICE_HOSTNAME: "<HOSTNAME>"
+  VEHICLE_SERVICE_HOSTNAME: "<HOSTNAME>"
+  FRONTEND_APP_PROTOCOL: "http"
+  FRONTEND_APP_HOSTNAME: "<HOSTNAME>"
+  FRONTEND_APP_PORT: "30449"
+  FRONTEND_APP_CONTEXT: ""
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+data:
+  nginx.conf: |
+    worker_processes 1;
+    events { worker_connections 1024; }
+
+    http {
+      log_format upstream_logging '[$time_local] $remote_addr - $remote_user - $server_name: "$request" upstream_response_time $upstream_response_time msec $msec request_time $request_time';
+
+      server {
+           listen 80;
+
+           proxy_set_header Host $host;
+           proxy_set_header Origin $http_origin;
+           proxy_set_header X-Real-IP $remote_addr;
+           proxy_set_header X-Forwarded-Host $host;
+           proxy_set_header X-Forwarded-Server $host;
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+           add_header Content-Type text/plain;
+           add_header 'Access-Control-Allow-Origin' '$http_origin'  always;
+           add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
+           add_header 'Access-Control-Allow-Headers' 'Authorization, Cache-Control, Content-Type, credentials, X-XSRF-TOKEN, Accept, X-Requested-With' always;
+           add_header 'Access-Control-Allow-Credentials' 'true' always;
+
+           if ($request_method = OPTIONS ) {
+               return 200;
+           }
+
+           proxy_hide_header 'access-control-allow-origin';
+           proxy_hide_header 'access-control-allow-credentials';
+           proxy_pass_request_headers      on;
+
+           proxy_hide_header   Referer;
+           proxy_hide_header   Origin;
+           proxy_set_header    Referer           '';
+           proxy_set_header    Origin            '';
+
+           proxy_redirect off;
+           proxy_set_header   Authorization "";
+
+           location /auth-service/ {
+              proxy_pass http://127.0.0.1:8081/;
+           }
+
+           location /user-service/ {
+               proxy_pass http://127.0.0.1:8082/;
+           }
+
+           location /vehicle-service/ {
+               proxy_pass http://127.0.0.1:8083/;
+           }
+
+           location /rating-service/ {
+               proxy_pass http://127.0.0.1:8084/;
+           }
+
+           location /booking-service/ {
+               proxy_pass http://127.0.0.1:8085/;
+           }
+
+           location /mail-service/ {
+               proxy_pass http://127.0.0.1:8086/;
+           }
+
+           location /storage-service-stub/ {
+               proxy_pass http://127.0.0.1:8087/;
+           }
+      }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: cr-dep
+  name: cr-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cr-dep
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: cr-dep
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}
+        ports:
+          - containerPort: 80
+            name: "nginx-dpl"
+          - containerPort: 5005
+            name: "jvm-debug"
+        volumeMounts:
+          - name: nginx-conf
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx.conf
+            readOnly: true
+
+      - image: rabbitmq:3-management-alpine
+        name: rabbitmq
+        resources: {}
+
+      - image: eureka-server
+        name: eureka-server
+        imagePullPolicy: Never
+        resources: {}
+
+      - image: auth-service
+        name: auth-service
+        imagePullPolicy: Never
+        resources: {}
+        envFrom:
+          - configMapRef:
+              name: common-api-config
+
+      - image: user-service
+        name: user-service
+        imagePullPolicy: Never
+        resources: {}
+        envFrom:
+          - configMapRef:
+              name: common-api-config
+
+      - image: vehicle-service
+        name: vehicle-service
+        imagePullPolicy: Never
+        resources: {}
+        envFrom:
+          - configMapRef:
+              name: common-api-config
+
+      - image: rating-service
+        name: rating-service
+        imagePullPolicy: Never
+        resources: {}
+        envFrom:
+          - configMapRef:
+              name: common-api-config
+
+      - image: booking-service
+        name: booking-service
+        imagePullPolicy: Never
+        resources: {}
+#        env:
+#          - name: DEV
+#            value: "true"
+        envFrom:
+          - configMapRef:
+              name: common-api-config
+
+      - image: mail-service
+        name: mail-service
+        imagePullPolicy: Never
+        resources: {}
+        envFrom:
+          - configMapRef:
+              name: common-api-config
+
+      - image: storage-service-stub
+        name: storage-service-stub
+        imagePullPolicy: Never
+        resources: {}
+        envFrom:
+          - configMapRef:
+              name: common-api-config
+
+      - name: frontend-app
+        image: frontend-app
+        imagePullPolicy: Never
+        resources: {}
+        env:
+          - name: "AUTH_SERVICE_PORT"
+            value: "30008"
+          - name: "BOOKING_SERVICE_PORT"
+            value: "30008"
+          - name: "RATING_SERVICE_PORT"
+            value: "30008"
+          - name: "STORAGE_STUB_SERVICE_PORT"
+            value: "30008"
+          - name: "USER_SERVICE_PORT"
+            value: "30008"
+          - name: "VEHICLE_SERVICE_PORT"
+            value: "30008"
+        envFrom:
+          - configMapRef:
+              name: common-api-config
+
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: nginx-conf
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cr-svc
+spec:
+  type: NodePort
+  ports:
+    - name: frontend-app
+      port: 3030
+      protocol: TCP
+      targetPort: 3030
+      nodePort: 30449
+    - name: eureka-server
+      port: 8761
+      protocol: TCP
+      targetPort: 8761
+      nodePort: 32157
+    - name: nginx-service
+      port: 80
+      protocol: TCP
+      targetPort: 80
+      nodePort: 30008
+#    - name: vsl
+#      port: 8083
+#      protocol: TCP
+#      targetPort: 8083
+#      nodePort: 30009
+#    - name: jvm-debug
+#      port: 5005
+#      protocol: TCP
+#      targetPort: 5005
+#      nodePort: 30010
+  selector:
+    app: cr-dep
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: nginx-service
+#  labels:
+#    env: cr-svc-nginx
+#spec:
+#  type: LoadBalancer
+#  ports:
+#    - port: 80
+#  selector:
+#    env: cr-svc-nginx

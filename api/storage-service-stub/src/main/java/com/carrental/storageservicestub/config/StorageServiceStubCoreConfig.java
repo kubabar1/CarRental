@@ -15,7 +15,7 @@ public class StorageServiceStubCoreConfig {
         return new VehiclesImagesResourceHandler(baseTmpDir);
     }
 
-    @Bean
+    @Bean(destroyMethod = "deleteTmpDir")
     public BaseTmpDir tmpDirService() {
         return BaseTmpDir.getInstance();
     }

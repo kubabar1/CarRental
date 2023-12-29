@@ -18,6 +18,9 @@ public class JwtProperties {
     @NotNull
     private String cookieName;
 
+    @NotNull
+    private String cookiePath;
+
     public String getSecret() {
         return secret;
     }
@@ -40,5 +43,13 @@ public class JwtProperties {
 
     public void setCookieName(String cookieName) {
         this.cookieName = cookieName;
+    }
+
+    public String getCookiePath() {
+        return cookiePath;
+    }
+
+    public void setCookiePath(String cookiePath) {
+        this.cookiePath = cookiePath;
     }
 }
