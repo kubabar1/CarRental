@@ -1,6 +1,6 @@
 ![Alt text](images/car_rental_logo_name.png "CAR RENTAL")
 
-CarRental is simple enterprise REST application designed to support 
+CarRental is sample enterprise REST application designed to support 
 process of booking vehicles in a car rental company. 
 Application consists of 2 main parts - main page allowing browsing 
 and book cars and profile page allowing performing various actions 
@@ -9,6 +9,8 @@ he has (e.g. user can see here list of his bookings, change password,
 update profile settings; employee can update booking status, 
 add or edit new vehicles; admin can assign permissions to user, etc) - 
 all features were described in section [Features](#features).
+
+![Alt text](images/car_rental_architecture_diagram.png "Archtecture diagram")
 
 Application is implemented in microservices architecture as multi module 
 project stored in single git repository (monorepo architecture) managed by 
@@ -38,6 +40,19 @@ TODO: describe menu appearance depending on permission user has
 ### Registration Page
 
 ### Reset Password Page
+
+# Software requirements
+
+During development below programs were used:
+
+- Java 11.0.21
+- RabbitMQ 3.9.13
+- Node.js v16.20.0
+- Yarn 1.22.19
+- Gradle 7.5.1
+- PostgreSQL 14.10
+- Docker 24.0.7
+- Minikube v1.31.2
 
 # Setup
 
@@ -121,6 +136,8 @@ microservices' application.properties configuration files - **api/{microservice-
 ## Setup backend
 
 ### Monolith
+
+> Before monolith setup install and configure RabbitMQ - see [Software requirements](#software-requirements)
 
 a) embedded Tomcat - using gradle **bootRun** task
 
@@ -228,6 +245,4 @@ below command:
     minikube service --all
     ```
     ![Alt text](images/minikube_services.png "Minikube services")
-12. Go to url assigned to `frontend-app/3030` 
-
-# Software requirements
+12. Go to url assigned to `frontend-app/3030`
