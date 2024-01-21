@@ -1,4 +1,6 @@
-<span style="display:block;text-align:center">![Alt text](images/car_rental_logo_name.png "CAR RENTAL")</span>
+<p align="center">
+  <img src="images/car_rental_logo_name.png">
+</p>
 
 CarRental is sample enterprise REST application designed to support process of booking vehicles in a car rental company. 
 Application consists of 2 main parts - main page for browsing and booking cars and profile page for performing 
@@ -7,11 +9,10 @@ can see here list of his bookings, change password, update profile settings; emp
 edit new vehicles; admin can assign permissions to user, etc) - all features were described in 
 section [Features](#features).
 
-<span style="display:flex;justify-content:center"><span style="width:48%;margin:0 1%">
-![Alt text](images/car_rental_main_page.gif "Main page design")
-</span> <span style="width:48%;margin:0 1%">
-![Alt text](images/car_rental_profile_page.gif "Profile page design")
-</span></span>
+<p float="left" align="center">
+  <img width="48%" src="images/car_rental_main_page.gif">
+  <img width="48%" src="images/car_rental_profile_page.gif">
+</p>
 
 Application is implemented in microservices architecture as multi module projects stored in single git repository 
 (monorepo architecture) managed by Gradle (composite build feature was used). Backend consists of 8 microservices 
@@ -21,7 +22,9 @@ Application supports various deployment methods - deployment as single monolith 
 Tomcat or Tomcat standalone server, deployment as microservices using docker or kubernetes - all details about 
 deployment were described in detail in section [Setup](#setup).
 
-<span style="display:block;text-align:center">![Alt text](images/car_rental_architecture_diagram.png "Architecture diagram")</span>
+<p align="center">
+  <img src="images/car_rental_architecture_diagram.png">
+</p>
 
 1. [Features](#features)
     1. [Main Page](#main-page)
@@ -68,27 +71,22 @@ It also allows browsing and filtering vehicles, checking 'Special Offers', readi
 company by filling email form and clicking send. It also contains vehicle details page which lists all vehicle details 
 and allows read and add new comments, reserve vehicle, etc.
 
-<span style="display:flex;justify-content:center"><span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/main_page_home.png "Main page design")
-</span> <span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/main_page_car_list.png "Main page design")
-</span></span>
+<p float="left" align="center">
+  <img width="48%" src="images/main_page_home.png">
+  <img width="48%" src="images/main_page_car_list.png">
+</p>
 
-<span style="display:flex;justify-content:center"><span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/main_page_home_pl.png "Main page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/main_page_best_offers.png "Main page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/main_page_about_us.png "Main page design")
-</span></span>
+<p float="left" align="center">
+  <img width="31%" src="images/main_page_home_pl.png">
+  <img width="31%" src="images/main_page_best_offers.png">
+  <img width="31%" src="images/main_page_about_us.png">
+</p>
 
-<span style="display:flex;justify-content:center"><span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/main_page_contact.png "Main page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/main_page_car_details_1.png "Main page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/main_page_car_details_2.png "Main page design")
-</span></span>
+<p float="left" align="center">
+  <img width="31%" src="images/main_page_contact.png">
+  <img width="31%" src="images/main_page_car_details_1.png">
+  <img width="31%" src="images/main_page_car_details_2.png">
+</p>
 
 ### Profile Page
 
@@ -96,161 +94,145 @@ Profile page allows user to perform actions associated with personal settings (c
 bookings (cancel, change status), managing users (change user data, assign permission, send email), managing locations
 (add new or display its list), managing vehicles (edit vehicle data, add a new vehicle).
 
-<span style="display:flex;justify-content:center"><span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_perm_user.png "Profile page design")
-</span> <span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_perm_admin.png "Profile page design")
-<figcaption style="display:flex;justify-content:center">Difference in appearance of menu for a regular and an admin user</figcaption></span></span>
+<p float="left" align="center">
+  <img width="48%" src="images/profile_page_perm_user.png">
+  <img width="48%" src="images/profile_page_perm_admin.png">
+  <br>
+  <em>Difference in appearance of menu for a regular and an admin user</em>
+</p>
 
 Tables used to display bookings, users or vehicles data supports pagination, sorting, filtering and translations 
 (translations management is implemented on the frontend, sorting, pagination and filtering is executed by the backend).
 
-<span style="display:flex;justify-content:center"><span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_pagination.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_sorting.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_translation.png "Profile page design")
-</span></span>
+<p float="left" align="center">
+  <img width="31%" src="images/profile_page_pagination.png">
+  <img width="31%" src="images/profile_page_sorting.png">
+  <img width="31%" src="images/profile_page_translation.png">
+</p>
 
-<span style="display:flex;justify-content:center"><span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_filtering_text.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_filtering_date.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_filtering_enum.png "Profile page design")
-</span></span>
+<p float="left" align="center">
+  <img width="31%" src="images/profile_page_filtering_text.png">
+  <img width="31%" src="images/profile_page_filtering_date.png">
+  <img width="31%" src="images/profile_page_filtering_enum.png">
+</p>
 
 #### Booking Management
 
 This section contains 7 sub sections. Below 3 subsections displays data of a regular user bookings - allows displaying
 bookings created by user, cancel them, see already reserved vehicles and list all bookings' history.
 
-<span style="display:flex;justify-content:center"><span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_bookings_my_1.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_bookings_my_2.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_bookings_my_3.png "Profile page design")
-</span></span>
+<p float="left" align="center">
+  <img width="31%" src="images/profile_page_bookings_my_1.png">
+  <img width="31%" src="images/profile_page_bookings_my_2.png">
+  <img width="31%" src="images/profile_page_bookings_my_3.png">
+</p>
 
 Below 3 subsections allows admin or company employee display and manage bookings - rent reserved booking (when user 
 rent an already reserved vehicle), cancel reservation or return rented vehicle (when user returns it).
 
-<span style="display:flex;justify-content:center"><span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_bookings_all_1.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_bookings_all_2.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_bookings_all_3.png "Profile page design")
-</span></span>
+<p float="left" align="center">
+  <img width="31%" src="images/profile_page_bookings_all_1.png">
+  <img width="31%" src="images/profile_page_bookings_all_2.png">
+  <img width="31%" src="images/profile_page_bookings_all_3.png">
+</p>
 
 There is also 1 additional screen to display changes in the status of all bookings - generated using Hibernate Envers.
 
-<span style="display:flex;justify-content:center"><span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/booking-state.png "Booking state diagram")
-<figcaption style="display:flex;justify-content:center">Booking status state diagram</figcaption></span></span>
+<p float="left" align="center">
+  <img width="48%" src="images/booking-state.png">
+  <br>
+  <em>Booking status state diagram</em>
+</p>
 
 #### User List
 
 Users page allows to list all users, assign permissions, edit user data or send email.
 
-<span style="display:flex;justify-content:center"><span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_user_list.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_user_list_edit_user.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_user_list_assign_role.png "Profile page design")
-</span></span>
+<p float="left" align="center">
+  <img width="31%" src="images/profile_page_user_list.png">
+  <img width="31%" src="images/profile_page_user_list_edit_user.png">
+  <img width="31%" src="images/profile_page_user_list_assign_role.png">
+</p>
 
-<span style="display:flex;justify-content:center"><span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_user_list_send_email_1.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_user_list_send_email_2.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_user_list_send_email_3.png "Profile page design")
-</span></span>
+<p float="left" align="center">
+  <img width="31%" src="images/profile_page_user_list_send_email_1.png">
+  <img width="31%" src="images/profile_page_user_list_send_email_2.png">
+  <img width="31%" src="images/profile_page_user_list_send_email_3.png">
+</p>
 
 Email can be sent to a single user (by clicking envelope icon in specific user row) or to multiple using checkboxes 
 displayed for each row (it supports checking checkboxes in many pages) and then clicking button 'Send email' 
 (application for demonstration purpose is configured to send all emails to 1 demo email address - see email 
 configuration description [Setup](#setup) section for more details).
 
-<span style="display:flex;justify-content:center"><span style="width:99%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_user_list_send_email_4.png "Profile page design")
-</span></span>
+<p float="left" align="center">
+  <img width="48%" src="images/profile_page_user_list_send_email_4.png">
+</p>
 
-<span style="display:flex;justify-content:center"><span style="width:99%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_user_list_send_email_5.png "Profile page design")
-<figcaption style="display:flex;justify-content:center">Example email sent to 3 users</figcaption></span></span>
+<p float="left" align="center">
+  <img width="48%" src="images/profile_page_user_list_send_email_5.png">
+  <br>
+  <em>Example email sent to 3 users</em>
+</p>
 
 #### Vehicle List
 
 Vehicle section allows admin or company employee manage vehicles (display list of all vehicles, edit its data, assign
 or remove equipment), add a new vehicle, list or add new equipment item and list all vehicle options (brands, 
-models, etc). 
+models, etc).
 
-<span style="display:flex;justify-content:center"><span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_vehicle_list_1.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_vehicle_list_2.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_vehicle_list_3.png "Profile page design")
-</span></span>
+<p float="left" align="center">
+  <img width="31%" src="images/profile_page_vehicle_list_1.png">
+  <img width="31%" src="images/profile_page_vehicle_list_2.png">
+  <img width="31%" src="images/profile_page_vehicle_list_3.png">
+</p>
 
-<span style="display:flex;justify-content:center"><span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_vehicle_list_add_vehicle.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_vehicle_list_eqp.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_vehicle_list_add_vehicle_option.png "Profile page design")
-</span></span>
+<p float="left" align="center">
+  <img width="31%" src="images/profile_page_vehicle_list_add_vehicle.png">
+  <img width="31%" src="images/profile_page_vehicle_list_eqp.png">
+  <img width="31%" src="images/profile_page_vehicle_list_add_vehicle_option.png">
+</p>
 
 This section contains **Vehicle options** subsection (new vehicle options like color, brand, model, etc
 can be added in **Add vehicle** subsection as presented on one of above screens). User can delete one of listed options if
 it's not connected with any vehicle (in a tooltip there is a message displayed with information about how many vehicles 
 a given option is connected with).
 
-<span style="display:flex;justify-content:center"><span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_vehicle_list_vo_1.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_vehicle_list_vo_2.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_vehicle_list_vo_3.png "Profile page design")
-</span></span>
+<p float="left" align="center">
+  <img width="31%" src="images/profile_page_vehicle_list_vo_1.png">
+  <img width="31%" src="images/profile_page_vehicle_list_vo_2.png">
+  <img width="31%" src="images/profile_page_vehicle_list_vo_3.png">
+</p>
 
 #### Locations List 
 
 Allows displaying list of all locations available in application or add new location.
 
-<span style="display:flex;justify-content:center"><span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_locations_list.png "Profile page design")
-</span> <span style="width:48%;margin:0 1%">
-![Alt text](images/profile_page_locations_add.png "Profile page design")
-</span></span>
+<p float="left" align="center">
+  <img width="48%" src="images/profile_page_locations_list.png">
+  <img width="48%" src="images/profile_page_locations_add.png">
+</p>
 
 #### User Roles List
 
 Display lists of all roles available in application.
 
-<span style="display:flex;justify-content:center"><span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_user_roles.png "Profile page design")
-</span></span>
+<p float="left" align="center">
+  <img width="48%" src="images/profile_page_user_roles.png">
+</p>
 
 #### Settings
 
 This section allows changing user personal data (name, surname, birthdate, phone number), changing password or - only 
 in case of admins - schedule some CRON actions in **Automation** subsection. Currently, only one action is provided - to 
 cancel expired booking. It can be performed manually by clicking **Execute now** button or executed automatically by 
-CRON scheduler in time periods specified by CRON expression. 
+CRON scheduler in time periods specified by CRON expression.
 
-<span style="display:flex;justify-content:center"><span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_settings_user_settings.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_settings_change_password.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/profile_page_settings_automation.png "Profile page design")
-</span></span>
+<p float="left" align="center">
+  <img width="31%" src="images/profile_page_settings_user_settings.png">
+  <img width="31%" src="images/profile_page_settings_change_password.png">
+  <img width="31%" src="images/profile_page_settings_automation.png">
+</p>
 
 ### Reservation Page
 
@@ -264,64 +246,59 @@ Reservation page allows user to create new booking. It consists of 3 subpages:
 If booking was successfully created, success message with the link to main page will be displayed, otherwise error 
 message will appear here.
 
-<span style="display:flex;justify-content:center"><span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/reservation_page_step1.png "Login page design")
-</span> <span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/reservation_page_step_2_modal.png "Login page design")
-</span></span>
+<p float="left" align="center">
+  <img width="48%" src="images/reservation_page_step1.png">
+  <img width="48%" src="images/reservation_page_step_2_modal.png">
+</p>
 
-<span style="display:flex;justify-content:center"><span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/reservation_page_step_2.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/reservation_page_step_3.png "Profile page design")
-</span> <span style="width:31%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/reservation_page_success.png "Profile page design")
-</span></span>
+<p float="left" align="center">
+  <img width="31%" src="images/reservation_page_step_2.png">
+  <img width="31%" src="images/reservation_page_step_3.png">
+  <img width="31%" src="images/reservation_page_success.png">
+</p>
 
 ### Login Page
 
 Login page allows user to log in to the application. If login finished with success (provided login and password were
 correct) then user is redirected to main page. If data were not correct, error message is displayed.
 
-<span style="display:flex;justify-content:center"><span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/login_page.png "Login page design")
-</span> <span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/login_page_error.png "Login page design")
-</span></span>
+<p float="left" align="center">
+  <img width="48%" src="images/login_page.png">
+  <img width="48%" src="images/login_page_error.png">
+</p>
 
 ### Registration Page
 
 Registration page allows unauthorized user to crate new account. User needs to open **register user** page by clicking 
 'Sign up' link located on the top bar of main page and provide necessary data in registration form.
 
-<span style="display:flex;justify-content:center"><span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/registration_page_form.png "Registration page design")
-</span></span>
+<p float="left" align="center">
+  <img width="48%" src="images/registration_page_form.png">
+</p>
 
 After filling form with correct data and clicking button 'Register', email with confirm registration link will be
 sent (it should be sent to the provided email address, but for demonstration purpose it will be sent to
 demo address configured in application properties - see email configuration subsection in [Setup](#setup) section).
 
-<span style="display:flex;justify-content:center"><span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/registration_page_mail.png "Registration page design")
-</span></span>
+<p float="left" align="center">
+  <img width="48%" src="images/registration_page_mail.png">
+</p>
 
 After user click the confirmation link (sent in email), his account will be enabled (he will be able to log in with 
 new account), and he will be redirected to page with **Registration successful** message box. In case of failure, error 
 message will be displayed (if sent token already expired there will be info about expired token, if token is invalid, 
 there will be info about invalid token).
 
-<span style="display:flex;justify-content:center"><span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/registration_page_ok.png "Registration page design")
-</span> <span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/registration_page_invalid_token.png "Registration page design")
-</span></span>
+<p float="left" align="center">
+  <img width="48%" src="images/registration_page_ok.png">
+  <img width="48%" src="images/registration_page_invalid_token.png">
+</p>
 
 The entire user registration flow is presented on below sequence diagram.
 
-<span style="display:flex;justify-content:center"><span style="width:98%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/register-user.png "User registration diagram")
-</span></span>
+<p float="left" align="center">
+  <img width="98%" src="images/register-user.png">
+</p>
 
 ### Reset Password Page
 
@@ -330,24 +307,23 @@ Reset password page allows user to reset password. To reach that page the user n
 'Reset password' button. After that, if provided email was correct (it exists in the database), email with reset 
 password link will be sent to the user, and message box with 'ok' icon and text 'Check your email' will be displayed.
 
-<span style="display:flex;justify-content:center"><span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/reset_password_page.png "Reset page design")
-</span> <span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/reset_password_page_ok.png "Reset page design")
-</span></span>
+<p float="left" align="center">
+  <img width="48%" src="images/reset_password_page.png">
+  <img width="48%" src="images/reset_password_page_ok.png">
+</p>
 
 User then needs to open his email client (during tests Thunderbird client was used - see mail client configuration 
 described in [Mail](#mail) subsection), open received message and click reset password link.
 
-<span style="display:flex;justify-content:center"><span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/reset_password_email.png "Reset page design")
-</span></span>
+<p float="left" align="center">
+  <img width="48%" src="images/reset_password_email.png">
+</p>
 
 After clicking, the user will be redirected to a page, where he will have to enter a new password.
 
-<span style="display:flex;justify-content:center"><span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/reset_password_page_update_password.png "Reset page design")
-</span></span>
+<p float="left" align="center">
+  <img width="48%" src="images/reset_password_page_update_password.png">
+</p>
 
 # Software requirements
 
@@ -474,13 +450,17 @@ By default, for demonstration purpose all emails are sent to 1 email address (co
 
 To receive emails FireBird email client can be used - below is presented sample configuration:
 
-<span style="display:flex;justify-content:center"><span style="width:98%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/email_config_imap.png "Email configuration - IMAP")
-<figcaption style="display:flex;justify-content:center">IMAP configuration</figcaption></span></span>
+<p float="left" align="center">
+  <img width="48%" src="images/email_config_imap.png">
+  <br>
+  <em>IMAP configuration</em>
+</p>
 
-<span style="display:flex;justify-content:center"><span style="width:98%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/email_config_smtp.png "Email configuration - SMTP")
-<figcaption style="display:flex;justify-content:center">SMTP configuration</figcaption></span></span>
+<p float="left" align="center">
+  <img width="48%" src="images/email_config_smtp.png">
+  <br>
+  <em>SMTP configuration</em>
+</p>
 
 Properties which are used to configure GreenMail server:
 
@@ -637,7 +617,9 @@ below command:
     ```
     minikube service --all
     ```
-    <span style="display:flex;justify-content:center">![Alt text](images/minikube_services.png "Minikube services")</span>
+    <p float="left" align="center">
+        <img width="48%" src="images/minikube_services.png">
+    </p>
 12. Go to url assigned to `frontend-app/3030`
 
 # Technical description
@@ -649,11 +631,10 @@ setup URL will look like below:
 
 `http://localhost:8080/car-rental/swagger-ui/index.html`
 
-<span style="display:flex;justify-content:center"><span style="width:48%;margin:0 1%;display:flex;justify-content:center">
-![Alt text](images/swagger_api.png "Swagger API description")
-</span> <span style="width:48%;margin:0 1%">
-![Alt text](images/swagger_api_2.png "Swagger API description")
-</span></span>
+<p float="left" align="center">
+  <img width="48%" src="images/swagger_api.png">
+  <img width="48%" src="images/swagger_api_2.png">
+</p>
 
 In total, the API of all microservices consists of the following elements:
 - 12 controllers
@@ -727,7 +708,9 @@ For monolith setup RabbitMQ needs to be manually installed and configured. In ca
 RabbitMQ is deployed as docker image. After start application RabbitMQ management dashboard can be accessed via 
 url: `http://localhost:15672/` (default credentials are guest/guest).
 
-<span style="display:flex;justify-content:center">![Alt text](images/car-rental-rabbitmq-overview.png "RabbitMQ configuration")</span>
+<p float="left" align="center">
+    <img width="48%" src="images/car-rental-rabbitmq-overview.png">
+</p>
 
 Each queue in application is created using shared util from `api/shared/amqp-commons` module (which is included to each
 microservice). RabbitMQ is configured using described before properties and shared configuration from 
@@ -736,12 +719,16 @@ microservice). RabbitMQ is configured using described before properties and shar
 Application consists of 2 below exchanges - one for regular messages and one for 'dead-letters' (used when error occurs
 during sending messages between microservices - dead letter exchange 'dlx').
 
-<span style="display:flex;justify-content:center">![Alt text](images/car-rental-rabbitmq-exchanges.png "RabbitMQ configuration")</span>
+<p float="left" align="center">
+    <img width="48%" src="images/car-rental-rabbitmq-exchanges.png">
+</p>
 
 Application uses 12 regular queues (the purpose is as its self-explaining name) and 1 queue for dead letters (used when 
 error occurs during sending messages between microservices - `q.car-rental.dlq`).
 
-<span style="display:flex;justify-content:center">![Alt text](images/car-rental-rabbitmq-queues.png "RabbitMQ configuration")</span>
+<p float="left" align="center">
+    <img width="48%" src="images/car-rental-rabbitmq-queues.png">
+</p>
 
 ## Microservices
 
@@ -749,7 +736,9 @@ Application consists of 8 microservices. All microservices are registered on Eur
 Eureka server dashboard (Eureka is enabled only in microservices setup, e.g. in case of docker setup it can be accessed
 at URL `http://localhost:8761/`). 
 
-<span style="display:flex;justify-content:center">![Alt text](images/car-rental-eureka.png "Eureka server")</span>
+<p float="left" align="center">
+    <img width="98%" src="images/car-rental-eureka.png">
+</p>
 
 ### Auth Service
 
