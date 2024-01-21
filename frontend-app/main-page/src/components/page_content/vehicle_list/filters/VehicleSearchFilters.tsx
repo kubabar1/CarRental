@@ -109,10 +109,18 @@ export function VehicleSearchFilters({ handleFilterSubmit }: CarSearchFiltersInt
                 minValue={filteringValueMin}
                 maxValue={filteringValueMax}
                 setMinValue={(newValue: string | undefined) => {
-                    setFilteringValueMin(newValue);
+                    if (newValue === '') {
+                        setFilteringValueMin(undefined);
+                    } else {
+                        setFilteringValueMin(newValue);
+                    }
                 }}
                 setMaxValue={(newValue: string | undefined) => {
-                    setFilteringValueMax(newValue);
+                    if (newValue === '') {
+                        setFilteringValueMax(undefined);
+                    } else {
+                        setFilteringValueMax(newValue);
+                    }
                 }}
             />
         );

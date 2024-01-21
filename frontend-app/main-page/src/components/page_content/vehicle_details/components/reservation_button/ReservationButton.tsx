@@ -17,7 +17,7 @@ export default function ReservationButton(props: ReservationButtonProperties): J
             <Button
                 onClick={() => {
                     window.location.replace(
-                        `${reservationPath}?localisationId=${vehicle.location}&vehicleId=${vehicle.id}`
+                        `${reservationPath}?localisationId=${vehicle.location.id}&vehicleId=${vehicle.id}`
                     );
                 }}
                 className="linkstyle btn btn-success px-5 py-2 ml-3"

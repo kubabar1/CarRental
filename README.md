@@ -440,6 +440,16 @@ DATASOURCE_DIALECT=org.hibernate.dialect.H2Dialect
 SQL_PLATFORM=h2
 ```
 
+For PostgreSQL below props needs to be set:
+```
+DATASOURCE_URL=jdbc:postgresql://localhost:5432/carrental
+DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+DATASOURCE_USERNAME=postgres
+DATASOURCE_PASSWORD=postgres
+DATASOURCE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+SQL_PLATFORM=psql
+```
+
 ## Mail
 
 During activities like user registration or password reset, application sending email containing link with token. 

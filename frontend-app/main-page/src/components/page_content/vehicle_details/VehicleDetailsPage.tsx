@@ -43,7 +43,6 @@ export function VehicleDetailsPage({ authenticatedUser, match }: CarDetailsPrope
         RatingService.getVehicleComments(vehicleId, nextPage, DEFAULT_COMMENTS_COUNT).then(
             (commentResponseDTOS: Page<CommentWithRateResponseDTO>) => {
                 setComments([...comments, ...commentResponseDTOS.content]);
-                console.log(totalCommentsCount);
             }
         );
     };
