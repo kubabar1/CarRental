@@ -25,6 +25,6 @@ public class TokenListener {
 
     @RabbitListener(queues = {"${car-rental.auth-service.queue.deleteTokenQueue}"})
     public void deleteTokenQueue(String token) {
-        tokenService.deleteTokenQueue(token);
+        tokenService.deleteToken(token);
     }
 }

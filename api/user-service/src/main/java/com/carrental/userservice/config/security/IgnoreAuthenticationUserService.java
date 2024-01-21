@@ -12,6 +12,9 @@ public class IgnoreAuthenticationUserService {
             .addUrl("/reset-password/**")
             .addUrl("/registration/**")
             .addUrl("/h2-console/**")
+            .addUrl("/swagger-ui/**")
+            .addUrl("/swagger-resources/**")
+            .addUrl("/v2/api-docs/**")
             .build();
     }
 }

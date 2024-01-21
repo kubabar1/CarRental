@@ -50,23 +50,14 @@ public class TokenServiceImpl implements TokenService {
         verificationTokenDTO.setUserId(verificationTokenEntity.getUserId());
         verificationTokenDTO.setExpiryDate(verificationTokenEntity.getExpiryDate());
 
-        if (isVerificationTokenExpired(verificationTokenEntity.getExpiryDate())) {
-            return verificationTokenDTO;
-        }
-
         return verificationTokenDTO;
     }
 
     @Override
-    public void deleteTokenQueue(String token) {
+    public void deleteToken(String token) {
         VerificationTokenEntity verificationTokenEntity = tokenRepository
                 .findByToken(token)
                 .orElseThrow(() -> new VerificationTokenException("Token with given ID not found"));
         tokenRepository.delete(verificationTokenEntity);
-    }
-
-    private boolean isVerificationTokenExpired(Date expiryDate) {
-        Calendar calendar = Calendar.getInstance();
-        return expiryDate.getTime() - calendar.getTime().getTime() <= 0;
     }
 }

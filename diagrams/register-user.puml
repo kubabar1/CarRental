@@ -1,0 +1,227 @@
+@startuml
+actor User as User
+participant RegistrationController as RPC
+participant UserService as US
+participant UserRepository as UR
+participant RegistrationCompleteListener as RCL
+participant ResendRegistrationConfirmTokenListener as RRCTL
+participant SendEmailListener as SEL
+participant MailService as MS
+participant MailSender as MSD
+participant TokenListener as TL
+participant TokenRepository as TR
+participant TokenService as TS
+queue "q.car-rental\n.auth-service\n.generate-token-queue" as GNTQ
+queue "q.car-rental\n.auth-service\n.get-token-queue" as GETQ
+queue "q.car-rental\n.mail-service\n.send-email-queue" as SEQ
+queue "q.car-rental\n.auth-service\n.delete-token-queue" as DTQ
+
+User -> RPC : GET /registration/register-user (createUserDTO: CreateUserDTO)
+activate RPC
+RPC -> US : createUser(createUserDTO: CreateUserDTO)
+activate US
+US -> US : validateUserEmail(userEmail: String)
+
+alt mail exists
+    RPC <-- US : throws UserAlreadyExistException()
+    User <-- RPC : Error: \n- 400 bad request
+end
+
+US -> UR : save(userEntity: UserEntity)
+activate UR
+US <-- UR : UserEntity
+deactivate UR
+RPC <- US : UserResponseDTO
+deactivate US
+RPC -> RCL : event: OnRegistrationCompleteEvent
+deactivate RPC
+
+activate RCL
+RCL -> GNTQ : tokenRequest: TokenRequestDTO
+activate GNTQ
+GNTQ -> TL : generateTokenQueue(generateTokenRequestDTO: GenerateTokenRequestDTO)
+deactivate GNTQ
+activate TL
+TL -> TS : createVerificationToken(userId: Long)
+activate TS
+TS -> TR : save(verificationTokenEntity: VerificationTokenEntity)
+activate TR
+TS <-- TR: VerificationTokenDTO
+deactivate TR
+TL <-- TS: VerificationTokenDTO
+deactivate TS
+GNTQ <-- TL: VerificationTokenDTO
+deactivate TL
+activate GNTQ
+
+RCL <-- GNTQ : verificationToken: VerificationTokenDTO
+deactivate GNTQ
+
+alt verificationToken != null
+    RCL -> SEQ : registrationConfirmationMailDTO: MailDTO
+    deactivate RCL
+    activate SEQ
+    SEQ -> SEL : sendEmail(mailDTO: MailDTO)
+    deactivate SEQ
+    activate SEL
+    SEL -> MS : sendEmail(mailDTO: MailDTO)
+    deactivate SEL
+    activate MS
+    MS -> MSD : send(mail: SimpleMailMessage)
+    deactivate MS
+    activate MSD
+    User <-- MSD : mail
+    deactivate MSD
+    note right of User
+      Mail with registration link:
+      /registration/registration-confirm?token=:token
+      URL set by property:
+      **car-rental.user-service.registration-confirm-url**
+    end note
+end
+
+User -> RPC : /registration/registration-confirm?token=:token (token: String)
+activate RPC
+RPC -> GETQ : getToken(token: String)
+activate GETQ
+GETQ -> TL : getTokenQueue(token: String)
+deactivate GETQ
+activate TL
+TL -> TS : getToken(token: String)
+activate TS
+TS -> TR : findByToken(token: String)
+activate TR
+TS <-- TR : verificationToken : VerificationTokenDTO
+deactivate TR
+TL <-- TS : verificationToken : VerificationTokenDTO
+deactivate TS
+GETQ <-- TL : verificationToken : VerificationTokenDTO
+deactivate TL
+activate GETQ
+RPC <-- GETQ : verificationToken : VerificationTokenDTO
+deactivate GETQ
+
+alt token is valid and not expired
+    RPC -> US : enableUser(userId: Long, token: String)
+    activate US
+    US -> UR : findById(userId: Long)
+    activate UR
+    US <- UR : UserEntity
+    deactivate UR
+    US -> US : userEntity.setEnabled(true)
+    US -> UR : save(userEntity: UserEntity)
+    activate UR
+    US <-- UR : UserEntity
+    deactivate UR
+    US -> DTQ : deleteToken
+    activate DTQ
+    DTQ -> TL : deleteTokenQueue
+    deactivate DTQ
+    activate TL
+    TL -> TR : findByToken(token: String)
+    activate TR
+    TL <-- TR : VerificationTokenEntity
+    deactivate TR
+    TL -> TR : deleteToken(token: VerificationTokenEntity)
+    activate TR
+    TL <-- TR : VerificationTokenEntity
+    deactivate TR
+    deactivate TL
+    RPC <-- US : UserResponseDTO
+    deactivate US
+    User <-- RPC : Success:\n- 302 with header //Location// set to login page URL \nset by property **car-rental.user-service.login-page-url**
+else
+    alt token is valid but expired
+        User <-- RPC : Error:\n- 302 with header //Location// set to registration token expired page \nset by property **car-rental.user-service.registration-expired-token-url**
+    else
+        User <-- RPC : Error:\n- 302 with header //Location// set to registration token invalid page \nset by property **car-rental.user-service.registration-invalid-token-url**
+        deactivate RPC
+    end
+end
+
+' ###################################
+' ### RESEND REGISTRATION CONFIRM ###
+' ###################################
+note right of User
+  If registration token sent
+  in mail expired, the user
+  can send a request for an
+  email with a new token
+end note
+
+User -> RPC : /registration/resend-registration-confirm?token=:token
+
+activate RPC
+activate RPC
+RPC -> GETQ : getToken(token: String)
+activate GETQ
+GETQ -> TL : getTokenQueue(token: String)
+deactivate GETQ
+activate TL
+TL -> TS : getToken(token: String)
+activate TS
+TS -> TR : findByToken(token: String)
+activate TR
+TS <-- TR : verificationToken : VerificationTokenDTO
+deactivate TR
+TL <-- TS : verificationToken : VerificationTokenDTO
+deactivate TS
+GETQ <-- TL : verificationToken : VerificationTokenDTO
+deactivate TL
+activate GETQ
+RPC <-- GETQ : verificationToken : VerificationTokenDTO
+deactivate GETQ
+
+alt verificationToken != null && verificationToken.userId != null
+    RPC -> US : getUserById(userId: Long)
+    activate US
+    RPC <-- US : UserResponseDTO
+    deactivate US
+    RPC -> RRCTL : resendRegistrationConfirmToken
+    activate RRCTL
+    User <-- RPC : Error:\n- 302 with header //Location// set to registration confirm mail URL \nset by property **car-rental.user-service.registration-confirm-mail-url**
+
+    RRCTL -> GNTQ : tokenRequest: TokenRequestDTO
+    activate GNTQ
+    GNTQ -> TL : generateTokenQueue(generateTokenRequestDTO: GenerateTokenRequestDTO)
+    deactivate GNTQ
+    activate TL
+    TL -> TS : createVerificationToken(userId: Long)
+    activate TS
+    TS -> TR : save(verificationTokenEntity: VerificationTokenEntity)
+    TS <-- TR: VerificationTokenDTO
+    TL <-- TS: VerificationTokenDTO
+    deactivate TS
+    GNTQ <-- TL: VerificationTokenDTO
+    deactivate TL
+    activate GNTQ
+    RRCTL <-- GNTQ : verificationToken: VerificationTokenDTO
+    deactivate GNTQ
+
+    alt verificationToken != null
+        RRCTL -> SEQ : registrationConfirmationMailDTO: MailDTO
+        deactivate RRCTL
+        activate SEQ
+        SEQ -> SEL : sendEmail(mailDTO: MailDTO)
+        deactivate SEQ
+        activate SEL
+        SEL -> MS : sendEmail(mailDTO: MailDTO)
+        deactivate SEL
+        activate MS
+        MS -> MSD : send(mail: SimpleMailMessage)
+        deactivate MS
+        activate MSD
+        User <-- MSD : mail
+        deactivate MSD
+        note right of User
+          Mail with registration link:
+          /registration/registration-confirm?token=:token
+          URL set by property:
+          **car-rental.user-service.registration-confirm-url**
+        end note
+    end
+else
+    User <-- RPC : Error:\n- 302 with header //Location// set to registration token invalid page \nset by property **car-rental.user-service.registration-invalid-token-url**
+    deactivate RPC
+end
+@enduml

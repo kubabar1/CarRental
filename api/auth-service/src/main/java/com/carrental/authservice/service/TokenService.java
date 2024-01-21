@@ -1,6 +1,5 @@
 package com.carrental.authservice.service;
 
-import com.carrental.authservice.exception.VerificationTokenException;
 import com.carrental.authservice.model.dto.VerificationTokenDTO;
 
 public interface TokenService {
@@ -9,5 +8,5 @@ public interface TokenService {
 
     VerificationTokenDTO getToken(String token);
 
-    void deleteTokenQueue(String token);
+    void deleteToken(String token);
 }

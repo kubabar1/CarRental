@@ -1,0 +1,14 @@
+@startuml
+[*] --> RESERVED
+RESERVED -> RENTED
+RENTED -> RETURNED
+RETURNED --> [*]
+
+RESERVED -> CANCELED
+CANCELED --> [*]
+
+RESERVED: Vehicle booked by user
+RENTED: Vehicle rented by user
+RETURNED: Vehicle returned by user
+CANCELED: Vehicle reservation canceled \n(by user, admin or employee)
+@enduml

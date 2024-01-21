@@ -5,6 +5,9 @@ metadata:
 data:
   DEV: "false"
   RABBIT_HOST: "127.0.0.1"
+  RABBIT_USERNAME: "guest"
+  RABBIT_PASSWORD: "guest"
+  RABBIT_PORT: "5672"
   EUREKA_ENABLED: "true"
   EUREKA_URI: "http://127.0.0.1:8761/eureka"
   AUTH_SERVICE_PROTOCOL: "http"

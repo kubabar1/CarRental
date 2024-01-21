@@ -186,6 +186,7 @@ export function SideNav({ userRoles = [], runLogout }: SideNavProperties): JSX.E
                 <NavSubLink
                     navItemName={TranslationService.translate('automationNavLinkName')}
                     link={settingsAutomationLink.link}
+                    authorized={userHasAnyRole(userRoles, settingsAutomationLink.permittedRoles)}
                 />
             </NavLink>
 

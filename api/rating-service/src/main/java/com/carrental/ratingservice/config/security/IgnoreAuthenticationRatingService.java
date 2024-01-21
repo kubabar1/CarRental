@@ -10,6 +10,9 @@ public class IgnoreAuthenticationRatingService {
         return new IgnoreAuthentication.IgnoreAuthenticationBuilder()
             .addUrl("/comments/**")
             .addUrl("/h2-console/**")
+            .addUrl("/swagger-ui/**")
+            .addUrl("/swagger-resources/**")
+            .addUrl("/v2/api-docs/**")
             .build();
     }
 }
